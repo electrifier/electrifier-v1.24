@@ -11,7 +11,9 @@
         <helpers:EnumToBooleanConverter
             x:Key="EnumToBooleanConverter" />
         <x:String
-            x:Key="PrivacyTermsLink_Uri">https://github.com/electrifier/electrifier/blob/main/PRIVACY.md</x:String>
+            x:Key="PrivacyTermsLink_Uri">
+            https://github.com/electrifier/electrifier/blob/main/PRIVACY.md
+        </x:String>
     </Page.Resources>
     <Grid>
         <StackPanel

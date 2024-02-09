@@ -66,26 +66,24 @@
                             Glyph="&#xeb41;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem
+                <!--<NavigationViewItem
                     x:Uid="Shell_ContentGrid"
-                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.ContentGridViewModel"
-                    Visibility="Collapsed">
+                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.ContentGridViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon
                             FontFamily="{StaticResource SymbolThemeFontFamily}"
                             Glyph="&#xf0e2;" />
                     </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem
+                </NavigationViewItem>-->
+                <!--<NavigationViewItem
                     x:Uid="Shell_ListDetails"
-                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.ListDetailsViewModel"
-                    Visibility="Collapsed">
+                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.ListDetailsViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon
                             FontFamily="{StaticResource SymbolThemeFontFamily}"
                             Glyph="&#xea37;" />
                     </NavigationViewItem.Icon>
-                </NavigationViewItem>
+                </NavigationViewItem>-->
             </NavigationView.MenuItems>
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
