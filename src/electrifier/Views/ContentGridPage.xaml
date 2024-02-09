@@ -1,4 +1,5 @@
-﻿<Page
+﻿<!-- This is a demo page -->
+<Page
     x:Class="electrifier.Views.ContentGridPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
