@@ -1,4 +1,5 @@
-﻿<Page
+﻿<!-- This is a demo page -->
+<Page
     x:Class="electrifier.Views.ListDetailsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -11,11 +12,16 @@
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     mc:Ignorable="d">
     <Page.Resources>
-        <DataTemplate x:Key="ItemTemplate" x:DataType="models:SampleOrder">
-            <Grid Height="60">
+        <DataTemplate
+            x:Key="ItemTemplate"
+            x:DataType="models:SampleOrder">
+            <Grid
+                Height="60">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition
+                        Width="Auto" />
+                    <ColumnDefinition
+                        Width="*" />
                 </Grid.ColumnDefinitions>
                 <FontIcon
                     Grid.Column="0"
@@ -27,19 +33,26 @@
                     Grid.Column="1"
                     Margin="{StaticResource SmallLeftMargin}"
                     VerticalAlignment="Center">
-                    <TextBlock Text="{x:Bind Company}" Style="{StaticResource ListTitleStyle}" />
-                    <TextBlock Text="{x:Bind Status}" Style="{StaticResource ListSubTitleStyle}" />
+                    <TextBlock
+                        Text="{x:Bind Company}"
+                        Style="{StaticResource ListTitleStyle}" />
+                    <TextBlock
+                        Text="{x:Bind Status}"
+                        Style="{StaticResource ListSubTitleStyle}" />
                 </StackPanel>
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="DetailsTemplate">
+        <DataTemplate
+            x:Key="DetailsTemplate">
             <Grid>
-                <views:ListDetailsDetailControl ListDetailsMenuItem="{Binding}" />
+                <views:ListDetailsDetailControl
+                    ListDetailsMenuItem="{Binding}" />
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="NoSelectionContentTemplate">
+        <DataTemplate
+            x:Key="NoSelectionContentTemplate">
             <Grid>
                 <TextBlock
                     x:Uid="ListDetails_NoSelection"
@@ -50,16 +63,20 @@
             </Grid>
         </DataTemplate>
 
-        <DataTemplate x:Key="ListHeaderTemplate">
-            <Grid Height="40">
+        <DataTemplate
+            x:Key="ListHeaderTemplate">
+            <Grid
+                Height="40">
                 <TextBlock
                     VerticalAlignment="Center"
                     Style="{StaticResource ListTitleStyle}"
                     Text="{Binding}" />
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="MinimalListHeaderTemplate">
-            <Grid Height="40">
+        <DataTemplate
+            x:Key="MinimalListHeaderTemplate">
+            <Grid
+                Height="40">
                 <TextBlock
                     Margin="96,0,0,0"
                     VerticalAlignment="Center"
@@ -69,16 +86,20 @@
         </DataTemplate>
     </Page.Resources>
 
-    <Grid x:Name="ContentArea">
+    <Grid
+        x:Name="ContentArea">
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
                         <!--641 is the default CompactModeThresholdWidth in NavigationView -->
-                        <AdaptiveTrigger MinWindowWidth="641" />
+                        <AdaptiveTrigger
+                            MinWindowWidth="641" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="ListDetailsViewControl.ListHeaderTemplate" Value="{StaticResource ListHeaderTemplate}" />
+                        <Setter
+                            Target="ListDetailsViewControl.ListHeaderTemplate"
+                            Value="{StaticResource ListHeaderTemplate}" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -95,6 +116,6 @@
             ListHeaderTemplate="{StaticResource MinimalListHeaderTemplate}"
             NoSelectionContentTemplate="{StaticResource NoSelectionContentTemplate}"
             SelectedItem="{x:Bind ViewModel.Selected, Mode=TwoWay}"
-            ViewStateChanged="OnViewStateChanged"/>
+            ViewStateChanged="OnViewStateChanged" />
     </Grid>
 </Page>

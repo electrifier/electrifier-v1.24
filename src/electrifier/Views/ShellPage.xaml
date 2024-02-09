@@ -10,20 +10,23 @@
     Loaded="OnLoaded">
 
     <Grid>
-        <Grid x:Name="AppTitleBar"
-              Canvas.ZIndex="1"
-              Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
-              IsHitTestVisible="True"
-              VerticalAlignment="Top">
-            <Image Source="/Assets/WindowIcon.ico"
-                   HorizontalAlignment="Left"
-                   Width="16"
-                   Height="16" />
-            <TextBlock x:Name="AppTitleBarText"
-                       VerticalAlignment="Center"
-                       TextWrapping="NoWrap"
-                       Style="{StaticResource CaptionTextBlockStyle}"
-                       Margin="28,0,0,0"/>
+        <Grid
+            x:Name="AppTitleBar"
+            Canvas.ZIndex="1"
+            Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
+            IsHitTestVisible="True"
+            VerticalAlignment="Top">
+            <Image
+                Source="/Assets/WindowIcon.ico"
+                HorizontalAlignment="Left"
+                Width="16"
+                Height="16" />
+            <TextBlock
+                x:Name="AppTitleBarText"
+                VerticalAlignment="Center"
+                TextWrapping="NoWrap"
+                Style="{StaticResource CaptionTextBlockStyle}"
+                Margin="28,0,0,0" />
         </Grid>
         <NavigationView
             x:Name="NavigationViewControl"
@@ -43,26 +46,44 @@
                 TODO: Update item icons by updating FontIcon.Glyph properties.
                 https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list
                 -->
-                <NavigationViewItem x:Uid="Shell_Workbench" helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
+                <NavigationViewItem
+                    x:Uid="Shell_Workbench"
+                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                        <!-- Glyph="&#xe8d1;" => "GotoToday" is the icon for the Workbench -->
+                        <FontIcon
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            Glyph="&#xe8d1;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_WebView" helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
+                <NavigationViewItem
+                    x:Uid="Shell_WebView"
+                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe774;"/>
+                        <!-- Glyph="&#xeb41" => "Website" is the icon for the Web Browser -->
+                        <FontIcon
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            Glyph="&#xeb41;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_ContentGrid" helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.ContentGridViewModel">
+                <!--<NavigationViewItem
+                    x:Uid="Shell_ContentGrid"
+                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.ContentGridViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xf0e2;"/>
+                        <FontIcon
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            Glyph="&#xf0e2;" />
                     </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_ListDetails" helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.ListDetailsViewModel">
+                </NavigationViewItem>-->
+                <!--<NavigationViewItem
+                    x:Uid="Shell_ListDetails"
+                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.ListDetailsViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xea37;"/>
+                        <FontIcon
+                            FontFamily="{StaticResource SymbolThemeFontFamily}"
+                            Glyph="&#xea37;" />
                     </NavigationViewItem.Icon>
-                </NavigationViewItem>
+                </NavigationViewItem>-->
             </NavigationView.MenuItems>
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
@@ -87,8 +108,10 @@
                     </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                 </behaviors:NavigationViewHeaderBehavior>
             </i:Interaction.Behaviors>
-            <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
-                <Frame x:Name="NavigationFrame" />
+            <Grid
+                Margin="{StaticResource NavigationViewPageContentMargin}">
+                <Frame
+                    x:Name="NavigationFrame" />
             </Grid>
         </NavigationView>
     </Grid>
