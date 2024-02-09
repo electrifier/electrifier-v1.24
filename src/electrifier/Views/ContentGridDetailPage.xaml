@@ -8,21 +8,33 @@
     xmlns:models="using:electrifier.Core.Models"
     mc:Ignorable="d">
 
-    <Grid x:Name="ContentArea">
+    <Grid
+        x:Name="ContentArea">
 
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup>
                 <VisualState>
                     <VisualState.StateTriggers>
                         <!--641 is the default CompactModeThresholdWidth in NavigationView -->
-                        <AdaptiveTrigger MinWindowWidth="641" />
+                        <AdaptiveTrigger
+                            MinWindowWidth="641" />
                     </VisualState.StateTriggers>
                     <VisualState.Setters>
-                        <Setter Target="propertiesGroup1.(RelativePanel.RightOf)" Value="itemHero" />
-                        <Setter Target="propertiesGroup1.(RelativePanel.Below)" Value="title" />
-                        <Setter Target="propertiesGroup2.(RelativePanel.RightOf)" Value="propertiesGroup1" />
-                        <Setter Target="propertiesGroup2.(RelativePanel.Below)" Value="title" />
-                        <Setter Target="propertiesGroup1.Width" Value="200" />
+                        <Setter
+                            Target="propertiesGroup1.(RelativePanel.RightOf)"
+                            Value="itemHero" />
+                        <Setter
+                            Target="propertiesGroup1.(RelativePanel.Below)"
+                            Value="title" />
+                        <Setter
+                            Target="propertiesGroup2.(RelativePanel.RightOf)"
+                            Value="propertiesGroup1" />
+                        <Setter
+                            Target="propertiesGroup2.(RelativePanel.Below)"
+                            Value="title" />
+                        <Setter
+                            Target="propertiesGroup1.Width"
+                            Value="200" />
                     </VisualState.Setters>
                 </VisualState>
             </VisualStateGroup>
@@ -59,27 +71,55 @@
                         Style="{ThemeResource TitleTextBlockStyle}"
                         Text="{x:Bind ViewModel.Item.Company, Mode=OneWay}" />
 
-                    <StackPanel x:Name="propertiesGroup1" RelativePanel.Below="itemHero">
-                        <StackPanel x:Name="statusGroup" Margin="{StaticResource SmallTopMargin}">
-                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Status" />
-                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.Item.Status}" />
+                    <StackPanel
+                        x:Name="propertiesGroup1"
+                        RelativePanel.Below="itemHero">
+                        <StackPanel
+                            x:Name="statusGroup"
+                            Margin="{StaticResource SmallTopMargin}">
+                            <TextBlock
+                                Style="{ThemeResource SubtitleTextBlockStyle}"
+                                Text="Status" />
+                            <TextBlock
+                                Style="{ThemeResource BodyTextBlockStyle}"
+                                Text="{x:Bind ViewModel.Item.Status}" />
                         </StackPanel>
 
-                        <StackPanel x:Name="orderDateGroup" Margin="{StaticResource SmallTopMargin}">
-                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Order date" />
-                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.Item.OrderDate}" />
+                        <StackPanel
+                            x:Name="orderDateGroup"
+                            Margin="{StaticResource SmallTopMargin}">
+                            <TextBlock
+                                Style="{ThemeResource SubtitleTextBlockStyle}"
+                                Text="Order date" />
+                            <TextBlock
+                                Style="{ThemeResource BodyTextBlockStyle}"
+                                Text="{x:Bind ViewModel.Item.OrderDate}" />
                         </StackPanel>
                     </StackPanel>
 
-                    <StackPanel x:Name="propertiesGroup2" RelativePanel.Below="propertiesGroup1">
-                        <StackPanel x:Name="shipToGroup" Margin="{StaticResource SmallTopMargin}">
-                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Ship to" />
-                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.Item.ShipTo}" />
+                    <StackPanel
+                        x:Name="propertiesGroup2"
+                        RelativePanel.Below="propertiesGroup1">
+                        <StackPanel
+                            x:Name="shipToGroup"
+                            Margin="{StaticResource SmallTopMargin}">
+                            <TextBlock
+                                Style="{ThemeResource SubtitleTextBlockStyle}"
+                                Text="Ship to" />
+                            <TextBlock
+                                Style="{ThemeResource BodyTextBlockStyle}"
+                                Text="{x:Bind ViewModel.Item.ShipTo}" />
                         </StackPanel>
 
-                        <StackPanel x:Name="orderTotalGroup" Margin="{StaticResource SmallTopMargin}">
-                            <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Order total" />
-                            <TextBlock Style="{ThemeResource BodyTextBlockStyle}" Text="{x:Bind ViewModel.Item.OrderTotal}" />
+                        <StackPanel
+                            x:Name="orderTotalGroup"
+                            Margin="{StaticResource SmallTopMargin}">
+                            <TextBlock
+                                Style="{ThemeResource SubtitleTextBlockStyle}"
+                                Text="Order total" />
+                            <TextBlock
+                                Style="{ThemeResource BodyTextBlockStyle}"
+                                Text="{x:Bind ViewModel.Item.OrderTotal}" />
                         </StackPanel>
                     </StackPanel>
 
