@@ -10,6 +10,8 @@
     <Page.Resources>
         <helpers:EnumToBooleanConverter
             x:Key="EnumToBooleanConverter" />
+        <x:String
+            x:Key="PrivacyTermsLink_Uri">https://github.com/electrifier/electrifier/blob/main/PRIVACY.md</x:String>
     </Page.Resources>
     <Grid>
         <StackPanel
@@ -73,7 +75,9 @@
                     Style="{ThemeResource BodyTextBlockStyle}" />
                 <HyperlinkButton
                     x:Uid="SettingsPage_PrivacyTermsLink"
-                    Margin="{StaticResource SettingsPageHyperlinkButtonMargin}" />
+                    Margin="{StaticResource SettingsPageHyperlinkButtonMargin}"
+                    NavigateUri="{StaticResource PrivacyTermsLink_Uri}"
+                    ToolTipService.ToolTip="{StaticResource PrivacyTermsLink_Uri}" />
             </StackPanel>
         </StackPanel>
     </Grid>
