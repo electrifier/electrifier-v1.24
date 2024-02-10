@@ -14,9 +14,34 @@
 	<UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="ViewModels\ContentGridDetailViewModel.cs" />
+    <Compile Remove="ViewModels\ContentGridViewModel.cs" />
+    <Compile Remove="ViewModels\ListDetailsViewModel.cs" />
+    <Compile Remove="Views\ContentGridDetailPage.xaml.cs" />
+    <Compile Remove="Views\ContentGridPage.xaml.cs" />
+    <Compile Remove="Views\ListDetailsDetailControl.xaml.cs" />
+    <Compile Remove="Views\ListDetailsPage.xaml.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Remove="Views\ContentGridDetailPage.xaml" />
+    <Page Remove="Views\ContentGridPage.xaml" />
+    <Page Remove="Views\ListDetailsDetailControl.xaml" />
+    <Page Remove="Views\ListDetailsPage.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="ViewModels\ContentGridDetailViewModel.cs" />
+    <None Include="ViewModels\ContentGridViewModel.cs" />
+    <None Include="ViewModels\ListDetailsViewModel.cs" />
+    <None Include="Views\ContentGridDetailPage.xaml.cs" />
+    <None Include="Views\ContentGridPage.xaml.cs" />
+    <None Include="Views\ListDetailsDetailControl.xaml.cs" />
+    <None Include="Views\ListDetailsPage.xaml.cs" />
   </ItemGroup>
 
   <ItemGroup>
