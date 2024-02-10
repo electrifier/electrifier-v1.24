@@ -160,7 +160,7 @@
     <value>Open in browser</value>
   </data>
   <data name="Shell_WebView.Content" xml:space="preserve">
-    <value>WebView</value>
+    <value>Web Browser</value>
   </data>
   <data name="Shell_ContentGrid.Content" xml:space="preserve">
     <value>ContentGrid</value>
@@ -190,7 +190,7 @@
     <value>About this application</value>
   </data>
   <data name="Settings_AboutDescription.Text" xml:space="preserve">
-    <value>TODO: Replace with your app description.</value>
+    <value>integrated desktop environment</value>
   </data>
   <data name="SettingsPage_PrivacyTermsLink.Content" xml:space="preserve">
     <value>Privacy Statement</value>
