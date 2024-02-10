@@ -28,6 +28,12 @@
                 Style="{StaticResource CaptionTextBlockStyle}"
                 Margin="28,0,0,0" />
         </Grid>
+        <!--
+            TODO: In NavigationView, setting CompactPaneLength = "72", e.g.,
+            also triggers position of window title position, so take care
+        -->
+        <!-- IsBackButtonVisible="Collapsed" -->
+        <!-- CompactPaneLength="72" -->
         <NavigationView
             x:Name="NavigationViewControl"
             Canvas.ZIndex="0"
@@ -36,6 +42,8 @@
             SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
             IsSettingsVisible="True"
             ExpandedModeThresholdWidth="1280"
+            AlwaysShowHeader="True"
+            PaneTitle="Navigate through your views"
             DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
             Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
             <NavigationView.MenuItems>
@@ -56,6 +64,7 @@
                             Glyph="&#xe8d1;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItemSeparator />
                 <NavigationViewItem
                     x:Uid="Shell_WebView"
                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
