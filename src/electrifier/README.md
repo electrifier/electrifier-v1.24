@@ -1,5 +1,33 @@
 ﻿*Recommended Markdown Viewer: [Markdown Editor](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.MarkdownEditor2)*
 
+# Contributring
+
+# Prerequisites
+
+- Visual Studio 2022
+
+## Formatting
+
+Visual Studio 2022 has built-in support for formatting code. To format the code, right-click on the file in `Solution Explorer` and select `Format Document`.
+
+We use the following settings for formatting:
+
+- XAML files: Position first attribute on same line as start tag
+
+	-> `Tools`
+	-> `Options`
+	-> `Text Editor`
+	-> `XAML`
+	-> `Formatting`
+	-> `Spacing`
+    -> `Attribute Spacing` 
+
+	-> `Position each attribute on a new line` -> `Position first attribute on same line as start tag` *Yes*
+
+--- 
+_Old stuff below_
+---
+
 ## Getting Started
 
 Browse and address `TODO:` comments in `View -> Task List` to learn the codebase and understand next steps for turning the generated code into production code.
