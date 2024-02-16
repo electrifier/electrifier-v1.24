@@ -20,6 +20,7 @@ public class PageService : IPageService
 //        Configure<ContentGridDetailViewModel, ContentGridDetailPage>();
 //        Configure<ListDetailsViewModel, ListDetailsPage>();
         Configure<SettingsViewModel, SettingsPage>();
+        Configure<FileManagerViewModel, FileManagerPage>();
     }
 
     public Type GetPageType(string key)

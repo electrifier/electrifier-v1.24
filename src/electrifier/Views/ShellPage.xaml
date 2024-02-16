@@ -93,6 +93,11 @@
                             Glyph="&#xea37;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>-->
+                <NavigationViewItem x:Uid="Shell_FileManager" helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
 
             <!--#region FooterMenuItems, 11.02. 11:46 -->
