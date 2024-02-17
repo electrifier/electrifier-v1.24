@@ -192,7 +192,7 @@
     <value>ContentGrid</value>
   </data>
   <data name="Shell_FileManager.Content" xml:space="preserve">
-    <value>FileManager</value>
+    <value>File Manager</value>
   </data>
   <data name="Shell_ListDetails.Content" xml:space="preserve">
     <value>ListDetails</value>

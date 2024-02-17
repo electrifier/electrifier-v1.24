@@ -1,110 +1,113 @@
-﻿<Page
-    Background="Transparent"
-    behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
-    mc:Ignorable="d"
-    x:Class="electrifier.Views.FileManagerPage"
-    xmlns:behaviors="using:electrifier.Behaviors"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:electrifier.Services"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<Grid
-        x:Name="ContentArea">
-		<StackPanel
-            Orientation="Vertical">
-			<MenuBar>
-				<MenuBarItem
-                    IsEnabled="False"
-                    Title="File">
-					<MenuFlyoutItem
-                        Text="New" />
-					<MenuFlyoutItem
-                        Text="Open..." />
-				</MenuBarItem>
-				<MenuBarItem
-                    IsEnabled="False"
-                    Title="Edit">
-					<MenuFlyoutItem
-                        Text="Undo" />
-					<MenuFlyoutItem
-                        Text="Cut" />
-					<MenuFlyoutItem
-                        Text="Copy" />
-					<MenuFlyoutItem
-                        Text="Paste" />
-				</MenuBarItem>
-				<MenuBarItem
-                    IsEnabled="False"
-                    Title="Help">
-					<MenuFlyoutItem
-                        Text="About" />
-				</MenuBarItem>
-			</MenuBar>
-			<Grid>
-				<Grid.Resources>
-					<DataTemplate x:DataType="local:DosShellItem"
-								  
-                        x:Key="ImageGridViewItemTemplate">
-						<Grid
-                            Height="150"
-                            Width="150"
-                            Margin="3">
-							<Grid.RowDefinitions>
-								<RowDefinition />
-								<RowDefinition
-                                    Height="45" />
-							</Grid.RowDefinitions>
+﻿<Page x:Class="electrifier.Views.FileManagerPage"
+      xmlns:behaviors="using:electrifier.Behaviors"
+      xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="using:electrifier.Services"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+      mc:Ignorable="d">
+    <Grid x:Name="ContentArea">
+        <StackPanel Orientation="Vertical">
+            <MenuBar>
+                <MenuBarItem IsEnabled="False"
+                             Title="File">
+                    <MenuFlyoutItem Text="New" />
+                    <MenuFlyoutItem Text="Open..." />
+                </MenuBarItem>
+                <MenuBarItem IsEnabled="False"
+                             Title="Edit">
+                    <MenuFlyoutItem Text="Undo" />
+                    <MenuFlyoutItem Text="Cut" />
+                    <MenuFlyoutItem Text="Copy" />
+                    <MenuFlyoutItem Text="Paste" />
+                </MenuBarItem>
+                <MenuBarItem IsEnabled="False"
+                             Title="View">
+                    <MenuFlyoutItem Text="Zoom In" />
+                    <MenuFlyoutItem Text="Zoom Out" />
+                </MenuBarItem>
+                <MenuBarItem IsEnabled="False"
+                             Title="Help">
+                    <MenuFlyoutItem Text="About" />
+                </MenuBarItem>
+            </MenuBar>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-							<!--Source="{x:Bind ShellIcon}"-->
-							<!--<BitmapIcon
+                <Grid.Resources>
+                    <DataTemplate x:DataType="local:DosShellItem"
+                                  x:Key="ImageGridViewItemTemplate">
+                        <Grid Height="150"
+                              Width="150"
+                              Margin="3">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition Height="45" />
+                            </Grid.RowDefinitions>
+
+                            <!--Source="{x:Bind ShellIcon}"-->
+                            <!--<BitmapIcon
                             Grid.Row="0"
                             x:Name="ItemImage"
                             UriSource="ms-appx:///Assets/Assets\Square44x44Logo.scale-200.png" 
                             
                              />-->
-							<!-- TODO: Check <BitmapIcon UriSource="ms-appx:///Assets/globe.png"/> -->
+                            <!-- TODO: Check <BitmapIcon UriSource="ms-appx:///Assets/globe.png"/> -->
 
-							<!-- W:\git-projects\tajbender\electrifier-v1.23\branch main\electrifier-v1.23\src\electrifier\Assets\Views\Workbench\Shell32 Desfualt Folder.ico -->
+                            <ImageIcon x:Name="ImageGridView_ItemTemplate_DefaultFolderIcon"
+                                       Visibility="{x:Bind IsFolder}"
+                                       Source="..\Assets\Views\Workbench\Shell32 Default Folder.ico"
+                                       Grid.Row="0" />
 
-							<ImageIcon
-                                x:Name="ImageGridView_ItemTemplate_DefaultFolderIcon"
-                                Visibility="{x:Bind IsFolder}"
-                                Source="..\Assets\Views\Workbench\Shell32 Default Folder.ico"
-                                Grid.Row="0" />
+                            <ImageIcon x:Name="ImageGridView_ItemTemplate_DefaultFileIcon"
+                                       Visibility="{x:Bind IsFile}"
+                                       Source="..\Assets\Views\Workbench\Shell32 Default unknown File.ico"
+                                       Grid.Row="0" />
 
-							<ImageIcon
-                                x:Name="ImageGridView_ItemTemplate_DefaultFileIcon"
-                                Visibility="{x:Bind IsFile}"
-                                Source="..\Assets\Views\Workbench\Shell32 Default unknown File.ico"
-                                Grid.Row="0" />
+                            <TextBlock x:Name="ImageGridView_ItemTemplate_TextBlock"
+                                       Grid.Row="1"
+                                       HorizontalAlignment="Center"
+                                       Style="{StaticResource SubtitleTextBlockStyle}"
+                                       Text="{x:Bind FileName}" />
+                        </Grid>
+                    </DataTemplate>
 
-							<TextBlock
-                                Grid.Row="1"
-                                Text="{x:Bind FileName}"
-                                HorizontalAlignment="Left"
-                                FontSize="12"
-                                Style="{StaticResource SubtitleTextBlockStyle}" />
-						</Grid>
-					</DataTemplate>
+                    <Style x:Key="ImageGridViewItemContainerStyle"
+                           TargetType="GridViewItem">
+                        <Setter Property="Margin"
+                                Value="3" />
+                        <Setter Property="Background"
+                                Value="{ThemeResource SystemControlBackgroundBaseLowBrush}" />
+                    </Style>
+                </Grid.Resources>
 
-					<Style
-                        x:Key="ImageGridViewItemContainerStyle"
-                        TargetType="GridViewItem">
-						<Setter
-                            Property="Margin"
-                            Value="3" />
-					</Style>
-				</Grid.Resources>
-
-				<GridView
-                    x:Name="ImageGridView"
-                    ItemTemplate="{StaticResource ImageGridViewItemTemplate}"
-                    ItemsSource="{x:Bind ShellItems}"
-                    ItemContainerStyle="{StaticResource ImageGridViewItemContainerStyle}"
-                    ContainerContentChanging="ImageGridView_ContainerContentChanging">
-				</GridView>
-			</Grid>
-		</StackPanel>
-	</Grid>
+                <!--  Left-side 'Shelf', In this case you could also use a GridSplitter  -->
+                <Border x:Name="SideContent"
+                        MinWidth="200"
+                        MaxWidth="600"
+                        Background="{ThemeResource AccentFillColorDefaultBrush}">
+                    <TextBlock HorizontalAlignment="Center"
+                               VerticalAlignment="Center"
+                               Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
+                               Style="{ThemeResource BodyStrongTextBlockStyle}"
+                               Text="Side Content" />
+                </Border>
+                <controls:ContentSizer Grid.Column="1"
+                                       TargetControl="{x:Bind SideContent}" />
+                <GridView x:Name="ImageGridView"
+                          Grid.Column="2"
+                          ItemTemplate="{StaticResource ImageGridViewItemTemplate}"
+                          ItemsSource="{x:Bind ShellItems}"
+                          ItemContainerStyle="{StaticResource ImageGridViewItemContainerStyle}"
+                          ContainerContentChanging="ImageGridView_ContainerContentChanging">
+                </GridView>
+            </Grid>
+        </StackPanel>
+    </Grid>
 </Page>
