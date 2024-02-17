@@ -23,7 +23,7 @@
             Grid.Column="0"
             Spacing="4">
 
-            <controls:SettingsCard
+            <!--<controls:SettingsCard
                 x:Name="settingsCard"
                 Description="This is a default card, with the Header, HeaderIcon, Description and Content set."
                 Header="This is the Header"
@@ -35,17 +35,17 @@
                     <ComboBoxItem>Option 2</ComboBoxItem>
                     <ComboBoxItem>Option 3</ComboBoxItem>
                 </ComboBox>
-            </controls:SettingsCard>
+            </controls:SettingsCard>-->
 
-            <controls:SettingsCard
+            <!--<controls:SettingsCard
                 Description="You can use a FontIcon, SymbolIcon or BitmapIcon to set the cards HeaderIcon."
                 Header="Icon options"
                 HeaderIcon="{ui:BitmapIcon Source=ms-appx:///Assets/AppTitleBar.scale-200.png}"
                 IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}">
                 <ToggleSwitch />
-            </controls:SettingsCard>
+            </controls:SettingsCard>-->
 
-            <controls:SettingsCard
+            <!--<controls:SettingsCard
                 Header="A card with custom objects as its Description"
                 IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}">
                 <controls:SettingsCard.Description>
@@ -55,9 +55,9 @@
                 <Button
                     Content="Open Phone Link"
                     Style="{StaticResource AccentButtonStyle}" />
-            </controls:SettingsCard>
+            </controls:SettingsCard>-->
 
-            <controls:SettingsCard
+            <!--<controls:SettingsCard
                 Description="When resizing a SettingsCard, the Content will wrap vertically. You can override this breakpoint by setting the SettingsCardWrapThreshold resource. For edge cases, you can also hide the icon by setting SettingsCardWrapNoIconThreshold."
                 Header="Adaptive layouts"
                 HeaderIcon="{ui:FontIcon Glyph=&#xE745;}"
@@ -71,38 +71,38 @@
                 <Button
                     Content="This control will wrap vertically!"
                     Style="{StaticResource AccentButtonStyle}" />
-            </controls:SettingsCard>
+            </controls:SettingsCard>-->
 
-            <controls:SettingsCard
+            <!--<controls:SettingsCard
                 x:Name="otherSettingsCard"
                 Description="A SettingsCard can be made clickable and you can leverage the Command property or Click event."
                 Header="A clickable SettingsCard"
                 HeaderIcon="{ui:FontIcon Glyph=&#xE799;}"
                 IsClickEnabled="True"
-                IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}" />
+                IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}" />-->
 
-            <controls:SettingsCard
+            <!--<controls:SettingsCard
                 ActionIcon="{ui:FontIcon Glyph=&#xE8A7;}"
                 ActionIconToolTip="Open in new window"
                 Description="You can customize the ActionIcon and ActionIconToolTip."
                 Header="Customizing the ActionIcon"
                 HeaderIcon="{ui:FontIcon Glyph=&#xE774;}"
                 IsClickEnabled="True"
-                IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}" />
+                IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}" />-->
 
-            <controls:SettingsCard
+            <!--<controls:SettingsCard
                 Header="Hiding the ActionIcon"
                 HeaderIcon="{ui:FontIcon Glyph=&#xE72E;}"
                 IsActionIconVisible="False"
                 IsClickEnabled="True"
-                IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}" />
+                IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}" />-->
         </StackPanel>
 
         <StackPanel
             Grid.Column="1"
             Spacing="4">
 
-            <controls:SettingsCard
+            <!--<controls:SettingsCard
                 x:Name="settingsCard2"
                 Description="This is a default card, with the Header, HeaderIcon, Description and Content set."
                 Header="This is the Header"
@@ -114,17 +114,17 @@
                     <ComboBoxItem>Option 2</ComboBoxItem>
                     <ComboBoxItem>Option 3</ComboBoxItem>
                 </ComboBox>
-            </controls:SettingsCard>
+            </controls:SettingsCard>-->
 
-            <controls:SettingsCard
+            <!--<controls:SettingsCard
                 Description="You can use a FontIcon, SymbolIcon or BitmapIcon to set the cards HeaderIcon."
                 Header="Icon options"
                 HeaderIcon="{ui:BitmapIcon Source=ms-appx:///Assets/AppTitleBar.scale-200.png}"
                 IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}">
                 <ToggleSwitch />
-            </controls:SettingsCard>
+            </controls:SettingsCard>-->
 
-            <controls:SettingsCard
+            <!--<controls:SettingsCard
                 Header="A card with custom objects as its Description"
                 IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}">
                 <controls:SettingsCard.Description>
@@ -134,9 +134,9 @@
                 <Button
                     Content="Open Phone Link"
                     Style="{StaticResource AccentButtonStyle}" />
-            </controls:SettingsCard>
+            </controls:SettingsCard>-->
 
-            <controls:SettingsCard
+            <!--<controls:SettingsCard
                 Description="When resizing a SettingsCard, the Content will wrap vertically. You can override this breakpoint by setting the SettingsCardWrapThreshold resource. For edge cases, you can also hide the icon by setting SettingsCardWrapNoIconThreshold."
                 Header="Adaptive layouts"
                 HeaderIcon="{ui:FontIcon Glyph=&#xE745;}"
@@ -150,31 +150,31 @@
                 <Button
                     Content="This control will wrap vertically!"
                     Style="{StaticResource AccentButtonStyle}" />
-            </controls:SettingsCard>
+            </controls:SettingsCard>-->
 
-            <controls:SettingsCard
+            <!--<controls:SettingsCard
                 x:Name="otherSettingsCard2"
                 Description="A SettingsCard can be made clickable and you can leverage the Command property or Click event."
                 Header="A clickable SettingsCard"
                 HeaderIcon="{ui:FontIcon Glyph=&#xE799;}"
                 IsClickEnabled="True"
-                IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}" />
+                IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}" />-->
 
-            <controls:SettingsCard
+            <!--<controls:SettingsCard
                 ActionIcon="{ui:FontIcon Glyph=&#xE8A7;}"
                 ActionIconToolTip="Open in new window"
                 Description="You can customize the ActionIcon and ActionIconToolTip."
                 Header="Customizing the ActionIcon"
                 HeaderIcon="{ui:FontIcon Glyph=&#xE774;}"
                 IsClickEnabled="True"
-                IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}" />
+                IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}" />-->
 
-            <controls:SettingsCard
+            <!--<controls:SettingsCard
                 Header="Hiding the ActionIcon"
                 HeaderIcon="{ui:FontIcon Glyph=&#xE72E;}"
                 IsActionIconVisible="False"
                 IsClickEnabled="True"
-                IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}" />
+                IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}" />-->
         </StackPanel>
 
     </Grid>
