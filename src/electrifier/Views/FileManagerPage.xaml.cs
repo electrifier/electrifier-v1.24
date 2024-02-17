@@ -67,47 +67,47 @@ public sealed partial class FileManagerPage : Page
                 //var imageElement = templateRoot.FindName("ItemImage") as Image;
                 var imageElement = templateRoot.FindName("ItemImageIcon") as ImageIcon;
 
-                if (imageElement != null)
-                {
-                    if (args.Item is DosShellItem item)
-                    {
-                        var bitmap = new BitmapImage
-                        {
-                            //imageElement.Source = new BitmapImage();
-                            //                        bitmap.UriSource = new Uri("ms-appx:///Assets/Square44x44Logo.scale-200.png");
-                            UriSource = new Uri("ms-appx:///../Assets/Square44x44Logo.scale-200.png")
-                        };
+//                if (imageElement != null)
+//                {
+//                    if (args.Item is DosShellItem item)
+//                    {
+//                        //var bitmap = new BitmapImage
+//                        //{
+//                        //    //imageElement.Source = new BitmapImage();
+//                        //    //                        bitmap.UriSource = new Uri("ms-appx:///Assets/Square44x44Logo.scale-200.png");
+//                        //    UriSource = new Uri("ms-appx:///../Assets/Square44x44Logo.scale-200.png")
+//                        //};
 
 
-                        //new Uri(img.BaseUri, "Assets/StoreLogo.png");
-                        //img.Source = bitmapImage;
+//                        //new Uri(img.BaseUri, "Assets/StoreLogo.png");
+//                        //img.Source = bitmapImage;
 
 
-                        /*
-                         *     Image img = sender as Image; 
-BitmapImage bitmapImage = new BitmapImage();
-img.Width = bitmapImage.DecodePixelWidth = 80; 
-// Natural px width of image source.
-// You don't need to set Height; the system maintains aspect ratio, and calculates the other
-// dimension, as long as one dimension measurement is provided.
-bitmapImage.UriSource = new Uri(img.BaseUri,"Assets/StoreLogo.png");
-img.Source = bitmapImage;*/
+//                        /*
+//                         *     Image img = sender as Image; 
+//BitmapImage bitmapImage = new BitmapImage();
+//img.Width = bitmapImage.DecodePixelWidth = 80; 
+//// Natural px width of image source.
+//// You don't need to set Height; the system maintains aspect ratio, and calculates the other
+//// dimension, as long as one dimension measurement is provided.
+//bitmapImage.UriSource = new Uri(img.BaseUri,"Assets/StoreLogo.png");
+//img.Source = bitmapImage;*/
 
-                        //imageElement.Source = new ImageSource(item.ShellIcon);
+//                        //imageElement.Source = new ImageSource(item.ShellIcon);
 
-                        //var task = item?.GetImageThumbnailAsync();
+//                        //var task = item?.GetImageThumbnailAsync();
 
-                        //if (task != null)
-                        //{
-                        //    imageElement.Source = await task;
-                        //}
+//                        //if (task != null)
+//                        //{
+//                        //    imageElement.Source = await task;
+//                        //}
 
-                    }
-                    else
-                    {
-                        throw new ArgumentNullException(nameof(args.Item));
-                    }
-                }
+//                    }
+//                    else
+//                    {
+//                        throw new ArgumentNullException(nameof(args.Item));
+//                    }
+//                }
             }
         }
     }
@@ -115,7 +115,7 @@ img.Source = bitmapImage;*/
     private async Task GetItemsAsync(KnownLibraryId storageLibrary)
     {
         var library = await StorageLibrary.GetLibraryAsync(storageLibrary);
-        StorageFolder storageFolder = library.SaveFolder;
+        var storageFolder = library.SaveFolder;
 
         if (storageFolder != null)
         {
@@ -198,7 +198,7 @@ img.Source = bitmapImage;*/
 
         try
         {
-            var storageitem = item;
+            var storageItem = item;
 
             if (item.IsOfType(StorageItemTypes.Folder))
             {
