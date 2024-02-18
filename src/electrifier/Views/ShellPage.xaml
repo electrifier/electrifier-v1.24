@@ -69,9 +69,10 @@
                 <NavigationViewItem x:Uid="Shell_FileManager"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
                     <NavigationViewItem.Icon>
+                        <!-- Glyph="&#xec50" => "FileExplorer" is the icon for the Web Browser 28.02.24 -->
                         <!-- Glyph="&#xe838" => "FolderOpen" is the icon for the Web Browser -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xe838;" />
+                                  Glyph="&#xec50;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
@@ -82,9 +83,10 @@
                 <NavigationViewItem x:Uid="Shell_FileManager"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
                     <NavigationViewItem.Icon>
+                        <!-- Glyph="&#xec50" => "FileExplorer" is the icon for the Web Browser 28.02.24 -->
                         <!-- Glyph="&#xe838" => "FolderOpen" is the icon for the Web Browser -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xe838;" />
+                                  Glyph="&#xec50;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_WebView"
