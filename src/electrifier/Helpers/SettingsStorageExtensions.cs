@@ -10,7 +10,7 @@ namespace electrifier.Helpers;
 // https://docs.microsoft.com/windows/apps/design/app-settings/store-and-retrieve-app-data
 public static class SettingsStorageExtensions
 {
-    private const string FileExtension = ".json";
+    private const string FileExtension = """.json""";
 
     public static bool IsRoamingStorageAvailable(this ApplicationData appData)
     {

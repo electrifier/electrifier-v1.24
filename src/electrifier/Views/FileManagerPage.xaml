@@ -51,27 +51,20 @@
                                 <RowDefinition Height="45" />
                             </Grid.RowDefinitions>
 
-                            <!--Source="{x:Bind ShellIcon}"-->
-                            <!--<BitmapIcon
-                            Grid.Row="0"
-                            x:Name="ItemImage"
-                            UriSource="ms-appx:///Assets/Assets\Square44x44Logo.scale-200.png" 
-                            
-                             />-->
-                            <!-- TODO: Check <BitmapIcon UriSource="ms-appx:///Assets/globe.png"/> -->
-
                             <ImageIcon x:Name="ImageGridView_ItemTemplate_DefaultFolderIcon"
                                        Visibility="{x:Bind IsFolder}"
-                                       Source="..\Assets\Views\Workbench\Shell32 Default Folder.ico"
+                                       Source="ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico"
                                        Grid.Row="0" />
 
                             <ImageIcon x:Name="ImageGridView_ItemTemplate_DefaultFileIcon"
                                        Visibility="{x:Bind IsFile}"
-                                       Source="..\Assets\Views\Workbench\Shell32 Default unknown File.ico"
+                                       Source="ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"
                                        Grid.Row="0" />
 
+                            <!-- TODO: Set FontSize by style template -->
                             <TextBlock x:Name="ImageGridView_ItemTemplate_TextBlock"
                                        Grid.Row="1"
+                                       FontSize="12"
                                        HorizontalAlignment="Center"
                                        Style="{StaticResource SubtitleTextBlockStyle}"
                                        Text="{x:Bind FileName}" />

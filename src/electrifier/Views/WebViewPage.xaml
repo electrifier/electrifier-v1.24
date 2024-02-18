@@ -52,6 +52,7 @@
                         FontFamily="{StaticResource SymbolThemeFontFamily}"
                         Glyph="&#xE72C;" />
                 </Button>
+                <!-- Glyph 'OpenInNewWindow' xe8a7 -->
                 <Button
                     x:Uid="OpenInBrowserButton"
                     Command="{x:Bind ViewModel.OpenInBrowserCommand}"
@@ -59,7 +60,7 @@
                     Padding="{StaticResource XXSmallLeftTopRightBottomMargin}">
                     <FontIcon
                         FontFamily="{StaticResource SymbolThemeFontFamily}"
-                        Glyph="&#xE774;" />
+                        Glyph="&#xe8a7;" />
                 </Button>
             </StackPanel>
             <StackPanel
