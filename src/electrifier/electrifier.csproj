@@ -24,6 +24,12 @@
     <Compile Remove="Views\ListDetailsPage.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Views\ContentGridDetailPage.xaml" />
+    <None Remove="Views\ContentGridPage.xaml" />
+    <None Remove="Views\ListDetailsDetailControl.xaml" />
+    <None Remove="Views\ListDetailsPage.xaml" />
+  </ItemGroup>
+  <ItemGroup>
     <Page Remove="Views\ContentGridDetailPage.xaml" />
     <Page Remove="Views\ContentGridPage.xaml" />
     <Page Remove="Views\ListDetailsDetailControl.xaml" />
@@ -32,16 +38,6 @@
 
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Include="ViewModels\ContentGridDetailViewModel.cs" />
-    <None Include="ViewModels\ContentGridViewModel.cs" />
-    <None Include="ViewModels\ListDetailsViewModel.cs" />
-    <None Include="Views\ContentGridDetailPage.xaml.cs" />
-    <None Include="Views\ContentGridPage.xaml.cs" />
-    <None Include="Views\ListDetailsDetailControl.xaml.cs" />
-    <None Include="Views\ListDetailsPage.xaml.cs" />
   </ItemGroup>
 
   <ItemGroup>

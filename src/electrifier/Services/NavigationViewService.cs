@@ -53,22 +53,38 @@ public class NavigationViewService : INavigationViewService
         return null;
     }
 
+    bool INavigationViewService.TryGetSelectedItem(Type sourcePageType, [NotNullWhen(true)] out object? selectedItem)
+    {
+        selectedItem = GetSelectedItem(sourcePageType);
+        return selectedItem != null;
+    }
+
     private void OnBackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args) => _navigationService.GoBack();
 
     private void OnItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
     {
+        // If the settings item is invoked, navigate to <see cref="SettingsPage"/>
         if (args.IsSettingsInvoked)
         {
             _navigationService.NavigateTo(typeof(SettingsViewModel).FullName!);
-        }
-        else
-        {
-            var selectedItem = args.InvokedItemContainer as NavigationViewItem;
 
-            if (selectedItem?.GetValue(NavigationHelper.NavigateToProperty) is string pageKey)
-            {
-                _navigationService.NavigateTo(pageKey);
-            }
+            return;
+        }
+
+        // Get the page type before navigation so you can prevent duplicate entries in the backstack
+        var selectedItem = args.InvokedItemContainer as NavigationViewItem;
+        // TODO: var selectedType = selectedItem?.GetType();
+
+        // WorkbenchViewModel
+        if (selectedItem?.GetValue(NavigationHelper.NavigateToProperty) is string selectedItemPageKey)
+        {
+            _navigationService.NavigateTo(selectedItemPageKey);
+        }
+
+        // doc: https://docs.microsoft.com/en-us/windows/apps/design/controls/navigationview#navigationview-and-the-back-button
+        if (selectedItem?.GetValue(NavigationHelper.NavigateToProperty) is string pageKey)
+        {
+            _navigationService.NavigateTo(pageKey);
         }
     }
 

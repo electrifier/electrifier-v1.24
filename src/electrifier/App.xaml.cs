@@ -41,7 +41,10 @@ public partial class App : Application
 
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    public static UIElement? AppTitleBar { get; set; }
+    public static UIElement? AppTitleBar
+    {
+        get; set;
+    }
 
     public App()
     {
@@ -78,12 +81,6 @@ public partial class App : Application
             services.AddTransient<FileManagerPage>();
             services.AddTransient<SettingsViewModel>();
             services.AddTransient<SettingsPage>();
-//            services.AddTransient<ListDetailsViewModel>();
-//            services.AddTransient<ListDetailsPage>();
-//            services.AddTransient<ContentGridDetailViewModel>();
-//            services.AddTransient<ContentGridDetailPage>();
-//            services.AddTransient<ContentGridViewModel>();
-//            services.AddTransient<ContentGridPage>();
             services.AddTransient<WebViewViewModel>();
             services.AddTransient<WebViewPage>();
             services.AddTransient<WorkbenchViewModel>();

@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-
+using CommunityToolkit.WinUI;
 using electrifier.Contracts.Services;
 using electrifier.Views;
 
@@ -9,8 +9,12 @@ namespace electrifier.ViewModels;
 
 public partial class ShellViewModel : ObservableRecipient
 {
+
     [ObservableProperty]
     private bool isBackEnabled;
+
+    [ObservableProperty]
+    private bool isForwardEnabled;
 
     [ObservableProperty]
     private object? selected;
@@ -30,22 +34,31 @@ public partial class ShellViewModel : ObservableRecipient
         NavigationService = navigationService;
         NavigationService.Navigated += OnNavigated;
         NavigationViewService = navigationViewService;
+        // TODO: https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.navigation.framenavigationoptions?view=windows-app-sdk-1.4
+        //navigationService.CanForwardChanged += (s, e) => IsForwardEnabled = e;
     }
 
     private void OnNavigated(object sender, NavigationEventArgs e)
     {
         IsBackEnabled = NavigationService.CanGoBack;
 
-        if (e.SourcePageType == typeof(SettingsPage))
+        if (NavigationViewService.TryGetSelectedItem(e.SourcePageType, out var selectedItem))
         {
-            Selected = NavigationViewService.SettingsItem;
+            Selected = selectedItem;
             return;
         }
 
-        var selectedItem = NavigationViewService.GetSelectedItem(e.SourcePageType);
-        if (selectedItem != null)
-        {
-            Selected = selectedItem;
-        }
+
+        //        if (e.SourcePageType == typeof(SettingsPage))
+        //        {
+        //            Selected = NavigationViewService.SettingsItem;
+        //            return;
+        //        }
+        //
+        //        var selectedItem = NavigationViewService.GetSelectedItem(e.SourcePageType);
+        //        if (selectedItem != null)
+        //        {
+        //            Selected = selectedItem;
+        //        }
     }
 }

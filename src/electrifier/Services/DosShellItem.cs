@@ -11,8 +11,6 @@ namespace electrifier.Services;
 
 public class DosShellItem : INotifyPropertyChanged
 {
-    private const string shell32DefaultUnknownFileIcon = "ms-appx:///Assets /Views/Workbench/Shell32 Default unknown File.ico";
-
     public string FileName => StorageItem.Name;
 
     public string FileType => StorageItem.Path;
@@ -38,7 +36,7 @@ public class DosShellItem : INotifyPropertyChanged
 
         ShellIcon = new ImageIcon();
 
-            //ResourceManager.GetForCurrentView().GetString("Files/foo.png");
+        //ResourceManager.GetForCurrentView().GetString("Files/foo.png");
         // shell32DefaultUnknownFileIcon
 
 
