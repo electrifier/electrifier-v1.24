@@ -10,8 +10,9 @@
                    PersistenceId="MainWindow"
                    mc:Ignorable="d">
     <Window.SystemBackdrop>
-        <windowex:TransparentTintBackdrop TintColor="Black" />
-        <!--<windowex:TransparentTintBackdrop TintColor="Black" />-->
-        <!--<MicaBackdrop/>-->
+        <DesktopAcrylicBackdrop />
+        <!--<DesktopAcrylicBackdrop TintColor="Black" TintOpacity="0.5" />-->
+        <!--<windowex:TransparentTintBackdrop TintColor="Black" />
+        <MicaBackdrop />-->
     </Window.SystemBackdrop>
 </windowex:WindowEx>
