@@ -1,18 +1,34 @@
 ﻿using electrifier.Helpers;
 
+using Microsoft.UI;             // Needed for WindowId.
+using Microsoft.UI.Dispatching; // Needed for DispatcherQueue.
+using Microsoft.UI.Windowing;   // Needed for AppWindow.
 using Windows.UI.ViewManagement;
+using WinRT.Interop;            // Needed for XAML/HWND interop.
+
+//using Windows.UI.ViewManagement;
+//using Windows.UI.WindowManagement;
 
 namespace electrifier;
 
+// More information how to customize the https://learn.microsoft.com/en-us/windows/apps/develop/title-bar
+
 public sealed partial class MainWindow : WindowEx
 {
+    private readonly AppWindow m_AppWindow;
+
     private readonly Microsoft.UI.Dispatching.DispatcherQueue dispatcherQueue;
 
-    private readonly UISettings settings;
+    private readonly UISettings m_Settings;
 
     public MainWindow()
     {
         InitializeComponent();
+
+        m_AppWindow = GetAppWindowForCurrentWindow();
+        var titleBar = m_AppWindow.TitleBar;
+        // Hide system title bar.
+        titleBar.ExtendsContentIntoTitleBar = true;
 
         AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/WindowIcon.ico"));
         Content = null;
@@ -20,9 +36,17 @@ public sealed partial class MainWindow : WindowEx
 
         // Theme change code picked from https://github.com/microsoft/WinUI-Gallery/pull/1239
         dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
-        settings = new UISettings();
+        m_Settings = new UISettings();
         // cannot use FrameworkElement.ActualThemeChanged event
-        settings.ColorValuesChanged += Settings_ColorValuesChanged;
+        m_Settings.ColorValuesChanged += Settings_ColorValuesChanged;
+    }
+
+    private AppWindow GetAppWindowForCurrentWindow()
+    {
+        var hWnd = WindowNative.GetWindowHandle(this);
+        var wndId = Win32Interop.GetWindowIdFromWindow(hWnd);
+
+        return AppWindow.GetFromWindowId(wndId);
     }
 
     // this handles updating the caption button colors correctly

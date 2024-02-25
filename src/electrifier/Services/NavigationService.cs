@@ -83,6 +83,13 @@ public class NavigationService : INavigationService
         return false;
     }
 
+    /// <summary>
+    /// Navigates to the page with the given key.
+    /// </summary>
+    /// <param name="pageKey"></param>
+    /// <param name="parameter"></param>
+    /// <param name="clearNavigation"></param>
+    /// <returns></returns>
     public bool NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false)
     {
         var pageType = _pageService.GetPageType(pageKey);

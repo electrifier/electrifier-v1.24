@@ -10,8 +10,6 @@
 
     <Grid>
         <Grid x:Name="AppTitleBar"
-              Grid.Row="0"
-              Canvas.ZIndex="0"
               Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
               HorizontalAlignment="Stretch"
               IsHitTestVisible="True"
@@ -50,8 +48,6 @@
             </StackPanel>
         </Grid>
         <NavigationView x:Name="NavigationViewControl"
-                        Grid.Row="1"
-                        Canvas.ZIndex="1"
                         CompactPaneLength="72"
                         IsBackButtonVisible="Collapsed"
                         SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
