@@ -9,23 +9,18 @@
       behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
       mc:Ignorable="d">
 
-    <Grid
-        x:Name="ContentArea"
-        Width="Auto">
+    <Grid x:Name="ContentArea"
+          Width="Auto">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition
-                MinWidth="500" />
-            <ColumnDefinition
-                MinWidth="200"
-                Width="250" />
+            <ColumnDefinition MinWidth="500" />
+            <ColumnDefinition MinWidth="200"
+                              Width="250" />
         </Grid.ColumnDefinitions>
-        
-        <StackPanel
-            Grid.Column="0">
 
+        <StackPanel Grid.Column="0">
             <TextBlock Margin="0,0,0,12"
                        Style="{StaticResource SubtitleTextBlockStyle}"
-                       Text="Welcome to your Workbench" />
+                       Text="Workbench" />
 
             <!--<controls:SettingsCard
                 x:Name="settingsCard"
@@ -102,8 +97,7 @@
                 IsEnabled="{x:Bind IsCardEnabled, Mode=OneWay}" />-->
         </StackPanel>
 
-        <StackPanel
-            Grid.Column="1">
+        <StackPanel Grid.Column="1">
 
             <!--<controls:SettingsCard
                 x:Name="settingsCard2"

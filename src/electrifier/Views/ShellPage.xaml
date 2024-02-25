@@ -15,17 +15,18 @@
               IsHitTestVisible="True"
               VerticalAlignment="Top">
             <StackPanel x:Name="AppTitleBarLeftPanel"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Left">
+                        Margin="5,5"
+                        HorizontalAlignment="Left"
+                        Orientation="Horizontal">
                 <Button x:Name="AppTitleBarBackButton"
-                        Visibility="Visible">
-                    <!-- Glyph "&#xe72b;" => Back -->
+                        Margin="3,3"
+                        VerticalAlignment="Top">
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                               Glyph="&#xe72b;" />
                 </Button>
                 <Button x:Name="AppTitleBarForwardButton"
-                        Visibility="Visible">
-                    <!-- Glyph "&#xe72a;" => Forward -->
+                        Margin="3,3"
+                        VerticalAlignment="Top">
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                               Glyph="&#xe72a;" />
                 </Button>
@@ -38,8 +39,7 @@
                 <Image x:Name="AppTitleBarImage"
                        Source="ms-appx:///Assets/WindowIcon.ico"
                        MaxHeight="23" />
-                <!--Create style in static resources
-                    Style="{StaticResource SubheaderTextBlockStyle}" -->
+                <!-- TODO: Create style in static resources: Style="{StaticResource AppTitleBarTitleStyle}" -->
                 <TextBlock x:Name="AppTitleBarTitle"
                            Margin="23,0"
                            FontSize="20"
@@ -50,14 +50,12 @@
         <NavigationView x:Name="NavigationViewControl"
                         CompactPaneLength="72"
                         IsBackButtonVisible="Collapsed"
-
                         IsPaneOpen="False"
                         IsPaneToggleButtonVisible="False"
                         IsSettingsVisible="True"
                         ExpandedModeThresholdWidth="800"
                         AlwaysShowHeader="False"
-                        DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
-                        Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
+                        DisplayModeChanged="NavigationViewControl_DisplayModeChanged">
             <NavigationView.MenuItems>
                 <!--
                 TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
