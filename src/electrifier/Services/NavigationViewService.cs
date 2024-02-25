@@ -61,9 +61,16 @@ public class NavigationViewService : INavigationViewService
 
     private void OnBackRequested(NavigationView sender, NavigationViewBackRequestedEventArgs args) => _navigationService.GoBack();
 
+    /// <summary>
+    /// OnItemInvoked is called when a NavigationViewItem is clicked or tapped.
+    /// <list type="bullet">
+    /// If SettingsItem is invoked, navigate to <see cref="SettingsViewModel"/>
+    /// </list>
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
     private void OnItemInvoked(NavigationView sender, NavigationViewItemInvokedEventArgs args)
     {
-        // If the settings item is invoked, navigate to <see cref="SettingsPage"/>
         if (args.IsSettingsInvoked)
         {
             _navigationService.NavigateTo(typeof(SettingsViewModel).FullName!);

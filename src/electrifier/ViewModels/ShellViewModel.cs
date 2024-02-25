@@ -48,17 +48,23 @@ public partial class ShellViewModel : ObservableRecipient
             return;
         }
 
+//        if (e.SourcePageType == typeof(SettingsPage))
+//        {
+//            Selected = NavigationViewService.SettingsItem;
+//            return;
+//        }
+//
+//        var selectedItem = NavigationViewService.GetSelectedItem(e.SourcePageType);
+//        if (selectedItem != null)
+//        {
+//            Selected = selectedItem;
+//        }
 
-        //        if (e.SourcePageType == typeof(SettingsPage))
-        //        {
-        //            Selected = NavigationViewService.SettingsItem;
-        //            return;
-        //        }
-        //
-        //        var selectedItem = NavigationViewService.GetSelectedItem(e.SourcePageType);
-        //        if (selectedItem != null)
-        //        {
-        //            Selected = selectedItem;
-        //        }
+        UnselectNavigationItem();
+    }
+
+    protected void UnselectNavigationItem()
+    {
+        Selected = null;
     }
 }

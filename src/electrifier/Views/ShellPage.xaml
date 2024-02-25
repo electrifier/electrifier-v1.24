@@ -40,9 +40,11 @@
                 <Image x:Name="AppTitleBarImage"
                        Source="ms-appx:///Assets/WindowIcon.ico"
                        MaxHeight="23" />
+                <!--Create style in static resources
+                    Style="{StaticResource SubheaderTextBlockStyle}" -->
                 <TextBlock x:Name="AppTitleBarTitle"
                            Margin="23,0"
-                           Style="{StaticResource SubheaderTextBlockStyle}"
+                           FontSize="20"
                            Text="electrifier"
                            VerticalAlignment="Top" />
             </StackPanel>
