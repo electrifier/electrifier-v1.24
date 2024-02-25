@@ -50,11 +50,11 @@
         <NavigationView x:Name="NavigationViewControl"
                         CompactPaneLength="72"
                         IsBackButtonVisible="Collapsed"
-                        SelectedItem="{x:Bind ViewModel.Selected, Mode=OneWay}"
+
                         IsPaneOpen="False"
                         IsPaneToggleButtonVisible="False"
                         IsSettingsVisible="True"
-                        ExpandedModeThresholdWidth="1280"
+                        ExpandedModeThresholdWidth="800"
                         AlwaysShowHeader="False"
                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
                         Header="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">

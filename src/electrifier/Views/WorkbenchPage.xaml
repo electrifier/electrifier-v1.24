@@ -19,10 +19,13 @@
                 MinWidth="200"
                 Width="250" />
         </Grid.ColumnDefinitions>
-
+        
         <StackPanel
-            Grid.Column="0"
-            Spacing="4">
+            Grid.Column="0">
+
+            <TextBlock Margin="0,0,0,12"
+                       Style="{StaticResource SubtitleTextBlockStyle}"
+                       Text="Welcome to your Workbench" />
 
             <!--<controls:SettingsCard
                 x:Name="settingsCard"
@@ -100,8 +103,7 @@
         </StackPanel>
 
         <StackPanel
-            Grid.Column="1"
-            Spacing="4">
+            Grid.Column="1">
 
             <!--<controls:SettingsCard
                 x:Name="settingsCard2"
