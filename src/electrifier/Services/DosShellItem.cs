@@ -33,30 +33,24 @@ public class DosShellItem : INotifyPropertyChanged
     {
         StorageItem = storageItem;
         IsFolder = storageItem.IsOfType(StorageItemTypes.Folder);
+        ShellIcon = new ImageIcon { Source = new BitmapImage(new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico")) };
 
-        var bitmap = new BitmapImage(new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
-        var icon = new ImageIcon { Source = bitmap };
+        //        ShellIcon = new ImageIcon().Source = new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico");
 
-//        ShellIcon = new ImageIcon().Source = new BitmapImage(new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
+        //var bitmap = new BitmapImage(new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
+        //var icon = new ImageIcon { Source = bitmap };
+
+        //        ShellIcon = new ImageIcon().Source = new BitmapImage(new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
 
         //ResourceManager.GetForCurrentView().GetString("Files/foo.png");
         // shell32DefaultUnknownFileIcon
-
-
-        /////////////////////////////////////////////////////////////
-        ///
 
         /*
         var uri = new System.Uri("ms-appx:///images/logo.png");
         var file = Windows.Storage.StorageFile.GetFileFromApplicationUriAsync(uri);
          */
 
-
         //        new ResourceManager().MainResourceMap.GetValue("Files/foo.png").ValueAsString
-
-
-
-
 
         //////////////////////////////////////////////////
         ///

@@ -16,6 +16,7 @@
               VerticalAlignment="Top">
             <StackPanel x:Name="AppTitleBarLeftPanel"
                         Margin="5,5"
+                        Style="{StaticResource AccentButtonStyle}"
                         HorizontalAlignment="Left"
                         Orientation="Horizontal">
                 <Button x:Name="AppTitleBarBackButton"
@@ -26,6 +27,7 @@
                 </Button>
                 <Button x:Name="AppTitleBarForwardButton"
                         Margin="3,3"
+                        Style="{StaticResource AccentButtonStyle}"
                         VerticalAlignment="Top">
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                               Glyph="&#xe72a;" />
