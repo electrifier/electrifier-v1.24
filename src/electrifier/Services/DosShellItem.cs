@@ -34,7 +34,10 @@ public class DosShellItem : INotifyPropertyChanged
         StorageItem = storageItem;
         IsFolder = storageItem.IsOfType(StorageItemTypes.Folder);
 
-        ShellIcon = new ImageIcon();
+        var bitmap = new BitmapImage(new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
+        var icon = new ImageIcon { Source = bitmap };
+
+//        ShellIcon = new ImageIcon().Source = new BitmapImage(new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
 
         //ResourceManager.GetForCurrentView().GetString("Files/foo.png");
         // shell32DefaultUnknownFileIcon
