@@ -164,11 +164,11 @@
   <data name="ReloadButton.[using:Microsoft.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Reload</value>
   </data>
+  <data name="SettingsPage_LicenseTermsLink.Content" xml:space="preserve">
+    <value>Apache License 2.0</value>
+  </data>
   <data name="SettingsPage_PrivacyTermsLink.Content" xml:space="preserve">
     <value>Privacy Statement</value>
-  </data>
-  <data name="Settings_About.Text" xml:space="preserve">
-    <value>About electrifier</value>
   </data>
   <data name="Settings_AboutDescription.Text" xml:space="preserve">
     <value>Integrated Desktop Environment</value>

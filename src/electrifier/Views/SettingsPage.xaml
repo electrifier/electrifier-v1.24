@@ -15,6 +15,9 @@
             x:Key="PrivacyTermsLink_Uri">
             https://github.com/electrifier/electrifier/blob/main/PRIVACY.md
         </x:String>
+        <x:String x:Key="LicenseTermsLink_Uri">
+            https://github.com/electrifier/electrifier/blob/main/LICENSE
+        </x:String>
     </Page.Resources>
     <Grid>
         <StackPanel
@@ -68,19 +71,22 @@
 
             <StackPanel
                 Margin="{StaticResource XSmallTopMargin}">
+                <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+                           Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />
                 <TextBlock
                     Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}"
                     Style="{ThemeResource BodyTextBlockStyle}" />
-
-                <TextBlock
-                    x:Uid="Settings_AboutDescription"
-                    Margin="{StaticResource XSmallTopMargin}"
-                    Style="{ThemeResource BodyTextBlockStyle}" />
-                <HyperlinkButton
-                    x:Uid="SettingsPage_PrivacyTermsLink"
-                    Margin="{StaticResource SettingsPageHyperlinkButtonMargin}"
-                    NavigateUri="{StaticResource PrivacyTermsLink_Uri}"
-                    ToolTipService.ToolTip="{StaticResource PrivacyTermsLink_Uri}" />
+                <TextBlock x:Uid="Settings_AboutDescription"
+                           Margin="{StaticResource XSmallTopMargin}"
+                           Style="{ThemeResource BodyTextBlockStyle}" />
+                <HyperlinkButton x:Uid="SettingsPage_PrivacyTermsLink"
+                                 Margin="{StaticResource SettingsPageHyperlinkButtonMargin}"
+                                 NavigateUri="{StaticResource PrivacyTermsLink_Uri}"
+                                 ToolTipService.ToolTip="{StaticResource PrivacyTermsLink_Uri}" />
+                <HyperlinkButton x:Uid="SettingsPage_LicenseTermsLink"
+                                 Margin="{StaticResource SettingsPageHyperlinkButtonMargin}"
+                                 NavigateUri="{StaticResource LicenseTermsLink_Uri}"
+                                 ToolTipService.ToolTip="{StaticResource LicenseTermsLink_Uri}" />
             </StackPanel>
         </StackPanel>
     </Grid>

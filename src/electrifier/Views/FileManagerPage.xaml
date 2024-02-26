@@ -51,11 +51,13 @@
                                 <RowDefinition Height="45" />
                             </Grid.RowDefinitions>
 
+                            <!-- TODO: Use constant from DosShellItemHelpers as ImageIcon.Source -->
                             <ImageIcon x:Name="ImageGridView_ItemTemplate_DefaultFolderIcon"
                                        Visibility="{x:Bind IsFolder}"
                                        Source="ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico"
                                        Grid.Row="0" />
 
+                            <!-- TODO: Use constant from DosShellItemHelpers as ImageIcon.Source -->
                             <ImageIcon x:Name="ImageGridView_ItemTemplate_DefaultFileIcon"
                                        Visibility="{x:Bind IsFile}"
                                        Source="ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"
