@@ -14,49 +14,43 @@
               HorizontalAlignment="Stretch"
               IsHitTestVisible="True"
               VerticalAlignment="Top">
-            <StackPanel x:Name="AppTitleBarLeftPanel"
-                        Margin="5,5"
+            <StackPanel x:Name="AppTitleBar_LeftStackPanel"
                         HorizontalAlignment="Left"
-                        Orientation="Horizontal">
-                <Button x:Name="AppTitleBarBackButton"
-                        Margin="3,3"
-                        Style="{StaticResource ButtonRevealStyle}"
+                        Margin="5,5"
+                        Orientation="Horizontal"
                         VerticalAlignment="Top">
+                <Button x:Name="AppTitleBar_BackButton"
+                        Margin="3,3"
+                        Style="{StaticResource ButtonRevealStyle}">
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                               Glyph="&#xe72b;" />
                 </Button>
-                <Button x:Name="AppTitleBarForwardButton"
-                        Margin="3,3"
-                        Style="{StaticResource AccentButtonStyle}"
-                        VerticalAlignment="Top">
+                <!-- 
+                Style="{StaticResource ButtonRevealStyle}"
+                Style="{StaticResource AccentButtonStyle}"                
+                -->
+                <Button x:Name="AppTitleBar_ForwardButton"
+                        Margin="3,3">
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                               Glyph="&#xe72a;" />
                 </Button>
-            </StackPanel>
-            <StackPanel x:Name="AppTitleBarCenterPanel"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Top"
-                        Margin="10">
-                <Image x:Name="AppTitleBarImage"
-                       Source="ms-appx:///Assets/WindowIcon.ico"
-                       MaxHeight="23" />
+                <Image x:Name="AppTitleBar_WindowIcon"
+                       MaxHeight="32"
+                       Source="ms-appx:///Assets/WindowIcon.ico" />
                 <!-- TODO: Create style in static resources: Style="{StaticResource AppTitleBarTitleStyle}" -->
-                <TextBlock x:Name="AppTitleBarTitle"
-                           Margin="23,0"
+                <TextBlock x:Name="AppTitleBar_TitleTextBlock"
                            FontSize="20"
-                           Text="electrifier"
-                           VerticalAlignment="Top" />
+                           Margin="23,0"
+                           Text="electrifier" />
             </StackPanel>
         </Grid>
         <NavigationView x:Name="NavigationViewControl"
+                        AlwaysShowHeader="True"
                         CompactPaneLength="72"
                         IsBackButtonVisible="Collapsed"
                         IsPaneOpen="False"
                         IsPaneToggleButtonVisible="False"
                         IsSettingsVisible="True"
-                        ExpandedModeThresholdWidth="800"
-                        AlwaysShowHeader="False"
                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged">
             <NavigationView.MenuItems>
                 <!--
@@ -66,7 +60,15 @@
                 TODO: Update item icons by updating FontIcon.Glyph properties.
                 https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list
                 -->
-                <NavigationViewItem x:Uid="Shell_Workbench"
+                <NavigationViewItem x:Uid="NavigationView_BackButton"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
+                    <NavigationViewItem.Icon>
+                        <!-- Glyph "&#xf0d5;" => ChromeBackContrast -->
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xf0d5;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Uid="NavigationView_Workbench"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
                     <NavigationViewItem.Icon>
                         <!-- Glyph "&#xe8d1;" => GotoToday -->
@@ -75,8 +77,28 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItemSeparator />
-                <NavigationViewItem x:Uid="Shell_WebView"
-                                    Visibility="Collapsed"
+
+                <NavigationViewItem x:Uid="NavigationView_FileManager"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
+                    <NavigationViewItem.Icon>
+                        <!-- Glyph "&#xec50" => "FileExplorer" -->
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xec50;" />
+                    </NavigationViewItem.Icon>
+                    <!-- Create SubItems -->
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem Content="Create new"
+                                            Icon="NewFolder"
+                                            ToolTipService.ToolTip="Create new"
+                                            Tag="SamplePage5" />
+                        <NavigationViewItem Content="Upload file"
+                                            Icon="OpenLocal"
+                                            ToolTipService.ToolTip="Upload file"
+                                            Tag="SamplePage6" />
+                    </NavigationViewItem.MenuItems>
+                </NavigationViewItem>
+
+                <NavigationViewItem x:Uid="NavigationView_WebView"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
                     <NavigationViewItem.Icon>
                         <!-- Glyph "&#xeb41" => Website -->
@@ -84,20 +106,11 @@
                                   Glyph="&#xeb41;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_FileManager"
-                                    Visibility="Collapsed"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
-                    <NavigationViewItem.Icon>
-                        <!-- Glyph "&#xec50" => "FileExplorer" -->
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xec50;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
             </NavigationView.MenuItems>
 
             <!-- Shell_NavigationView_FooterItems: -->
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem x:Uid="Shell_FileManager">
+                <NavigationViewItem x:Uid="NavigationView_Footer_FileManager">
                     <NavigationViewItem.Icon>
                         <!-- Glyph "&#xec50" => "FileExplorer" -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -114,7 +127,7 @@
                                             Tag="SamplePage6" />
                     </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_WebView">
+                <NavigationViewItem x:Uid="NavigationView_Footer_WebView">
                     <NavigationViewItem.Icon>
                         <!-- Glyph="&#xeb41" => "Website" is the icon for the Web Browser -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -122,7 +135,7 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItemSeparator />
-                <NavigationViewItem x:Uid="Shell_Workbench"
+                <NavigationViewItem x:Uid="NavigationView_Footer_Workbench"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
                     <NavigationViewItem.Icon>
                         <!-- Glyph="&#xe8d1;" => "GotoToday" is the icon for the Workbench -->
@@ -130,7 +143,6 @@
                                   Glyph="&#xe8d1;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-
             </NavigationView.FooterMenuItems>
 
             <NavigationView.HeaderTemplate>
