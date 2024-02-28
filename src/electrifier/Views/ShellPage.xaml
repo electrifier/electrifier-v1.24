@@ -19,28 +19,23 @@
                         Margin="5,5"
                         Orientation="Horizontal"
                         VerticalAlignment="Top">
-                <Button x:Name="AppTitleBar_BackButton"
-                        Margin="3,3"
-                        Style="{StaticResource ButtonRevealStyle}">
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                              Glyph="&#xe72b;" />
-                </Button>
                 <!-- 
+                Style="{StaticResource AccentButtonStyle}"
                 Style="{StaticResource ButtonRevealStyle}"
-                Style="{StaticResource AccentButtonStyle}"                
                 -->
                 <Button x:Name="AppTitleBar_ForwardButton"
                         Margin="3,3">
+                    <!-- Glyph "&#xf0d5;" => ChromeBackContrastMirrored -->
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                              Glyph="&#xe72a;" />
+                              Glyph="&#xf0d6;" />
                 </Button>
                 <Image x:Name="AppTitleBar_WindowIcon"
+                       Margin="23,0"
                        MaxHeight="32"
                        Source="ms-appx:///Assets/WindowIcon.ico" />
                 <!-- TODO: Create style in static resources: Style="{StaticResource AppTitleBarTitleStyle}" -->
                 <TextBlock x:Name="AppTitleBar_TitleTextBlock"
                            FontSize="20"
-                           Margin="23,0"
                            Text="electrifier" />
             </StackPanel>
         </Grid>
@@ -76,6 +71,7 @@
                                   Glyph="&#xe8d1;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+
                 <NavigationViewItemSeparator />
 
                 <NavigationViewItem x:Uid="NavigationView_FileManager"
@@ -86,7 +82,7 @@
                                   Glyph="&#xec50;" />
                     </NavigationViewItem.Icon>
                     <!-- Create SubItems -->
-                    <NavigationViewItem.MenuItems>
+                    <!--<NavigationViewItem.MenuItems>
                         <NavigationViewItem Content="Create new"
                                             Icon="NewFolder"
                                             ToolTipService.ToolTip="Create new"
@@ -95,7 +91,7 @@
                                             Icon="OpenLocal"
                                             ToolTipService.ToolTip="Upload file"
                                             Tag="SamplePage6" />
-                    </NavigationViewItem.MenuItems>
+                    </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
 
                 <NavigationViewItem x:Uid="NavigationView_WebView"
@@ -110,7 +106,8 @@
 
             <!-- Shell_NavigationView_FooterItems: -->
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem x:Uid="NavigationView_Footer_FileManager">
+                <NavigationViewItem x:Uid="NavigationView_Footer_FileManager"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
                     <NavigationViewItem.Icon>
                         <!-- Glyph "&#xec50" => "FileExplorer" -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -127,7 +124,8 @@
                                             Tag="SamplePage6" />
                     </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_Footer_WebView">
+                <NavigationViewItem x:Uid="NavigationView_Footer_WebView"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
                     <NavigationViewItem.Icon>
                         <!-- Glyph="&#xeb41" => "Website" is the icon for the Web Browser -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
