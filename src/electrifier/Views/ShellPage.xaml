@@ -24,6 +24,7 @@
                 Style="{StaticResource ButtonRevealStyle}"
                 -->
                 <Button x:Name="AppTitleBar_ForwardButton"
+                        Style="{StaticResource ButtonRevealStyle}"
                         Margin="3,3">
                     <!-- Glyph "&#xf0d5;" => ChromeBackContrastMirrored -->
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
