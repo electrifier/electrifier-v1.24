@@ -1,29 +1,37 @@
-﻿using electrifier.Services;
-using electrifier.ViewModels;
-using Microsoft.UI.Xaml.Controls;
-using System.Collections.ObjectModel;
-using Windows.Storage;
-//using Microsoft.UI.Xaml.Media.Imaging;
-//using CommunityToolkit.WinUI.Collections;
-using CommunityToolkit.WinUI.UI;
+﻿using Windows.Storage;
 using System;
+using System.Threading.Tasks;
 using System.Diagnostics;
+using System.Collections.ObjectModel;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Navigation;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Controls;
+using electrifier.ViewModels;
+using electrifier.Services;
+using CommunityToolkit.WinUI.UI;
+//using CommunityToolkit.WinUI.Collections;
 
 namespace electrifier.Views;
 
 public sealed partial class FileManagerPage : Page
 {
-    public AdvancedCollectionView CollectionView
-    {
-        get;
-    }
+
+    //                           ItemsSource="{x:Bind ShellTreeViewItems}"
+
+    public AdvancedCollectionView CollectionView { get; }
     public ObservableCollection<DosShellItem> ShellItems { get; } = new ObservableCollection<DosShellItem>();
-    public FileManagerViewModel ViewModel
-    {
-        get;
-    }
+    public ObservableCollection<DosShellItem> ShellTreeViewItems { get; } = new ObservableCollection<DosShellItem>();
 
+    public FileManagerViewModel ViewModel { get; }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="FileManagerPage"/> class.
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
     public FileManagerPage()
     {
         ViewModel = App.GetService<FileManagerViewModel>() ?? throw new InvalidOperationException();
@@ -39,6 +47,18 @@ public sealed partial class FileManagerPage : Page
 
         _ = GetItemsAsync(KnownLibraryId.Pictures);
 
+        // add dummy items to ShellTreeViewDataSource
+        //ShellTreeViewDataSource.Add(new DosShellItem(new StorageItem("C:\\")));
+        //ShellTreeViewDataSource.Add(new DosShellItem("D:\\"));
+
+        //foreach (var library in new[] { KnownLibraryId.Documents, KnownLibraryId.Music, KnownLibraryId.Videos })
+        //{
+        
+        //           _ = GetItemsAsync(library);
+        //       }
+        _ = GetTreeViewItemsAsync();
+        //ShellTreeViewDataSource = ShellItems;
+
 
         // Let's filter out the integers
         // Let's add a Person to the observable collection
@@ -50,6 +70,13 @@ public sealed partial class FileManagerPage : Page
         // StorageFolder storageFolder = Package.Current.InstalledLocation;
         // StorageLibrary storageFolder = await StorageLibrary.GetLibraryAsync(KnownLibraryId.Pictures);
         // var library = await StorageLibrary.GetLibraryAsync(KnownLibraryId.Pictures);
+    }
+
+    private async Task GetTreeViewItemsAsync()
+    {
+        // add dummy items to ShellTreeViewDataSource
+        //var dosShellItem = new DosShellItem(new StorageFolder("C:\\"));
+        //ShellTreeViewDataSource.Add(dosShellItem);
     }
 
     private void ImageGridView_ContainerContentChanging(

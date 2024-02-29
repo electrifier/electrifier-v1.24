@@ -8,31 +8,31 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
       mc:Ignorable="d">
+    
     <Grid x:Name="ContentArea">
+        
         <StackPanel Orientation="Vertical">
-            <MenuBar>
-                <MenuBarItem IsEnabled="False"
-                             Title="File">
+            <MenuBar x:Name="MenuBarTop"
+                     IsEnabled="False">
+                <MenuBarItem Title="File">
                     <MenuFlyoutItem Text="New" />
                     <MenuFlyoutItem Text="Open..." />
                 </MenuBarItem>
-                <MenuBarItem IsEnabled="False"
-                             Title="Edit">
+                <MenuBarItem Title="Edit">
                     <MenuFlyoutItem Text="Undo" />
                     <MenuFlyoutItem Text="Cut" />
                     <MenuFlyoutItem Text="Copy" />
                     <MenuFlyoutItem Text="Paste" />
                 </MenuBarItem>
-                <MenuBarItem IsEnabled="False"
-                             Title="View">
+                <MenuBarItem Title="View">
                     <MenuFlyoutItem Text="Zoom In" />
                     <MenuFlyoutItem Text="Zoom Out" />
                 </MenuBarItem>
-                <MenuBarItem IsEnabled="False"
-                             Title="Help">
+                <MenuBarItem Title="Help">
                     <MenuFlyoutItem Text="About" />
                 </MenuBarItem>
             </MenuBar>
+
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
@@ -41,6 +41,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid.Resources>
+                    
                     <DataTemplate x:DataType="local:DosShellItem"
                                   x:Key="ImageGridViewItemTemplate">
                         <Grid Height="150"
@@ -77,8 +78,6 @@
                            TargetType="GridViewItem">
                         <Setter Property="Margin"
                                 Value="3" />
-                        <Setter Property="Background"
-                                Value="{ThemeResource SystemControlBackgroundBaseLowBrush}" />
                     </Style>
                 </Grid.Resources>
 
@@ -86,12 +85,11 @@
                 <Border x:Name="SideContent"
                         MinWidth="200"
                         MaxWidth="600"
-                        Background="{ThemeResource AccentFillColorDefaultBrush}">
-                    <TextBlock HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Foreground="{ThemeResource TextOnAccentFillColorPrimaryBrush}"
-                               Style="{ThemeResource BodyStrongTextBlockStyle}"
-                               Text="Side Content" />
+                        >
+
+                    <!-- ItemTemplateSelector="{StaticResource ExplorerItemTemplateSelector}" -->
+                    <TreeView ItemsSource="{x:Bind ShellTreeViewItems}"
+                               />
                 </Border>
                 <controls:ContentSizer Grid.Column="1"
                                        TargetControl="{x:Bind SideContent}" />
