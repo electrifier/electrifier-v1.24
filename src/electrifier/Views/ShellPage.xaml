@@ -35,9 +35,16 @@
                        MaxHeight="32"
                        Source="ms-appx:///Assets/WindowIcon.ico" />
                 <!-- TODO: Create style in static resources: Style="{StaticResource AppTitleBarTitleStyle}" -->
-                <TextBlock x:Name="AppTitleBar_TitleTextBlock"
-                           FontSize="20"
-                           Text="electrifier" />
+                <StackPanel x:Name="AppTitleBar_TitleStackPanel"
+                            Orientation="Vertical"
+                            VerticalAlignment="Top">
+                    <TextBlock x:Name="AppTitleBar_TitleTextBlock"
+                               FontSize="20"
+                               Text="_Name_of_Page_" />
+                    <TextBlock x:Name="AppTitleBar_SubTitleTextBlock"
+                               FontSize="12"
+                               Text="electrifier - _Workbench_" />
+                </StackPanel>
             </StackPanel>
         </Grid>
         <NavigationView x:Name="NavigationViewControl"
