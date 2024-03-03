@@ -41,9 +41,24 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid.Resources>
+
+                    <DataTemplate x:DataType="local:DosShellItem"
+                                  x:Key="ShellTreeViewItemTemplate">
+                        <StackPanel Orientation="Horizontal" MaxHeight="20">
+                            <ImageIcon x:Name="ShellViewItemTemplate_DefaultFolderIcon"
+                                       Visibility="{x:Bind IsFolder}"
+                                       Source="ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico" />
+                            <ImageIcon x:Name="ShellViewItemTemplate_DefaultFileIcon"
+                                       Visibility="{x:Bind IsFile}"
+                                       Source="ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico" />
+                            <TextBlock x:Name="ShellViewItemTemplate_TextBlock"
+                                       Text="{x:Bind FileName}" />
+                        </StackPanel>
+                    </DataTemplate>
+                                  
                     
                     <DataTemplate x:DataType="local:DosShellItem"
-                                  x:Key="ImageGridViewItemTemplate">
+                                  x:Key="ShellGridViewItemTemplate">
                         <Grid Height="150"
                               Width="150"
                               Margin="3">
@@ -83,20 +98,23 @@
 
                 <!--  Left-side 'Shelf', In this case you could also use a GridSplitter  -->
                 <Border x:Name="SideContent"
+                        MaxWidth="600"
                         MinWidth="200"
-                        MaxWidth="600">
+                        Width="400">
 
                     <!-- ItemTemplateSelector="{StaticResource ExplorerItemTemplateSelector}" -->
                     <TreeView x:Name="ShellTreeView"
-                              ItemsSource="{x:Bind ShellTreeViewItems}" />
+                              ItemsSource="{x:Bind ShellTreeViewItems}"
+                              ItemTemplate="{StaticResource ShellTreeViewItemTemplate}" />
                 </Border>
+                <!-- ContentSizer //  -->
                 <controls:ContentSizer Grid.Column="1"
                                        TargetControl="{x:Bind SideContent}" />
                 <GridView x:Name="ShellGridView"
                           Grid.Column="2"
-                          ItemTemplate="{StaticResource ImageGridViewItemTemplate}"
-                          ItemsSource="{x:Bind ShellItems}"
                           ItemContainerStyle="{StaticResource ImageGridViewItemContainerStyle}"
+                          ItemsSource="{x:Bind ShellItems}"
+                          ItemTemplate="{StaticResource ShellGridViewItemTemplate}"
                           ContainerContentChanging="ImageGridView_ContainerContentChanging">
                 </GridView>
             </Grid>
