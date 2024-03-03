@@ -51,22 +51,22 @@
             </StackPanel>
         </Grid>
         <!-- TODO: Insert MenuItemsSource -->
-        <!-- TODO: IsPaneToggleButtonVisible -->
+        <!-- TODO: IsPaneToggleButtonVisible = True -> PaneToggle-Style and overlap -->
         <NavigationView x:Name="NavigationViewControl"
                         AlwaysShowHeader="True"
                         CompactPaneLength="72"
                         IsBackButtonVisible="Collapsed"
                         IsPaneOpen="False"
-                        IsPaneToggleButtonVisible="False"
+                        IsPaneToggleButtonVisible="True"
                         IsSettingsVisible="True"
                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged">
             <NavigationView.PaneHeader>
                     <ImageIcon MaxHeight="32"
+                               Visibility="Collapsed"
+                               HorizontalAlignment="Right"
                                Source="ms-appx:///Assets/WindowIcon.ico" />
             </NavigationView.PaneHeader>
-            <NavigationView.PaneTitle>
-                electrifier
-            </NavigationView.PaneTitle>
+            <!--<NavigationView.PaneTitle> electrifier </NavigationView.PaneTitle>-->
             <NavigationView.MenuItems>
                 <!--
                 TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
@@ -87,6 +87,7 @@
                 <NavigationViewItemSeparator />
 
                 <NavigationViewItem x:Uid="NavigationView_FileManager"
+                                    Visibility="Collapsed"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
                     <NavigationViewItem.Icon>
                         <!-- Glyph "&#xec50" => "FileExplorer" -->
@@ -107,6 +108,7 @@
                 </NavigationViewItem>
 
                 <NavigationViewItem x:Uid="NavigationView_WebView"
+                                    Visibility="Collapsed"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
                     <NavigationViewItem.Icon>
                         <!-- Glyph "&#xeb41" => Website -->
@@ -115,7 +117,6 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
-
             <!-- Shell_NavigationView_FooterItems: -->
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem x:Uid="NavigationView_Footer_FileManager"
