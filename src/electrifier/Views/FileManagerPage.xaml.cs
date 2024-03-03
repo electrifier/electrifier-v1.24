@@ -19,9 +19,6 @@ namespace electrifier.Views;
 
 public sealed partial class FileManagerPage : Page
 {
-
-    //                           ItemsSource="{x:Bind ShellTreeViewItems}"
-
     public AdvancedCollectionView CollectionView { get; }
     public ObservableCollection<DosShellItem> ShellItems { get; } = new ObservableCollection<DosShellItem>();
     public ObservableCollection<DosShellItem> ShellTreeViewItems { get; } = new ObservableCollection<DosShellItem>();
@@ -46,37 +43,15 @@ public sealed partial class FileManagerPage : Page
         ImageGridView.ItemsSource = CollectionView;
 
         _ = GetItemsAsync(KnownLibraryId.Pictures);
+        _ = GetTreeViewItemsAsync(KnownLibraryId.Pictures);
 
         // add dummy items to ShellTreeViewDataSource
-        //ShellTreeViewDataSource.Add(new DosShellItem(new StorageItem("C:\\")));
-        //ShellTreeViewDataSource.Add(new DosShellItem("D:\\"));
-
-        //foreach (var library in new[] { KnownLibraryId.Documents, KnownLibraryId.Music, KnownLibraryId.Videos })
-        //{
-        
-        //           _ = GetItemsAsync(library);
-        //       }
-        _ = GetTreeViewItemsAsync();
-        //ShellTreeViewDataSource = ShellItems;
-
-
-        // Let's filter out the integers
-        // Let's add a Person to the observable collection
-        //        var person = new DosShellItem { Name = "Aardvark" };
-        //        ShellItems.Add(person);
-        // Our added person is now at the top of the list, but if we rename this person, we can trigger a re-sort
-        //        person.Name = "Zaphod"; // Now a re-sort is triggered and person will be last in the list
-
+        // ShellTreeViewDataSource.Add(new DosShellItem(new StorageItem("C:\\")));
+        // ShellTreeViewDataSource.Add(new DosShellItem("D:\\"));
+        //
         // StorageFolder storageFolder = Package.Current.InstalledLocation;
         // StorageLibrary storageFolder = await StorageLibrary.GetLibraryAsync(KnownLibraryId.Pictures);
         // var library = await StorageLibrary.GetLibraryAsync(KnownLibraryId.Pictures);
-    }
-
-    private async Task GetTreeViewItemsAsync()
-    {
-        // add dummy items to ShellTreeViewDataSource
-        //var dosShellItem = new DosShellItem(new StorageFolder("C:\\"));
-        //ShellTreeViewDataSource.Add(dosShellItem);
     }
 
     private void ImageGridView_ContainerContentChanging(
@@ -209,6 +184,35 @@ public sealed partial class FileManagerPage : Page
                 ImageGridView.ItemsSource = ShellItems;
         */
     }
+
+    private async Task GetTreeViewItemsAsync(KnownLibraryId storageLibrary)
+    {
+        var library = await StorageLibrary.GetLibraryAsync(storageLibrary);
+        var storageFolder = library.SaveFolder;
+
+        if (storageFolder != null)
+        {
+            _ = GetTreeViewItemsAsync(storageFolder);
+        }
+    }
+
+
+    private async Task GetTreeViewItemsAsync(StorageFolder storageFolder)
+    {
+
+        var folderQuery = storageFolder.CreateItemQuery();
+        var items = await folderQuery.GetItemsAsync();
+
+        foreach (var storageItem in items)
+        {
+            ShellTreeViewItems.Add(await LoadShellItemInfo(storageItem));
+        }
+
+
+        // add dummy items to ShellTreeViewDataSource
+        //ShellTreeViewDataSource.Add(dosShellItem);
+    }
+
 
     public static async Task<DosShellItem> LoadShellItemInfo(IStorageItem item)
     {
