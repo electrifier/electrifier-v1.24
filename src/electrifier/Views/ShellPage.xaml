@@ -77,6 +77,7 @@
                 -->
                 <NavigationViewItem x:Uid="NavigationView_Workbench"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
+                    Workbench
                     <NavigationViewItem.Icon>
                         <!-- Glyph "&#xe8d1;" => GotoToday -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -89,6 +90,7 @@
                 <NavigationViewItem x:Uid="NavigationView_FileManager"
                                     Visibility="Collapsed"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
+                    File Manager
                     <NavigationViewItem.Icon>
                         <!-- Glyph "&#xec50" => "FileExplorer" -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -110,6 +112,7 @@
                 <NavigationViewItem x:Uid="NavigationView_WebView"
                                     Visibility="Collapsed"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
+                    Web Browser
                     <NavigationViewItem.Icon>
                         <!-- Glyph "&#xeb41" => Website -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -121,6 +124,7 @@
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem x:Uid="NavigationView_Footer_FileManager"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
+                    File Manager
                     <NavigationViewItem.Icon>
                         <!-- Glyph "&#xec50" => "FileExplorer" -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -139,6 +143,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_Footer_WebView"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
+                    Web Browser
                     <NavigationViewItem.Icon>
                         <!-- Glyph="&#xeb41" => "Website" is the icon for the Web Browser -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -148,6 +153,7 @@
                 <NavigationViewItemSeparator />
                 <NavigationViewItem x:Uid="NavigationView_Footer_Workbench"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
+                    Workbench
                     <NavigationViewItem.Icon>
                         <!-- Glyph="&#xe8d1;" => "GotoToday" is the icon for the Workbench -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"

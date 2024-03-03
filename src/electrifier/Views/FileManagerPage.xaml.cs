@@ -40,7 +40,7 @@ public sealed partial class FileManagerPage : Page
 
         InitializeComponent();
         // AdvancedCollectionView can be bound to anything that uses collections. 
-        ImageGridView.ItemsSource = CollectionView;
+        ShellGridView.ItemsSource = CollectionView;
 
         _ = GetItemsAsync(KnownLibraryId.Pictures);
         _ = GetTreeViewItemsAsync(KnownLibraryId.Pictures);

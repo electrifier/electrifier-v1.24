@@ -84,16 +84,15 @@
                 <!--  Left-side 'Shelf', In this case you could also use a GridSplitter  -->
                 <Border x:Name="SideContent"
                         MinWidth="200"
-                        MaxWidth="600"
-                        >
+                        MaxWidth="600">
 
                     <!-- ItemTemplateSelector="{StaticResource ExplorerItemTemplateSelector}" -->
-                    <TreeView ItemsSource="{x:Bind ShellTreeViewItems}"
-                               />
+                    <TreeView x:Name="ShellTreeView"
+                              ItemsSource="{x:Bind ShellTreeViewItems}" />
                 </Border>
                 <controls:ContentSizer Grid.Column="1"
                                        TargetControl="{x:Bind SideContent}" />
-                <GridView x:Name="ImageGridView"
+                <GridView x:Name="ShellGridView"
                           Grid.Column="2"
                           ItemTemplate="{StaticResource ImageGridViewItemTemplate}"
                           ItemsSource="{x:Bind ShellItems}"
