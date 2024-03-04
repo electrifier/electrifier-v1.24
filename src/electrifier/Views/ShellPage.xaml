@@ -18,14 +18,13 @@
                         HorizontalAlignment="Left"
                         Orientation="Horizontal"
                         VerticalAlignment="Top">
-                <!-- 
-                Style="{StaticResource AccentButtonStyle}"
-                Style="{StaticResource ButtonRevealStyle}"
-                -->
                 <Image x:Name="AppTitleBar_WindowIcon"
                        Margin="8,0,16,0"
                        MaxHeight="32"
                        Source="ms-appx:///Assets/WindowIcon.ico" />
+                <!-- 
+                Style="{StaticResource ButtonRevealStyle}"
+                -->
                 <Button x:Name="AppTitleBar_BackwardButton">
                     <!-- Glyph "&#xf0d5;" => ChromeBackContrast -->
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"

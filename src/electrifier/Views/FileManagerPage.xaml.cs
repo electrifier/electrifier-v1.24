@@ -17,6 +17,7 @@ using CommunityToolkit.WinUI.UI;
 
 namespace electrifier.Views;
 
+// TODO: Exception thrown: 'System.UnauthorizedAccessException' in System.Private.CoreLib.dll
 public sealed partial class FileManagerPage : Page
 {
     public AdvancedCollectionView CollectionView { get; }
