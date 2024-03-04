@@ -1,4 +1,5 @@
 ﻿//using muxc = Microsoft.UI.Xaml.Controls;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Resources;
 using System.Runtime.CompilerServices;
@@ -11,10 +12,9 @@ namespace electrifier.Services;
 
 public class DosShellItem : INotifyPropertyChanged
 {
-    public string FileName => StorageItem.Name;
-
-    public string FileType => StorageItem.Path;
-
+    public ObservableCollection<DosShellItem> Childs;
+    public string Name => StorageItem.Name;
+    public string Path => StorageItem.Path;
     public bool IsFile => !IsFolder;
     public bool IsFolder
     {
@@ -22,18 +22,46 @@ public class DosShellItem : INotifyPropertyChanged
     }
     public ImageIcon ShellIcon
     {
-        get;        // TODO: this is not initialized yet
+        get;        // TODO: initialize with default icon
     }
     public IStorageItem StorageItem
     {
         get;
     }
 
-    public DosShellItem(IStorageItem storageItem)
+    // TODO: Move to DosShellItemFactory
+    //        public static DosShellItem CreateRootItem() =>
+    //        new DosShellItem(new StorageFolder("C:\\"));
+
+    public static readonly ImageIcon DefaultUnknownFileIcon = new()
+    {
+        Source = new BitmapImage(new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"))
+    };
+
+    public DosShellItem(IStorageItem storageItem, bool enumerateChilds = false)
     {
         StorageItem = storageItem;
         IsFolder = storageItem.IsOfType(StorageItemTypes.Folder);
-        ShellIcon = new() { Source = new BitmapImage(new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico")) };
+        ShellIcon = DefaultUnknownFileIcon;
+        Childs = new ObservableCollection<DosShellItem>();
+
+        if (enumerateChilds)
+        {
+            _ = GetChildsAsync();
+        }
+    }
+
+    public async Task GetChildsAsync()
+    {
+        if (IsFolder)
+        {
+            var folder = (StorageFolder)StorageItem;
+            var items = await folder.GetItemsAsync();
+            foreach (var item in items)
+            {
+                Childs.Add(new DosShellItem(item));
+            }
+        }
     }
 
     public async Task<BitmapImage> GetImageThumbnailAsync()

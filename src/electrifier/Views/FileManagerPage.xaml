@@ -28,23 +28,22 @@
                     <MenuFlyoutItem Text="Zoom In" />
                     <MenuFlyoutItem Text="Zoom Out" />
                 </MenuBarItem>
-                <MenuBarItem Title="Help">
-                    <MenuFlyoutItem Text="About" />
-                </MenuBarItem>
             </MenuBar>
 
             <Grid>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition MaxWidth="600"
+                                      MinWidth="200"
+                                      Width="300" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <Grid.Resources>
-
-                    <DataTemplate x:DataType="local:DosShellItem"
-                                  x:Key="ShellTreeViewItemTemplate">
-                        <StackPanel Orientation="Horizontal" MaxHeight="20">
+                    <DataTemplate x:Key="ShellTreeViewItemTemplate"
+                                  x:DataType="local:DosShellItem">
+                        <StackPanel Orientation="Horizontal"
+                                    MaxHeight="20">
                             <ImageIcon x:Name="ShellViewItemTemplate_DefaultFolderIcon"
                                        Visibility="{x:Bind IsFolder}"
                                        Source="ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico" />
@@ -52,13 +51,13 @@
                                        Visibility="{x:Bind IsFile}"
                                        Source="ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico" />
                             <TextBlock x:Name="ShellViewItemTemplate_TextBlock"
-                                       Text="{x:Bind FileName}" />
+                                       Margin="5,0,5,0"
+                                       Text="{x:Bind Name}" />
                         </StackPanel>
                     </DataTemplate>
                                   
-                    
-                    <DataTemplate x:DataType="local:DosShellItem"
-                                  x:Key="ShellGridViewItemTemplate">
+                    <DataTemplate x:Key="ShellGridViewItemTemplate"
+                                  x:DataType="local:DosShellItem">
                         <Grid Height="150"
                               Width="150"
                               Margin="3">
@@ -85,7 +84,7 @@
                                        FontSize="12"
                                        HorizontalAlignment="Center"
                                        Style="{StaticResource SubtitleTextBlockStyle}"
-                                       Text="{x:Bind FileName}" />
+                                       Text="{x:Bind Name}" />
                         </Grid>
                     </DataTemplate>
 
@@ -96,27 +95,49 @@
                     </Style>
                 </Grid.Resources>
 
-                <!--  Left-side 'Shelf', In this case you could also use a GridSplitter  -->
-                <Border x:Name="SideContent"
-                        MaxWidth="600"
-                        MinWidth="200"
-                        Width="400">
+                <!-- TODO: Enable vertical scrolling for Tree: VerticalScrollMode="Enabled"
+                            HorizontalScrollMode="Enabled"
+                            HorizontalScrollBarVisibility="Auto"
+                            VerticalScrollMode="Enabled"
+                        VerticalScrollBarVisibility="True"
+                -->
 
+                <!--  Left-side 'Shelf', In this case you could also use a GridSplitter  -->
+                <Border x:Name="SideContent">
                     <!-- ItemTemplateSelector="{StaticResource ExplorerItemTemplateSelector}" -->
+                    <!-- ItemsSource="{x:Bind ShellItems}" -->
                     <TreeView x:Name="ShellTreeView"
                               ItemsSource="{x:Bind ShellTreeViewItems}"
                               ItemTemplate="{StaticResource ShellTreeViewItemTemplate}" />
                 </Border>
-                <!-- ContentSizer //  -->
+                <!-- Center element: ContentSizer -->
                 <controls:ContentSizer Grid.Column="1"
                                        TargetControl="{x:Bind SideContent}" />
+                <!-- Right-side 'Shelf' -->
+                <!--<ScrollViewer Grid.Column="2"
+                                  ZoomMode="Enabled"
+                                  IsTabStop="True"
+                                  IsVerticalScrollChainingEnabled="True"
+                                  HorizontalAlignment="Stretch"
+                                  VerticalAlignment="Stretch"
+                                  ViewChanged="ScrollViewerControl_ViewChanged"
+                                  HorizontalScrollMode="Disabled"
+                                  HorizontalScrollBarVisibility="Visible"
+                                  VerticalScrollMode="Enabled"
+                                  VerticalScrollBarVisibility="Auto">
+                        <GridView x:Name="ShellGridView"
+                                  ItemContainerStyle="{StaticResource ImageGridViewItemContainerStyle}"
+                                  ItemsSource="{x:Bind ShellGridViewItems}"
+                                  ItemTemplate="{StaticResource ShellGridViewItemTemplate}"
+                                  ContainerContentChanging="ImageGridView_ContainerContentChanging">
+                        </GridView>
+                </ScrollViewer>-->
                 <GridView x:Name="ShellGridView"
                           Grid.Column="2"
                           ItemContainerStyle="{StaticResource ImageGridViewItemContainerStyle}"
-                          ItemsSource="{x:Bind ShellItems}"
+                          ItemsSource="{x:Bind ShellGridViewItems}"
                           ItemTemplate="{StaticResource ShellGridViewItemTemplate}"
-                          ContainerContentChanging="ImageGridView_ContainerContentChanging">
-                </GridView>
+                          ContainerContentChanging="ImageGridView_ContainerContentChanging" />
             </Grid>
         </StackPanel>
     </Grid>
