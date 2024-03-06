@@ -55,36 +55,38 @@ public class DosShellItem : INotifyPropertyChanged
     public DosShellItem(IStorageItem storageItem, QueryOptions? forcedFolderQueryOptions = null)
     {
         StorageItem = storageItem ?? throw new ArgumentNullException(nameof(storageItem));
-        IsFolder = StorageItem.IsOfType(StorageItemTypes.Folder);
-        ShellIcon = IsFolder ? DosShellItemHelpers.DefaultUnknownFileIcon : DosShellItemHelpers.DefaultUnknownFileIcon;
         Childs = new ObservableCollection<DosShellItem>();
-        ShellIcon = DosShellItemHelpers.DefaultUnknownFileIcon;
+
+        // Determine if the item is a folder
+        IsFolder = StorageItem.IsOfType(StorageItemTypes.Folder);
+        // Set temporary icon
+        ShellIcon = IsFolder ? DosShellItemHelpers.DefaultUnknownFileIcon : DosShellItemHelpers.DefaultUnknownFileIcon;
 
         if (forcedFolderQueryOptions != null)
         {
             EnumerationQueryOptions = forcedFolderQueryOptions;
             //_ = GetChildsAsync();
-
         }
+        else EnumerationQueryOptions = new QueryOptions(CommonFolderQuery.DefaultQuery);
 
         //        EnumerationQueryOptions = forcedFolderQueryOptions != null ? forcedFolderQueryOptions // : DosShellItemHelpers.DefaultFolderIcon;
 
 
-        //if (forcedFolderQueryOptions != null)
-        //{
-        //    //  Enumerate Childs
-        //    _ = GetChildsAsync();
-        //}
+            //if (forcedFolderQueryOptions != null)
+            //{
+            //    //  Enumerate Childs
+            //    _ = GetChildsAsync();
+            //}
 
 
 
-        //Childs.Add(new DosShellItem(storageItem)); // TODO: Get reference to root object and add their children
+            //Childs.Add(new DosShellItem(storageItem)); // TODO: Get reference to root object and add their children
 
-        //if ((IsFolder) && (enumerateChilds))
-        //{
-        //    // => Childs = new ObservableCollection<DosShellItem>();
-        //    _ = GetChildsAsync();
-        //}
+            //if ((IsFolder) && (enumerateChilds))
+            //{
+            //    // => Childs = new ObservableCollection<DosShellItem>();
+            //    _ = GetChildsAsync();
+            //}
     }
 
     /// <summary>
