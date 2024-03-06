@@ -216,8 +216,8 @@ public sealed partial class FileManagerPage : Page
         var items = await folderQuery?.GetItemsAsync();
 
         Debug.Assert(items != null);
-//        ShellTreeViewItems.Clear();
-        ShellTreeViewItems.Add(new DosShellItem(rootFolder));
+        ShellTreeViewItems.Clear();
+        ShellTreeViewItems.Add(new DosShellItem(rootFolder, DosShellItemHelpers.DefaultQueryOptionsCommonFile));
 
         //var rootItem = ShellTreeViewItems[0] as DosShellItem;
         //Debug.Assert(rootItem != null);
