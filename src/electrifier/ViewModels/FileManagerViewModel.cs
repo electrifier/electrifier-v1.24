@@ -1,8 +1,9 @@
-﻿using System.Net.NetworkInformation;
-using CommunityToolkit.Mvvm.ComponentModel;
-using System.IO;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
+using System.Net.NetworkInformation;
+using System.Threading.Tasks;
 
 namespace electrifier.ViewModels;
 
@@ -10,24 +11,46 @@ public partial class FileManagerViewModel : ObservableRecipient
 {
     public ObservableCollection<string> Folders { get; } = new ObservableCollection<string>();
 
+    private Task enumerateFoldersTask = Task.Run(() => EnumerateFolders(@"C:\", true));
+
     public FileManagerViewModel()
     {
-        Task.Run(() => EnumerateFolders(@"C:\"));
     }
 
-    private void EnumerateFolders(string rootPath)
+    /// <summary>
+    /// functionality to enumerate folders
+    /// <throws cref="DirectoryNotFoundException"></throws>
+    /// <throws cref="UnauthorizedAccessException"></throws>
+    /// <throws cref="PathTooLongException"></throws>
+    /// </summary>
+    public static string EnumerateFolders(string rootPath, bool enumerateChildFoldersIfAllowed = false)
     {
         try
         {
-            foreach (var directory in Directory.EnumerateDirectories(rootPath))
+            foreach (var dirName in Directory.EnumerateDirectories(rootPath))
             {
-                Folders.Add(directory);
-                EnumerateFolders(directory);
+                return dirName;
+                //Folders.Add(dirName);
+
+                //if (enumerateChildFoldersIfAllowed)
+                //{
+                //    EnumerateFolders(dirName, false);
+                //}
             }
         }
-        catch (UnauthorizedAccessException)
+        catch (DirectoryNotFoundException ex)
         {
-            // Handle access denied exceptions
+            throw new DirectoryNotFoundException(rootPath, ex);
         }
+        catch (UnauthorizedAccessException ex)
+        {
+            throw new UnauthorizedAccessException(rootPath, ex);
+        }
+        catch (PathTooLongException ex)
+        {
+            throw new PathTooLongException(rootPath, ex);
+        }
+
+        return "{ unknown error in $EnumerateFolders }";
     }
 }

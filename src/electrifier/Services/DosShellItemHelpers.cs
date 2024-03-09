@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Windows.Storage.FileProperties;
 using Windows.Storage.Search;
 
 namespace electrifier.Services;
@@ -38,4 +39,50 @@ internal static class DosShellItemHelpers
     {
         Source = new BitmapImage(new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico"))
     };
+
+    public static string GetIconPath(StorageItemThumbnail? thumbnail, string? path)
+    {
+
+        if (thumbnail is not null)
+        {
+//            return thumbnail.Path;
+        }
+
+        if (path is not null)
+        {
+
+            return path;
+        }
+
+        return "ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico";
+    }
+
+    public static string GetIconPath(StorageItemThumbnail? thumbnail, string? path, bool isFolder)
+    {
+        if (thumbnail is not null)
+        {
+//            return thumbnail.Path;
+        }
+
+        if (path is not null)
+        {
+            return path;
+        }
+
+        return isFolder ? "ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico" : "ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico";
+    }
+
+    //public static string GetIconPath(StorageItemThumbnail? thumbnail, string? path, bool isFolder, bool isNetwork)
+    //{
+    //}
+
+    //public static string GetIconPath(StorageItemThumbnail? thumbnail, string? path, bool isFolder, bool isNetwork, bool isOffline)
+    //{
+
+    //}
+
+    //public static string GetIconPath(StorageItemThumbnail? thumbnail, string? path, bool isFolder, bool isNetwork, bool isOffline, bool isShared)
+    //{
+
+    //}
 }
