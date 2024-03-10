@@ -60,10 +60,10 @@
                         IsSettingsVisible="True"
                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged">
             <NavigationView.PaneHeader>
-                    <ImageIcon MaxHeight="32"
-                               Visibility="Collapsed"
-                               HorizontalAlignment="Right"
-                               Source="ms-appx:///Assets/WindowIcon.ico" />
+                <ImageIcon MaxHeight="32"
+                           Visibility="Collapsed"
+                           HorizontalAlignment="Right"
+                           Source="ms-appx:///Assets/WindowIcon.ico" />
             </NavigationView.PaneHeader>
             <!--<NavigationView.PaneTitle> electrifier </NavigationView.PaneTitle>-->
             <NavigationView.MenuItems>
@@ -95,7 +95,7 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xec50;" />
                     </NavigationViewItem.Icon>
-                    <!-- Create SubItems -->
+                    <!-- TODO: Create SubItems -->
                     <!--<NavigationViewItem.MenuItems>
                         <NavigationViewItem Content="Create new"
                                             Icon="NewFolder"
@@ -107,7 +107,6 @@
                                             Tag="SamplePage6" />
                     </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
-
                 <NavigationViewItem x:Uid="NavigationView_WebView"
                                     Visibility="Collapsed"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
@@ -160,7 +159,6 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.FooterMenuItems>
-
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
                     <Grid>

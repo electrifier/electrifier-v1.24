@@ -8,9 +8,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
       mc:Ignorable="d">
-    
     <Grid x:Name="ContentArea">
-        
         <StackPanel Orientation="Vertical">
             <MenuBar x:Name="MenuBarTop"
                      IsEnabled="False">
@@ -29,7 +27,6 @@
                     <MenuFlyoutItem Text="Zoom Out" />
                 </MenuBarItem>
             </MenuBar>
-
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition MaxWidth="600"
@@ -38,7 +35,6 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
-
                 <Grid.Resources>
                     <DataTemplate x:Key="ShellTreeViewItemTemplate"
                                   x:DataType="local:DosShellItem">
@@ -55,7 +51,6 @@
                                        Text="{x:Bind Name}" />
                         </StackPanel>
                     </DataTemplate>
-                                  
                     <DataTemplate x:Key="ShellGridViewItemTemplate"
                                   x:DataType="local:DosShellItem">
                         <Grid Height="150"
@@ -65,19 +60,16 @@
                                 <RowDefinition />
                                 <RowDefinition Height="45" />
                             </Grid.RowDefinitions>
-
                             <!-- TODO: Use constant from DosShellItemHelpers as ImageIcon.Source -->
                             <ImageIcon x:Name="ImageGridView_ItemTemplate_DefaultFolderIcon"
                                        Visibility="{x:Bind IsFolder}"
                                        Source="ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico"
                                        Grid.Row="0" />
-
                             <!-- TODO: Use constant from DosShellItemHelpers as ImageIcon.Source -->
                             <ImageIcon x:Name="ImageGridView_ItemTemplate_DefaultFileIcon"
                                        Visibility="{x:Bind IsFile}"
                                        Source="ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"
                                        Grid.Row="0" />
-
                             <!-- TODO: Set FontSize by style template -->
                             <TextBlock x:Name="ImageGridView_ItemTemplate_TextBlock"
                                        Grid.Row="1"
@@ -87,7 +79,6 @@
                                        Text="{x:Bind Name}" />
                         </Grid>
                     </DataTemplate>
-
                     <Style x:Key="ImageGridViewItemContainerStyle"
                            TargetType="GridViewItem">
                         <Setter Property="Margin"
