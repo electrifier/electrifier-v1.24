@@ -15,10 +15,13 @@ public class NavigationViewService : INavigationViewService
     private readonly IPageService _pageService;
 
     private NavigationView? _navigationView;
+    public object? FooterMenuItems => _navigationView?.FooterMenuItems;
 
     public IList<object>? MenuItems => _navigationView?.MenuItems;
 
     public object? SettingsItem => _navigationView?.SettingsItem;
+    
+    //public object? WorkbenchItem => _navigationView?.WorkbenchItem;
 
     public NavigationViewService(INavigationService navigationService, IPageService pageService)
     {

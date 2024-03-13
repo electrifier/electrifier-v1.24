@@ -27,7 +27,7 @@
                     <MenuFlyoutItem Text="Zoom Out" />
                 </MenuBarItem>
             </MenuBar>
-            <Grid>
+            <Grid x:Uid="ContentAreaGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition MaxWidth="600"
                                       MinWidth="200"
@@ -90,7 +90,7 @@
                             HorizontalScrollMode="Enabled"
                             HorizontalScrollBarVisibility="Auto"
                             VerticalScrollMode="Enabled"
-                        VerticalScrollBarVisibility="True"
+                            VerticalScrollBarVisibility="True"
                 -->
 
                 <!--  Left-side 'Shelf', In this case you could also use a GridSplitter  -->
