@@ -1,5 +1,6 @@
 ﻿using electrifier.Activation;
 using electrifier.Contracts.Services;
+using electrifier.Helpers;
 using electrifier.Views;
 
 using Microsoft.UI.Xaml;
@@ -67,6 +68,16 @@ public class ActivationService : IActivationService
     private async Task StartupAsync()
     {
         await _themeSelectorService.SetRequestedThemeAsync();
+
+
+        // NavigationHelper.SetNavigateTo(navigationViewItem, typeof(MainViewModel).FullName)
+        // electrifier.Views.ShellPage
+        //NavigationView_FileManager.SetNavigateTo(_shell as Frame);
+        //NavigationHelper.SetNavigateTo(NavigationViewItem, typeof(MainViewModel).FullName);
+
+
+        // => NavigationHelper.SetNavigateTo(workbenchNavigationItem, typeof(MainViewModel).FullName);
+
         await Task.CompletedTask;
     }
 }

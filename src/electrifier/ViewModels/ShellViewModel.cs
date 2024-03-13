@@ -1,4 +1,6 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Diagnostics;
+using System.Text;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI;
 using electrifier.Contracts.Services;
 using electrifier.Views;
@@ -7,6 +9,7 @@ using Microsoft.UI.Xaml.Navigation;
 
 namespace electrifier.ViewModels;
 
+[DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
 public partial class ShellViewModel : ObservableRecipient
 {
 
@@ -61,5 +64,28 @@ public partial class ShellViewModel : ObservableRecipient
     protected void UnselectNavigationItem()
     {
         Selected = null;
+    }
+
+    public bool NavigateToWorkbench()
+    {
+        var viewModel = App.GetService<WorkbenchViewModel>();
+        var fullName = viewModel.GetType().FullName;
+
+        if (fullName is not null)
+        {
+            return NavigationService.NavigateTo(fullName);
+        }
+        return false;
+    }
+
+    //    NavigationHelper.SetNavigateTo(navigationViewItem, typeof(MainViewModel).FullName)
+
+    private string GetDebuggerDisplay()
+    {
+        var dbgDisplay = new StringBuilder();
+        _ = dbgDisplay.Append(nameof(ShellViewModel));
+        _ = dbgDisplay.Append(' ');
+        _ = dbgDisplay.Append(Selected?.ToString() ?? "null");
+        return dbgDisplay.ToString();
     }
 }
