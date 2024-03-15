@@ -23,7 +23,9 @@ public sealed partial class FileManagerPage : Page
 {
     public AdvancedCollectionView CollectionView { get; }
     public ObservableCollection<DosShellItem> ShellGridViewItems { get; } = new ObservableCollection<DosShellItem>();
-    public ObservableCollection<DosShellItem> ShellTreeViewItems { get; } = new ObservableCollection<DosShellItem>();
+    //public ObservableCollection<DosShellItem> ShellTreeViewItems { get; } = new ObservableCollection<DosShellItem>();
+
+    public IList<DosShellItem> ShellTreeViewItems { get; } = new ObservableCollection<DosShellItem>();
 
     public FileManagerViewModel ViewModel { get; }
 
@@ -35,21 +37,26 @@ public sealed partial class FileManagerPage : Page
     {
         ViewModel = App.GetService<FileManagerViewModel>() ?? throw new InvalidOperationException();
 
+        InitializeComponent();
+        _ = GetTreeViewItemsAsync(KnownLibraryId.Pictures);
+        ShellTreeView.ItemsSource = ShellTreeViewItems;
+
         // Set up the AdvancedCollectionView with live shaping enabled to filter and sort the original list
         CollectionView = new AdvancedCollectionView(ShellGridViewItems, true);
         // And sort ascending by the property "Name"
         CollectionView.SortDescriptions.Add(new SortDescription("Name", SortDirection.Ascending));
 
-        InitializeComponent();
         // AdvancedCollectionView can be bound to anything that uses collections. 
+        _ = GetItemsAsync(KnownLibraryId.Pictures);
         ShellGridView.ItemsSource = CollectionView;
 
-        _ = GetItemsAsync(KnownLibraryId.Pictures);
-        _ = GetTreeViewItemsAsync(KnownLibraryId.Pictures);
 
-        // add dummy items to ShellTreeViewDataSource
-        // ShellTreeViewDataSource.Add(new DosShellItem(new StorageItem("C:\\")));
-        // ShellTreeViewDataSource.Add(new DosShellItem("D:\\"));
+        // --------------------------------------------
+        //_ = GetTreeViewItemsAsync(KnownLibraryId.Pictures);
+
+        // add dummy items to ShellTreeViewItems
+        // ShellTreeViewItems.Add(new DosShellItem(new StorageItem("C:\\")));
+        // ShellTreeViewItems.Add(new DosShellItem("D:\\"));
         //
         // StorageFolder storageFolder = Package.Current.InstalledLocation;
         // StorageLibrary storageFolder = await StorageLibrary.GetLibraryAsync(KnownLibraryId.Pictures);
@@ -206,24 +213,47 @@ public sealed partial class FileManagerPage : Page
 
     private async Task GetTreeViewItemsAsync(StorageFolder storageFolder)
     {
-        var rootFolder = storageFolder;
-        if (rootFolder == null)
+
+        var fileQuery = storageFolder.CreateFileQueryWithOptions(new QueryOptions());
+        //        var storageFiles = await fileQuery.GetFilesAsync();
+        var storageFolders = await fileQuery.GetFilesAsync();
+
+        ///
+        //var folderQuery = storageFolder.CreateItemQuery();
+        //var items = await folderQuery.GetItemsAsync();
+
+        foreach (var storageItem in storageFolders)
         {
-            return;
+            ShellTreeViewItems.Add(await LoadShellItemInfo(storageItem));
         }
+        //        var rootFolder = storageFolder;
+        //        if (rootFolder == null)
+        //        {
+        //            return;
+        //        }
+        //
+        //        var rootItem = new DosShellItem(rootFolder/* , DosShellItemHelpers.DefaultQueryOptionsCommonFile */);
+        //        ShellTreeViewItems.Add(rootItem);
+        //
+        //        ShellTreeView.ItemsSource = ShellTreeViewItems;
+        //
+        //
+        //        rootItem.Children.Add(new DosShellItem(rootFolder/* , DosShellItemHelpers.DefaultQueryOptionsCommonFile */));
+        //        rootItem.Children.Add(new DosShellItem(rootFolder/* , DosShellItemHelpers.DefaultQueryOptionsCommonFile */));
 
-        var folderQuery = rootFolder.CreateItemQuery();
-        var items = await folderQuery?.GetItemsAsync();
 
-        Debug.Assert(items != null);
-        ShellTreeViewItems.Clear();
-        ShellTreeViewItems.Add(new DosShellItem(rootFolder, DosShellItemHelpers.DefaultQueryOptionsCommonFile));
+        //        var folderQuery = rootFolder.CreateItemQuery();
+        //        var items = await folderQuery?.GetItemsAsync();
+        //
+        //        Debug.Assert(items != null);
+        //        ShellTreeViewItems.Clear();
+        //        ShellTreeViewItems.Add(new DosShellItem(rootFolder, DosShellItemHelpers.DefaultQueryOptionsCommonFile));
 
         //var rootItem = ShellTreeViewItems[0] as DosShellItem;
         //Debug.Assert(rootItem != null);
         //foreach (var storageItem in items)
         //{
-            
+
         //    //rootItem.Children.Add(new DosShellItem(storageItem));
         //    ShellTreeViewItems.Add(await LoadShellItemInfo(storageItem));
 

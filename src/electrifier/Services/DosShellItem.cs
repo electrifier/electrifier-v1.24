@@ -17,12 +17,12 @@ namespace electrifier.Services;
 /// </summary>
 public class DosShellItem : INotifyPropertyChanged
 {
-    public ObservableCollection<DosShellItem> Childs;
+    public ObservableCollection<DosShellItem> Children;
     public QueryOptions EnumerationQueryOptions
     {
         get;
     }
-    public bool HasChildren => Childs.Count > 0;
+    public bool HasChildren => Children.Count > 0;
     public bool IsFile => !IsFolder;
     public bool IsFolder
     {
@@ -55,7 +55,7 @@ public class DosShellItem : INotifyPropertyChanged
     public DosShellItem(IStorageItem storageItem, QueryOptions? forcedFolderQueryOptions = null)
     {
         StorageItem = storageItem ?? throw new ArgumentNullException(nameof(storageItem));
-        Childs = new ObservableCollection<DosShellItem>();
+        Children = new ObservableCollection<DosShellItem>();
 
         // Determine if the item is a folder
         IsFolder = StorageItem.IsOfType(StorageItemTypes.Folder);
@@ -74,25 +74,21 @@ public class DosShellItem : INotifyPropertyChanged
 
             //if (forcedFolderQueryOptions != null)
             //{
-            //    //  Enumerate Childs
+            //    //  Enumerate Children
             //    _ = GetChildsAsync();
             //}
 
 
 
-            //Childs.Add(new DosShellItem(storageItem)); // TODO: Get reference to root object and add their children
+            //Children.Add(new DosShellItem(storageItem)); // TODO: Get reference to root object and add their children
 
             //if ((IsFolder) && (enumerateChilds))
             //{
-            //    // => Childs = new ObservableCollection<DosShellItem>();
+            //    // => Children = new ObservableCollection<DosShellItem>();
             //    _ = GetChildsAsync();
             //}
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="propertyName"></param>
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
@@ -128,7 +124,7 @@ public class DosShellItem : INotifyPropertyChanged
     //            // Process results
     //            //foreach (StorageFile file in childReadOnlyList)
     //            //{
-    //            //    Childs.Add(new DosShellItem(file));
+    //            //    Children.Add(new DosShellItem(file));
     //            //}
     //
     //            /*      if (enumerateChilds)
@@ -140,7 +136,7 @@ public class DosShellItem : INotifyPropertyChanged
     //                    foreach (var item in items)
     //                    {
     //
-    //                        Childs.Add(new DosShellItem(item));
+    //                        Children.Add(new DosShellItem(item));
     //                    } */
     //        }
     //        else
@@ -157,7 +153,7 @@ public class DosShellItem : INotifyPropertyChanged
             var items = await folder.GetItemsAsync();
             foreach (var item in items)
             {
-                Childs.Add(new DosShellItem(item));
+                Children.Add(new DosShellItem(item));
             }
         }
     }

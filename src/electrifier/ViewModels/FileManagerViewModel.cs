@@ -9,8 +9,6 @@ namespace electrifier.ViewModels;
 
 public partial class FileManagerViewModel : ObservableRecipient
 {
-    public ObservableCollection<string> Folders { get; } = new ObservableCollection<string>();
-
     /// <summary>
     /// 
     /// </summary>
