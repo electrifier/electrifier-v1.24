@@ -18,33 +18,41 @@ namespace electrifier.Services;
 public class DosShellItem : INotifyPropertyChanged
 {
     public ObservableCollection<DosShellItem> Children;
+
+    //doc: https://docs.microsoft.com/en-us/uwp/api/windows.storage.search.queryoptions
     public QueryOptions EnumerationQueryOptions
     {
         get;
     }
     public bool HasChildren => Children.Count > 0;
     public bool IsFile => !IsFolder;
+    //public bool IsLibrary => StorageItem is StorageFolder folder && folder.IsOfType(StorageItemTypes.Library);
     public bool IsFolder
     {
         get;
     }
-    public string Name => StorageItem.Name;
-    public string Path => StorageItem.Path;
+    public string Name => StorageItem?.Name ?? "[Unknown Item]";
+    public string Path => StorageItem?.Path ?? "[Invalid Path]";
     public ImageIcon ShellIcon
     {
         get;
     }
-    public IStorageItem StorageItem
+    public IStorageItem? StorageItem
     {
         get;
     }
+
     public event PropertyChangedEventHandler? PropertyChanged;
+    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
+    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
 
     // TODO: Move to DosShellItemFactory
     //        public static DosShellItem CreateRootItem() =>
     //        new DosShellItem(new StorageFolder("C:\\"));
 
-    // TODO: public readonly QueryOptions defaultFolderQueryOptions = new(CommonFileQuery.OrderByName, null);  // => Helpers.DefaultQueryOptionsCommonFile
+    // TODO: public readonly QueryOptions defaultFolderQueryOptions = new(CommonFileQuery.OrderByName, null);  
+    // => Helpers.DefaultQueryOptionsCommonFile
 
     /// <summary>
     /// 
@@ -60,18 +68,20 @@ public class DosShellItem : INotifyPropertyChanged
         // Determine if the item is a folder
         IsFolder = StorageItem.IsOfType(StorageItemTypes.Folder);
         // Set temporary icon
-        ShellIcon = IsFolder ? DosShellItemHelpers.DefaultUnknownFileIcon : DosShellItemHelpers.DefaultUnknownFileIcon;
+        ShellIcon = IsFolder ? DosShellItemHelpers.DefaultFolderIcon : DosShellItemHelpers.DefaultUnknownFileIcon;
 
         if (forcedFolderQueryOptions != null)
         {
             EnumerationQueryOptions = forcedFolderQueryOptions;
-            //_ = GetChildsAsync();
         }
         else
         {
             EnumerationQueryOptions = new QueryOptions(CommonFolderQuery.DefaultQuery);
         }
 
+        _ = GetChildsAsync();
+
+        #region old stuff
         //        EnumerationQueryOptions = forcedFolderQueryOptions != null ? forcedFolderQueryOptions // : DosShellItemHelpers.DefaultFolderIcon;
 
 
@@ -90,10 +100,58 @@ public class DosShellItem : INotifyPropertyChanged
         //    // => Children = new ObservableCollection<DosShellItem>();
         //    _ = GetChildsAsync();
         //}
+        #endregion
     }
 
-    protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    // Copilot: KnownLibraryIdGetLibraryId() => StorageItem is StorageFolder folder ? folder.LibraryRelativePath : KnownLibraryId.Unknown;
+    public DosShellItem(KnownLibraryId libraryId, QueryOptions? forcedFolderQueryOptions = null)
+    {
+        var library = StorageLibrary.GetLibraryAsync(libraryId);
+        Children = new ObservableCollection<DosShellItem>();
+
+        if (forcedFolderQueryOptions != null)
+        {
+            EnumerationQueryOptions = forcedFolderQueryOptions;
+        }
+        else
+        {
+            EnumerationQueryOptions = new QueryOptions(CommonFolderQuery.DefaultQuery);
+        }
+
+        // StorageItem = library as IStorageItem ?? throw new ArgumentException(nameof(libraryId), "can't create StorageItem from LibraryId");
+        if (library is IStorageItem storageItem)
+        {
+            StorageItem = storageItem;
+
+            // Determine if the item is a folder
+            IsFolder = StorageItem.IsOfType(StorageItemTypes.Folder);
+            // Set temporary icon
+            ShellIcon = IsFolder ? DosShellItemHelpers.DefaultFolderIcon : DosShellItemHelpers.DefaultUnknownFileIcon;
+
+            _ = GetChildsAsync();
+        }
+        else
+        {
+            IsFolder = false;
+
+            ShellIcon = DosShellItemHelpers.DefaultUnknownFileIcon;
+        }
+    }
+    //    {
+    //        //if(KnownLibraryId.Unknown == library)
+    //        //{
+    //        //    throw new ArgumentException("Unknown library");
+    //        //}
+    //        
+    //        //StorageItem = library.GetLibraryAsync();
+    //        //Children = new ObservableCollection<DosShellItem>();
+    //
+    //
+    //
+    //        //StorageItem = parentShellItem.StorageItem;
+    //
+    //        //this(StorageItem, forcedFolderQueryOptions);
+    //    }
 
     /*
     var forcedFolderQueryOptions = new QueryOptions(CommonFileQuery.OrderByName, fileTypeFilter);
@@ -154,6 +212,7 @@ public class DosShellItem : INotifyPropertyChanged
         {
             var folder = (StorageFolder)StorageItem;
             var items = await folder.GetItemsAsync();
+
             foreach (var item in items)
             {
                 Children.Add(new DosShellItem(item));
@@ -163,31 +222,28 @@ public class DosShellItem : INotifyPropertyChanged
 
     public async Task<BitmapImage> GetImageThumbnailAsync()
     {
-        try
+        if (IsFolder)
         {
-            var bitmapImage = new BitmapImage();
+            return new BitmapImage(new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 Folder containing File.ico"));
+        }
+        else
+        {
+            try
+            {
+                var bitmapImage = new BitmapImage();
 
-            // TODO: Load folder image from resource
-            if (IsFolder)
-            {
-                //// "..\Assets\Views\Workbench\Shell32 Default unknown File.ico"
-                //bitmapImage.SetSourceAsync();
-            }
-            else
-            {
-                using var thumbnail = await ((StorageFile)StorageItem).GetThumbnailAsync(ThumbnailMode.SingleItem);
-                if (thumbnail != null)
+                using (var thumbnail = await ((StorageFile)StorageItem).GetThumbnailAsync(ThumbnailMode.SingleItem))
                 {
                     bitmapImage.SetSource(thumbnail);
                     thumbnail.Dispose();
                 }
-            }
 
-            return bitmapImage;
-        }
-        catch (Exception)
-        {
-            throw;
+                return bitmapImage;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

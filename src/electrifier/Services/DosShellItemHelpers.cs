@@ -19,10 +19,14 @@ internal static class DosShellItemHelpers
     public static readonly ImageIcon DefaultFolderIcon = defaultFolderImageIcon;
     public static readonly ImageIcon DefaultUnknownFileIcon = defaultUnknownFileImageIcon;
 #pragma warning restore CS8601 // Possible null reference assignment.
+    public static readonly ImageIcon DefaultFolderContainingFileIcon = new()
+    {
+        Source = new BitmapImage(new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 Folder containing File.ico"))
+    };
 
     // TODO: Convert to array and use constants as index
     public const string shell32DefaultFolderIcon = "ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico";
-    public const string shell32FolderContainingFileIcon = "ms-appx:///Assets/Views/Workbench/Shell32 Folder containing File.ico";
+    //public const string shell32FolderContainingFileIcon = "ms-appx:///Assets/Views/Workbench/Shell32 Folder containing File.ico";
     public const string shell32NetworkIcon = "ms-appx:///Assets/Views/Workbench/Shell32 Network.ico";
     //public const string shell32NetworkFolderIcon = "ms-appx:///Assets/Views/Workbench/Shell32 Network Folder.ico";
     //public const string shell32NetworkFolderOpenIcon = "ms-appx:///Assets/Views/Workbench/Shell32 Network Folder Open.ico";
