@@ -3,9 +3,7 @@ using electrifier.Core.Contracts.Services;
 using electrifier.Core.Helpers;
 using electrifier.Helpers;
 using electrifier.Models;
-
 using Microsoft.Extensions.Options;
-
 using Windows.ApplicationModel;
 using Windows.Storage;
 

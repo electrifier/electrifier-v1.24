@@ -6,12 +6,19 @@
     <Platforms>x86;x64;arm64;AnyCPU</Platforms>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Contracts\Services\ISampleDataService.cs" />
+    <Compile Remove="Models\SampleCompany.cs" />
+    <Compile Remove="Models\SampleOrder.cs" />
+    <Compile Remove="Models\SampleOrderDetail.cs" />
+    <Compile Remove="Services\SampleDataService.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
 </Project>

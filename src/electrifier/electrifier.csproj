@@ -24,6 +24,12 @@
     <Compile Remove="Views\ListDetailsPage.xaml.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Views\ContentGridDetailPage.xaml" />
+    <None Remove="Views\ContentGridPage.xaml" />
+    <None Remove="Views\ListDetailsDetailControl.xaml" />
+    <None Remove="Views\ListDetailsPage.xaml" />
+  </ItemGroup>
+  <ItemGroup>
     <Page Remove="Views\ContentGridDetailPage.xaml" />
     <Page Remove="Views\ContentGridPage.xaml" />
     <Page Remove="Views\ListDetailsDetailControl.xaml" />
@@ -35,26 +41,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="ViewModels\ContentGridDetailViewModel.cs" />
-    <None Include="ViewModels\ContentGridViewModel.cs" />
-    <None Include="ViewModels\ListDetailsViewModel.cs" />
-    <None Include="Views\ContentGridDetailPage.xaml.cs" />
-    <None Include="Views\ContentGridPage.xaml.cs" />
-    <None Include="Views\ListDetailsDetailControl.xaml.cs" />
-    <None Include="Views\ListDetailsPage.xaml.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.Collections" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240205001-preview1" />
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240227000" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
-    <PackageReference Include="WinUIEx" Version="2.3.3" />
+    <PackageReference Include="Vanara.Windows.Shell" Version="4.0.0-beta2" />
+    <PackageReference Include="WinUIEx" Version="2.3.4" />
   </ItemGroup>
 
   <ItemGroup>
@@ -68,6 +66,10 @@
 
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <ProjectCapability Include="Msix" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Assets\Views\Workbench\" />
   </ItemGroup>
   
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
