@@ -1,48 +1,42 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.WinUI.UI;
-using electrifier.Services;
-using Microsoft.UI.Xaml.Controls;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Net.NetworkInformation;
-using System.Threading.Tasks;
-using Windows.ApplicationModel;
+﻿using Windows.Storage;
 using Windows.Storage.Search;
-using Windows.Storage;
+using Windows.ApplicationModel;
+using System.Threading.Tasks;
+using System.Net.NetworkInformation;
+using System.IO;
+using System.Diagnostics;
+using System.Collections.ObjectModel;
+using Microsoft.UI.Xaml.Controls;
+using electrifier.Services;
+using CommunityToolkit.WinUI.UI;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace electrifier.ViewModels;
 
 public partial class FileManagerViewModel : ObservableRecipient
 {
-    public AdvancedCollectionView CollectionView
+    // AdvancedCollectionView can be bound to anything that uses collections.
+    public AdvancedCollectionView ShellGridCollectionViewItems
     {
         get;
     }
     public ObservableCollection<DosShellItem> ShellGridViewItems { get; } = new ObservableCollection<DosShellItem>();
-    //public ObservableCollection<DosShellItem> ShellTreeViewItems { get; } = new ObservableCollection<DosShellItem>();
-
-    public IList<DosShellItem> ShellTreeViewItems { get; } = new ObservableCollection<DosShellItem>();
+    public ObservableCollection<DosShellItem> ShellTreeViewItems { get; } = new ObservableCollection<DosShellItem>();
 
     public FileManagerViewModel()
     {
-
         // Set up ShellTreeViewItems with the root items
-        var rootItem = new DosShellItem(Package.Current.InstalledLocation);
-        _ = GetTreeViewItemsAsync(rootItem);
-        //        _ = GetTreeViewItemsAsync(new DosShellItem(new StorageItem("C:\\")));
- //       ShellTreeView.ItemsSource = ShellTreeViewItems;
+        //        var parentShellItem = new DosShellItem(KnownLibraryId.Documents);
+        //        _ = ShellTreeViewItems_GetItemsAsync(parentShellItem, enumChildren: true);
+
+        _ = ShellTreeViewItems_GetItemsAsync(KnownLibraryId.Documents);
 
         // Set up the AdvancedCollectionView with live shaping enabled to filter and sort the original list
-        CollectionView = new AdvancedCollectionView(ShellGridViewItems, true);
+        ShellGridCollectionViewItems = new AdvancedCollectionView(ShellGridViewItems, true);
         // And sort ascending by the property "Name"
-        CollectionView.SortDescriptions.Add(new SortDescription("Name", SortDirection.Ascending));
+        ShellGridCollectionViewItems.SortDescriptions.Add(new SortDescription("Name", SortDirection.Ascending));
 
-        // AdvancedCollectionView can be bound to anything that uses collections. 
         _ = ShellGridViewItems_GetItemsAsync(KnownLibraryId.Documents);
-//        ShellGridView.ItemsSource = CollectionView;
-
-
     }
 
     //    private readonly Task enumerateFoldersTask = Task.Run(() => EnumerateFolders(@"C:\", true));
@@ -85,25 +79,36 @@ public partial class FileManagerViewModel : ObservableRecipient
     //        return "{ unknown error in $EnumerateFolders }";
     //    }
 
-    private async Task GetTreeViewItemsAsync(DosShellItem rootItem)
+    private async Task ShellTreeViewItems_GetItemsAsync(KnownLibraryId storageLibrary)
     {
-        if (rootItem is null)
+        var library = await StorageLibrary.GetLibraryAsync(storageLibrary);
+        var storageFolder = library.SaveFolder;
+
+        if (storageFolder != null)
         {
-            throw new ArgumentNullException(nameof(rootItem));
+            _ = ShellTreeViewItems_GetItemsAsync(storageFolder);
+        }
+    }
+
+    private async Task ShellTreeViewItems_GetItemsAsync(DosShellItem parentShellItem, bool enumChildren = false)
+    {
+        if (parentShellItem is null)
+        {
+            throw new ArgumentNullException(nameof(parentShellItem));
         }
 
-        var storageFolder = rootItem.StorageItem as StorageFolder;
+        var storageFolder = parentShellItem.StorageItem as StorageFolder;
 
         if (storageFolder != null)
         {
             var item = new DosShellItem(storageFolder);
 
-            rootItem.Children.Add(item);
-            await GetTreeViewItemsAsync(storageFolder);
+            parentShellItem.Children.Add(item);
+            await ShellTreeViewItems_GetItemsAsync(storageFolder);
         }
     }
 
-    private async Task GetTreeViewItemsAsync(StorageFolder storageFolder)
+    private async Task ShellTreeViewItems_GetItemsAsync(StorageFolder storageFolder)
     {
 
         var fileQuery = storageFolder.CreateFileQueryWithOptions(new QueryOptions());
@@ -124,14 +129,14 @@ public partial class FileManagerViewModel : ObservableRecipient
         //            return;
         //        }
         //
-        //        var rootItem = new DosShellItem(rootFolder/* , DosShellItemHelpers.DefaultQueryOptionsCommonFile */);
-        //        ShellTreeViewItems.Add(rootItem);
+        //        var parentShellItem = new DosShellItem(rootFolder/* , DosShellItemHelpers.DefaultQueryOptionsCommonFile */);
+        //        ShellTreeViewItems.Add(parentShellItem);
         //
         //        ShellTreeView.ItemsSource = ShellTreeViewItems;
         //
         //
-        //        rootItem.Children.Add(new DosShellItem(rootFolder/* , DosShellItemHelpers.DefaultQueryOptionsCommonFile */));
-        //        rootItem.Children.Add(new DosShellItem(rootFolder/* , DosShellItemHelpers.DefaultQueryOptionsCommonFile */));
+        //        parentShellItem.Children.Add(new DosShellItem(rootFolder/* , DosShellItemHelpers.DefaultQueryOptionsCommonFile */));
+        //        parentShellItem.Children.Add(new DosShellItem(rootFolder/* , DosShellItemHelpers.DefaultQueryOptionsCommonFile */));
 
 
         //        var folderQuery = rootFolder.CreateItemQuery();
@@ -141,16 +146,76 @@ public partial class FileManagerViewModel : ObservableRecipient
         //        ShellTreeViewItems.Clear();
         //        ShellTreeViewItems.Add(new DosShellItem(rootFolder, DosShellItemHelpers.DefaultQueryOptionsCommonFile));
 
-        //var rootItem = ShellTreeViewItems[0] as DosShellItem;
-        //Debug.Assert(rootItem != null);
+        //var parentShellItem = ShellTreeViewItems[0] as DosShellItem;
+        //Debug.Assert(parentShellItem != null);
         //foreach (var storageItem in items)
         //{
 
-        //    //rootItem.Children.Add(new DosShellItem(storageItem));
+        //    //parentShellItem.Children.Add(new DosShellItem(storageItem));
         //    ShellTreeViewItems.Add(await LoadShellItemInfo(storageItem));
 
         //}
     }
+
+    private async Task ShellGridViewItems_GetItemsAsync(KnownLibraryId storageLibrary)
+    {
+        var library = await StorageLibrary.GetLibraryAsync(storageLibrary);
+        var storageFolder = library.SaveFolder;
+
+        if (storageFolder != null)
+        {
+            _ = ShellGridViewItems_GetItemsAsync(storageFolder);
+        }
+    }
+
+    private async Task ShellGridViewItems_GetItemsAsync(StorageFolder storageFolder)
+    {
+        var fileQuery = storageFolder.CreateFileQueryWithOptions(new QueryOptions());
+        var storageFolders = await fileQuery.GetFilesAsync();
+
+        //var folderQuery = storageFolder.CreateItemQuery();
+        //var items = await folderQuery.ShellGridViewItems_GetItemsAsync();
+
+        foreach (var storageItem in storageFolders)
+        {
+            ShellGridViewItems.Add(await LoadShellItemInfo(storageItem));
+        }
+
+        //ImageGridView.ItemsSource = ShellGridViewItems;
+
+        //        var fileQuery = storageFolder.CreateFileQueryWithOptions(new QueryOptions());
+        //        var storageFiles = await folderQuery.GetFilesAsync();
+        //        var storageFolders = await storageFolder.GetFoldersAsync();
+
+
+
+
+        //        return storageFolder.CreateFileQueryWithOptions(new QueryOptions()).ToListAsync();
+
+        //        var result = picturesFolder.CreateFileQueryWithOptions(new QueryOptions());
+        //        _ = await result.GetFilesAsync();
+
+        /*
+                StorageFolder picturesFolder;
+
+                //picturesFolder = Package.Current.InstalledLocation;
+                //picturesFolder = KnownFolders.PicturesLibrary;
+                picturesFolder = KnownFolders.DocumentsLibrary;
+                //picturesFolder = KnownFolders.HomeGroup;
+
+                var result = picturesFolder.CreateFileQueryWithOptions(new QueryOptions());
+
+                var storageFiles = await result.GetFilesAsync();
+
+                foreach (var storageItem in storageFiles)
+                {
+                    ShellGridViewItems.Add(await LoadShellItemInfo(storageItem));
+                }
+
+                ImageGridView.ItemsSource = ShellGridViewItems;
+        */
+    }
+
 
     private void ShellGridViewItems_ContainerContentChanging(
         ListViewBase sender,
@@ -227,66 +292,8 @@ public partial class FileManagerViewModel : ObservableRecipient
         }
     }
 
-    private async Task ShellGridViewItems_GetItemsAsync(KnownLibraryId storageLibrary)
-    {
-        var library = await StorageLibrary.GetLibraryAsync(storageLibrary);
-        var storageFolder = library.SaveFolder;
 
-        if (storageFolder != null)
-        {
-            _ = ShellGridViewItems_GetItemsAsync(storageFolder);
-        }
-    }
-
-    private async Task ShellGridViewItems_GetItemsAsync(StorageFolder storageFolder)
-    {
-        var fileQuery = storageFolder.CreateFileQueryWithOptions(new QueryOptions());
-        var storageFolders = await fileQuery.GetFilesAsync();
-
-        //var folderQuery = storageFolder.CreateItemQuery();
-        //var items = await folderQuery.ShellGridViewItems_GetItemsAsync();
-
-        foreach (var storageItem in storageFolders)
-        {
-            ShellGridViewItems.Add(await LoadShellItemInfo(storageItem));
-        }
-
-        //ImageGridView.ItemsSource = ShellGridViewItems;
-
-        //        var fileQuery = storageFolder.CreateFileQueryWithOptions(new QueryOptions());
-        //        var storageFiles = await folderQuery.GetFilesAsync();
-        //        var storageFolders = await storageFolder.GetFoldersAsync();
-
-
-
-
-        //        return storageFolder.CreateFileQueryWithOptions(new QueryOptions()).ToListAsync();
-
-        //        var result = picturesFolder.CreateFileQueryWithOptions(new QueryOptions());
-        //        _ = await result.GetFilesAsync();
-
-        /*
-                StorageFolder picturesFolder;
-
-                //picturesFolder = Package.Current.InstalledLocation;
-                //picturesFolder = KnownFolders.PicturesLibrary;
-                picturesFolder = KnownFolders.DocumentsLibrary;
-                //picturesFolder = KnownFolders.HomeGroup;
-
-                var result = picturesFolder.CreateFileQueryWithOptions(new QueryOptions());
-
-                var storageFiles = await result.GetFilesAsync();
-
-                foreach (var storageItem in storageFiles)
-                {
-                    ShellGridViewItems.Add(await LoadShellItemInfo(storageItem));
-                }
-
-                ImageGridView.ItemsSource = ShellGridViewItems;
-        */
-    }
-
-    //    private async Task GetTreeViewItemsAsync(KnownLibraryId storageLibrary)
+    //    private async Task ShellTreeViewItems_GetItemsAsync(KnownLibraryId storageLibrary)
     //    {
     //        var library = await StorageLibrary.GetLibraryAsync(storageLibrary);
     //        var storageFolder = library.SaveFolder;
@@ -295,7 +302,7 @@ public partial class FileManagerViewModel : ObservableRecipient
     //        {
     //            var shellItem = new DosShellItem(storageFolder);
     //            ShellTreeViewItems.Add(shellItem);
-    ////            _ = GetTreeViewItemsAsync(storageFolder);
+    ////            _ = ShellTreeViewItems_GetItemsAsync(storageFolder);
     //        }
     //    }
 
@@ -310,18 +317,18 @@ public partial class FileManagerViewModel : ObservableRecipient
         return shellItem;
     }
 
-    private void ImageGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        Debug.Assert(e != null);
-
-        var addedItems = e.AddedItems;
-        var removedItems = e.RemovedItems;
-
-        if (addedItems.Count > 0)
-        {
-            var item = e.AddedItems[0] as DosShellItem;
-            //ImageGridView.SelectedItem = item;
-
-        }
-    }
+//    private void ImageGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+//    {
+//        Debug.Assert(e != null);
+//
+//        var addedItems = e.AddedItems;
+//        var removedItems = e.RemovedItems;
+//
+//        if (addedItems.Count > 0)
+//        {
+//            var item = e.AddedItems[0] as DosShellItem;
+//            //ImageGridView.SelectedItem = item;
+//
+//        }
+//    }
 }
