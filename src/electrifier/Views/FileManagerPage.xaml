@@ -96,9 +96,9 @@
                 <!--  Left-side 'Shelf', In this case you could also use a GridSplitter  -->
                 <Border x:Name="SideContent">
                     <!-- ItemTemplateSelector="{StaticResource ExplorerItemTemplateSelector}" -->
-                    <!-- ItemsSource="{x:Bind ShellItems}" -->
+                    <!-- ItemsSource="{x:Bind ShellTreeViewItems}" -->
                     <TreeView x:Name="ShellTreeView"
-                              ItemsSource="{x:Bind ShellTreeViewItems}"
+                              
                               ItemTemplate="{StaticResource ShellTreeViewItemTemplate}" />
                 </Border>
                 <!-- Center element: ContentSizer -->
@@ -123,12 +123,15 @@
                                   ContainerContentChanging="ImageGridView_ContainerContentChanging">
                         </GridView>
                 </ScrollViewer>-->
+                <!-- ItemsSource="{x:Bind ShellGridViewItems}" -->
+                <!-- ContainerContentChanging="ShellGridViewItems_ContainerContentChanging" -->
                 <GridView x:Name="ShellGridView"
                           Grid.Column="2"
                           ItemContainerStyle="{StaticResource ImageGridViewItemContainerStyle}"
-                          ItemsSource="{x:Bind ShellGridViewItems}"
+
                           ItemTemplate="{StaticResource ShellGridViewItemTemplate}"
-                          ContainerContentChanging="ImageGridView_ContainerContentChanging" />
+                          />
+                
             </Grid>
         </StackPanel>
     </Grid>

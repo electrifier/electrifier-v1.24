@@ -67,26 +67,29 @@ public class DosShellItem : INotifyPropertyChanged
             EnumerationQueryOptions = forcedFolderQueryOptions;
             //_ = GetChildsAsync();
         }
-        else EnumerationQueryOptions = new QueryOptions(CommonFolderQuery.DefaultQuery);
+        else
+        {
+            EnumerationQueryOptions = new QueryOptions(CommonFolderQuery.DefaultQuery);
+        }
 
         //        EnumerationQueryOptions = forcedFolderQueryOptions != null ? forcedFolderQueryOptions // : DosShellItemHelpers.DefaultFolderIcon;
 
 
-            //if (forcedFolderQueryOptions != null)
-            //{
-            //    //  Enumerate Children
-            //    _ = GetChildsAsync();
-            //}
+        //if (forcedFolderQueryOptions != null)
+        //{
+        //    //  Enumerate Children
+        //    _ = GetChildsAsync();
+        //}
 
 
 
-            //Children.Add(new DosShellItem(storageItem)); // TODO: Get reference to root object and add their children
+        //Children.Add(new DosShellItem(storageItem)); // TODO: Get reference to root object and add their children
 
-            //if ((IsFolder) && (enumerateChilds))
-            //{
-            //    // => Children = new ObservableCollection<DosShellItem>();
-            //    _ = GetChildsAsync();
-            //}
+        //if ((IsFolder) && (enumerateChilds))
+        //{
+        //    // => Children = new ObservableCollection<DosShellItem>();
+        //    _ = GetChildsAsync();
+        //}
     }
 
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
@@ -132,7 +135,7 @@ public class DosShellItem : INotifyPropertyChanged
     //                        _ = GetChildsAsync();
     //                    } */
     //            /*      var folder = (StorageFolder)StorageItem;
-    //                    var items = await folder.GetItemsAsync();
+    //                    var items = await folder.ShellGridViewItems_GetItemsAsync();
     //                    foreach (var item in items)
     //                    {
     //
