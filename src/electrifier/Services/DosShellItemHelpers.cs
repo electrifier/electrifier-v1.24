@@ -1,7 +1,7 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Imaging;
+﻿using Windows.Storage.Search;
 using Windows.Storage.FileProperties;
-using Windows.Storage.Search;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml.Controls;
 
 namespace electrifier.Services;
 
@@ -49,7 +49,7 @@ internal static class DosShellItemHelpers
 
         if (thumbnail is not null)
         {
-//            return thumbnail.Path;
+            //            return thumbnail.Path;
         }
 
         if (path is not null)
@@ -65,7 +65,7 @@ internal static class DosShellItemHelpers
     {
         if (thumbnail is not null)
         {
-//            return thumbnail.Path;
+            //            return thumbnail.Path;
         }
 
         if (path is not null)

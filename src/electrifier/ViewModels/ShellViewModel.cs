@@ -1,11 +1,10 @@
-﻿using System.Diagnostics;
-using System.Text;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI;
 using electrifier.Contracts.Services;
 using electrifier.Views;
-
 using Microsoft.UI.Xaml.Navigation;
+using System.Diagnostics;
+using System.Text;
 
 namespace electrifier.ViewModels;
 

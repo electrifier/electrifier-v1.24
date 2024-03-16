@@ -1,10 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-using electrifier.Contracts.Services;
+﻿using electrifier.Contracts.Services;
 using electrifier.Helpers;
 using electrifier.ViewModels;
-
 using Microsoft.UI.Xaml.Controls;
+using System.Diagnostics.CodeAnalysis;
 
 namespace electrifier.Services;
 

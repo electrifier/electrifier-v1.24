@@ -1,15 +1,15 @@
-﻿using Windows.Storage;
-using Windows.Storage.Search;
-using Windows.ApplicationModel;
-using System.Threading.Tasks;
-using System.Net.NetworkInformation;
-using System.IO;
-using System.Diagnostics;
-using System.Collections.ObjectModel;
-using Microsoft.UI.Xaml.Controls;
-using electrifier.Services;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI.UI;
-using CommunityToolkit.Mvvm.ComponentModel;
+using electrifier.Services;
+using Microsoft.UI.Xaml.Controls;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.IO;
+using System.Net.NetworkInformation;
+using System.Threading.Tasks;
+using Windows.ApplicationModel;
+using Windows.Storage.Search;
+using Windows.Storage;
 
 namespace electrifier.ViewModels;
 
