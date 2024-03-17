@@ -1,52 +1,105 @@
 ﻿<Page x:Class="electrifier.Views.WorkbenchPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:behaviors="using:electrifier.Behaviors"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:controls="using:CommunityToolkit.WinUI.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:ui="using:CommunityToolkit.WinUI"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
       mc:Ignorable="d">
-
+    <!--       bahaviors:NavigationViewHeaderBehavior.Header="{x:Bind Header}" -->
+    <!-- TODO: ui:UIElementExtensions.ClipToBounds="{x:Bind IsClipped, Mode=OneWay}" -->
     <Grid x:Name="ContentArea"
-          Width="Auto">
+          Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition MinWidth="500" />
-            <ColumnDefinition MinWidth="200"
-                              Width="250" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <StackPanel x:Uid="WorkbenchTitleTextBlock"
+        <!-- DockPanel.Dock="Top" -->
+        <StackPanel x:Name="MainContentAreaStackPanel"
                     Grid.Column="0">
-            <TextBlock Margin="0,0,0,12"
-                       Style="{StaticResource SubtitleTextBlockStyle}"
-                       Text="Workbench" />
+            <!-- TODO: Bind to App Notifications -->
+            <InfoBar x:Name="LicenseAgreementInfoBar"
+                     IsOpen="True"
+                     Message="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                     Title="License Agreement">
+                <InfoBar.ActionButton>
+                    <HyperlinkButton Content="Apache License 2.0"
+                                     NavigateUri="https://raw.githubusercontent.com/electrifier/electrifier/main/LICENSE" />
+                </InfoBar.ActionButton>
+            </InfoBar>
+            <Border>
+
+            </Border>
         </StackPanel>
 
-        <!-- TODO: ui:UIElementExtensions.ClipToBounds="{x:Bind IsClipped, Mode=OneWay}" -->
-        <Grid Width="148"
-              Height="148"
-              Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
-              BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
-              BorderThickness="1">
-            <!--  We translate the inner rectangles outside of the bounds of the container.  -->
-            <Rectangle Width="100"
-                       Height="100"
-                       Fill="{ThemeResource SystemFillColorAttentionBrush}">
-                <Rectangle.RenderTransform>
-                    <TranslateTransform X="-50"
-                                        Y="-50" />
-                </Rectangle.RenderTransform>
-            </Rectangle>
-            <Rectangle Width="100"
-                       Height="100"
-                       Fill="{ThemeResource SystemFillColorSuccessBrush}">
-                <Rectangle.RenderTransform>
-                    <TranslateTransform X="50"
-                                        Y="50" />
-                </Rectangle.RenderTransform>
-            </Rectangle>
-        </Grid>
+        <!--<StackPanel x:Name="RightContentAreatStackPanel"
+                    Grid.Column="1"
+                    Visibility="Collapsed">
+            --><!--<controls:ContentSizer Cursor="Hand"
+                                       TargetControl="{x:Bind LicenseAgreementStackPanel}" />--><!--
+            <Border>
+                <TextBlock Text="Text inside a border"
+                           FontSize="18" />
+            </Border>
+            <Border>
+                <TextBlock Text="Text inside a border" />
+            </Border>
+            <Border>
+                <TextBlock Text="Text inside a border" />
+            </Border>
+            <Border>
+                <TextBlock Text="Text inside a border" />
+            </Border>
+        </StackPanel>-->
+
+        <StackPanel Grid.Column="1">
+            <Button Name="HorizontalButton1"
+                    Content="Add Horizontal Control 1" />
+            <Button Name="HorizontalButton2"
+                    Content="Add Horizontal Control 2" />
+            <Button Name="HorizontalButton3"
+                    Content="Add Horizontal Control 3" />
+        </StackPanel>
+
+        <!-- Wrappanel
+            <Grid Grid.Column="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Button Name="HorizontalButton"
+                        Content="Add Horizontal Control" />
+                <controls:WrapPanel Name="HorizontalWrapPanel" />
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Button Name="VerticalButton"
+                        Content="Add Vertical Control" />
+                <controls:WrapPanel Name="VerticalWrapPanel"
+                                    VerticalSpacing="10"
+                                    HorizontalSpacing="10"
+                                    Orientation="Vertical" />
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <TextBlock>
+                <Run>Some leading text with a</Run>
+                <Hyperlink />
+                <Run>in the middle.</Run>
+                </TextBlock>
+            </Grid> 
+
+        </Grid>-->
     </Grid>
 </Page>
