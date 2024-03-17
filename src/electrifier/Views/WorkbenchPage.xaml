@@ -1,12 +1,14 @@
 ﻿<Page x:Class="electrifier.Views.WorkbenchPage"
-      xmlns:behaviors="using:electrifier.Behaviors"
-      xmlns:controls="using:CommunityToolkit.WinUI.Controls"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:ui="using:CommunityToolkit.WinUI"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="using:CommunityToolkit.WinUI"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+      xmlns:behaviors="using:electrifier.Behaviors"
+      xmlns:viewmodels="using:electrifier.ViewModels"
+      d:DataContext="{d:DesignInstance Type=viewmodels:WorkbenchViewModel}"
+      behaviors:NavigationViewHeaderBehavior.HeaderMode="Always"
       mc:Ignorable="d">
     <!--       bahaviors:NavigationViewHeaderBehavior.Header="{x:Bind Header}" -->
     <!-- TODO: ui:UIElementExtensions.ClipToBounds="{x:Bind IsClipped, Mode=OneWay}" -->
@@ -14,92 +16,76 @@
           Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition MaxWidth="450"
+                              MinWidth="300" />
         </Grid.ColumnDefinitions>
-
-        <!-- DockPanel.Dock="Top" -->
         <StackPanel x:Name="MainContentAreaStackPanel"
                     Grid.Column="0">
             <!-- TODO: Bind to App Notifications -->
-            <InfoBar x:Name="LicenseAgreementInfoBar"
+            <InfoBar x:Name="SettingsBackupWorkbenchInfoBar"
+                     BorderThickness="8"
+                     IsClosable="True"
                      IsOpen="True"
-                     Message="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                     Message="Do you want to allow electrifier to make backups of your Workbench settings?"
+                     Title="Backup Personal User Data">
+                <InfoBar.Content>
+                    <ItemsStackPanel Height="Auto"
+                                     Orientation="Horizontal">
+                        <CheckBox x:Name="SettingsBackupWorkbenchAllowed">
+                            Yes
+                        </CheckBox>
+                        <CheckBox x:Name="SettingsBackupWorkbenchDontShowAgain">
+                            Don't show again
+                        </CheckBox>
+                    </ItemsStackPanel>
+                </InfoBar.Content>
+            </InfoBar>
+            <Border BorderThickness="8"
+                    Visibility="Collapsed">
+                <Button Name="MainContentAreaButton1"
+                        Content="Horizontal Control" />
+            </Border>
+        </StackPanel>
+
+        <controls:GridSplitter Grid.Column="1"
+                               Width="24"
+                               HorizontalAlignment="Left"
+                               ResizeBehavior="BasedOnAlignment"
+                               ResizeDirection="Auto">
+            <!--<controls:GridSplitter.RenderTransform>
+                <TranslateTransform X="-7" />
+            </controls:GridSplitter.RenderTransform>-->
+        </controls:GridSplitter>
+
+        <StackPanel x:Name="SidebarStackPanel"
+                    Grid.Column="2">
+            <!-- TODO: BorderThickness => StaticRessource -->
+            <InfoBar x:Name="LicenseAgreementInfoBar"
+                     BorderThickness="8"
+                     IsClosable="True"
+                     IsOpen="True"
+                     Message="Lorem ipsum dolor sit amet"
                      Title="License Agreement">
                 <InfoBar.ActionButton>
                     <HyperlinkButton Content="Apache License 2.0"
                                      NavigateUri="https://raw.githubusercontent.com/electrifier/electrifier/main/LICENSE" />
                 </InfoBar.ActionButton>
             </InfoBar>
-            <Border>
-
-            </Border>
-        </StackPanel>
-
-        <!--<StackPanel x:Name="RightContentAreatStackPanel"
-                    Grid.Column="1"
-                    Visibility="Collapsed">
-            --><!--<controls:ContentSizer Cursor="Hand"
-                                       TargetControl="{x:Bind LicenseAgreementStackPanel}" />--><!--
-            <Border>
-                <TextBlock Text="Text inside a border"
-                           FontSize="18" />
-            </Border>
-            <Border>
-                <TextBlock Text="Text inside a border" />
-            </Border>
-            <Border>
-                <TextBlock Text="Text inside a border" />
-            </Border>
-            <Border>
-                <TextBlock Text="Text inside a border" />
-            </Border>
-        </StackPanel>-->
-
-        <StackPanel Grid.Column="1">
+            <!-- TODO: Bind to App Notifications -->
             <Button Name="HorizontalButton1"
-                    Content="Add Horizontal Control 1" />
+                    BorderThickness="8"
+                    Content="Horizontal Control" />
             <Button Name="HorizontalButton2"
-                    Content="Add Horizontal Control 2" />
+                    BorderThickness="8"
+                    Content="Horizontal Control" />
             <Button Name="HorizontalButton3"
-                    Content="Add Horizontal Control 3" />
+                    BorderThickness="8"
+                    Content="Horizontal Control" />
+            <TextBlock>
+                    <Run>Some leading text with a</Run>
+                    <Hyperlink />
+                    <Run>in the middle.</Run>
+            </TextBlock>
         </StackPanel>
-
-        <!-- Wrappanel
-            <Grid Grid.Column="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Button Name="HorizontalButton"
-                        Content="Add Horizontal Control" />
-                <controls:WrapPanel Name="HorizontalWrapPanel" />
-            </Grid>
-
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <Button Name="VerticalButton"
-                        Content="Add Vertical Control" />
-                <controls:WrapPanel Name="VerticalWrapPanel"
-                                    VerticalSpacing="10"
-                                    HorizontalSpacing="10"
-                                    Orientation="Vertical" />
-            </Grid>
-
-            <Grid Grid.Row="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="50" />
-                    <RowDefinition />
-                </Grid.RowDefinitions>
-                <TextBlock>
-                <Run>Some leading text with a</Run>
-                <Hyperlink />
-                <Run>in the middle.</Run>
-                </TextBlock>
-            </Grid> 
-
-        </Grid>-->
     </Grid>
 </Page>
