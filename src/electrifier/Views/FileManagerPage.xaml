@@ -24,6 +24,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="using:electrifier.Services"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
       xmlns:ui="using:CommunityToolkit.WinUI"
       xmlns:viewmodels="using:electrifier.ViewModels"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -80,17 +81,11 @@
                                 <RowDefinition />
                                 <RowDefinition Height="45" />
                             </Grid.RowDefinitions>
-                            <!-- TODO: Use constant from DosShellItemHelpers as ImageIcon.Source -->
-                            <ImageIcon x:Name="ImageGridView_ItemTemplate_DefaultFolderIcon"
-                                       Visibility="{x:Bind IsFolder}"
-                                       Source="ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico"
-                                       Grid.Row="0" />
-                            <!-- TODO: Use constant from DosShellItemHelpers as ImageIcon.Source -->
-                            <ImageIcon x:Name="ImageGridView_ItemTemplate_DefaultFileIcon"
-                                       Visibility="{x:Bind IsFile}"
-                                       Source="ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"
-                                       Grid.Row="0" />
-                            <!-- TODO: Set FontSize by style template -->
+                            <!-- muxc:ImageIcon Source="ms-appx:///Assets/Views/Workbench/Shell32 Folder containing File.ico" -->
+                            <!-- muxc:Source="ms-appx:///Assets/StoreLogo.png" -->
+                            <muxc:ImageIcon x:Name="muxcImageIcon"
+                                            x:Load="False"
+                                            Source="ms-appx:///Assets/Views/Workbench/Shell32 Folder containing File.ico"/>
                             <TextBlock x:Name="ImageGridView_ItemTemplate_TextBlock"
                                        Grid.Row="1"
                                        FontSize="12"

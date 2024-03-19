@@ -28,16 +28,22 @@ public partial class FileManagerViewModel : ObservableRecipient
         // Set up ShellTreeViewItems with the root items
         var parentShellItem = new DosShellItem(KnownLibraryId.Music);
         ShellTreeViewItems.Add(parentShellItem);
-        _ = ShellTreeViewItems_GetItemsAsync(parentShellItem, enumChildren: true);
+        //_ = ShellTreeViewItems_GetItemsAsync(parentShellItem, enumChildren: true);
         parentShellItem = new DosShellItem(KnownLibraryId.Pictures);
         ShellTreeViewItems.Add(parentShellItem);
-        _ = ShellTreeViewItems_GetItemsAsync(parentShellItem, enumChildren: true);
+        //_ = ShellTreeViewItems_GetItemsAsync(parentShellItem, enumChildren: true);
         parentShellItem = new DosShellItem(KnownLibraryId.Videos);
         ShellTreeViewItems.Add(parentShellItem);
-        _ = ShellTreeViewItems_GetItemsAsync(parentShellItem, enumChildren: true);
+        //_ = ShellTreeViewItems_GetItemsAsync(parentShellItem, enumChildren: true);
         parentShellItem = new DosShellItem(KnownLibraryId.Documents);
         ShellTreeViewItems.Add(parentShellItem);
-        _ = ShellTreeViewItems_GetItemsAsync(parentShellItem, enumChildren: true);
+        //_ = ShellTreeViewItems_GetItemsAsync(parentShellItem, enumChildren: true);
+
+        // add children to the root items in ShellTreeViewItems
+        foreach (var item in ShellTreeViewItems)
+        {
+            _ = ShellTreeViewItems_GetItemsAsync(item, enumChildren: true);
+        }
 
 
 
@@ -88,16 +94,16 @@ public partial class FileManagerViewModel : ObservableRecipient
     //        return "{ unknown error in $EnumerateFolders }";
     //    }
 
-    private async Task ShellTreeViewItems_GetItemsAsync(KnownLibraryId libraryId)
-    {
-        var library = await StorageLibrary.GetLibraryAsync(libraryId);
-        var saveFolder = library.SaveFolder;
+    //private async Task ShellTreeViewItems_GetItemsAsync(KnownLibraryId libraryId)
+    //{
+    //    var library = await StorageLibrary.GetLibraryAsync(libraryId);
+    //    var saveFolder = library.SaveFolder;
 
-        if (saveFolder != null)
-        {
-            _ = ShellTreeViewItems_GetItemsAsync(saveFolder);
-        }
-    }
+    //    if (saveFolder != null)
+    //    {
+    //        _ = ShellTreeViewItems_GetItemsAsync(saveFolder);
+    //    }
+    //}
 
     private async Task ShellTreeViewItems_GetItemsAsync(DosShellItem parentShellItem, bool enumChildren = false)
     {

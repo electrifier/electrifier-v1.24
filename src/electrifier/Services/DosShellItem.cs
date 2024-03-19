@@ -119,10 +119,16 @@ public class DosShellItem : INotifyPropertyChanged
             EnumerationQueryOptions = new QueryOptions(CommonFolderQuery.DefaultQuery);
         }
 
+        //await library;
+
+
         // StorageItem = library as IStorageItem ?? throw new ArgumentException(nameof(libraryId), "can't create StorageItem from LibraryId");
         if (library is IStorageItem storageItem)
         {
             StorageItem = storageItem;
+
+            //public bool IsLibrary => StorageItem is StorageFolder folder && folder.IsOfType(StorageItemTypes.Library);
+
 
             // Determine if the item is a folder
             IsFolder = StorageItem.IsOfType(StorageItemTypes.Folder);
@@ -133,10 +139,11 @@ public class DosShellItem : INotifyPropertyChanged
         }
         else
         {
-            IsFolder = false;
-
+            IsFolder = true;
             ShellIcon = DosShellItemHelpers.DefaultFolderContainingFileIcon;
         }
+
+        Children = newChildren;
     }
     //    {
     //        //if(KnownLibraryId.Unknown == library)
