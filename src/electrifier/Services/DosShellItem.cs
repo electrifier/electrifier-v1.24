@@ -105,8 +105,10 @@ public class DosShellItem : INotifyPropertyChanged
     // Copilot: KnownLibraryIdGetLibraryId() => StorageItem is StorageFolder folder ? folder.LibraryRelativePath : KnownLibraryId.Unknown;
     public DosShellItem(KnownLibraryId libraryId, QueryOptions? forcedFolderQueryOptions = null)
     {
+        // TODO: Check if libraryId is valid
+        // TODO: try / catch, reset values if exception has been raised
         var library = StorageLibrary.GetLibraryAsync(libraryId);
-        Children = new ObservableCollection<DosShellItem>();
+        var newChildren = new ObservableCollection<DosShellItem>();
 
         if (forcedFolderQueryOptions != null)
         {
@@ -133,7 +135,7 @@ public class DosShellItem : INotifyPropertyChanged
         {
             IsFolder = false;
 
-            ShellIcon = DosShellItemHelpers.DefaultUnknownFileIcon;
+            ShellIcon = DosShellItemHelpers.DefaultFolderContainingFileIcon;
         }
     }
     //    {

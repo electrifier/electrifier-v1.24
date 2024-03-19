@@ -15,7 +15,6 @@
     limitations under the License.
 -->
 <Page x:Class="electrifier.Views.SettingsPage"
-      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
       xmlns:behaviors="using:electrifier.Behaviors"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:helpers="using:electrifier.Helpers"
@@ -23,6 +22,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:xaml="using:Microsoft.UI.Xaml"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      behaviors:NavigationViewHeaderBehavior.HeaderMode="Always"
       mc:Ignorable="d">
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />

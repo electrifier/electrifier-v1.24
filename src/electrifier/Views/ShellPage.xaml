@@ -23,7 +23,6 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       Loaded="OnLoaded">
-
     <Grid>
         <Grid x:Name="AppTitleBar"
               Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
@@ -32,36 +31,27 @@
               VerticalAlignment="Top">
             <StackPanel x:Name="AppTitleBar_LeftStackPanel"
                         HorizontalAlignment="Left"
+                        Margin="0,5,0,0"
                         Orientation="Horizontal"
-                        VerticalAlignment="Top">
+                        VerticalAlignment="Top"
+                        Width="Auto">
                 <Image x:Name="AppTitleBar_WindowIcon"
-                       Margin="8,0,16,0"
+                       Height="32"
                        MaxHeight="32"
                        Source="ms-appx:///Assets/WindowIcon.ico" />
-                <!-- 
-                Style="{StaticResource ButtonRevealStyle}"
-                -->
-                <Button x:Name="AppTitleBar_BackwardButton">
-                    <!-- Glyph "&#xf0d5;" => ChromeBackContrast -->
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                              Glyph="&#xf0d5;" />
-                </Button>
-                <Button x:Name="AppTitleBar_ForwardButton"
-                        Margin="8,8">
-                    <!-- Glyph "&#xf0d5;" => ChromeBackContrastMirrored -->
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                              Glyph="&#xf0d6;" />
-                </Button>
+
                 <!-- TODO: Create style in static resources: Style="{StaticResource AppTitleBarTitleStyle}" -->
                 <StackPanel x:Name="AppTitleBar_TitleStackPanel"
                             Orientation="Vertical"
-                            VerticalAlignment="Top">
+                            VerticalAlignment="Top"
+                            Margin="5,0,0,0">
                     <TextBlock x:Name="AppTitleBar_TitleTextBlock"
-                               FontSize="18"
-                               Text="_Name_of_Page_" />
+                               FontSize="16"
+                               Text="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}" />
                     <TextBlock x:Name="AppTitleBar_SubTitleTextBlock"
                                FontSize="12"
-                               Text="electrifier - _Workbench_" />
+                               HorizontalAlignment="Right"
+                               Text="electrifier" />
                 </StackPanel>
             </StackPanel>
         </Grid>
@@ -77,6 +67,13 @@
                         IsSettingsVisible="True"
                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged">
             <!--<NavigationView.IsTitleBarAutoPaddingEnabled />-->
+            <!--
+                TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
+                https://docs.microsoft.com/windows/uwp/app-resources/localize-strings-ui-manifest#refer-to-a-string-resource-identifier-from-xaml
+            
+                TODO: Update item icons by updating FontIcon.Glyph properties.
+                https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list
+                -->
             <NavigationView.PaneHeader>
                 <ImageIcon MaxHeight="32"
                            Visibility="Collapsed"
@@ -85,13 +82,6 @@
             </NavigationView.PaneHeader>
             <!--<NavigationView.PaneTitle> electrifier </NavigationView.PaneTitle>-->
             <NavigationView.MenuItems>
-                <!--
-                TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
-                https://docs.microsoft.com/windows/uwp/app-resources/localize-strings-ui-manifest#refer-to-a-string-resource-identifier-from-xaml
-            
-                TODO: Update item icons by updating FontIcon.Glyph properties.
-                https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list
-                -->
                 <NavigationViewItem x:Uid="NavigationView_Workbench"
                                     IsSelected="True"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
@@ -199,7 +189,9 @@
                 </behaviors:NavigationViewHeaderBehavior>
             </i:Interaction.Behaviors>
             <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
-                <Frame x:Name="NavigationFrame" />
+                <!-- TODO: Background="Transparent" -->
+                <Frame x:Name="NavigationFrame"
+                       />
             </Grid>
         </NavigationView>
     </Grid>

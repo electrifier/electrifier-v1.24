@@ -28,8 +28,8 @@
       mc:Ignorable="d">
     <!--       bahaviors:NavigationViewHeaderBehavior.Header="{x:Bind Header}" -->
     <!-- TODO: ui:UIElementExtensions.ClipToBounds="{x:Bind IsClipped, Mode=OneWay}" -->
-    <Grid x:Name="ContentArea"
-          Background="{ThemeResource CardBackgroundFillColorDefaultBrush}">
+    <!-- TODO: removed Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" -->
+    <Grid x:Name="ContentArea">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition MaxWidth="450"
@@ -40,36 +40,29 @@
             <!-- TODO: Bind to App Notifications -->
             <InfoBar x:Name="SettingsBackupWorkbenchInfoBar"
                      BorderThickness="8"
+                     BorderBrush="Transparent"
                      IsClosable="True"
                      IsOpen="True"
                      Message="Do you want to allow electrifier to make backups of your Workbench settings?"
-                     Title="Backup Personal User Data">
+                     Title="Backup your Personal User Settings">
                 <InfoBar.Content>
                     <ItemsStackPanel Height="Auto"
                                      Orientation="Horizontal">
                         <CheckBox x:Name="SettingsBackupWorkbenchAllowed">
-                            Yes
-                        </CheckBox>
-                        <CheckBox x:Name="SettingsBackupWorkbenchDontShowAgain">
-                            Don't show again
+                            Enable automatic backups and don't show again
                         </CheckBox>
                     </ItemsStackPanel>
                 </InfoBar.Content>
             </InfoBar>
-            <Border BorderThickness="8"
-                    Visibility="Collapsed">
-                <Button Name="MainContentAreaButton1"
-                        Content="Horizontal Control" />
-            </Border>
         </StackPanel>
 
         <controls:GridSplitter Grid.Column="1"
-                               Width="24"
+                               Width="12"
                                HorizontalAlignment="Left"
                                ResizeBehavior="BasedOnAlignment"
-                               ResizeDirection="Auto">
+                               ResizeDirection="Columns">
             <controls:GridSplitter.RenderTransform>
-                <TranslateTransform X="-4" />
+                <TranslateTransform X="-6" />
             </controls:GridSplitter.RenderTransform>
         </controls:GridSplitter>
 
@@ -78,6 +71,7 @@
             <!-- TODO: BorderThickness => StaticRessource -->
             <InfoBar x:Name="LicenseAgreementInfoBar"
                      BorderThickness="8"
+                     BorderBrush="Transparent"
                      IsClosable="True"
                      IsOpen="True"
                      Message="Lorem ipsum dolor sit amet"
@@ -88,18 +82,12 @@
                 </InfoBar.ActionButton>
             </InfoBar>
             <!-- TODO: Bind to App Notifications -->
-            <Button Name="HorizontalButton1"
-                    BorderThickness="8"
-                    Content="Horizontal Control" />
-            <Button Name="HorizontalButton2"
-                    BorderThickness="8"
-                    Content="Horizontal Control" />
-            <Button Name="HorizontalButton3"
-                    BorderThickness="8"
-                    Content="Horizontal Control" />
-            <TextBlock>
+            <TextBlock TextWrapping="Wrap">
                     <Run>Some leading text with a</Run>
-                    <Hyperlink />
+                    <Hyperlink NavigateUri="https://github.com/electrifier/electrifier"
+                               >
+                        https://github.com/electrifier/electrifier
+                    </Hyperlink>
                     <Run>in the middle.</Run>
             </TextBlock>
         </StackPanel>

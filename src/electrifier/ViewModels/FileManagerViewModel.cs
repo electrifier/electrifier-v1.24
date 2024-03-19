@@ -118,7 +118,7 @@ public partial class FileManagerViewModel : ObservableRecipient
                 parentShellItem.Children.Add(item);
                 if (enumChildren)
                 {
-                    _ = item.GetChildsAsync();
+                    await item.GetChildsAsync();
                     //await ShellTreeViewItems_GetItemsAsync(saveFolder);
                 }
             }
