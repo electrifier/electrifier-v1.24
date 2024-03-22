@@ -67,6 +67,9 @@
                             <ImageIcon x:Name="ShellViewItemTemplate_DefaultFileIcon"
                                        Visibility="{x:Bind IsFile}"
                                        Source="ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico" />
+                            <!--<muxc:ImageIcon x:Name="muxcImageIcon"
+                                            x:Load="False"
+                                            Source="{x:Bind ShellIcon.Source}"/>-->
                             <TextBlock x:Name="ShellViewItemTemplate_TextBlock"
                                        Margin="5,0,5,0"
                                        Text="{x:Bind Name}" />
@@ -83,9 +86,16 @@
                             </Grid.RowDefinitions>
                             <!-- muxc:ImageIcon Source="ms-appx:///Assets/Views/Workbench/Shell32 Folder containing File.ico" -->
                             <!-- muxc:Source="ms-appx:///Assets/StoreLogo.png" -->
-                            <muxc:ImageIcon x:Name="muxcImageIcon"
+                            <ImageIcon x:Name="ShellViewItemTemplate_DefaultFolderIcon"
+                                       Visibility="{x:Bind IsFolder}"
+                                       Source="ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico" />
+                            <ImageIcon x:Name="ShellViewItemTemplate_DefaultFileIcon"
+                                       Visibility="{x:Bind IsFile}"
+                                       Source="ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico" />
+                            <!--<muxc:ImageIcon x:Name="muxcImageIcon"
                                             x:Load="False"
-                                            Source="ms-appx:///Assets/Views/Workbench/Shell32 Folder containing File.ico"/>
+                                            Source="{x:Bind ShellIcon.Source}"/>-->
+                            <!-- muxc:ImageIcon x:Load="False" -->
                             <TextBlock x:Name="ImageGridView_ItemTemplate_TextBlock"
                                        Grid.Row="1"
                                        FontSize="12"
@@ -101,14 +111,14 @@
                     </Style>
                 </Grid.Resources>
 
-                <!-- TODO: Enable vertical scrolling for Tree: VerticalScrollMode="Enabled"
+                <!-- TODO: Enable vertical scrolling for Tree:
+                            VerticalScrollMode="Enabled"
                             HorizontalScrollMode="Enabled"
                             HorizontalScrollBarVisibility="Auto"
                             VerticalScrollMode="Enabled"
                             VerticalScrollBarVisibility="True"
                 -->
 
-                <!--  Left-side 'Shelf', In this case you could also use a GridSplitter  -->
                 <Border x:Name="SideContent">
                     <!-- ItemTemplateSelector="{StaticResource ExplorerItemTemplateSelector}" -->
                     <!-- ItemsSource="{x:Bind ShellTreeViewItems}" -->
@@ -116,27 +126,16 @@
                               ItemTemplate="{StaticResource ShellTreeViewItemTemplate}" />
                 </Border>
                 <!-- Center element: ContentSizer -->
-                <controls:ContentSizer Grid.Column="1"
-                                       TargetControl="{x:Bind SideContent}" />
-                <!-- Right-side 'Shelf' -->
-                <!--<ScrollViewer Grid.Column="2"
-                                  ZoomMode="Enabled"
-                                  IsTabStop="True"
-                                  IsVerticalScrollChainingEnabled="True"
-                                  HorizontalAlignment="Stretch"
-                                  VerticalAlignment="Stretch"
-                                  ViewChanged="ScrollViewerControl_ViewChanged"
-                                  HorizontalScrollMode="Disabled"
-                                  HorizontalScrollBarVisibility="Visible"
-                                  VerticalScrollMode="Enabled"
-                                  VerticalScrollBarVisibility="Auto">
-                        <GridView x:Name="ShellGridView"
-                                  ItemContainerStyle="{StaticResource ImageGridViewItemContainerStyle}"
-                                  ItemsSource="{x:Bind ShellGridViewItems}"
-                                  ItemTemplate="{StaticResource ShellGridViewItemTemplate}"
-                                  ContainerContentChanging="ImageGridView_ContainerContentChanging">
-                        </GridView>
-                </ScrollViewer>-->
+                <controls:GridSplitter Grid.Column="1"
+                                       Width="12"
+                                       HorizontalAlignment="Left"
+                                       ResizeBehavior="BasedOnAlignment"
+                                       ResizeDirection="Columns">
+                    <controls:GridSplitter.RenderTransform>
+                        <TranslateTransform X="-6" />
+                    </controls:GridSplitter.RenderTransform>
+                </controls:GridSplitter>
+
                 <!-- ItemsSource="{x:Bind ShellGridViewItems}" -->
                 <!-- ContainerContentChanging="ShellGridViewItems_ContainerContentChanging" -->
                 <GridView x:Name="ShellGridView"

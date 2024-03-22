@@ -25,6 +25,12 @@ public partial class FileManagerViewModel : ObservableRecipient
 
     public FileManagerViewModel()
     {
+        // Set up the AdvancedCollectionView with live shaping enabled to filter and sort the original list
+        ShellGridCollectionViewItems = new AdvancedCollectionView(ShellGridViewItems, true);
+        // And sort ascending by the property "Name"
+        ShellGridCollectionViewItems.SortDescriptions.Add(new SortDescription("Name", SortDirection.Ascending));
+        _ = ShellGridViewItems_GetItemsAsync(KnownLibraryId.Documents);
+
         // Set up ShellTreeViewItems with the root items
         var parentShellItem = new DosShellItem(KnownLibraryId.Music);
         ShellTreeViewItems.Add(parentShellItem);
@@ -40,18 +46,14 @@ public partial class FileManagerViewModel : ObservableRecipient
         //_ = ShellTreeViewItems_GetItemsAsync(parentShellItem, enumChildren: true);
 
         // add children to the root items in ShellTreeViewItems
-        foreach (var item in ShellTreeViewItems)
-        {
-            _ = ShellTreeViewItems_GetItemsAsync(item, enumChildren: true);
-        }
+        //foreach (var item in ShellTreeViewItems)
+        //{
+        //    _ = ShellTreeViewItems_GetItemsAsync(item, enumChildren: true);
+        //}
 
 
 
-        // Set up the AdvancedCollectionView with live shaping enabled to filter and sort the original list
-        ShellGridCollectionViewItems = new AdvancedCollectionView(ShellGridViewItems, true);
-        // And sort ascending by the property "Name"
-        ShellGridCollectionViewItems.SortDescriptions.Add(new SortDescription("Name", SortDirection.Ascending));
-        _ = ShellGridViewItems_GetItemsAsync(KnownLibraryId.Documents);
+
     }
 
     //    private readonly Task enumerateFoldersTask = Task.Run(() => EnumerateFolders(@"C:\", true));
