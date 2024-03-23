@@ -61,20 +61,69 @@ internal static class DosShellItemHelpers
         return "ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico";
     }
 
+// Document this// Document this method
     public static string GetIconPath(StorageItemThumbnail? thumbnail, string? path, bool isFolder)
     {
         if (thumbnail is not null)
         {
             //            return thumbnail.Path;
         }
-
         if (path is not null)
         {
             return path;
         }
-
         return isFolder ? "ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico" : "ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico";
     }
+    public static string GetIconPath(StorageItemThumbnail? thumbnail, string? path, bool isFolder, bool isNetwork)
+    {
+        if (thumbnail is not null)
+        {
+            //            return thumbnail.Path;
+        }
+        if (path is not null)
+        {
+            return path;
+        }
+        if (isNetwork)
+        {
+            return isFolder ? "ms-appx:///Assets/Views/Workbench/Shell32 Network Folder.ico" : "ms-appx:///Assets/Views/Workbench/Shell32 Network.ico";
+        }
+        return isFolder ? "ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico" : "ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico";
+    }
+    public static string GetIconPath(StorageItemThumbnail? thumbnail, string? path, bool isFolder, bool isNetwork, bool isOffline)
+    {
+        if (thumbnail is not null)
+        {
+            //            return thumbnail.Path;
+        }
+        if (path is not null)
+        {
+            return path;
+        }
+        if (isNetwork)
+        {
+            return isFolder ? "ms-appx:///Assets/Views/Workbench/Shell32 Network Folder.ico" : "ms-appx:///Assets/Views/Workbench/Shell32 Network.ico";
+        }
+        if (isOffline)
+        {
+            return isFolder ? "ms-appx:///Assets/Views/Workbench/Shell32 Network Offline.ico" : "ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico";
+        }
+        return isFolder ? "ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico" : "ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico";
+    }
+    //public static string GetIconPath(StorageItemThumbnail? thumbnail, string? path, bool isFolder)
+    //{
+    //    if (thumbnail is not null)
+    //    {
+    //        //            return thumbnail.Path;
+    //    }
+
+    //    if (path is not null)
+    //    {
+    //        return path;
+    //    }
+
+    //    return isFolder ? "ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico" : "ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico";
+    //}
 
     //public static string GetIconPath(StorageItemThumbnail? thumbnail, string? path, bool isFolder, bool isNetwork)
     //{

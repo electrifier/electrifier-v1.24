@@ -1,15 +1,11 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI.UI;
 using electrifier.Services;
 using Microsoft.UI.Xaml.Controls;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Net.NetworkInformation;
-using System.Threading.Tasks;
-using Windows.ApplicationModel;
-using Windows.Storage.Search;
 using Windows.Storage;
+using Windows.Storage.Search;
 
 namespace electrifier.ViewModels;
 
@@ -22,6 +18,34 @@ public partial class FileManagerViewModel : ObservableRecipient
     }
     public ObservableCollection<DosShellItem> ShellGridViewItems { get; } = new ObservableCollection<DosShellItem>();
     public ObservableCollection<DosShellItem> ShellTreeViewItems { get; } = new ObservableCollection<DosShellItem>();
+    public uint FolderCount
+    {
+        get;
+    }
+    public uint FileCount
+    {
+        get;
+    }
+
+    private DosShellItem DocumentsShellItem
+    {
+        get;
+    }
+
+    public DosShellItem MusicShellItem
+    {
+        get;
+    }
+    public DosShellItem PicturesShellItem
+    {
+        get;
+        private set;
+    }
+    public DosShellItem VideosShellItem
+    {
+        get;
+        private set;
+    }
 
     public FileManagerViewModel()
     {
@@ -29,20 +53,22 @@ public partial class FileManagerViewModel : ObservableRecipient
         ShellGridCollectionViewItems = new AdvancedCollectionView(ShellGridViewItems, true);
         // And sort ascending by the property "Name"
         ShellGridCollectionViewItems.SortDescriptions.Add(new SortDescription("Name", SortDirection.Ascending));
-        _ = ShellGridViewItems_GetItemsAsync(KnownLibraryId.Documents);
+        // TODO: TreeView -> OnSelection: _ = ShellGridViewItems_GetItemsAsync(KnownLibraryId.Documents);
 
-        // Set up ShellTreeViewItems with the root items
-        var parentShellItem = new DosShellItem(KnownLibraryId.Music);
-        ShellTreeViewItems.Add(parentShellItem);
+        // Add root items to ShellTreeViewItems collection
+
+        // Set up Library ShellTreeViewItems
+        DocumentsShellItem = new DosShellItem(KnownLibraryId.Documents);
+        ShellTreeViewItems.Add(DocumentsShellItem);
+        MusicShellItem = new DosShellItem(KnownLibraryId.Music);
+        ShellTreeViewItems.Add(MusicShellItem);
+        PicturesShellItem = new DosShellItem(KnownLibraryId.Pictures);
+        ShellTreeViewItems.Add(PicturesShellItem);
+        VideosShellItem = new DosShellItem(KnownLibraryId.Videos);
+        ShellTreeViewItems.Add(VideosShellItem);
         //_ = ShellTreeViewItems_GetItemsAsync(parentShellItem, enumChildren: true);
-        parentShellItem = new DosShellItem(KnownLibraryId.Pictures);
-        ShellTreeViewItems.Add(parentShellItem);
         //_ = ShellTreeViewItems_GetItemsAsync(parentShellItem, enumChildren: true);
-        parentShellItem = new DosShellItem(KnownLibraryId.Videos);
-        ShellTreeViewItems.Add(parentShellItem);
         //_ = ShellTreeViewItems_GetItemsAsync(parentShellItem, enumChildren: true);
-        parentShellItem = new DosShellItem(KnownLibraryId.Documents);
-        ShellTreeViewItems.Add(parentShellItem);
         //_ = ShellTreeViewItems_GetItemsAsync(parentShellItem, enumChildren: true);
 
         // add children to the root items in ShellTreeViewItems
@@ -51,6 +77,28 @@ public partial class FileManagerViewModel : ObservableRecipient
         //    _ = ShellTreeViewItems_GetItemsAsync(item, enumChildren: true);
         //}
 
+        ShellGridViewItems.CollectionChanged += (s, e) =>
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                var addedItems = e.NewItems;
+
+                if(addedItems is null)
+                {
+                    throw new ArgumentNullException(nameof(addedItems));
+                }
+
+                if (addedItems.Count == 0)
+                {
+                    return;
+                }
+
+                foreach (DosShellItem item in addedItems)
+                {
+                    ShellTreeViewItems.Add(item);
+                }
+            }
+        };
 
 
 
@@ -185,8 +233,8 @@ public partial class FileManagerViewModel : ObservableRecipient
 
 
     private void ShellGridViewItems_ContainerContentChanging(
-        ListViewBase sender,
-        ContainerContentChangingEventArgs args)
+            ListViewBase sender,
+            ContainerContentChangingEventArgs args)
     {
         if (args.InRecycleQueue)
         {
