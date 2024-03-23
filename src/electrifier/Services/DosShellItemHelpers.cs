@@ -1,7 +1,7 @@
-﻿using Windows.Storage.Search;
-using Windows.Storage.FileProperties;
+﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Microsoft.UI.Xaml.Controls;
+using Windows.Storage.FileProperties;
+using Windows.Storage.Search;
 
 namespace electrifier.Services;
 
@@ -61,7 +61,7 @@ internal static class DosShellItemHelpers
         return "ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico";
     }
 
-// Document this// Document this method
+    // Document this// Document this method
     public static string GetIconPath(StorageItemThumbnail? thumbnail, string? path, bool isFolder)
     {
         if (thumbnail is not null)

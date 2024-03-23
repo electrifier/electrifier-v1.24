@@ -26,12 +26,10 @@ public partial class FileManagerViewModel : ObservableRecipient
     {
         get;
     }
-
     private DosShellItem DocumentsShellItem
     {
         get;
     }
-
     public DosShellItem MusicShellItem
     {
         get;
@@ -83,7 +81,7 @@ public partial class FileManagerViewModel : ObservableRecipient
             {
                 var addedItems = e.NewItems;
 
-                if(addedItems is null)
+                if (addedItems is null)
                 {
                     throw new ArgumentNullException(nameof(addedItems));
                 }
@@ -155,7 +153,10 @@ public partial class FileManagerViewModel : ObservableRecipient
     //    }
     //}
 
-    private async Task ShellTreeViewItems_GetItemsAsync(DosShellItem parentShellItem, bool enumChildren = false)
+
+#pragma warning disable IDE0051 // Remove unused private members
+    private static async Task ShellTreeViewItems_GetItemsAsync(DosShellItem parentShellItem, bool enumChildren = false)
+#pragma warning restore IDE0051 // Remove unused private members
     {
         if (parentShellItem is null)
         {
@@ -181,6 +182,7 @@ public partial class FileManagerViewModel : ObservableRecipient
         }
     }
 
+#pragma warning disable IDE0051 // Remove unused private members
     private async Task ShellTreeViewItems_GetItemsAsync(StorageFolder storageFolder)
     {
         var childrenQueryResult = storageFolder.CreateFileQueryWithOptions(new QueryOptions());
@@ -215,25 +217,22 @@ public partial class FileManagerViewModel : ObservableRecipient
 
         /*
                 StorageFolder picturesFolder;
-
                 picturesFolder = KnownFolders.DocumentsLibrary;
-
                 var result = picturesFolder.CreateFileQueryWithOptions(new QueryOptions());
-
                 var storageFiles = await result.GetFilesAsync();
-
                 foreach (var storageItem in storageFiles)
                 {
                     ShellGridViewItems.Add(await LoadShellItemInfo(storageItem));
                 }
-
                 ImageGridView.ItemsSource = ShellGridViewItems;
         */
     }
 
 
     private void ShellGridViewItems_ContainerContentChanging(
+#pragma warning disable IDE0060 // Remove unused parameter
             ListViewBase sender,
+#pragma warning restore IDE0060 // Remove unused parameter
             ContainerContentChangingEventArgs args)
     {
         if (args.InRecycleQueue)
@@ -276,31 +275,25 @@ public partial class FileManagerViewModel : ObservableRecipient
                         var bitmapImage = await item.GetImageThumbnailAsync();
                         imageElement.Source = bitmapImage;
 
-
-
                         /*
-                         *     Image img = sender as Image; 
-                //BitmapImage bitmapImage = new BitmapImage();
-                //img.Width = bitmapImage.DecodePixelWidth = 80; 
-                //// Natural px width of image source.
-                //// You don't need to set Height; the system maintains aspect ratio, and calculates the other
-                //// dimension, as long as one dimension measurement is provided.
-                //bitmapImage.UriSource = new Uri(img.BaseUri,"Assets/StoreLogo.png");
-                //img.Source = bitmapImage;*/
-
+                        Image img = sender as Image; 
+                        //BitmapImage bitmapImage = new BitmapImage();
+                        //img.Width = bitmapImage.DecodePixelWidth = 80; 
+                        //// Natural px width of image source.
+                        //// You don't need to set Height; the system maintains aspect ratio, and calculates the other
+                        //// dimension, as long as one dimension measurement is provided.
+                        //bitmapImage.UriSource = new Uri(img.BaseUri,"Assets/StoreLogo.png");
+                        //img.Source = bitmapImage;*/
                         //imageElement.Source = new ImageSource(item.ShellIcon);
-
                         //var task = item?.GetImageThumbnailAsync();
-
                         //if (task != null)
                         //{
                         //    imageElement.Source = await task;
                         //}
-
                     }
                     else
                     {
-                        throw new ArgumentNullException(nameof(args.Item));
+                        throw new ArgumentNullException(nameof(args), ".Item is null");
                     }
                 }
             }
@@ -312,7 +305,6 @@ public partial class FileManagerViewModel : ObservableRecipient
     //    {
     //        var library = await StorageLibrary.GetLibraryAsync(libraryId);
     //        var saveFolder = library.SaveFolder;
-
     //        if (saveFolder != null)
     //        {
     //            var shellItem = new DosShellItem(saveFolder);
