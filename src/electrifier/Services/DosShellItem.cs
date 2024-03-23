@@ -10,30 +10,30 @@ using Windows.Storage.Search;
 namespace electrifier.Services;
 
 
-//public class NewShellItemImpl
+//public class NewShellItemImplementation : INotifyPropertyChanged
 //{
-//    public ObservableCollection<NewShellItemImpl> Data
+//    public ObservableCollection<NewShellItemImplementation> Data
 //    {
 //        get; set;
 //    }
 
 //    // Static async method acting as a constructor
-//    public static async Task<NewShellItemImpl> BuildViewModelAsync()
+//    public static async Task<NewShellItemImplementation> BuildViewModelAsync()
 //    {
-//        ObservableCollection<NewShellItemImpl> tmpData = await GetDataTask();
+//        ObservableCollection<NewShellItemImplementation> tmpData = await GetDataTask();
 
-//        return new NewShellItemImpl(tmpData);
+//        return new NewShellItemImplementation(tmpData);
 //    }
 
 //    // Private constructor called by the async method
-//    private NewShellItemImpl(ObservableCollection<NewShellItemImpl> data)
+//    private NewShellItemImplementation(ObservableCollection<NewShellItemImplementation> data)
 //    {
 //        Data = data;
 //    }
 
-//    private static async Task<ObservableCollection<NewShellItemImpl>> GetDataTask()
+//    private static async Task<ObservableCollection<NewShellItemImplementation>> GetDataTask()
 //    {
-//        return new ObservableCollection<NewShellItemImpl>
+//        return new ObservableCollection<NewShellItemImplementation>
 //        {
 //            new(),
 //            //new("Item 1"),
@@ -150,6 +150,8 @@ public class DosShellItem : INotifyPropertyChanged
         // TODO: Check if libraryId is valid
         // TODO: try / catch, reset values if exception has been raised
         var library = StorageLibrary.GetLibraryAsync(libraryId);
+        var libraryIdName = Enum.GetName(typeof(KnownLibraryId), libraryId);
+
         var newChildren = new ObservableCollection<DosShellItem>();
 
         if (forcedFolderQueryOptions != null)
@@ -161,12 +163,13 @@ public class DosShellItem : INotifyPropertyChanged
             EnumerationQueryOptions = new QueryOptions(CommonFolderQuery.DefaultQuery);
         }
 
-
         if (library != null)
         {
+            //addRootItem(library);
+
             //using (StorageItem is StorageFolder storeItem ? library.LibraryRelativePath : KnownLibraryId.Unknown)
             //{
-
+            //StorageItem = storeItem;
             //}
 
             //StorageItem = library;
@@ -174,7 +177,8 @@ public class DosShellItem : INotifyPropertyChanged
         }
         else
         {
-            throw new ArgumentException(nameof(libraryId), "can't create StorageItem from LibraryId");
+
+            throw new ArgumentException($"can't create StorageItem from LibraryId: {libraryIdName}");
         }
 
         ShellIcon = DosShellItemHelpers.DefaultFolderIcon;

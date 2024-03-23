@@ -15,16 +15,16 @@
     limitations under the License.
 -->
 <Page x:Class="electrifier.Views.WorkbenchPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:ui="using:CommunityToolkit.WinUI"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:controls="using:CommunityToolkit.WinUI.Controls"
       xmlns:behaviors="using:electrifier.Behaviors"
+      xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:ui="using:CommunityToolkit.WinUI"
       xmlns:viewmodels="using:electrifier.ViewModels"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       d:DataContext="{d:DesignInstance Type=viewmodels:WorkbenchViewModel}"
-      behaviors:NavigationViewHeaderBehavior.HeaderMode="Always"
+      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
       mc:Ignorable="d">
     <!--       bahaviors:NavigationViewHeaderBehavior.Header="{x:Bind Header}" -->
     <!-- TODO: ui:UIElementExtensions.ClipToBounds="{x:Bind IsClipped, Mode=OneWay}" -->
@@ -65,31 +65,39 @@
                 <TranslateTransform X="-6" />
             </controls:GridSplitter.RenderTransform>
         </controls:GridSplitter>
-
         <StackPanel x:Name="SidebarStackPanel"
                     Grid.Column="2">
             <!-- TODO: BorderThickness => StaticRessource -->
             <InfoBar x:Name="LicenseAgreementInfoBar"
-                     BorderThickness="8"
                      BorderBrush="Transparent"
+                     BorderThickness="8"
                      IsClosable="True"
                      IsOpen="True"
-                     Message="Lorem ipsum dolor sit amet"
+                     Message="Please read and accept the License Agreement"
                      Title="License Agreement">
-                <InfoBar.ActionButton>
+                <TextBlock TextWrapping="Wrap">
+                    <Run>Take a look at the repository </Run>
+                    <Hyperlink NavigateUri="https://github.com/electrifier/electrifier">
+                        https://github.com/electrifier/electrifier
+                    </Hyperlink>
+                    <Run> on GitHub...</Run>
+                </TextBlock>
+                <InfoBar.ActionButton x:Uid="LicenseAgreementInfoBarHyperlinkButton">
                     <HyperlinkButton Content="Apache License 2.0"
                                      NavigateUri="https://raw.githubusercontent.com/electrifier/electrifier/main/LICENSE" />
                 </InfoBar.ActionButton>
             </InfoBar>
-            <!-- TODO: Bind to App Notifications -->
-            <TextBlock TextWrapping="Wrap">
-                    <Run>Some leading text with a</Run>
-                    <Hyperlink NavigateUri="https://github.com/electrifier/electrifier"
-                               >
-                        https://github.com/electrifier/electrifier
+            <InfoBar>
+                <!-- TODO: Bind to App Notifications -->
+                <TextBlock TextWrapping="Wrap"
+                           Visibility="Visible">
+                    <Run>Take a look at the </Run>
+                    <Hyperlink NavigateUri="https://github.com/electrifier/electrifier">
+                        https://github.com/electrifier
                     </Hyperlink>
-                    <Run>in the middle.</Run>
-            </TextBlock>
+                    <Run> repository on GitHub</Run>
+                </TextBlock>
+            </InfoBar>
         </StackPanel>
     </Grid>
 </Page>

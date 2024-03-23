@@ -8,7 +8,6 @@ using electrifier.Notifications;
 using electrifier.Services;
 using electrifier.ViewModels;
 using electrifier.Views;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
