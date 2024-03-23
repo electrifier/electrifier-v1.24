@@ -21,8 +21,27 @@ namespace electrifier.Views;
 
 public sealed partial class FileManagerPage : Page
 {
+    #region ContentAreaBottomAppBar
 
-    public FileManagerViewModel ViewModel { get; }
+    public uint FolderCount
+    {
+        get; private set;
+    }
+
+    public string FolderCountText => FolderCount.ToString() + ", 7 hidden";
+
+    public uint FileCount
+    {
+        get; private set;
+    }
+    public string FileCountText => FileCount.ToString() + ", 6 hidden";
+
+    #endregion
+
+    public FileManagerViewModel ViewModel
+    {
+        get;
+    }
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FileManagerPage"/> class.
