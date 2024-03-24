@@ -10,27 +10,34 @@ using Windows.Storage.Search;
 namespace electrifier.Services;
 
 
+/**
+ * 
+ * https://learn.microsoft.com/en-us/uwp/api/windows.storage.search.commonfolderquery?view=winrt-22621
+ * 
+ */
+
+#region DosShellItemFactory
+// TODO: Implement DosShellItemFactory
+//public class DosShellItemFactory
+
+
 //public class NewShellItemImplementation : INotifyPropertyChanged
 //{
 //    public ObservableCollection<NewShellItemImplementation> Data
 //    {
 //        get; set;
 //    }
-
 //    // Static async method acting as a constructor
 //    public static async Task<NewShellItemImplementation> BuildViewModelAsync()
 //    {
 //        ObservableCollection<NewShellItemImplementation> tmpData = await GetDataTask();
-
 //        return new NewShellItemImplementation(tmpData);
 //    }
-
 //    // Private constructor called by the async method
 //    private NewShellItemImplementation(ObservableCollection<NewShellItemImplementation> data)
 //    {
 //        Data = data;
 //    }
-
 //    private static async Task<ObservableCollection<NewShellItemImplementation>> GetDataTask()
 //    {
 //        return new ObservableCollection<NewShellItemImplementation>
@@ -52,16 +59,20 @@ namespace electrifier.Services;
 //        };
 //    }
 //}
+#endregion
 
-/// <summary>
-/// https://learn.microsoft.com/en-us/uwp/api/windows.storage.search.commonfolderquery?view=winrt-22621
-/// </summary>
 public class DosShellItem : INotifyPropertyChanged
 {
-    public ObservableCollection<DosShellItem> Children;
+    public ObservableCollection<DosShellItem> Children
+    {
+        get => Children;
+        set =>
+            //Children = value;
+            OnPropertyChanged();
+    }
 
     //doc: https://docs.microsoft.com/en-us/uwp/api/windows.storage.search.queryoptions
-    public QueryOptions EnumerationQueryOptions
+    public QueryOptions ChildEnumerationQueryOptions
     {
         get;
     }
@@ -80,27 +91,25 @@ public class DosShellItem : INotifyPropertyChanged
     }
     public IStorageItem? StorageItem
     {
-        get;
+        get; private set;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
     protected void OnPropertyChanged([CallerMemberName] string? propertyName = null) =>
     PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
-
     // TODO: Move to DosShellItemFactory
     //        public static DosShellItem CreateRootItem() =>
     //        new DosShellItem(new StorageFolder("C:\\"));
-
     // TODO: public readonly QueryOptions defaultFolderQueryOptions = new(CommonFileQuery.OrderByName, null);  
     // => Helpers.DefaultQueryOptionsCommonFile
 
     /// <summary>
-    /// 
+    /// Create a new instance of DosShellItem
     /// </summary>
-    /// <param name="storageItem"></param>
-    /// <param name="forcedFolderQueryOptions">forcedFolderQueryOptions != null => Start enumerating Children</param>
-    /// <exception cref="ArgumentNullException">StorageItem is null</exception>
+    /// <param name="storageItem"><a cref="IStorageItem"/></param>
+    /// <param name="forcedFolderQueryOptions"></param>
+    /// <exception cref="ArgumentNullException"></exception>
     public DosShellItem(IStorageItem storageItem, QueryOptions? forcedFolderQueryOptions = null)
     {
         StorageItem = storageItem ?? throw new ArgumentNullException(nameof(storageItem));
@@ -109,21 +118,23 @@ public class DosShellItem : INotifyPropertyChanged
         // Determine if the item is a folder
         IsFolder = StorageItem.IsOfType(StorageItemTypes.Folder);
         // Set temporary icon
-        ShellIcon = IsFolder ? DosShellItemHelpers.DefaultFolderIcon : DosShellItemHelpers.DefaultUnknownFileIcon;
+        ShellIcon = IsFolder ?
+            DosShellItemHelpers.DefaultFolderIcon :
+            DosShellItemHelpers.DefaultUnknownFileIcon;
 
         if (forcedFolderQueryOptions != null)
         {
-            EnumerationQueryOptions = forcedFolderQueryOptions;
+            ChildEnumerationQueryOptions = forcedFolderQueryOptions;
         }
         else
         {
-            EnumerationQueryOptions = new QueryOptions(CommonFolderQuery.DefaultQuery);
+            ChildEnumerationQueryOptions = new QueryOptions(CommonFolderQuery.DefaultQuery);
         }
 
         _ = GetChildsAsync();
 
         #region old stuff
-        //        EnumerationQueryOptions = forcedFolderQueryOptions != null ? forcedFolderQueryOptions // : DosShellItemHelpers.DefaultFolderIcon;
+        //        ChildEnumerationQueryOptions = forcedFolderQueryOptions != null ? forcedFolderQueryOptions // : DosShellItemHelpers.DefaultFolderIcon;
 
 
         //if (forcedFolderQueryOptions != null)
@@ -156,11 +167,11 @@ public class DosShellItem : INotifyPropertyChanged
 
         if (forcedFolderQueryOptions != null)
         {
-            EnumerationQueryOptions = forcedFolderQueryOptions;
+            ChildEnumerationQueryOptions = forcedFolderQueryOptions;
         }
         else
         {
-            EnumerationQueryOptions = new QueryOptions(CommonFolderQuery.DefaultQuery);
+            ChildEnumerationQueryOptions = new QueryOptions(CommonFolderQuery.DefaultQuery);
         }
 
         if (library != null)
@@ -344,8 +355,20 @@ public class DosShellItem : INotifyPropertyChanged
     {
         if (IsFolder)
         {
+            try
+            {
+                var thumbnail = await (StorageItem as StorageFolder)?.GetThumbnailAsync(ThumbnailMode.SingleItem);
+                var bitmapImage = new BitmapImage();
+                bitmapImage.SetSource(thumbnail);
+                thumbnail.Dispose();
+                return bitmapImage;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
             //return DosShellItemHelpers.DefaultFolderIcon;
-            return new BitmapImage(new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 Folder containing File.ico"));
+            // return new BitmapImage(new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 Folder containing File.ico"));
         }
         else
         {

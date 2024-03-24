@@ -82,10 +82,6 @@
                     </Hyperlink>
                     <Run> on GitHub...</Run>
                 </TextBlock>
-                <InfoBar.ActionButton x:Uid="LicenseAgreementInfoBarHyperlinkButton">
-                    <HyperlinkButton Content="Apache License 2.0"
-                                     NavigateUri="https://raw.githubusercontent.com/electrifier/electrifier/main/LICENSE" />
-                </InfoBar.ActionButton>
             </InfoBar>
             <InfoBar>
                 <!-- TODO: Bind to App Notifications -->

@@ -8,17 +8,16 @@ namespace electrifier.Services;
 internal static class DosShellItemHelpers
 {
     /// <summary>
-    /// <br>
-    /// <see href="DefaultUnknownFileIcon"/> for the default unknown file icon.
-    /// </br>
-    /// <br>
-    /// <see cref="ImageIcon"/> for the default unknown file icon.
-    /// </br>
+    /// 
     /// </summary>
 #pragma warning disable CS8601 // Possible null reference assignment.
     public static readonly ImageIcon DefaultFolderIcon = defaultFolderImageIcon;
+#pragma warning restore CS8601 // Possible null reference assignment.
+
+#pragma warning disable CS8601 // Possible null reference assignment.
     public static readonly ImageIcon DefaultUnknownFileIcon = defaultUnknownFileImageIcon;
 #pragma warning restore CS8601 // Possible null reference assignment.
+
     public static readonly ImageIcon DefaultFolderContainingFileIcon = new()
     {
         Source = new BitmapImage(new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 Folder containing File.ico"))
