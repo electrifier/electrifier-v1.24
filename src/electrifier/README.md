@@ -1,6 +1,6 @@
 ﻿*Recommended Markdown Viewer: [Markdown Editor](https://marketplace.visualstudio.com/items?itemName=MadsKristensen.MarkdownEditor2)*
 
-# Contributring
+# Contributing
 
 # Prerequisites
 

@@ -11,8 +11,8 @@ using System.Diagnostics.CodeAnalysis;
 /// "IDE0007:Use implicit type"
 /// </summary>
 [assembly: SuppressMessage(
-    "Style"       , "IDE0007:Use implicit type", 
-    Justification = "<Pending>", 
-    Scope         = "member", 
-    Target        = "~M:electrifier.Services.DosShellItem.#ctor(Windows.Storage.IStorageItem,Windows.Storage.Search.QueryOptions)"
+    "Style", "IDE0007:Use implicit type",
+    Justification = "<Pending>",
+    Scope = "member",
+    Target = "~M:electrifier.Services.DosShellItem.#ctor(Windows.Storage.IStorageItem,Windows.Storage.Search.QueryOptions)"
     )]

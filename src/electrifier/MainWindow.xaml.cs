@@ -6,9 +6,6 @@ using Microsoft.UI.Windowing;   // Needed for AppWindow.
 using Windows.UI.ViewManagement;
 using WinRT.Interop;            // Needed for XAML/HWND interop.
 
-//using Windows.UI.ViewManagement;
-//using Windows.UI.WindowManagement;
-
 namespace electrifier;
 
 // More information how to customize the https://learn.microsoft.com/en-us/windows/apps/develop/title-bar

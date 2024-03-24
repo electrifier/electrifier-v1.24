@@ -38,8 +38,7 @@
                 <Image x:Name="AppTitleBar_WindowIcon"
                        Height="32"
                        MaxHeight="32"
-                       Source="ms-appx:///Assets/WindowIcon.ico" />
-
+                       Source="ms-appx:///Assets/app.ico" />
                 <!-- TODO: Create style in static resources: Style="{StaticResource AppTitleBarTitleStyle}" -->
                 <StackPanel x:Name="AppTitleBar_TitleStackPanel"
                             Orientation="Vertical"
@@ -190,8 +189,7 @@
             </i:Interaction.Behaviors>
             <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
                 <!-- TODO: Background="Transparent" -->
-                <Frame x:Name="NavigationFrame"
-                       />
+                <Frame x:Name="NavigationFrame" />
             </Grid>
         </NavigationView>
     </Grid>
