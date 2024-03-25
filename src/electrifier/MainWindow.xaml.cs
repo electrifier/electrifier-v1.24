@@ -14,10 +14,18 @@ public sealed partial class MainWindow : WindowEx
 {
     private readonly AppWindow m_AppWindow;
 
-    private readonly Microsoft.UI.Dispatching.DispatcherQueue dispatcherQueue;
+    private readonly DispatcherQueue m_DispatcherQueue;
 
     private readonly UISettings m_Settings;
 
+    /// <summary>
+    /// doc: https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.windowing.appwindow
+    /// doc: https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.windowing.appwindow.titlebar
+    /// doc: https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.windowing.appwindow.titlebar.buttonbackgroundcolor
+    /// doc: https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.windowing.appwindow.titlebar.buttoninactivebackgroundcolor
+    /// doc: https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.windowing.appwindow.titlebar.buttonhoverbackgroundcolor
+    /// doc: https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.windowing.appwindow.titlebar.buttonpressedbackgroundcolor
+    /// </summary>
     public MainWindow()
     {
         InitializeComponent();
@@ -32,7 +40,7 @@ public sealed partial class MainWindow : WindowEx
         Title = "electrifier";
 
         // Theme change code picked from https://github.com/microsoft/WinUI-Gallery/pull/1239
-        dispatcherQueue = Microsoft.UI.Dispatching.DispatcherQueue.GetForCurrentThread();
+        m_DispatcherQueue = DispatcherQueue.GetForCurrentThread();
         m_Settings = new UISettings();
         // cannot use FrameworkElement.ActualThemeChanged event
         m_Settings.ColorValuesChanged += Settings_ColorValuesChanged;
@@ -51,7 +59,7 @@ public sealed partial class MainWindow : WindowEx
     private void Settings_ColorValuesChanged(UISettings sender, object args)
     {
         // This calls comes off-thread, hence we will need to dispatch it to current app's thread
-        dispatcherQueue.TryEnqueue(() =>
+        m_DispatcherQueue.TryEnqueue(() =>
         {
             TitleBarHelper.ApplySystemThemeToCaptionButtons();
         });
