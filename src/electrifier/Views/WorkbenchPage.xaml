@@ -14,18 +14,19 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<Page x:Class="electrifier.Views.WorkbenchPage"
-      xmlns:behaviors="using:electrifier.Behaviors"
-      xmlns:controls="using:CommunityToolkit.WinUI.Controls"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:ui="using:CommunityToolkit.WinUI"
-      xmlns:viewmodels="using:electrifier.ViewModels"
+<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:viewmodels="using:electrifier.ViewModels"
+      xmlns:ui="using:CommunityToolkit.WinUI"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+      xmlns:behaviors="using:electrifier.Behaviors"
+      x:Class="electrifier.Views.WorkbenchPage"
+      mc:Ignorable="d"
       d:DataContext="{d:DesignInstance Type=viewmodels:WorkbenchViewModel}"
-      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
-      mc:Ignorable="d">
+      bahaviors:NavigationViewHeaderBehavior.Header="{x:Bind Header}"
+      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never">
     <!--       bahaviors:NavigationViewHeaderBehavior.Header="{x:Bind Header}" -->
     <!-- TODO: ui:UIElementExtensions.ClipToBounds="{x:Bind IsClipped, Mode=OneWay}" -->
     <!-- TODO: removed Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" -->
@@ -55,7 +56,6 @@
                 </InfoBar.Content>
             </InfoBar>
         </StackPanel>
-
         <controls:GridSplitter Grid.Column="1"
                                Width="12"
                                HorizontalAlignment="Left"

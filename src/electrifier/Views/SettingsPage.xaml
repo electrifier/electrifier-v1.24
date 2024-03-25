@@ -14,18 +14,18 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<Page x:Class="electrifier.Views.SettingsPage"
-      xmlns:behaviors="using:electrifier.Behaviors"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:helpers="using:electrifier.Helpers"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:viewmodels="using:electrifier.ViewModels"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:xaml="using:Microsoft.UI.Xaml"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:viewmodels="using:electrifier.ViewModels"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:helpers="using:electrifier.Helpers"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:behaviors="using:electrifier.Behaviors"
+      x:Class="electrifier.Views.SettingsPage"
+      mc:Ignorable="d"
       d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}"
-      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
-      mc:Ignorable="d">
+      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never">
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
         <x:String x:Key="PrivacyTermsLink_Uri">
