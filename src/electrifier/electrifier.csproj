@@ -76,6 +76,7 @@
 
   <ItemGroup>
     <Folder Include="Assets\Views\Workbench\" />
+    <Folder Include="Controls\" />
   </ItemGroup>
 
   <ItemGroup>
