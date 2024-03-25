@@ -40,8 +40,8 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="electrifier alpha 1.24.325"
-        Description="electrifier build March 2024"
+        DisplayName="electrifier alpha"
+        Description="electrifier alpha 4 Windows, build v1.24.325"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">
