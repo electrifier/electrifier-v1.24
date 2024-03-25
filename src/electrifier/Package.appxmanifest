@@ -16,7 +16,7 @@
   <Identity
     Name="110d64de-2f36-46a7-816c-1f138a578b9d"
     Publisher="CN=electrifier.org"
-    Version="1.24.3.0" />
+    Version="1.24.325.0" />
     
   <mp:PhoneIdentity PhoneProductId="110d64de-2f36-46a7-816c-1f138a578b9d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
     
@@ -40,8 +40,8 @@
       Executable="$targetnametoken$.exe"
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
-        DisplayName="electrifier alpha v1.24.3.24"
-        Description="electrifier alpha build March 2024"
+        DisplayName="electrifier alpha 1.24.325"
+        Description="electrifier build March 2024"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">
