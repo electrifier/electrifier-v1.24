@@ -25,9 +25,7 @@
       x:Class="electrifier.Views.WorkbenchPage"
       mc:Ignorable="d"
       d:DataContext="{d:DesignInstance Type=viewmodels:WorkbenchViewModel}"
-      bahaviors:NavigationViewHeaderBehavior.Header="{x:Bind Header}"
       behaviors:NavigationViewHeaderBehavior.HeaderMode="Never">
-    <!--       bahaviors:NavigationViewHeaderBehavior.Header="{x:Bind Header}" -->
     <!-- TODO: ui:UIElementExtensions.ClipToBounds="{x:Bind IsClipped, Mode=OneWay}" -->
     <!-- TODO: removed Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" -->
     <Grid x:Name="ContentArea">

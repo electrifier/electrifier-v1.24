@@ -23,7 +23,6 @@
       x:Class="electrifier.Views.WebViewPage"
       mc:Ignorable="d"
       d:DataContext="{d:DesignInstance Type=viewmodels:WebViewViewModel}"
-      behaviors:NavigationViewHeaderBehavior.Header="{x:Bind Header}"
       behaviors:NavigationViewHeaderBehavior.HeaderMode="Never">
     <Grid x:Name="ContentAreaGrid">
         <Grid.RowDefinitions>

@@ -399,3 +399,4 @@ FodyWeavers.xsd
 
 # Windows Explorer folder settings
 /desktop.ini
+/src/electrifier/.vs.zip
