@@ -146,16 +146,14 @@
                     IsOpen="False"
                     IsSticky="True">
             <AppBarButton Icon="Folder"
-                          Label="66 items"
-                          ToolTipService.ToolTip="Items" />
+                          Label="{ x:Bind ItemCount}"
+                          ToolTipService.ToolTip="Total number of Items" />
             <AppBarButton Icon="Folder"
-                          IsEnabled="{ x:Bind HasFolders}"
-                          Label="23 folders"
-                          ToolTipService.ToolTip="Folders" />
+                          Label="{ x:Bind FolderCount}"
+                          ToolTipService.ToolTip="Number of Folders" />
             <AppBarButton Icon="OpenFile"
-                          IsEnabled="{ x:Bind HasFiles}"
-                          Label="41 files"
-                          ToolTipService.ToolTip="Files" />
+                          Label="{ x:Bind FileCount}"
+                          ToolTipService.ToolTip="Number of Files" />
             <AppBarSeparator />
             <CommandBar.SecondaryCommands>
                 <AppBarButton Icon="Setting"

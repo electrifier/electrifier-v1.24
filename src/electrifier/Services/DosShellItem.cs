@@ -72,10 +72,10 @@ public class DosShellItem : INotifyPropertyChanged
     }
 
     //doc: https://docs.microsoft.com/en-us/uwp/api/windows.storage.search.queryoptions
-    public QueryOptions ChildEnumerationQueryOptions
-    {
-        get;
-    }
+    //public QueryOptions ChildEnumerationQueryOptions
+    //{
+    //    get;
+    //}
     public bool HasChildren => Children.Count > 0;
     public bool IsFile => !IsFolder;
     //public bool IsLibrary => StorageItem is StorageFolder folder && folder.IsOfType(StorageItemTypes.Library);
@@ -122,16 +122,16 @@ public class DosShellItem : INotifyPropertyChanged
             DosShellItemHelpers.DefaultFolderIcon :
             DosShellItemHelpers.DefaultUnknownFileIcon;
 
-        if (forcedFolderQueryOptions != null)
-        {
-            ChildEnumerationQueryOptions = forcedFolderQueryOptions;
-        }
-        else
-        {
-            ChildEnumerationQueryOptions = new QueryOptions(CommonFolderQuery.DefaultQuery);
-        }
-
-        _ = GetChildsAsync();
+        //if (forcedFolderQueryOptions != null)
+        //{
+        //    ChildEnumerationQueryOptions = forcedFolderQueryOptions;
+        //}
+        //else
+        //{
+        //    ChildEnumerationQueryOptions = new QueryOptions(CommonFolderQuery.DefaultQuery);
+        //}
+        //
+        //_ = GetChildsAsync();
 
         #region old stuff
         //        ChildEnumerationQueryOptions = forcedFolderQueryOptions != null ? forcedFolderQueryOptions // : DosShellItemHelpers.DefaultFolderIcon;
@@ -165,32 +165,32 @@ public class DosShellItem : INotifyPropertyChanged
 
         var newChildren = new ObservableCollection<DosShellItem>();
 
-        if (forcedFolderQueryOptions != null)
-        {
-            ChildEnumerationQueryOptions = forcedFolderQueryOptions;
-        }
-        else
-        {
-            ChildEnumerationQueryOptions = new QueryOptions(CommonFolderQuery.DefaultQuery);
-        }
+        //if (forcedFolderQueryOptions != null)
+        //{
+        //    ChildEnumerationQueryOptions = forcedFolderQueryOptions;
+        //}
+        //else
+        //{
+        //    ChildEnumerationQueryOptions = new QueryOptions(CommonFolderQuery.DefaultQuery);
+        //}
 
-        if (library != null)
-        {
-            //addRootItem(library);
+        //if (library != null)
+        //{
+        //    //addRootItem(library);
 
-            //using (StorageItem is StorageFolder storeItem ? library.LibraryRelativePath : KnownLibraryId.Unknown)
-            //{
-            //StorageItem = storeItem;
-            //}
+        //    //using (StorageItem is StorageFolder storeItem ? library.LibraryRelativePath : KnownLibraryId.Unknown)
+        //    //{
+        //    //StorageItem = storeItem;
+        //    //}
 
-            //StorageItem = library;
-            IsFolder = true;
-        }
-        else
-        {
+        //    //StorageItem = library;
+        //    IsFolder = true;
+        //}
+        //else
+        //{
 
-            throw new ArgumentException($"can't create StorageItem from LibraryId: {libraryIdName}");
-        }
+        //    throw new ArgumentException($"can't create StorageItem from LibraryId: {libraryIdName}");
+        //}
 
         ShellIcon = DosShellItemHelpers.DefaultFolderIcon;
         Children = newChildren;

@@ -7,12 +7,14 @@ public sealed partial class FileManagerPage : Page
 {
     #region ContentAreaBottomAppBar
 
+    public uint ItemCount => ViewModel.ItemCount;
+
     public uint FolderCount => ViewModel.FolderCount;
 
     public bool HasFolders => FolderCount > 0;
 
     public uint FileCount => ViewModel.FileCount;
-    public bool HasFiles => FolderCount > 0;
+    public bool HasFiles => FileCount > 0;
 
     #endregion
 
