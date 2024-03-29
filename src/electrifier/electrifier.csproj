@@ -58,6 +58,7 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240311000" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="Vanara.Windows.Shell" Version="4.0.0-beta2" />
+    <PackageReference Include="WinUIEdit" Version="0.0.3-prerelease" />
     <PackageReference Include="WinUIEx" Version="2.3.4" />
   </ItemGroup>
 
