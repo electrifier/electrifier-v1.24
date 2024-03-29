@@ -81,7 +81,7 @@
                 -->
             <NavigationView.PaneHeader>
                 <ImageIcon MaxHeight="32"
-                           Visibility="Collapsed"
+                           Visibility="Visible"
                            HorizontalAlignment="Right"
                            Source="ms-appx:///Assets/WindowIcon.ico" />
             </NavigationView.PaneHeader>
@@ -132,11 +132,39 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
+
             <!-- #region FooterMenuItems -->
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem x:Uid="NavigationView_Footer_TextEditor"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
                     Text Editor
+                    <NavigationViewItem.Icon>
+                        <!-- Glyph="&" -->
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xeb41;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Uid="NavigationView_Footer_ContactList"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
+                    Contact List
+                    <NavigationViewItem.Icon>
+                        <!-- Glyph="&" -->
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xeb41;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Uid="NavigationView_Footer_Ancients"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
+                    Ancients
+                    <NavigationViewItem.Icon>
+                        <!-- Glyph="&" -->
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xeb41;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Uid="NavigationView_Footer_Favorites"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
+                    Bucket List
                     <NavigationViewItem.Icon>
                         <!-- Glyph="&" -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -152,7 +180,15 @@
                                   Glyph="&#xeb41;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-
+                <NavigationViewItem x:Uid="NavigationView_Footer_WebView"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
+                    Web Browser
+                    <NavigationViewItem.Icon>
+                        <!-- Glyph="&#xeb41" => "Website" is the icon for the Web Browser -->
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xeb41;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_Footer_FileManager"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
                     File Manager
@@ -172,16 +208,6 @@
                                             Tag="SamplePage6" />
                     </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_Footer_WebView"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
-                    Web Browser
-                    <NavigationViewItem.Icon>
-                        <!-- Glyph="&#xeb41" => "Website" is the icon for the Web Browser -->
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb41;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-
                 <NavigationViewItemSeparator />
                 <NavigationViewItem x:Uid="NavigationView_Footer_Workbench"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
