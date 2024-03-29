@@ -9,7 +9,6 @@ using Windows.Storage.Search;
 
 namespace electrifier.Services;
 
-
 /**
  * 
  * https://learn.microsoft.com/en-us/uwp/api/windows.storage.search.commonfolderquery?view=winrt-22621
@@ -63,12 +62,10 @@ namespace electrifier.Services;
 
 public class DosShellItem : INotifyPropertyChanged
 {
-    public ObservableCollection<DosShellItem> Children
+    public ObservableCollection<DosShellItem>? Children
     {
         get => Children;
-        set =>
-            //Children = value;
-            OnPropertyChanged();
+        set => OnPropertyChanged();
     }
 
     //doc: https://docs.microsoft.com/en-us/uwp/api/windows.storage.search.queryoptions
@@ -76,7 +73,7 @@ public class DosShellItem : INotifyPropertyChanged
     //{
     //    get;
     //}
-    public bool HasChildren => Children.Count > 0;
+    public bool HasChildren => Children?.Count > 0;
     public bool IsFile => !IsFolder;
     //public bool IsLibrary => StorageItem is StorageFolder folder && folder.IsOfType(StorageItemTypes.Library);
     public bool IsFolder
@@ -115,9 +112,10 @@ public class DosShellItem : INotifyPropertyChanged
         StorageItem = storageItem ?? throw new ArgumentNullException(nameof(storageItem));
         Children = new ObservableCollection<DosShellItem>();
 
-        // Determine if the item is a folder
+        // Determine if the item is a folder...
         IsFolder = StorageItem.IsOfType(StorageItemTypes.Folder);
-        // Set temporary icon
+
+        // ...and set temporary icon
         ShellIcon = IsFolder ?
             DosShellItemHelpers.DefaultFolderIcon :
             DosShellItemHelpers.DefaultUnknownFileIcon;
@@ -158,12 +156,29 @@ public class DosShellItem : INotifyPropertyChanged
     // Copilot: KnownLibraryIdGetLibraryId() => StorageItem is StorageFolder folder ? folder.LibraryRelativePath : KnownLibraryId.Unknown;
     public DosShellItem(KnownLibraryId libraryId, QueryOptions? forcedFolderQueryOptions = null)
     {
-        // TODO: Check if libraryId is valid
-        // TODO: try / catch, reset values if exception has been raised
-        var library = StorageLibrary.GetLibraryAsync(libraryId);
-        var libraryIdName = Enum.GetName(typeof(KnownLibraryId), libraryId);
+        try
+        {
+            //CreateLibraryItem(libraryId, forcedFolderQueryOptions); // TODO: copilot
+            //StorageItem = library.GetLibraryAsync();
+            //Children = new ObservableCollection<DosShellItem>();
 
-        var newChildren = new ObservableCollection<DosShellItem>();
+
+            // TODO: Check if libraryId is valid
+            // TODO: try / catch, reset values if exception has been raised
+            var library = StorageLibrary.GetLibraryAsync(libraryId);
+            var libraryIdName = Enum.GetName(typeof(KnownLibraryId), libraryId);
+            var newChildren = new ObservableCollection<DosShellItem>();
+
+            ShellIcon = DosShellItemHelpers.DefaultFolderIcon;
+            Children = newChildren;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+
+
 
         //if (forcedFolderQueryOptions != null)
         //{
@@ -192,8 +207,6 @@ public class DosShellItem : INotifyPropertyChanged
         //    throw new ArgumentException($"can't create StorageItem from LibraryId: {libraryIdName}");
         //}
 
-        ShellIcon = DosShellItemHelpers.DefaultFolderIcon;
-        Children = newChildren;
 
 
 
@@ -341,12 +354,14 @@ public class DosShellItem : INotifyPropertyChanged
     {
         if (IsFolder)
         {
+            Children ??= new ObservableCollection<DosShellItem>();
+
             var storeItem = StorageItem as StorageFolder;
             var subItems = await storeItem?.GetItemsAsync();
 
             foreach (var item in subItems)
             {
-                Children.Add(new DosShellItem(item));
+                Children?.Add(new DosShellItem(item));
             }
         }
     }
