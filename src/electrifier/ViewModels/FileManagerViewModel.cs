@@ -12,38 +12,59 @@ namespace electrifier.ViewModels;
 public partial class FileManagerViewModel : ObservableRecipient
 {
     // AdvancedCollectionView can be bound to anything that uses collections.
-    public AdvancedCollectionView ShellGridCollectionViewItems
+    public AdvancedCollectionView GridAdvancedCollectionView
     {
         get;
     }
-    public ObservableCollection<DosShellItem> ShellGridViewItems { get; } = new ObservableCollection<DosShellItem>();
-    public ObservableCollection<DosShellItem> ShellTreeViewItems { get; } = new ObservableCollection<DosShellItem>();
-    public uint FolderCount
+    public ObservableCollection<DosShellItem> GridViewItemsCollection { get; } = new ObservableCollection<DosShellItem>();
+    // AdvancedCollectionView can be bound to anything that uses collections.
+    public AdvancedCollectionView TreeAdvancedCollectionView
     {
         get;
     }
-    public uint FileCount
+    public ObservableCollection<DosShellItem> TreeViewItemsCollection { get; } = new ObservableCollection<DosShellItem>();
+    /// <summary>
+    /// Count of Files
+    /// </summary>
+    public int FileCount
     {
         get;
     }
-    public uint ItemCount
+    /// <summary>
+    /// Count of Folders
+    /// </summary>
+    public int FolderCount
+    {
+        get;
+    }
+    /// <summary>
+    /// Count of Items
+    /// </summary>
+    public int ItemCount
     {
         get;
     }
 
+    /// <summary>
+    /// FileManagerViewModel
+    /// </summary>
     public FileManagerViewModel()
     {
         // Set up the AdvancedCollectionView with live shaping enabled to filter and sort the original list
-        ShellGridCollectionViewItems = new AdvancedCollectionView(ShellGridViewItems, true);
+        TreeAdvancedCollectionView = new AdvancedCollectionView(TreeViewItemsCollection, true);
+        GridAdvancedCollectionView = new AdvancedCollectionView(GridViewItemsCollection, true);
         // And sort ascending by the property "Name"
-        ShellGridCollectionViewItems.SortDescriptions.Add(new SortDescription("Name", SortDirection.Ascending));
+        TreeAdvancedCollectionView.SortDescriptions.Add(new SortDescription("Name", SortDirection.Ascending));
+        GridAdvancedCollectionView.SortDescriptions.Add(new SortDescription("Name", SortDirection.Ascending));
         // TODO: TreeView -> OnSelection: _ = ShellGridViewItems_GetItemsAsync(KnownLibraryId.Documents);
-
         _ = ShellTreeViewItems_GetItemsAsync(KnownLibraryId.Documents);
         _ = ShellGridViewItems_GetItemsAsync(KnownLibraryId.Documents);
 
+        //        GridViewItemsCollection.CollectionChanged += (s, e) => ShellGridViewItems_ContainerContentChanging(this, new C{ });
 
-        //ShellGridViewItems.CollectionChanged += (s, e) =>
+        //ShellGridViewItems_ContainerContentChanging
+
+        //GridViewItemsCollection.CollectionChanged += (s, e) =>
         //{
         //    if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
         //    {
@@ -63,7 +84,7 @@ public partial class FileManagerViewModel : ObservableRecipient
         //        {
         //            if (item.IsFolder)
         //            {
-        //                ShellTreeViewItems.Add(item);
+        //                TreeViewItemsCollection.Add(item);
         //            }
         //        }
         //    }
@@ -71,7 +92,11 @@ public partial class FileManagerViewModel : ObservableRecipient
     }
 
 
-
+    /// <summary>
+    /// Enumerate the items in the specified library
+    /// </summary>
+    /// <param name="libraryId"><see cref="KnownLibraryId" /></param>
+    /// <returns></returns>
     private async Task ShellTreeViewItems_GetItemsAsync(KnownLibraryId libraryId)
     {
         var library = await StorageLibrary.GetLibraryAsync(libraryId);
@@ -83,6 +108,11 @@ public partial class FileManagerViewModel : ObservableRecipient
         }
     }
 
+    /// <summary>
+    /// Enumerate the items in the specified folder
+    /// </summary>
+    /// <param name="storageFolder"></param>
+    /// <returns></returns>
     private async Task ShellTreeViewItems_GetItemsAsync(StorageFolder storageFolder)
     {
         var childrenQueryResult = storageFolder.CreateFolderQueryWithOptions(new QueryOptions());
@@ -90,7 +120,7 @@ public partial class FileManagerViewModel : ObservableRecipient
 
         foreach (var storageItem in storageFolders)
         {
-            ShellTreeViewItems.Add(await LoadShellItemInfo(storageItem));
+            TreeViewItemsCollection.Add(await LoadShellItemInfo(storageItem));
         }
     }
 
@@ -112,7 +142,7 @@ public partial class FileManagerViewModel : ObservableRecipient
 
         foreach (var storageItem in storageFolders)
         {
-            ShellGridViewItems.Add(await LoadShellItemInfo(storageItem));
+            GridViewItemsCollection.Add(await LoadShellItemInfo(storageItem));
         }
 
         /*
@@ -122,9 +152,9 @@ public partial class FileManagerViewModel : ObservableRecipient
                 var storageFiles = await result.GetFilesAsync();
                 foreach (var storageItem in storageFiles)
                 {
-                    ShellGridViewItems.Add(await LoadShellItemInfo(storageItem));
+                    GridViewItemsCollection.Add(await LoadShellItemInfo(storageItem));
                 }
-                ImageGridView.ItemsSource = ShellGridViewItems;
+                ImageGridView.ItemsSource = GridViewItemsCollection;
         */
     }
 

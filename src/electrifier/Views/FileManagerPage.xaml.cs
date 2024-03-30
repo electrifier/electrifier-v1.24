@@ -7,13 +7,13 @@ public sealed partial class FileManagerPage : Page
 {
     #region ContentAreaBottomAppBar
 
-    public uint ItemCount => ViewModel.ItemCount;
+    public int ItemCount => ViewModel.ItemCount;
 
-    public uint FolderCount => ViewModel.FolderCount;
+    public int FolderCount => ViewModel.FolderCount;
 
     public bool HasFolders => FolderCount > 0;
 
-    public uint FileCount => ViewModel.FileCount;
+    public int FileCount => ViewModel.FileCount;
     public bool HasFiles => FileCount > 0;
 
     #endregion
@@ -33,7 +33,7 @@ public sealed partial class FileManagerPage : Page
 
         InitializeComponent();
 
-        ShellTreeView.ItemsSource = ViewModel.ShellTreeViewItems;
-        ShellGridView.ItemsSource = ViewModel.ShellGridCollectionViewItems;
+        ShellTreeView.ItemsSource = ViewModel.TreeViewItemsCollection;
+        ShellGridView.ItemsSource = ViewModel.GridAdvancedCollectionView;
     }
 }
