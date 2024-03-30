@@ -1,11 +1,28 @@
-﻿using System.Collections.ObjectModel;
-using System.Diagnostics;
+﻿/*
+    Copyright 2024 Thorsten Jung, aka tajbender
+        https://www.electrifier.org
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+*/
+
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI.UI;
 using electrifier.Services;
 using Microsoft.UI.Xaml.Controls;
-using Windows.Storage;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using Windows.Storage.Search;
+using Windows.Storage;
 
 namespace electrifier.ViewModels;
 
@@ -15,13 +32,13 @@ public partial class FileManagerViewModel : ObservableRecipient
     public AdvancedCollectionView GridAdvancedCollectionView
     {
         get;
-    }
+    } = new AdvancedCollectionView(/* TreeViewItemsCollection */);
     public ObservableCollection<DosShellItem> GridViewItemsCollection { get; } = new ObservableCollection<DosShellItem>();
     // AdvancedCollectionView can be bound to anything that uses collections.
     public AdvancedCollectionView TreeAdvancedCollectionView
     {
         get;
-    }
+    } = new AdvancedCollectionView(/* TreeViewItemsCollection */);
     public ObservableCollection<DosShellItem> TreeViewItemsCollection { get; } = new ObservableCollection<DosShellItem>();
     /// <summary>
     /// Count of Files
@@ -135,6 +152,11 @@ public partial class FileManagerViewModel : ObservableRecipient
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="storageFolder"></param>
+    /// <returns></returns>
     private async Task ShellGridViewItems_GetItemsAsync(StorageFolder storageFolder)
     {
         var fileQuery = storageFolder.CreateFileQueryWithOptions(new QueryOptions());
@@ -158,13 +180,24 @@ public partial class FileManagerViewModel : ObservableRecipient
         */
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+#pragma warning disable IDE0051 // Remove unused private members
     private void ShellGridViewItems_ContainerContentChanging(
+#pragma warning restore IDE0051 // Remove unused private members
 #pragma warning disable IDE0060 // Remove unused parameter
             ListViewBase sender,
 #pragma warning restore IDE0060 // Remove unused parameter
             ContainerContentChangingEventArgs args)
     {
+        Debug.Print("ShellGridViewItems_ContainerContentChanging");
+        Debug.Assert(args != null);
+        Debug.Print("args: {args}");
+        Debug.Print($"InRecycleQueue: {args.InRecycleQueue}");
+        Debug.Print($"Phase: {args.Phase}");
         if (args.InRecycleQueue)
         {
             var templateRoot = args.ItemContainer.ContentTemplateRoot as Grid;
@@ -185,6 +218,12 @@ public partial class FileManagerViewModel : ObservableRecipient
         }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="args"></param>
+    /// <exception cref="ArgumentNullException"></exception>
     private async void ShellGridViewItems_GetImageAsync(
         ListViewBase sender,
         ContainerContentChangingEventArgs args)
