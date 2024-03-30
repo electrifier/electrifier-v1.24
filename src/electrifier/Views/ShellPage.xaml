@@ -144,6 +144,16 @@
                                   Glyph="&#xeb41;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItem x:Uid="NavigationView_Footer_ResourceExtractor"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
+                                    IsEnabled="False">
+                    Calculator
+                    <NavigationViewItem.Icon>
+                        <!-- Glyph="&" -->
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xeb41;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_Footer_ContactList"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
                                     IsEnabled="False">
