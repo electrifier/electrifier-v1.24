@@ -20,27 +20,6 @@
     <RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
   </PropertyGroup>
-  <ItemGroup>
-    <Compile Remove="ViewModels\ContentGridDetailViewModel.cs" />
-    <Compile Remove="ViewModels\ContentGridViewModel.cs" />
-    <Compile Remove="ViewModels\ListDetailsViewModel.cs" />
-    <Compile Remove="Views\ContentGridDetailPage.xaml.cs" />
-    <Compile Remove="Views\ContentGridPage.xaml.cs" />
-    <Compile Remove="Views\ListDetailsDetailControl.xaml.cs" />
-    <Compile Remove="Views\ListDetailsPage.xaml.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Views\ContentGridDetailPage.xaml" />
-    <None Remove="Views\ContentGridPage.xaml" />
-    <None Remove="Views\ListDetailsDetailControl.xaml" />
-    <None Remove="Views\ListDetailsPage.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Page Remove="Views\ContentGridDetailPage.xaml" />
-    <Page Remove="Views\ContentGridPage.xaml" />
-    <Page Remove="Views\ListDetailsDetailControl.xaml" />
-    <Page Remove="Views\ListDetailsPage.xaml" />
-  </ItemGroup>
 
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
