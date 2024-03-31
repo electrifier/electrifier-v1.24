@@ -41,7 +41,7 @@
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
         DisplayName="electrifier alpha"
-        Description="electrifier alpha 4 Windows, build v1.24.329"
+        Description="electrifier alpha 4 Windows, build v1.24.331"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">
