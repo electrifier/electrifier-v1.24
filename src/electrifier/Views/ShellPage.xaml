@@ -231,6 +231,41 @@
                         </NavigationViewItem>
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
+                <NavigationViewItem x:Uid="NavigationView_Office365">
+                    Office 365
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Calendar"
+                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
+                                            IsEnabled="False">
+                            Calendar
+                            <NavigationViewItem.Icon>
+                                <!-- Glyph="&" -->
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                          Glyph="&#xeb41;" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Mail"
+                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
+                                            IsEnabled="False">
+                            Mail
+                            <NavigationViewItem.Icon>
+                                <!-- Glyph="&" -->
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                          Glyph="&#xeb41;" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Tasks"
+                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
+                                            IsEnabled="False">
+                            Tasks
+                            <NavigationViewItem.Icon>
+                                <!-- Glyph="&" -->
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                          Glyph="&#xeb41;" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                    </NavigationViewItem.MenuItems>
+                </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_People"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
                     People
