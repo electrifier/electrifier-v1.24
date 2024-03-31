@@ -55,6 +55,8 @@
                                Text="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}" />
                     <TextBlock x:Name="AppTitleBar_SubTitleTextBlock"
                                FontSize="12"
+                               FontWeight="Bold"
+                               FontStyle="Italic"
                                HorizontalAlignment="Right"
                                Text="electrifier" />
                 </StackPanel>
@@ -148,22 +150,23 @@
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                         <NavigationViewItem x:Uid="NavigationView_Footer_TextEditor"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                            IsEnabled="False">
-                            Text
+                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
                             <NavigationViewItem.Icon>
                                 <!-- Glyph="&" -->
                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                           Glyph="&#xeb41;" />
-                                
                             </NavigationViewItem.Icon>
                             <!--<MenuFlyout>
-
-</MenuFlyout>
-<MenuFlyoutSubItem>
-    
-</MenuFlyoutSubItem>-->
-
+                                <MenuFlyoutItem Text="New" />
+                                <MenuFlyoutSubItem>
+                                    <MenuFlyoutItem Text="New" />
+                                </MenuFlyoutSubItem>
+                                <MenuFlyoutItem Text="Open" />
+                                <MenuFlyoutItem Text="Save" />
+                                <MenuFlyoutItem Text="Save As" />
+                                <MenuFlyoutSeparator />
+                                <MenuFlyoutItem Text="Close" />
+                            </MenuFlyout>-->
                         </NavigationViewItem>
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
