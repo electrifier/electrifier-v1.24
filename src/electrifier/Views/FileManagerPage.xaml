@@ -57,6 +57,10 @@
                 <MenuFlyoutItem Text="Zoom Out"
                                 IsEnabled="False" />
             </MenuBarItem>
+            <MenuBarItem Title="Help">
+                <MenuFlyoutItem Text="About"
+                                IsEnabled="False" />
+            </MenuBarItem>
         </MenuBar>
         <Grid x:Name="ContentAreaGrid"
               x:Uid="ContentAreaGrid"
