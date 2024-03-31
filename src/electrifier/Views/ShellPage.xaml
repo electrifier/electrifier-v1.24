@@ -14,9 +14,11 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
+
 <!-- TODO: Insert MenuItemsSource -->
 <!-- TODO: IsPaneToggleButtonVisible = True -> PaneToggle-Style and overlap -->
 <!-- TODO: <NavigationMode />-->
+
 <Page x:Class="electrifier.Views.ShellPage"
       xmlns:behaviors="using:electrifier.Behaviors"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -28,7 +30,6 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       Loaded="OnLoaded">
     <Grid>
-        <!-- #region MainWindow -> AppTitleBar -->
         <Grid x:Name="AppTitleBar"
               Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
               HorizontalAlignment="Stretch"
@@ -59,18 +60,16 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
-        <!-- #endregion MainWindow -> AppTitleBar -->
-
-        <!--#region NavigationViewControl-->
         <NavigationView x:Name="NavigationViewControl"
                         AlwaysShowHeader="True"
                         CompactPaneLength="72"
+                        DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
                         IsBackButtonVisible="Visible"
-                        IsBackEnabled="True"
+                        IsBackEnabled="False"
                         IsPaneOpen="True"
                         IsPaneToggleButtonVisible="True"
                         IsSettingsVisible="True"
-                        DisplayModeChanged="NavigationViewControl_DisplayModeChanged">
+                        IsTitleBarAutoPaddingEnabled="True">
             <!--<NavigationView.IsTitleBarAutoPaddingEnabled />-->
             <!--
                 TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
@@ -96,68 +95,84 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe8d1;" />
                     </NavigationViewItem.Icon>
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem Content="Home"
+                                            Icon="Home"
+                                            ToolTipService.ToolTip="Go to Editor Home"
+                                            Tag="Editor Home" />
+                        <NavigationViewItemSeparator />
+                        <NavigationViewItem x:Uid="NavigationView_Footer_BucketList"
+                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
+                                            IsEnabled="False">
+                            Bucket List
+                            <NavigationViewItem.Icon>
+                                <!-- Glyph="&" -->
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                          Glyph="&#xeb41;" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                    </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
-
                 <NavigationViewItemSeparator />
+                <NavigationViewItem x:Uid="NavigationView_Editors">
+                    Editors
+                    <NavigationViewItem.Icon>
+                        <!-- Glyph="&" -->
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xe713;" />
+                    </NavigationViewItem.Icon>
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem Content="Home"
+                                            Icon="Home"
+                                            ToolTipService.ToolTip="Go to Editor Home"
+                                            Tag="Editor Home" />
+                        <NavigationViewItemSeparator />
+                        <NavigationViewItem x:Uid="NavigationView_Footer_ClipboardEditor"
+                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
+                                            IsEnabled="False">
+                            Clipboard History
+                            <NavigationViewItem.Icon>
+                                <!-- Glyph="&" -->
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                          Glyph="&#xeb41;" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem x:Uid="NavigationView_Footer_ResourcesEditor"
+                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
+                                            IsEnabled="False">
+                            Resources
+                            <NavigationViewItem.Icon>
+                                <!-- Glyph="&" -->
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                          Glyph="&#xeb41;" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem x:Uid="NavigationView_Footer_TextEditor"
+                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
+                                            IsEnabled="False">
+                            Text
+                            <NavigationViewItem.Icon>
+                                <!-- Glyph="&" -->
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                          Glyph="&#xeb41;" />
+                                
+                            </NavigationViewItem.Icon>
+                            <!--<MenuFlyout>
 
-                <NavigationViewItem x:Uid="NavigationView_FileManager"
-                                    Visibility="Collapsed"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
-                    File Manager
-                    <NavigationViewItem.Icon>
-                        <!-- Glyph "&#xec50" => "FileExplorer" -->
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xec50;" />
-                    </NavigationViewItem.Icon>
-                    <!-- TODO: Create SubItems -->
-                    <!--<NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Create new"
-                                            Icon="NewFolder"
-                                            ToolTipService.ToolTip="Create new"
-                                            Tag="SamplePage5" />
-                        <NavigationViewItem Content="Upload file"
-                                            Icon="OpenLocal"
-                                            ToolTipService.ToolTip="Upload file"
-                                            Tag="SamplePage6" />
-                    </NavigationViewItem.MenuItems>-->
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_WebView"
-                                    Visibility="Collapsed"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
-                    Web Browser
-                    <NavigationViewItem.Icon>
-                        <!-- Glyph "&#xeb41" => Website -->
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb41;" />
-                    </NavigationViewItem.Icon>
+</MenuFlyout>
+<MenuFlyoutSubItem>
+    
+</MenuFlyoutSubItem>-->
+
+                        </NavigationViewItem>
+                    </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
-            <!-- #region FooterMenuItems -->
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem x:Uid="NavigationView_Footer_TextEditor"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                    IsEnabled="False">
-                    Text Editor
-                    <NavigationViewItem.Icon>
-                        <!-- Glyph="&" -->
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb41;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_Footer_ResourceExtractor"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                    IsEnabled="False">
-                    Calculator
-                    <NavigationViewItem.Icon>
-                        <!-- Glyph="&" -->
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb41;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_Footer_ContactList"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
                                     IsEnabled="False">
-                    Contact List
+                    Contacts
                     <NavigationViewItem.Icon>
                         <!-- Glyph="&" -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -168,16 +183,6 @@
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
                                     IsEnabled="False">
                     Ancients
-                    <NavigationViewItem.Icon>
-                        <!-- Glyph="&" -->
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb41;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_Footer_BucketList"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                    IsEnabled="False">
-                    Bucket List
                     <NavigationViewItem.Icon>
                         <!-- Glyph="&" -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -212,23 +217,37 @@
                                   Glyph="&#xec50;" />
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Desktop"
-                                            Icon="Folder"
+                        <NavigationViewItem Content="Home"
+                                            Icon="Home"
                                             ToolTipService.ToolTip="Go to Desktop folder"
                                             Tag="FileExplorer Desktop Folder" />
-                        <NavigationViewItemSeparator />
-                        <NavigationViewItem Content="My Pictures"
-                                            Icon="Pictures"
-                                            ToolTipService.ToolTip="Pictures"
-                                            Tag="FileExplorer Pictures Folder" />
-                        <NavigationViewItem Content="My Documents"
+                        <NavigationViewItem Content="Documents"
                                             Icon="Document"
                                             ToolTipService.ToolTip="Documents"
                                             Tag="FileExplorer Documents Folder" />
+                        <NavigationViewItem Content="Downloads"
+                                            Icon="Download"
+                                            ToolTipService.ToolTip="Downloads"
+                                            Tag="FileExplorer Downloads Folder" />
+                        <NavigationViewItem Content="Music"
+                                            Icon="MusicInfo"
+                                            ToolTipService.ToolTip="Music"
+                                            Tag="FileExplorer Music Folder" />
+                        <NavigationViewItem Content="Pictures"
+                                            Icon="Pictures"
+                                            ToolTipService.ToolTip="Pictures"
+                                            Tag="FileExplorer Pictures Folder" />
+                        <NavigationViewItem Content="Videos"
+                                            Icon="Video"
+                                            ToolTipService.ToolTip="Videos"
+                                            Tag="FileExplorer Videos Folder" />
                         <NavigationViewItemSeparator />
+                        <NavigationViewItem Content="Settings"
+                                            Icon="Setting"
+                                            ToolTipService.ToolTip="Settings"
+                                            Tag="FileExplorer Settings" />
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
-                <NavigationViewItemSeparator />
                 <NavigationViewItem x:Uid="NavigationView_Footer_Workbench"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
                     Workbench
@@ -239,7 +258,6 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.FooterMenuItems>
-            <!-- #endregion FooterMenuItems -->
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
@@ -265,6 +283,5 @@
                 <Frame x:Name="NavigationFrame" />
             </Grid>
         </NavigationView>
-        <!--#endregion NavigationViewControl-->
     </Grid>
 </Page>
