@@ -58,7 +58,7 @@
                                FontWeight="Bold"
                                FontStyle="Italic"
                                HorizontalAlignment="Right"
-                               Text="electrifier" />
+                               Text="electrifier alpha" />
                 </StackPanel>
             </StackPanel>
         </Grid>
@@ -97,7 +97,7 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe8d1;" />
                     </NavigationViewItem.Icon>
-                    <NavigationViewItem.MenuItems>
+                    <!--<NavigationViewItem.MenuItems>
                         <NavigationViewItem Content="Home"
                                             Icon="Home"
                                             ToolTipService.ToolTip="Go to Editor Home"
@@ -108,100 +108,16 @@
                                             IsEnabled="False">
                             Bucket List
                             <NavigationViewItem.Icon>
-                                <!-- Glyph="&" -->
+                                -->
+                    <!-- Glyph="&" -->
+                    <!--
                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                           Glyph="&#xeb41;" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
-                    </NavigationViewItem.MenuItems>
+                    </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
                 <NavigationViewItemSeparator />
-                <NavigationViewItem x:Uid="NavigationView_Editors">
-                    Editors
-                    <NavigationViewItem.Icon>
-                        <!-- Glyph="&" -->
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xe713;" />
-                    </NavigationViewItem.Icon>
-                    <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Home"
-                                            Icon="Home"
-                                            ToolTipService.ToolTip="Go to Editor Home"
-                                            Tag="Editor Home" />
-                        <NavigationViewItemSeparator />
-                        <NavigationViewItem x:Uid="NavigationView_Footer_ClipboardEditor"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                            IsEnabled="False">
-                            Clipboard History
-                            <NavigationViewItem.Icon>
-                                <!-- Glyph="&" -->
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xeb41;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-                        <NavigationViewItem x:Uid="NavigationView_Footer_ResourcesEditor"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                            IsEnabled="False">
-                            Resources
-                            <NavigationViewItem.Icon>
-                                <!-- Glyph="&" -->
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xeb41;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-                        <NavigationViewItem x:Uid="NavigationView_Footer_TextEditor"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
-                            <NavigationViewItem.Icon>
-                                <!-- Glyph="&" -->
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xeb41;" />
-                            </NavigationViewItem.Icon>
-                            <!--<MenuFlyout>
-                                <MenuFlyoutItem Text="New" />
-                                <MenuFlyoutSubItem>
-                                    <MenuFlyoutItem Text="New" />
-                                </MenuFlyoutSubItem>
-                                <MenuFlyoutItem Text="Open" />
-                                <MenuFlyoutItem Text="Save" />
-                                <MenuFlyoutItem Text="Save As" />
-                                <MenuFlyoutSeparator />
-                                <MenuFlyoutItem Text="Close" />
-                            </MenuFlyout>-->
-                        </NavigationViewItem>
-                    </NavigationViewItem.MenuItems>
-                </NavigationViewItem>
-            </NavigationView.MenuItems>
-            <NavigationView.FooterMenuItems>
-                <NavigationViewItem x:Uid="NavigationView_Footer_ContactList"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                    IsEnabled="False">
-                    Contacts
-                    <NavigationViewItem.Icon>
-                        <!-- Glyph="&" -->
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb41;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_Footer_Ancients"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                    IsEnabled="False">
-                    Ancients
-                    <NavigationViewItem.Icon>
-                        <!-- Glyph="&" -->
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb41;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_Footer_Favorites"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                    IsEnabled="False">
-                    Favorites
-                    <NavigationViewItem.Icon>
-                        <!-- Glyph="&" -->
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb41;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_Footer_WebView"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
                     Web Browser
@@ -210,6 +126,24 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xeb41;" />
                     </NavigationViewItem.Icon>
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem Content="Home"
+                                            Icon="Home"
+                                            ToolTipService.ToolTip="Go to Home"
+                                            Tag="WebView Home" />
+                        <NavigationViewItem Content="Favorites"
+                                            Icon="Favorite"
+                                            ToolTipService.ToolTip="Favorites"
+                                            Tag="WebView Favorites" />
+                        <NavigationViewItem Content="History"
+                                            Icon="Clock"
+                                            ToolTipService.ToolTip="History"
+                                            Tag="WebView History" />
+                        <NavigationViewItem Content="Settings"
+                                            Icon="Setting"
+                                            ToolTipService.ToolTip="Settings"
+                                            Tag="WebView Settings" />
+                    </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_Footer_FileManager"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
@@ -244,13 +178,102 @@
                                             Icon="Video"
                                             ToolTipService.ToolTip="Videos"
                                             Tag="FileExplorer Videos Folder" />
-                        <NavigationViewItemSeparator />
-                        <NavigationViewItem Content="Settings"
-                                            Icon="Setting"
-                                            ToolTipService.ToolTip="Settings"
-                                            Tag="FileExplorer Settings" />
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
+
+                <NavigationViewItem x:Uid="NavigationView_Editors">
+                    Editors
+                    <NavigationViewItem.Icon>
+                        <!-- Glyph="&" -->
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xe713;" />
+                    </NavigationViewItem.Icon>
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem x:Uid="NavigationView_Footer_ClipboardEditor"
+                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
+                                            IsEnabled="False">
+                            Clipboard History
+                            <NavigationViewItem.Icon>
+                                <!-- Glyph="&" -->
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                          Glyph="&#xeb41;" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem x:Uid="NavigationView_Footer_TextEditor"
+                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
+                            <NavigationViewItem.Icon>
+                                <!-- Glyph="&" -->
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                          Glyph="&#xeb41;" />
+                            </NavigationViewItem.Icon>
+                            Text Editor
+                            <!--<MenuFlyout>
+                                <MenuFlyoutItem Text="New" />
+                                <MenuFlyoutSubItem>
+                                    <MenuFlyoutItem Text="New" />
+                                </MenuFlyoutSubItem>
+                                <MenuFlyoutItem Text="Open" />
+                                <MenuFlyoutItem Text="Save" />
+                                <MenuFlyoutItem Text="Save As" />
+                                <MenuFlyoutSeparator />
+                                <MenuFlyoutItem Text="Close" />
+                            </MenuFlyout>-->
+                        </NavigationViewItem>
+                        <NavigationViewItem x:Uid="NavigationView_Footer_ResourcesEditor"
+                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
+                                            IsEnabled="False">
+                            Resources
+                            <NavigationViewItem.Icon>
+                                <!-- Glyph="&" -->
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                          Glyph="&#xeb41;" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                    </NavigationViewItem.MenuItems>
+                </NavigationViewItem>
+                <NavigationViewItem x:Uid="NavigationView_People"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
+                    People
+                    <NavigationViewItem.Icon>
+                        <!-- Glyph="&" -->
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xeb41;" />
+                    </NavigationViewItem.Icon>
+                    <NavigationViewItem.MenuItems>
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Ancients"
+                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
+                                            IsEnabled="False">
+                            Ancients
+                            <NavigationViewItem.Icon>
+                                <!-- Glyph="&" -->
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                          Glyph="&#xeb41;" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Contacts"
+                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
+                                            IsEnabled="False">
+                            Contacts
+                            <NavigationViewItem.Icon>
+                                <!-- Glyph="&" -->
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                          Glyph="&#xeb41;" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Favorites"
+                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
+                                            IsEnabled="False">
+                            Favorites
+                            <NavigationViewItem.Icon>
+                                <!-- Glyph="&" -->
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                          Glyph="&#xeb41;" />
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>
+                    </NavigationViewItem.MenuItems>
+                </NavigationViewItem>
+            </NavigationView.MenuItems>
+            <NavigationView.FooterMenuItems>
                 <NavigationViewItem x:Uid="NavigationView_Footer_Workbench"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
                     Workbench
