@@ -127,10 +127,6 @@
                                   Glyph="&#xeb41;" />
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Home"
-                                            Icon="Home"
-                                            ToolTipService.ToolTip="Go to Home"
-                                            Tag="WebView Home" />
                         <NavigationViewItem Content="Favorites"
                                             Icon="Favorite"
                                             ToolTipService.ToolTip="Favorites"
@@ -154,10 +150,6 @@
                                   Glyph="&#xec50;" />
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Home"
-                                            Icon="Home"
-                                            ToolTipService.ToolTip="Go to Desktop folder"
-                                            Tag="FileExplorer Desktop Folder" />
                         <NavigationViewItem Content="Documents"
                                             Icon="Document"
                                             ToolTipService.ToolTip="Documents"
@@ -180,13 +172,12 @@
                                             Tag="FileExplorer Videos Folder" />
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
-
                 <NavigationViewItem x:Uid="NavigationView_Editors">
                     Editors
                     <NavigationViewItem.Icon>
                         <!-- Glyph="&" -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xe713;" />
+                                  Glyph="&#xe70f;" />
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.MenuItems>
                         <NavigationViewItem x:Uid="NavigationView_Footer_ClipboardEditor"
@@ -233,6 +224,11 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_Office365">
                     Office 365
+                    <NavigationViewItem.Icon>
+                        <!-- Glyph "&#xec50" => "FileExplorer" -->
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xeb3c;" />
+                    </NavigationViewItem.Icon>
                     <NavigationViewItem.MenuItems>
                         <NavigationViewItem x:Uid="NavigationView_Footer_Calendar"
                                             helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
@@ -272,7 +268,7 @@
                     <NavigationViewItem.Icon>
                         <!-- Glyph="&" -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb41;" />
+                                  Glyph="&#xe716;" />
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.MenuItems>
                         <NavigationViewItem x:Uid="NavigationView_Footer_Ancients"
@@ -282,7 +278,7 @@
                             <NavigationViewItem.Icon>
                                 <!-- Glyph="&" -->
                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xeb41;" />
+                                          Glyph="&#xe716;" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                         <NavigationViewItem x:Uid="NavigationView_Footer_Contacts"
@@ -292,7 +288,7 @@
                             <NavigationViewItem.Icon>
                                 <!-- Glyph="&" -->
                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xeb41;" />
+                                          Glyph="&#xe716;" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                         <NavigationViewItem x:Uid="NavigationView_Footer_Favorites"
@@ -302,7 +298,7 @@
                             <NavigationViewItem.Icon>
                                 <!-- Glyph="&" -->
                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xeb41;" />
+                                          Glyph="&#xe716;" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                     </NavigationViewItem.MenuItems>
