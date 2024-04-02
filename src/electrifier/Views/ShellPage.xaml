@@ -173,7 +173,7 @@
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_Editors">
-                    Editors
+                    Editor
                     <NavigationViewItem.Icon>
                         <!-- Glyph="&" -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -190,14 +190,20 @@
                                           Glyph="&#xeb41;" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
+                        <!--                 
+                        <NavigationViewItem x:Uid="Shell_TextEditor" helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.TextEditorViewModel">
+                            <NavigationViewItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
+                            </NavigationViewItem.Icon>
+                        </NavigationViewItem>-->
                         <NavigationViewItem x:Uid="NavigationView_Footer_TextEditor"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
+                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.TextEditorViewModel">
                             <NavigationViewItem.Icon>
                                 <!-- Glyph="&" -->
                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xeb41;" />
+                                          Glyph="&#xe7c3;" />
                             </NavigationViewItem.Icon>
-                            Text Editor
+                            Text
                             <!--<MenuFlyout>
                                 <MenuFlyoutItem Text="New" />
                                 <MenuFlyoutSubItem>

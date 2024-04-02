@@ -1,7 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+
 using electrifier.Contracts.Services;
 using electrifier.ViewModels;
 using electrifier.Views;
+
 using Microsoft.UI.Xaml.Controls;
 
 namespace electrifier.Services;
@@ -16,6 +18,7 @@ public class PageService : IPageService
         Configure<WebViewViewModel, WebViewPage>();
         Configure<SettingsViewModel, SettingsPage>();
         Configure<FileManagerViewModel, FileManagerPage>();
+        Configure<TextEditorViewModel, TextEditorPage>();
     }
 
     public Type GetPageType(string key)
