@@ -72,80 +72,62 @@
                         IsPaneToggleButtonVisible="True"
                         IsSettingsVisible="True"
                         IsTitleBarAutoPaddingEnabled="True">
-            <!--<NavigationView.IsTitleBarAutoPaddingEnabled />-->
-            <!--
-                TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
-                https://docs.microsoft.com/windows/uwp/app-resources/localize-strings-ui-manifest#refer-to-a-string-resource-identifier-from-xaml
-            
+            <!--TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
+                        https://docs.microsoft.com/windows/uwp/app-resources/localize-strings-ui-manifest#refer-to-a-string-resource-identifier-from-xaml
+                TODO: Prefer Symbols over FontIcons for item icons.
+                        https://learn.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.symbol?view=winrt-22621
                 TODO: Update item icons by updating FontIcon.Glyph properties.
-                https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list
-                -->
+                        https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list -->
             <NavigationView.PaneHeader>
                 <ImageIcon MaxHeight="32"
                            Visibility="Visible"
                            HorizontalAlignment="Right"
                            Source="ms-appx:///Assets/WindowIcon.ico" />
             </NavigationView.PaneHeader>
-            <!--<NavigationView.PaneTitle> electrifier </NavigationView.PaneTitle>-->
+            <NavigationView.PaneTitle>-= Workbench Name =-</NavigationView.PaneTitle>
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Uid="NavigationView_Workbench"
                                     IsSelected="True"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
                     Workbench
                     <NavigationViewItem.Icon>
-                        <!-- Glyph "&#xe8d1;" => GotoToday -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe8d1;" />
                     </NavigationViewItem.Icon>
-                    <!--<NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Home"
-                                            Icon="Home"
-                                            ToolTipService.ToolTip="Go to Editor Home"
-                                            Tag="Editor Home" />
-                        <NavigationViewItemSeparator />
-                        <NavigationViewItem x:Uid="NavigationView_Footer_BucketList"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                            IsEnabled="False">
-                            Bucket List
-                            <NavigationViewItem.Icon>
-                                -->
-                    <!-- Glyph="&" -->
-                    <!--
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xeb41;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-                    </NavigationViewItem.MenuItems>-->
+                </NavigationViewItem>
+                <NavigationViewItem x:Uid="NavigationView_BucketList"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
+                                    IsEnabled="False">
+                    Bucket List
+                    <NavigationViewItem.Icon>
+                        <SymbolIcon Symbol="Bullets" />
+                    </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItemSeparator />
-                <NavigationViewItem x:Uid="NavigationView_Footer_WebView"
+                <NavigationViewItem x:Uid="NavigationView_WebView"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
                     Web Browser
                     <NavigationViewItem.Icon>
-                        <!-- Glyph="&#xeb41" => "Website" is the icon for the Web Browser -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xeb41;" />
                     </NavigationViewItem.Icon>
                     <NavigationViewItem.MenuItems>
                         <NavigationViewItem Content="Favorites"
                                             Icon="Favorite"
-                                            ToolTipService.ToolTip="Favorites"
-                                            Tag="WebView Favorites" />
+                                            IsEnabled="False"
+                                            Tag="Browser Favorites"
+                                            ToolTipService.ToolTip="Favorites" />
                         <NavigationViewItem Content="History"
                                             Icon="Clock"
-                                            ToolTipService.ToolTip="History"
-                                            Tag="WebView History" />
-                        <NavigationViewItem Content="Settings"
-                                            Icon="Setting"
-                                            ToolTipService.ToolTip="Settings"
-                                            Tag="WebView Settings" />
+                                            IsEnabled="False"
+                                            Tag="Browser History"
+                                            ToolTipService.ToolTip="History" />
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_Footer_FileManager"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
                     File Manager
                     <NavigationViewItem.Icon>
-                        <!-- Glyph "&#xec50" => "FileExplorer" -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xec50;" />
                     </NavigationViewItem.Icon>
@@ -175,7 +157,6 @@
                 <NavigationViewItem x:Uid="NavigationView_Editors">
                     Editor
                     <NavigationViewItem.Icon>
-                        <!-- Glyph="&" -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe70f;" />
                     </NavigationViewItem.Icon>
@@ -185,53 +166,34 @@
                                             IsEnabled="False">
                             Clipboard History
                             <NavigationViewItem.Icon>
-                                <!-- Glyph="&" -->
                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                           Glyph="&#xeb41;" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
-                        <!--                 
-                        <NavigationViewItem x:Uid="Shell_TextEditor" helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.TextEditorViewModel">
-                            <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe7c3;"/>
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>-->
                         <NavigationViewItem x:Uid="NavigationView_Footer_TextEditor"
                                             helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.TextEditorViewModel">
                             <NavigationViewItem.Icon>
-                                <!-- Glyph="&" -->
                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                           Glyph="&#xe7c3;" />
                             </NavigationViewItem.Icon>
                             Text
-                            <!--<MenuFlyout>
-                                <MenuFlyoutItem Text="New" />
-                                <MenuFlyoutSubItem>
-                                    <MenuFlyoutItem Text="New" />
-                                </MenuFlyoutSubItem>
-                                <MenuFlyoutItem Text="Open" />
-                                <MenuFlyoutItem Text="Save" />
-                                <MenuFlyoutItem Text="Save As" />
-                                <MenuFlyoutSeparator />
-                                <MenuFlyoutItem Text="Close" />
-                            </MenuFlyout>-->
                         </NavigationViewItem>
                         <NavigationViewItem x:Uid="NavigationView_Footer_ResourcesEditor"
                                             helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
                                             IsEnabled="False">
                             Resources
                             <NavigationViewItem.Icon>
-                                <!-- Glyph="&" -->
                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                           Glyph="&#xeb41;" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_Office365">
-                    Office 365
+                <NavigationViewItem x:Uid="NavigationView_Microsoft365"
+                                    IsEnabled="False"
+                                    Visibility="Collapsed">
+                    Microsoft 365
                     <NavigationViewItem.Icon>
-                        <!-- Glyph "&#xec50" => "FileExplorer" -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xeb3c;" />
                     </NavigationViewItem.Icon>
@@ -241,7 +203,6 @@
                                             IsEnabled="False">
                             Calendar
                             <NavigationViewItem.Icon>
-                                <!-- Glyph="&" -->
                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                           Glyph="&#xeb41;" />
                             </NavigationViewItem.Icon>
@@ -251,7 +212,6 @@
                                             IsEnabled="False">
                             Mail
                             <NavigationViewItem.Icon>
-                                <!-- Glyph="&" -->
                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                           Glyph="&#xeb41;" />
                             </NavigationViewItem.Icon>
@@ -261,7 +221,6 @@
                                             IsEnabled="False">
                             Tasks
                             <NavigationViewItem.Icon>
-                                <!-- Glyph="&" -->
                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                           Glyph="&#xeb41;" />
                             </NavigationViewItem.Icon>
@@ -269,10 +228,11 @@
                     </NavigationViewItem.MenuItems>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_People"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
+                                    IsEnabled="False"
+                                    Visibility="Collapsed">
                     People
                     <NavigationViewItem.Icon>
-                        <!-- Glyph="&" -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe716;" />
                     </NavigationViewItem.Icon>
@@ -282,7 +242,6 @@
                                             IsEnabled="False">
                             Ancients
                             <NavigationViewItem.Icon>
-                                <!-- Glyph="&" -->
                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                           Glyph="&#xe716;" />
                             </NavigationViewItem.Icon>
@@ -292,7 +251,6 @@
                                             IsEnabled="False">
                             Contacts
                             <NavigationViewItem.Icon>
-                                <!-- Glyph="&" -->
                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                           Glyph="&#xe716;" />
                             </NavigationViewItem.Icon>
@@ -302,7 +260,6 @@
                                             IsEnabled="False">
                             Favorites
                             <NavigationViewItem.Icon>
-                                <!-- Glyph="&" -->
                                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                           Glyph="&#xe716;" />
                             </NavigationViewItem.Icon>
@@ -315,7 +272,6 @@
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
                     Workbench
                     <NavigationViewItem.Icon>
-                        <!-- Glyph="&#xe8d1;" => "GotoToday" is the icon for the Workbench -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe8d1;" />
                     </NavigationViewItem.Icon>
@@ -342,7 +298,6 @@
                 </behaviors:NavigationViewHeaderBehavior>
             </i:Interaction.Behaviors>
             <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
-                <!-- TODO: set e.g. Background="Transparent" -->
                 <Frame x:Name="NavigationFrame" />
             </Grid>
         </NavigationView>
