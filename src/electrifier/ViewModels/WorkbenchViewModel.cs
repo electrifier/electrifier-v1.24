@@ -1,6 +1,6 @@
 ﻿/*
     Copyright 2024 Thorsten Jung, aka tajbender
-    https://www.electrifier.org
+        https://www.electrifier.org
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
