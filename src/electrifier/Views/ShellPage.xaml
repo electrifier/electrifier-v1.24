@@ -111,7 +111,7 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xeb41;" />
                     </NavigationViewItem.Icon>
-                    <NavigationViewItem.MenuItems>
+                    <!--<NavigationViewItem.MenuItems>
                         <NavigationViewItem Content="Favorites"
                                             Icon="Favorite"
                                             IsEnabled="False"
@@ -122,7 +122,7 @@
                                             IsEnabled="False"
                                             Tag="Browser History"
                                             ToolTipService.ToolTip="History" />
-                    </NavigationViewItem.MenuItems>
+                    </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_Footer_FileManager"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
@@ -131,7 +131,7 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xec50;" />
                     </NavigationViewItem.Icon>
-                    <NavigationViewItem.MenuItems>
+                    <!--<NavigationViewItem.MenuItems>
                         <NavigationViewItem Content="Documents"
                                             Icon="Document"
                                             ToolTipService.ToolTip="Documents"
@@ -152,15 +152,16 @@
                                             Icon="Video"
                                             ToolTipService.ToolTip="Videos"
                                             Tag="FileExplorer Videos Folder" />
-                    </NavigationViewItem.MenuItems>
+                    </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_Editors">
+                <NavigationViewItem x:Uid="NavigationView_Editors"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.TextEditorViewModel">
                     Editor
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe70f;" />
                     </NavigationViewItem.Icon>
-                    <NavigationViewItem.MenuItems>
+                    <!--<NavigationViewItem.MenuItems>
                         <NavigationViewItem x:Uid="NavigationView_Footer_ClipboardEditor"
                                             helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
                                             IsEnabled="False">
@@ -187,7 +188,7 @@
                                           Glyph="&#xeb41;" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
-                    </NavigationViewItem.MenuItems>
+                    </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_Microsoft365"
                                     IsEnabled="False"
@@ -197,7 +198,7 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xeb3c;" />
                     </NavigationViewItem.Icon>
-                    <NavigationViewItem.MenuItems>
+                    <!--<NavigationViewItem.MenuItems>
                         <NavigationViewItem x:Uid="NavigationView_Footer_Calendar"
                                             helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
                                             IsEnabled="False">
@@ -225,7 +226,7 @@
                                           Glyph="&#xeb41;" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
-                    </NavigationViewItem.MenuItems>
+                    </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_People"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
@@ -236,7 +237,7 @@
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe716;" />
                     </NavigationViewItem.Icon>
-                    <NavigationViewItem.MenuItems>
+                    <!--<NavigationViewItem.MenuItems>
                         <NavigationViewItem x:Uid="NavigationView_Footer_Ancients"
                                             helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
                                             IsEnabled="False">
@@ -264,7 +265,7 @@
                                           Glyph="&#xe716;" />
                             </NavigationViewItem.Icon>
                         </NavigationViewItem>
-                    </NavigationViewItem.MenuItems>
+                    </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
