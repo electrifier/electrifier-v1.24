@@ -181,7 +181,6 @@
                     </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_People"
-                                    
                                     IsEnabled="False"
                                     Visibility="Collapsed">
                     People
