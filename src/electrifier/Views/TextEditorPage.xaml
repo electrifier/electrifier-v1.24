@@ -32,36 +32,35 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                    <AppBarButton x:Uid="LoadButton"
-                                  Icon="OpenFile"
-                                  Label="Save" />
-                    <AppBarButton x:Uid="SaveButton"
-                                  Icon="Save"
-                                  Label="Save" />
-                    <AppBarButton x:Uid="SaveButton"
-                                  Icon="Save"
-                                  Label="Save" />
+                <AppBarButton x:Uid="LoadButton"
+                              Icon="OpenFile"
+                              IsEnabled="False"
+                              Label="Open..." />
+                <AppBarButton x:Uid="SaveButton"
+                              Icon="Save"
+                              IsEnabled="False"
+                              Label="Save" />
+                <AppBarButton x:Uid="SaveAsButton"
+                              Icon="Save"
+                              IsEnabled="False"
+                              Label="Save as..." />
             </StackPanel >
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right">
-                <!-- Command="{x:Bind ViewModel.ReloadCommand}"-->
-                <Button x:Uid="ReloadButton"
-                        Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
-                        Padding="{StaticResource XXSmallLeftTopRightBottomMargin}">
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                              Glyph="&#xE72C;" />
-                </Button>
+                <AppBarButton x:Uid="RunButton"
+                              Icon="Play"
+                              IsEnabled="False"
+                              Label="Run" />
                 <!-- Glyph 'OpenInNewWindow' xe8a7 -->
                 <Button x:Uid="OpenInBrowserButton"
-                        Margin="{StaticResource XSmallLeftTopRightBottomMargin}"
-                        Padding="{StaticResource XXSmallLeftTopRightBottomMargin}">
+                        IsEnabled="False">
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                               Glyph="&#xe8a7;" />
                 </Button>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-            <editor:CodeEditorControl x:Name="MyEditor"
+            <editor:CodeEditorControl x:Name="Editor"
                                       HighlightingLanguage="csharp" />
         </Grid>
     </Grid>
