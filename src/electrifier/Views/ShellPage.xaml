@@ -69,7 +69,6 @@
                         IsBackButtonVisible="Visible"
                         IsBackEnabled="False"
                         IsPaneOpen="True"
-                        IsPaneToggleButtonVisible="True"
                         IsSettingsVisible="True"
                         IsTitleBarAutoPaddingEnabled="True">
             <!--TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
@@ -78,13 +77,13 @@
                         https://learn.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.symbol?view=winrt-22621
                 TODO: Update item icons by updating FontIcon.Glyph properties.
                         https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list -->
-            <NavigationView.PaneHeader>
+            <!--<NavigationView.PaneHeader>
                 <ImageIcon MaxHeight="32"
                            Visibility="Visible"
                            HorizontalAlignment="Right"
-                           Source="ms-appx:///Assets/WindowIcon.ico" />
-            </NavigationView.PaneHeader>
-            <NavigationView.PaneTitle>-= Workbench Name =-</NavigationView.PaneTitle>
+                           Source="ms-appx:///Assets/app.ico" />
+            </NavigationView.PaneHeader>-->
+            <!--<NavigationView.PaneTitle>-= Workbench Name =-</NavigationView.PaneTitle>-->
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Uid="NavigationView_Workbench"
                                     IsSelected="True"
@@ -95,10 +94,10 @@
                                   Glyph="&#xe8d1;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_BucketList"
+                <NavigationViewItem x:Uid="NavigationView_Kanban Board"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
                                     IsEnabled="False">
-                    Bucket List
+                    Kanban Board
                     <NavigationViewItem.Icon>
                         <SymbolIcon Symbol="Bullets" />
                     </NavigationViewItem.Icon>
@@ -124,7 +123,7 @@
                                             ToolTipService.ToolTip="History" />
                     </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_Footer_FileManager"
+                <NavigationViewItem x:Uid="NavigationView_FileManager"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
                     File Manager
                     <NavigationViewItem.Icon>
@@ -154,40 +153,17 @@
                                             Tag="FileExplorer Videos Folder" />
                     </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_Editors"
+                <NavigationViewItem x:Uid="NavigationView_TextEditor"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.TextEditorViewModel">
-                    Editor
+                    Text Editor
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe70f;" />
                     </NavigationViewItem.Icon>
                     <!--<NavigationViewItem.MenuItems>
-                        <NavigationViewItem x:Uid="NavigationView_Footer_ClipboardEditor"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                            IsEnabled="False">
-                            Clipboard History
-                            <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xeb41;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-                        <NavigationViewItem x:Uid="NavigationView_Footer_TextEditor"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.TextEditorViewModel">
-                            <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xe7c3;" />
-                            </NavigationViewItem.Icon>
-                            Text
-                        </NavigationViewItem>
-                        <NavigationViewItem x:Uid="NavigationView_Footer_ResourcesEditor"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                            IsEnabled="False">
-                            Resources
-                            <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xeb41;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
+                        <NavigationViewItem x:Uid="NavigationView_Footer_ClipboardEditor" />
+                        <NavigationViewItem x:Uid="NavigationView_Footer_TextEditor" />
+                        <NavigationViewItem x:Uid="NavigationView_Footer_ResourcesEditor" />
                     </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_Microsoft365"
@@ -199,37 +175,13 @@
                                   Glyph="&#xeb3c;" />
                     </NavigationViewItem.Icon>
                     <!--<NavigationViewItem.MenuItems>
-                        <NavigationViewItem x:Uid="NavigationView_Footer_Calendar"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                            IsEnabled="False">
-                            Calendar
-                            <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xeb41;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-                        <NavigationViewItem x:Uid="NavigationView_Footer_Mail"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                            IsEnabled="False">
-                            Mail
-                            <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xeb41;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-                        <NavigationViewItem x:Uid="NavigationView_Footer_Tasks"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                            IsEnabled="False">
-                            Tasks
-                            <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xeb41;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Calendar" />
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Mail" />
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Tasks" />
                     </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_People"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
+                                    
                                     IsEnabled="False"
                                     Visibility="Collapsed">
                     People
@@ -238,33 +190,9 @@
                                   Glyph="&#xe716;" />
                     </NavigationViewItem.Icon>
                     <!--<NavigationViewItem.MenuItems>
-                        <NavigationViewItem x:Uid="NavigationView_Footer_Ancients"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                            IsEnabled="False">
-                            Ancients
-                            <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xe716;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-                        <NavigationViewItem x:Uid="NavigationView_Footer_Contacts"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                            IsEnabled="False">
-                            Contacts
-                            <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xe716;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-                        <NavigationViewItem x:Uid="NavigationView_Footer_Favorites"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                            IsEnabled="False">
-                            Favorites
-                            <NavigationViewItem.Icon>
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xe716;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Ancients" />
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Contacts" />
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Favorites" />
                     </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
             </NavigationView.MenuItems>

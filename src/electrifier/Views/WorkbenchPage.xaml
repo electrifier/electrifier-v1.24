@@ -14,18 +14,18 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:viewmodels="using:electrifier.ViewModels"
-      xmlns:ui="using:CommunityToolkit.WinUI"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+<Page x:Class="electrifier.Views.WorkbenchPage"
       xmlns:behaviors="using:electrifier.Behaviors"
-      x:Class="electrifier.Views.WorkbenchPage"
-      mc:Ignorable="d"
+      xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:ui="using:CommunityToolkit.WinUI"
+      xmlns:viewmodels="using:electrifier.ViewModels"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
       d:DataContext="{d:DesignInstance Type=viewmodels:WorkbenchViewModel}"
-      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never">
+      mc:Ignorable="d">
     <!-- TODO: ui:UIElementExtensions.ClipToBounds="{x:Bind IsClipped, Mode=OneWay}" -->
     <!-- TODO: removed Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" -->
     <Grid x:Name="ContentArea">
