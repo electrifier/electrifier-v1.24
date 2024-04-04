@@ -41,6 +41,23 @@
                         Orientation="Horizontal"
                         VerticalAlignment="Top"
                         Width="Auto">
+
+                <!-- Click="AppTitleBar_BackButton_Click" -->
+
+                <Button x:Name="AppTitleBar_BackButton"
+                        Content="&#xE0A6;"
+                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                        FontSize="16"
+                        Height="32"
+                        MaxHeight="32"
+                        Width="32" />
+                <Button x:Name="AppTitleBar_ForwardButton"
+                        Content="&#xE0A8;"
+                        FontFamily="{StaticResource SymbolThemeFontFamily}"
+                        FontSize="16"
+                        Height="32"
+                        MaxHeight="32"
+                        Width="32" />
                 <Image x:Name="AppTitleBar_WindowIcon"
                        Height="32"
                        MaxHeight="32"
@@ -62,12 +79,13 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
+                    <!--IsBackButtonVisible="Visible"
+                        IsBackEnabled="False"-->
         <NavigationView x:Name="NavigationViewControl"
                         AlwaysShowHeader="True"
                         CompactPaneLength="72"
                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
-                        IsBackButtonVisible="Visible"
-                        IsBackEnabled="False"
+                        IsBackButtonVisible="Collapsed"
                         IsPaneOpen="True"
                         IsSettingsVisible="True"
                         IsTitleBarAutoPaddingEnabled="True">
