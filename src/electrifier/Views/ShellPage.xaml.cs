@@ -15,13 +15,13 @@
     limitations under the License.
 */
 
-using Windows.System;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Controls;
-using electrifier.ViewModels;
-using electrifier.Helpers;
 using electrifier.Contracts.Services;
+using electrifier.Helpers;
+using electrifier.ViewModels;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
+using Windows.System;
 
 namespace electrifier.Views;
 
@@ -35,7 +35,7 @@ public sealed partial class ShellPage : Page
 
     public ShellPage(ShellViewModel viewModel)
     {
-        ViewModel = viewModel;
+        ViewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
         InitializeComponent();
 
         ViewModel.NavigationService.Frame = NavigationFrame;
@@ -66,6 +66,19 @@ public sealed partial class ShellPage : Page
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
     {
         //App.AppTitleBar = AppTitleBarTextBlock;
+    }
+
+    private void AppTitleBar_BackButton_Click(object sender, RoutedEventArgs e)
+    {
+        var navigationService = App.GetService<INavigationService>();
+
+        navigationService.GoBack();
+    }
+    private void AppTitleBar_ForwardButton_Click(object sender, RoutedEventArgs e)
+    {
+        // TODO:
+        // var navigationService = App.GetService<INavigationService>();
+        // navigationService.GoForward();
     }
 
     private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)

@@ -39,7 +39,25 @@
         <StackPanel x:Name="ContentArea">
             <TextBlock x:Uid="Settings_Personalization"
                        Style="{ThemeResource SubtitleTextBlockStyle}" />
-            <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
+            <StackPanel x:Name="Settings_Appearance"
+                        Margin="{StaticResource SmallTopBottomMargin}">
+                <TextBlock x:Uid="Settings_AppearanceTextBlock">Appearance</TextBlock>
+                <StackPanel Margin="{StaticResource XSmallTopMargin}">
+                    <RadioButton x:Uid="Settings_Appearance_RadioButton"
+                                 FontSize="15"
+                                 Command="{x:Bind ViewModel.SwitchThemeCommand}"
+                                 IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}"
+                                 GroupName="Appearance">
+                        Monochrome
+                        <!--<RadioButton.CommandParameter>
+                            <xaml:ElementTheme>Monochrome</xaml:ElementTheme>
+                        </RadioButton.CommandParameter>-->
+                    </RadioButton>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel x:Name="Settings_Theme"
+                        Margin="{StaticResource SmallTopBottomMargin}">
                 <TextBlock x:Uid="Settings_Theme" />
                 <StackPanel Margin="{StaticResource XSmallTopMargin}">
                     <RadioButton x:Uid="Settings_Theme_Light"
@@ -68,22 +86,6 @@
                         <RadioButton.CommandParameter>
                             <xaml:ElementTheme>Default</xaml:ElementTheme>
                         </RadioButton.CommandParameter>
-                    </RadioButton>
-                </StackPanel>
-            </StackPanel>
-
-            <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
-                <TextBlock x:Uid="Settings_Appearance">Appearance</TextBlock>
-                <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                    <RadioButton x:Uid="Settings_Appearance_RadioButton"
-                                 FontSize="15"
-                                 Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                                 IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}"
-                                 GroupName="Appearance">
-                        Monochrome
-                        <!--<RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Monochrome</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>-->
                     </RadioButton>
                 </StackPanel>
             </StackPanel>
