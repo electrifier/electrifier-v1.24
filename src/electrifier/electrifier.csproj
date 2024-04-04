@@ -55,6 +55,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Assets\Themes\Aero Blackcomb\" />
     <Folder Include="Assets\Views\Workbench\" />
     <Folder Include="Controls\" />
   </ItemGroup>
