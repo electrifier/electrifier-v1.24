@@ -17,7 +17,8 @@
 
 <!-- TODO: Insert MenuItemsSource -->
 <!-- TODO: IsPaneToggleButtonVisible = True -> PaneToggle-Style and overlap -->
-<!-- TODO: <NavigationMode />-->
+<!-- TODO: <NavigationMode /> -->
+<!-- TODO: See winui3gallery://item/AnimatedIcon -->
 
 <Page x:Class="electrifier.Views.ShellPage"
       xmlns:behaviors="using:electrifier.Behaviors"
@@ -41,26 +42,19 @@
                         Orientation="Horizontal"
                         VerticalAlignment="Top"
                         Width="Auto">
-
-                <!-- Click="AppTitleBar_BackButton_Click" -->
-
                 <Button x:Name="AppTitleBar_BackButton"
-                        Content="&#xE0A6;"
-                        FontFamily="{StaticResource SymbolThemeFontFamily}"
-                        FontSize="16"
-                        Height="32"
-                        MaxHeight="32"
-                        Width="32" />
+                        Margin="5,0,0,0">
+                    <Image MaxHeight="22"
+                           Source="ms-appx:///Assets/Themes/Aero Blackcomb/Back Button 48px.png" />
+                </Button>
                 <Button x:Name="AppTitleBar_ForwardButton"
-                        Content="&#xE0A8;"
-                        FontFamily="{StaticResource SymbolThemeFontFamily}"
-                        FontSize="16"
-                        Height="32"
-                        MaxHeight="32"
-                        Width="32" />
+                        Margin="5,0,0,0">
+                    <Image MaxHeight="22"
+                           Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png" />
+                </Button>
                 <Image x:Name="AppTitleBar_WindowIcon"
                        Height="32"
-                       MaxHeight="32"
+                       Margin="5,0,0,0"
                        Source="ms-appx:///Assets/app.ico" />
                 <!-- TODO: Create style in static resources: Style="{StaticResource AppTitleBarTitleStyle}" -->
                 <StackPanel x:Name="AppTitleBar_TitleStackPanel"
@@ -79,7 +73,7 @@
                 </StackPanel>
             </StackPanel>
         </Grid>
-                    <!--IsBackButtonVisible="Visible"
+        <!--IsBackButtonVisible="Visible"
                         IsBackEnabled="False"-->
         <NavigationView x:Name="NavigationViewControl"
                         AlwaysShowHeader="True"
