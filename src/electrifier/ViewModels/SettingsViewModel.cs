@@ -20,22 +20,30 @@ using CommunityToolkit.Mvvm.Input;
 using electrifier.Contracts.Services;
 using electrifier.Helpers;
 using Microsoft.UI.Xaml;
+using System.Diagnostics;
 using System.Reflection;
+using System.Text;
 using System.Windows.Input;
 using Windows.ApplicationModel;
 
 namespace electrifier.ViewModels;
 
+[DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
 public partial class SettingsViewModel : ObservableRecipient
 {
     private readonly IThemeSelectorService _themeSelectorService;
 
     [ObservableProperty]
+    private string _appearance = "Monochrome";
+    [ObservableProperty]
     private ElementTheme _elementTheme;
-
     [ObservableProperty]
     private string _versionDescription;
 
+    public ICommand? SwitchAppearanceCommand
+    {
+        get;
+    }
     public ICommand SwitchThemeCommand
     {
         get;
@@ -74,5 +82,18 @@ public partial class SettingsViewModel : ObservableRecipient
         }
 
         return $"{"AppDisplayName".GetLocalized()} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+    }
+
+    /// <summary>
+    /// documentation: https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.debuggerdisplayattribute?view=net-6.0
+    /// </summary>
+    /// <returns></returns>
+    private string GetDebuggerDisplay()
+    {
+        return new StringBuilder().Append(nameof(SettingsViewModel))
+        .Append($" Appearance={Appearance}")
+        .Append($" ElementTheme={ElementTheme}")
+        .Append($" VersionDescription={VersionDescription}")
+        .ToString();
     }
 }
