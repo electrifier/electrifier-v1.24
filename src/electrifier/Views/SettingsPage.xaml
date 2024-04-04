@@ -61,13 +61,29 @@
                         </RadioButton.CommandParameter>
                     </RadioButton>
                     <RadioButton x:Uid="Settings_Theme_Default"
+                                 FontSize="15"
                                  Command="{x:Bind ViewModel.SwitchThemeCommand}"
                                  IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=OneWay}"
-                                 FontSize="15"
                                  GroupName="AppTheme">
                         <RadioButton.CommandParameter>
                             <xaml:ElementTheme>Default</xaml:ElementTheme>
                         </RadioButton.CommandParameter>
+                    </RadioButton>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel Margin="{StaticResource SmallTopBottomMargin}">
+                <TextBlock x:Uid="Settings_Appearance">Appearance</TextBlock>
+                <StackPanel Margin="{StaticResource XSmallTopMargin}">
+                    <RadioButton x:Uid="Settings_Appearance_RadioButton"
+                                 FontSize="15"
+                                 Command="{x:Bind ViewModel.SwitchThemeCommand}"
+                                 IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}"
+                                 GroupName="Appearance">
+                        Monochrome
+                        <!--<RadioButton.CommandParameter>
+                            <xaml:ElementTheme>Monochrome</xaml:ElementTheme>
+                        </RadioButton.CommandParameter>-->
                     </RadioButton>
                 </StackPanel>
             </StackPanel>
@@ -76,8 +92,6 @@
             <StackPanel Margin="{StaticResource XSmallTopMargin}">
                 <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
                            Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />
-                <TextBlock Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}"
-                           Style="{ThemeResource BodyTextBlockStyle}" />
                 <TextBlock x:Uid="Settings_AboutDescription"
                            Margin="{StaticResource XSmallTopMargin}"
                            Style="{ThemeResource BodyTextBlockStyle}" />
