@@ -76,6 +76,10 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<KanbanBoardDetailViewModel>();
+            services.AddTransient<KanbanBoardDetailPage>();
+            services.AddTransient<KanbanBoardViewModel>();
+            services.AddTransient<KanbanBoardPage>();
             services.AddTransient<TextEditorViewModel>();
             services.AddTransient<TextEditorPage>();
             services.AddTransient<FileManagerViewModel>();

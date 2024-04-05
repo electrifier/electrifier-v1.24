@@ -19,6 +19,8 @@ public class PageService : IPageService
         Configure<SettingsViewModel, SettingsPage>();
         Configure<FileManagerViewModel, FileManagerPage>();
         Configure<TextEditorViewModel, TextEditorPage>();
+        Configure<KanbanBoardViewModel, KanbanBoardPage>();
+        Configure<KanbanBoardDetailViewModel, KanbanBoardDetailPage>();
     }
 
     public Type GetPageType(string key)

@@ -215,4 +215,7 @@
   <data name="Shell_TextEditor.Content" xml:space="preserve">
     <value>TextEditor</value>
   </data>
+  <data name="Shell_KanbanBoard.Content" xml:space="preserve">
+    <value>KanbanBoard</value>
+  </data>
 </root>

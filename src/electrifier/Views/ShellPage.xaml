@@ -48,12 +48,14 @@
                        Margin="5,0,0,0"
                        Source="ms-appx:///Assets/app.ico" />
                 <Button x:Name="AppTitleBar_BackButton"
+                        Background="Transparent"
                         Click="AppTitleBar_BackButton_Click"
                         Margin="3,0,0,0">
                     <Image MaxHeight="22"
                            Source="ms-appx:///Assets/Themes/Aero Blackcomb/Back Button 48px.png" />
                 </Button>
                 <Button x:Name="AppTitleBar_ForwardButton"
+                        Background="Transparent"
                         Click="AppTitleBar_ForwardButton_Click"
                         Margin="5,0,0,0">
                     <Image MaxHeight="22"
@@ -108,18 +110,19 @@
                                   Glyph="&#xe8d1;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_Kanban Board"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                    IsEnabled="False">
+                <NavigationViewItem x:Uid="NavigationView_KanbanBoard"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.KanbanBoardViewModel">
                     Kanban Board
                     <NavigationViewItem.Icon>
-                        <SymbolIcon Symbol="Bullets" />
+                        <!--<SymbolIcon Symbol="Bullets" />-->
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xf0e2;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItemSeparator />
                 <NavigationViewItem x:Uid="NavigationView_WebView"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
-                    Web Browser
+                    Browser
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xeb41;" />
@@ -139,7 +142,7 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_FileManager"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
-                    File Manager
+                    Files
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xec50;" />
@@ -169,31 +172,30 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_TextEditor"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.TextEditorViewModel">
-                    Text Editor
+                    Editor
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe70f;" />
                     </NavigationViewItem.Icon>
-                    <!--<NavigationViewItem.MenuItems>
+                </NavigationViewItem>
+                <!--<NavigationViewItem.MenuItems>
                         <NavigationViewItem x:Uid="NavigationView_Footer_ClipboardEditor" />
                         <NavigationViewItem x:Uid="NavigationView_Footer_TextEditor" />
                         <NavigationViewItem x:Uid="NavigationView_Footer_ResourcesEditor" />
                     </NavigationViewItem.MenuItems>-->
-                </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_Microsoft365"
-                                    IsEnabled="False"
-                                    Visibility="Collapsed">
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
                     Microsoft 365
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xeb3c;" />
                     </NavigationViewItem.Icon>
-                    <!--<NavigationViewItem.MenuItems>
+                </NavigationViewItem>
+                <!--<NavigationViewItem.MenuItems>
                         <NavigationViewItem x:Uid="NavigationView_Footer_Calendar" />
                         <NavigationViewItem x:Uid="NavigationView_Footer_Mail" />
                         <NavigationViewItem x:Uid="NavigationView_Footer_Tasks" />
                     </NavigationViewItem.MenuItems>-->
-                </NavigationViewItem>
                 <NavigationViewItem x:Uid="NavigationView_People"
                                     IsEnabled="False"
                                     Visibility="Collapsed">
@@ -208,6 +210,13 @@
                         <NavigationViewItem x:Uid="NavigationView_Footer_Favorites" />
                     </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
+                <!--<NavigationViewItem x:Uid="Shell_KanbanBoard"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.KanbanBoardViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xf0e2;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>-->
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem x:Uid="NavigationView_Footer_Workbench"

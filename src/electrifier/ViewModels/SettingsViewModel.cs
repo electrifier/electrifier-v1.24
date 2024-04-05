@@ -37,6 +37,7 @@ public partial class SettingsViewModel : ObservableRecipient
     private string _appearance = "Monochrome";
     [ObservableProperty]
     private ElementTheme _elementTheme;
+
     [ObservableProperty]
     private string _versionDescription;
 
@@ -66,6 +67,20 @@ public partial class SettingsViewModel : ObservableRecipient
             });
     }
 
+    /// <summary>
+    /// documentation: https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.debuggerdisplayattribute?view=net-6.0
+    /// </summary>
+    /// <returns><see cref="string"/></returns>
+    private string GetDebuggerDisplay()
+    {
+        return new StringBuilder().Append(nameof(SettingsViewModel))
+        .Append($" Appearance={Appearance}")
+        .Append($" ElementTheme={ElementTheme}")
+        .Append($" VersionDescription={VersionDescription}")
+        .ToString();
+    }
+
+
     private static string GetVersionDescription()
     {
         Version version;
@@ -82,18 +97,5 @@ public partial class SettingsViewModel : ObservableRecipient
         }
 
         return $"{"AppDisplayName".GetLocalized()} - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
-    }
-
-    /// <summary>
-    /// documentation: https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.debuggerdisplayattribute?view=net-6.0
-    /// </summary>
-    /// <returns></returns>
-    private string GetDebuggerDisplay()
-    {
-        return new StringBuilder().Append(nameof(SettingsViewModel))
-        .Append($" Appearance={Appearance}")
-        .Append($" ElementTheme={ElementTheme}")
-        .Append($" VersionDescription={VersionDescription}")
-        .ToString();
     }
 }
