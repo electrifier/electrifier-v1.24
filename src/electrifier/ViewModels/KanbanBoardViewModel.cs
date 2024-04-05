@@ -29,9 +29,9 @@ namespace electrifier.ViewModels;
 public partial class KanbanBoardViewModel : ObservableRecipient, INavigationAware
 {
     private readonly INavigationService _navigationService;
-//    private readonly ISampleDataService _sampleDataService;
+    //    private readonly ISampleDataService _sampleDataService;
 
-//    public ObservableCollection<SampleOrder> Source { get; } = new ObservableCollection<SampleOrder>();
+    //    public ObservableCollection<SampleOrder> Source { get; } = new ObservableCollection<SampleOrder>();
 
     public KanbanBoardViewModel(INavigationService navigationService /*, ISampleDataService sampleDataService */)
     {
@@ -52,7 +52,7 @@ public partial class KanbanBoardViewModel : ObservableRecipient, INavigationAwar
     {
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public /* TODO: async */ void OnNavigatedTo(object parameter)
     {
         //Source.Clear();
 

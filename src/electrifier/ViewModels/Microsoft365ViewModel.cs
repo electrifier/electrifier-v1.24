@@ -1,9 +1,24 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿/*
+    Copyright 2024 Thorsten Jung, aka tajbender
+        https://www.electrifier.org
 
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+*/
+
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using electrifier.Contracts.Services;
 using electrifier.Contracts.ViewModels;
-
 using Microsoft.Web.WebView2.Core;
 
 namespace electrifier.ViewModels;
@@ -14,9 +29,9 @@ namespace electrifier.ViewModels;
 // https://docs.microsoft.com/microsoft-edge/webview2/concepts/distribution
 public partial class Microsoft365ViewModel : ObservableRecipient, INavigationAware
 {
-    // TODO: Set the default URL to display.
     [ObservableProperty]
-    private Uri source = new("https://docs.microsoft.com/windows/apps/");
+    private Uri source = new("https://www.office.com/");
+    // private Uri source = new("https://docs.microsoft.com/windows/apps/");   // NOTE: This is a placeholder URL for Windows Dev Center.
 
     [ObservableProperty]
     private bool isLoading = true;

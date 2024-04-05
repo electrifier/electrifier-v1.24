@@ -184,13 +184,21 @@
                         <NavigationViewItem x:Uid="NavigationView_Footer_ResourcesEditor" />
                     </NavigationViewItem.MenuItems>-->
                 <NavigationViewItem x:Uid="NavigationView_Microsoft365"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.Microsoft365ViewModel">
                     Microsoft 365
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xeb3c;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+            <!--<NavigationViewItem x:Uid="Shell_Microsoft365"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.Microsoft365ViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xe774;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem> -->
+                
                 <!--<NavigationViewItem.MenuItems>
                         <NavigationViewItem x:Uid="NavigationView_Footer_Calendar" />
                         <NavigationViewItem x:Uid="NavigationView_Footer_Mail" />
@@ -217,11 +225,6 @@
                                   Glyph="&#xf0e2;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>-->
-                <NavigationViewItem x:Uid="Shell_Microsoft365" helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.Microsoft365ViewModel">
-                    <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe774;"/>
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem x:Uid="NavigationView_Footer_Workbench"

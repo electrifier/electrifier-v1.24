@@ -36,7 +36,7 @@ public partial class KanbanBoardDetailViewModel : ObservableRecipient, INavigati
     {
     }
 
-    public async void OnNavigatedTo(object parameter)
+    public /* TODO: async */void OnNavigatedTo(object parameter)
     {
         //if (parameter is long orderID)
         //{
