@@ -217,6 +217,11 @@
                                   Glyph="&#xf0e2;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>-->
+                <NavigationViewItem x:Uid="Shell_Microsoft365" helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.Microsoft365ViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe774;"/>
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
                 <NavigationViewItem x:Uid="NavigationView_Footer_Workbench"

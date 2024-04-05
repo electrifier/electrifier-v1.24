@@ -21,6 +21,7 @@ public class PageService : IPageService
         Configure<TextEditorViewModel, TextEditorPage>();
         Configure<KanbanBoardViewModel, KanbanBoardPage>();
         Configure<KanbanBoardDetailViewModel, KanbanBoardDetailPage>();
+        Configure<Microsoft365ViewModel, Microsoft365Page>();
     }
 
     public Type GetPageType(string key)

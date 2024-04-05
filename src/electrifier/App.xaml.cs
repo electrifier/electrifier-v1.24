@@ -76,6 +76,8 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<Microsoft365ViewModel>();
+            services.AddTransient<Microsoft365Page>();
             services.AddTransient<KanbanBoardDetailViewModel>();
             services.AddTransient<KanbanBoardDetailPage>();
             services.AddTransient<KanbanBoardViewModel>();

@@ -218,4 +218,7 @@
   <data name="Shell_KanbanBoard.Content" xml:space="preserve">
     <value>KanbanBoard</value>
   </data>
+  <data name="Shell_Microsoft365.Content" xml:space="preserve">
+    <value>Microsoft365</value>
+  </data>
 </root>
