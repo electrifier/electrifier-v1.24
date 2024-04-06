@@ -42,6 +42,7 @@
                         Margin="0,5,0,0"
                         Orientation="Horizontal"
                         VerticalAlignment="Top"
+                        BackgroundSizing="OuterBorderEdge"
                         Width="Auto">
                 <Image x:Name="AppTitleBar_WindowIcon"
                        Height="32"
@@ -86,7 +87,7 @@
                         IsBackButtonVisible="Collapsed"
                         IsPaneOpen="True"
                         IsSettingsVisible="True"
-                        IsTitleBarAutoPaddingEnabled="True">
+                        IsTitleBarAutoPaddingEnabled="False">
             <!--TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
                         https://docs.microsoft.com/windows/uwp/app-resources/localize-strings-ui-manifest#refer-to-a-string-resource-identifier-from-xaml
                 TODO: Prefer Symbols over FontIcons for item icons.
@@ -101,18 +102,17 @@
             </NavigationView.PaneHeader>-->
             <!--<NavigationView.PaneTitle>-= Workbench Name =-</NavigationView.PaneTitle>-->
             <NavigationView.MenuItems>
-                <NavigationViewItem x:Uid="NavigationView_Workbench"
+                <NavigationViewItem x:Uid="Shell_Workbench"
                                     IsSelected="True"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
-                    Workbench
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe8d1;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_KanbanBoard"
+                <NavigationViewItem x:Uid="Shell_KanbanBoard"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.KanbanBoardViewModel">
-                    Kanban Board
+                    "{x:Static properties:Resources.ShellPage_KanbanBoard}"
                     <NavigationViewItem.Icon>
                         <!--<SymbolIcon Symbol="Bullets" />-->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -120,9 +120,9 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItemSeparator />
-                <NavigationViewItem x:Uid="NavigationView_WebView"
+                <NavigationViewItem x:Uid="Shell_WebView"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
-                    Browser
+                    "{x:Static properties:Resources.ShellPage_Browser}"
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xeb41;" />
@@ -140,9 +140,9 @@
                                             ToolTipService.ToolTip="History" />
                     </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_FileManager"
+                <NavigationViewItem x:Uid="Shell_FileManager"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
-                    Files
+                    "{x:Static properties:Resources.ShellPage_Files}"
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xec50;" />
@@ -170,9 +170,9 @@
                                             Tag="FileExplorer Videos Folder" />
                     </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_TextEditor"
+                <NavigationViewItem x:Uid="Shell_TextEditor"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.TextEditorViewModel">
-                    Editor
+                    "{x:Static properties:Resources.ShellPage_Editor.Content}"
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe70f;" />
@@ -183,9 +183,9 @@
                         <NavigationViewItem x:Uid="NavigationView_Footer_TextEditor" />
                         <NavigationViewItem x:Uid="NavigationView_Footer_ResourcesEditor" />
                     </NavigationViewItem.MenuItems>-->
-                <NavigationViewItem x:Uid="NavigationView_Microsoft365"
+                <NavigationViewItem x:Uid="Shell_Microsoft365"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.Microsoft365ViewModel">
-                    Microsoft 365
+                    "{x:Static properties:Resources.ShellPage_Microsoft365}"
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xeb3c;" />
@@ -204,10 +204,9 @@
                         <NavigationViewItem x:Uid="NavigationView_Footer_Mail" />
                         <NavigationViewItem x:Uid="NavigationView_Footer_Tasks" />
                     </NavigationViewItem.MenuItems>-->
-                <NavigationViewItem x:Uid="NavigationView_People"
+                <NavigationViewItem x:Uid="Shell_People"
                                     IsEnabled="False"
                                     Visibility="Collapsed">
-                    People
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe716;" />
@@ -227,9 +226,8 @@
                 </NavigationViewItem>-->
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem x:Uid="NavigationView_Footer_Workbench"
+                <NavigationViewItem x:Uid="Shell_Workbench"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
-                    Workbench
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe8d1;" />
