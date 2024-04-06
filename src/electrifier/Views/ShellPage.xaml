@@ -82,11 +82,11 @@
                        FontStyle="Italic"
                        FontWeight="Bold"
                        HorizontalAlignment="Right"
+                       Margin="0,0,100,0"
                        Text="electrifier alpha"
-                       VerticalAlignment="Bottom"
-                       />
-
+                       VerticalAlignment="Bottom" />
         </Grid>
+
         <!--IsBackButtonVisible="Visible"
                         IsBackEnabled="False"-->
         <NavigationView x:Name="NavigationViewControl"
@@ -124,7 +124,7 @@
                                     IsEnabled="False">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xebc6;"/>
+                                  Glyph="&#xebc6;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItemSeparator />
