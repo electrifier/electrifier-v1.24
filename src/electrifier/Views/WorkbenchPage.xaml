@@ -31,11 +31,10 @@
     <Grid x:Name="ContentArea">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition MaxWidth="300" />
+            <ColumnDefinition MinWidth="250"
+                              MaxWidth="350"
+                              Width="300" />
         </Grid.ColumnDefinitions>
-        <!--<StackPanel x:Name="MainContentAreaStackPanel"
-                    Grid.Column="0">
-            -->
         <!-- TODO: Bind to App Notifications -->
         <!--
             <InfoBar x:Name="SettingsBackupWorkbenchInfoBar"
@@ -55,10 +54,12 @@
                 </InfoBar.Content>
             </InfoBar>
         </StackPanel>-->
-        <Border AllowDrop="True"
-                BorderBrush="Transparent"
-                BorderThickness="8"
-                Grid.Column="0">
+        <Border x:Name="MainContentBorder"
+                Grid.Column="0"
+                BorderThickness="3"
+                Background="{StaticResource AccentAcrylicBackgroundFillColorDefaultBrush}"
+                BorderBrush="Black"
+                AllowDrop="True">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
@@ -74,20 +75,17 @@
                 </StackPanel>
             </Grid>
         </Border>
-
         <controls:GridSplitter Grid.Column="1"
-                               Width="25"
-                               HorizontalAlignment="Center"
+                               Width="12"
+                               HorizontalAlignment="Left"
                                ResizeBehavior="BasedOnAlignment"
                                ResizeDirection="Columns">
             <controls:GridSplitter.RenderTransform>
-                <TranslateTransform X="-5" />
+                <TranslateTransform X="-6" />
             </controls:GridSplitter.RenderTransform>
         </controls:GridSplitter>
-
         <StackPanel x:Name="SidebarStackPanel"
                     Grid.Column="2">
-            <!-- TODO: BorderThickness => StaticRessource -->
             <InfoBar x:Name="LicenseAgreementInfoBar"
                      BorderBrush="Transparent"
                      BorderThickness="8"
@@ -96,22 +94,18 @@
                      Message="Please read and accept the License Agreement"
                      Title="License Agreement">
                 <TextBlock TextWrapping="Wrap">
-                    <Run>Take a look at the repository </Run>
+                    <Run>Take a look at the </Run>
                     <Hyperlink NavigateUri="https://github.com/electrifier/electrifier">
-                        https://github.com/electrifier/electrifier
+                        electrifier project page on GitHub...
                     </Hyperlink>
-                    <Run> on GitHub...</Run>
                 </TextBlock>
             </InfoBar>
             <InfoBar>
                 <!-- TODO: Bind to App Notifications -->
-                <TextBlock TextWrapping="Wrap"
-                           Visibility="Visible">
+                <TextBlock TextWrapping="Wrap">
                     <Run>Take a look at the </Run>
-                    <Hyperlink NavigateUri="https://github.com/electrifier">
-                        https://github.com/electrifier
-                    </Hyperlink>
-                    <Run> repository on GitHub</Run>
+                    <Hyperlink NavigateUri="https://github.com/electrifier" />
+                    <Run> project on GitHub.</Run>
                 </TextBlock>
             </InfoBar>
         </StackPanel>

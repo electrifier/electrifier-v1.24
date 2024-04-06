@@ -76,8 +76,8 @@ public sealed partial class ShellPage : Page
     private void AppTitleBar_ForwardButton_Click(object sender, RoutedEventArgs e)
     {
         var navigationService = App.GetService<INavigationService>();
-        // TODO:
-        // navigationService.GoForward();
+
+        navigationService.GoForward();
     }
 
     private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
