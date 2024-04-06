@@ -13,12 +13,17 @@
 	<Nullable>enable</Nullable>
 	<UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <AssemblyVersion>1.24.401</AssemblyVersion>
-    <FileVersion>1.24.401</FileVersion>
+    <AssemblyVersion>1.24.406</AssemblyVersion>
+    <FileVersion>1.24.406</FileVersion>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <Description>Integrated Desktop Enhancement</Description>
+    <Copyright>(c) tajbender, electrifier.org</Copyright>
+    <PackageProjectUrl>https://www.electrifier.org</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/electrifier</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -48,6 +53,10 @@
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 
