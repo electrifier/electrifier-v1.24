@@ -31,12 +31,13 @@
     <Grid x:Name="ContentArea">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition MaxWidth="450"
-                              MinWidth="300" />
+            <ColumnDefinition MaxWidth="300" />
         </Grid.ColumnDefinitions>
-        <StackPanel x:Name="MainContentAreaStackPanel"
+        <!--<StackPanel x:Name="MainContentAreaStackPanel"
                     Grid.Column="0">
-            <!-- TODO: Bind to App Notifications -->
+            -->
+        <!-- TODO: Bind to App Notifications -->
+        <!--
             <InfoBar x:Name="SettingsBackupWorkbenchInfoBar"
                      BorderThickness="8"
                      BorderBrush="Transparent"
@@ -53,16 +54,37 @@
                     </ItemsStackPanel>
                 </InfoBar.Content>
             </InfoBar>
-        </StackPanel>
+        </StackPanel>-->
+        <Border AllowDrop="True"
+                BorderBrush="Transparent"
+                BorderThickness="8"
+                Grid.Column="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0"
+                           Margin="0,0,0,8"
+                           Style="{StaticResource SubtitleTextBlockStyle}"
+                           Text="ContentArea" />
+                <StackPanel Grid.Row="1">
+                    <TextBlock Text="This is the border of ContentArea."
+                               TextWrapping="Wrap" />
+                </StackPanel>
+            </Grid>
+        </Border>
+
         <controls:GridSplitter Grid.Column="1"
-                               Width="12"
-                               HorizontalAlignment="Left"
+                               Width="25"
+                               HorizontalAlignment="Center"
                                ResizeBehavior="BasedOnAlignment"
                                ResizeDirection="Columns">
             <controls:GridSplitter.RenderTransform>
-                <TranslateTransform X="-6" />
+                <TranslateTransform X="-5" />
             </controls:GridSplitter.RenderTransform>
         </controls:GridSplitter>
+
         <StackPanel x:Name="SidebarStackPanel"
                     Grid.Column="2">
             <!-- TODO: BorderThickness => StaticRessource -->
@@ -86,7 +108,7 @@
                 <TextBlock TextWrapping="Wrap"
                            Visibility="Visible">
                     <Run>Take a look at the </Run>
-                    <Hyperlink NavigateUri="https://github.com/electrifier/electrifier">
+                    <Hyperlink NavigateUri="https://github.com/electrifier">
                         https://github.com/electrifier
                     </Hyperlink>
                     <Run> repository on GitHub</Run>

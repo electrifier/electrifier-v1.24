@@ -33,7 +33,6 @@
       Loaded="OnLoaded">
     <Grid>
         <Grid x:Name="AppTitleBar"
-              Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
               HorizontalAlignment="Stretch"
               IsHitTestVisible="True"
               VerticalAlignment="Top">
@@ -43,11 +42,26 @@
                         Orientation="Horizontal"
                         VerticalAlignment="Top"
                         BackgroundSizing="OuterBorderEdge"
-                        Width="Auto">
+                        Width="256">
                 <Image x:Name="AppTitleBar_WindowIcon"
                        Height="32"
                        Margin="5,0,0,0"
                        Source="ms-appx:///Assets/app.ico" />
+                <StackPanel x:Name="AppTitleBar_TitleStackPanel"
+                            Orientation="Vertical"
+                            VerticalAlignment="Top"
+                            Margin="5,0,0,0"
+                            Width="Auto">
+                    <TextBlock x:Name="AppTitleBar_TitleTextBlock"
+                               FontSize="16"
+                               Text="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}" />
+                    <!--<TextBlock x:Name="AppTitleBar_SubTitleTextBlock"
+                               FontSize="12"
+                               FontWeight="Bold"
+                               FontStyle="Italic"
+                               HorizontalAlignment="Right"
+                               Text="electrifier alpha" />-->
+                </StackPanel>
                 <Button x:Name="AppTitleBar_BackButton"
                         Background="Transparent"
                         Click="AppTitleBar_BackButton_Click"
@@ -62,21 +76,16 @@
                     <Image MaxHeight="22"
                            Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png" />
                 </Button>
-                <StackPanel x:Name="AppTitleBar_TitleStackPanel"
-                            Orientation="Vertical"
-                            VerticalAlignment="Top"
-                            Margin="5,0,0,0">
-                    <TextBlock x:Name="AppTitleBar_TitleTextBlock"
-                               FontSize="16"
-                               Text="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}" />
-                    <TextBlock x:Name="AppTitleBar_SubTitleTextBlock"
-                               FontSize="12"
-                               FontWeight="Bold"
-                               FontStyle="Italic"
-                               HorizontalAlignment="Right"
-                               Text="electrifier alpha" />
-                </StackPanel>
             </StackPanel>
+            <TextBlock x:Name="AppTitleBar_SubTitleTextBlock"
+                       FontSize="12"
+                       FontStyle="Italic"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Right"
+                       Text="electrifier alpha"
+                       VerticalAlignment="Bottom"
+                       />
+
         </Grid>
         <!--IsBackButtonVisible="Visible"
                         IsBackEnabled="False"-->
@@ -111,17 +120,16 @@
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_KanbanBoard"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.KanbanBoardViewModel">
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.KanbanBoardViewModel"
+                                    IsEnabled="False">
                     <NavigationViewItem.Icon>
-                        <!--<SymbolIcon Symbol="Bullets" />-->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xf0e2;" />
+                                  Glyph="&#xebc6;"/>
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItemSeparator />
                 <NavigationViewItem x:Uid="Shell_WebView"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
-                    "{x:Static properties:Resources.ShellPage_Browser}"
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xeb41;" />
