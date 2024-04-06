@@ -15,32 +15,25 @@
     limitations under the License.
 */
 
-using Microsoft.Windows.ApplicationModel.DynamicDependency;
-
-[assembly: WinUITestTarget(typeof(electrifier.App))]
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace electrifier.Tests.MSTest;
 
 [TestClass]
-public class Initialize
+public class SimpleUnitTest
 {
-    [AssemblyInitialize]
-    public static void AssemblyInitialize(TestContext context)
-    {
-        // TODO: Initialize the appropriate version of the Windows App SDK.
-        // This is required when testing MSIX apps that are framework-dependent on the Windows App SDK.
-        Assert.IsTrue(Bootstrap.TryInitialize(0x00010001, out var _));
-    }
-
     [TestMethod]
-    public void TestMethod()
+    public void TestMethod1()
     {
-        Assert.IsTrue(true);
-    }
+        using var sw = new StringWriter();
+        Console.SetOut(sw);
+        //HelloWorld.Program.Main();
 
-    [AssemblyCleanup]
-    public static void AssemblyCleanup()
-    {
-        Bootstrap.Shutdown();
+        var result = sw.ToString().Trim();
+        //Assert.AreEqual(Expected, result);
     }
 }
