@@ -112,7 +112,6 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_KanbanBoard"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.KanbanBoardViewModel">
-                    "{x:Static properties:Resources.ShellPage_KanbanBoard}"
                     <NavigationViewItem.Icon>
                         <!--<SymbolIcon Symbol="Bullets" />-->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -142,7 +141,6 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_FileManager"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
-                    "{x:Static properties:Resources.ShellPage_Files}"
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xec50;" />
@@ -172,7 +170,6 @@
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_TextEditor"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.TextEditorViewModel">
-                    "{x:Static properties:Resources.ShellPage_Editor.Content}"
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe70f;" />
@@ -185,20 +182,19 @@
                     </NavigationViewItem.MenuItems>-->
                 <NavigationViewItem x:Uid="Shell_Microsoft365"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.Microsoft365ViewModel">
-                    "{x:Static properties:Resources.ShellPage_Microsoft365}"
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xeb3c;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-            <!--<NavigationViewItem x:Uid="Shell_Microsoft365"
+                <!--<NavigationViewItem x:Uid="Shell_Microsoft365"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.Microsoft365ViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe774;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem> -->
-                
+
                 <!--<NavigationViewItem.MenuItems>
                         <NavigationViewItem x:Uid="NavigationView_Footer_Calendar" />
                         <NavigationViewItem x:Uid="NavigationView_Footer_Mail" />
