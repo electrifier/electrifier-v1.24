@@ -25,7 +25,6 @@ using Windows.System;
 
 namespace electrifier.Views;
 
-// TODO: Update NavigationViewItem titles and icons in ShellPage.xaml.
 public sealed partial class ShellPage : Page
 {
     public ShellViewModel ViewModel
@@ -76,8 +75,8 @@ public sealed partial class ShellPage : Page
     }
     private void AppTitleBar_ForwardButton_Click(object sender, RoutedEventArgs e)
     {
+        var navigationService = App.GetService<INavigationService>();
         // TODO:
-        // var navigationService = App.GetService<INavigationService>();
         // navigationService.GoForward();
     }
 
