@@ -56,20 +56,16 @@
         </StackPanel>-->
         <Border x:Name="MainContentBorder"
                 Grid.Column="0"
-                BorderThickness="3"
-                Background="{StaticResource AccentAcrylicBackgroundFillColorDefaultBrush}"
-                BorderBrush="Black"
-                AllowDrop="True">
+                AllowDrop="True"
+                BorderThickness="3">
             <Grid>
-                <Grid.RowDefinitions>
+                <!--<Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0"
-                           Margin="0,0,0,8"
-                           Style="{StaticResource SubtitleTextBlockStyle}"
-                           Text="ContentArea" />
-                <StackPanel Grid.Row="1">
+                </Grid.RowDefinitions>-->
+                <StackPanel>
+                    <TextBlock Text="ContentArea"
+                               Style="{StaticResource SubtitleTextBlockStyle}" />
                     <TextBlock Text="This is the border of ContentArea."
                                TextWrapping="Wrap" />
                 </StackPanel>
