@@ -13,12 +13,17 @@
 	<Nullable>enable</Nullable>
 	<UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <AssemblyVersion>1.24.401</AssemblyVersion>
-    <FileVersion>1.24.4o1</FileVersion>
+    <AssemblyVersion>1.24.406</AssemblyVersion>
+    <FileVersion>1.24.406</FileVersion>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
+    <Description>Integrated Desktop Enhancement</Description>
+    <Copyright>(c) tajbender, electrifier.org</Copyright>
+    <PackageProjectUrl>https://www.electrifier.org</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <RepositoryUrl>https://github.com/electrifier</RepositoryUrl>
   </PropertyGroup>
 
   <ItemGroup>
@@ -33,10 +38,11 @@
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Sizers" Version="8.0.240109" />
     <PackageReference Include="CommunityToolkit.WinUI.UI.Animations" Version="7.1.2" />
+    <PackageReference Include="CommunityToolkit.WinUI.UI.Controls" Version="7.1.2" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240311000" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
-    <PackageReference Include="Vanara.Windows.Shell" Version="4.0.0-beta2" />
+    <PackageReference Include="Vanara.Windows.Shell" Version="4.0.0" />
     <PackageReference Include="WinUIEdit" Version="0.0.3-prerelease" />
     <PackageReference Include="WinUIEx" Version="2.3.4" />
   </ItemGroup>
@@ -48,6 +54,10 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup Condition="'$(DisableMsixProjectCapabilityAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
@@ -55,6 +65,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Assets\Themes\Aero Blackcomb\" />
     <Folder Include="Assets\Views\Workbench\" />
     <Folder Include="Controls\" />
   </ItemGroup>

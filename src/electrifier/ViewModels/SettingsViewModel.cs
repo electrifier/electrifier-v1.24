@@ -1,6 +1,6 @@
 ﻿/*
     Copyright 2024 Thorsten Jung, aka tajbender
-    https://www.electrifier.org
+        https://www.electrifier.org
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -20,22 +20,31 @@ using CommunityToolkit.Mvvm.Input;
 using electrifier.Contracts.Services;
 using electrifier.Helpers;
 using Microsoft.UI.Xaml;
+using System.Diagnostics;
 using System.Reflection;
+using System.Text;
 using System.Windows.Input;
 using Windows.ApplicationModel;
 
 namespace electrifier.ViewModels;
 
+[DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
 public partial class SettingsViewModel : ObservableRecipient
 {
     private readonly IThemeSelectorService _themeSelectorService;
 
+    [ObservableProperty]
+    private string _appearance = "Monochrome";
     [ObservableProperty]
     private ElementTheme _elementTheme;
 
     [ObservableProperty]
     private string _versionDescription;
 
+    public ICommand? SwitchAppearanceCommand
+    {
+        get;
+    }
     public ICommand SwitchThemeCommand
     {
         get;
@@ -57,6 +66,20 @@ public partial class SettingsViewModel : ObservableRecipient
                 }
             });
     }
+
+    /// <summary>
+    /// documentation: https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.debuggerdisplayattribute?view=net-6.0
+    /// </summary>
+    /// <returns><see cref="string"/></returns>
+    private string GetDebuggerDisplay()
+    {
+        return new StringBuilder().Append(nameof(SettingsViewModel))
+        .Append($" Appearance={Appearance}")
+        .Append($" ElementTheme={ElementTheme}")
+        .Append($" VersionDescription={VersionDescription}")
+        .ToString();
+    }
+
 
     private static string GetVersionDescription()
     {

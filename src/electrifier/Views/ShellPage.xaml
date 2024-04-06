@@ -1,6 +1,6 @@
 ﻿<!--
     Copyright 2024 Thorsten Jung, aka tajbender
-    https://www.electrifier.org
+        https://www.electrifier.org
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -17,7 +17,9 @@
 
 <!-- TODO: Insert MenuItemsSource -->
 <!-- TODO: IsPaneToggleButtonVisible = True -> PaneToggle-Style and overlap -->
-<!-- TODO: <NavigationMode />-->
+<!-- TODO: <NavigationMode /> -->
+<!-- TODO: See winui3gallery://item/AnimatedIcon -->
+<!-- TODO: Create style in static resources: Style="{StaticResource AppTitleBarTitleStyle}" -->
 
 <Page x:Class="electrifier.Views.ShellPage"
       xmlns:behaviors="using:electrifier.Behaviors"
@@ -31,7 +33,6 @@
       Loaded="OnLoaded">
     <Grid>
         <Grid x:Name="AppTitleBar"
-              Height="{Binding ElementName=NavigationViewControl, Path=CompactPaneLength}"
               HorizontalAlignment="Stretch"
               IsHitTestVisible="True"
               VerticalAlignment="Top">
@@ -40,187 +41,119 @@
                         Margin="0,5,0,0"
                         Orientation="Horizontal"
                         VerticalAlignment="Top"
-                        Width="Auto">
+                        BackgroundSizing="OuterBorderEdge"
+                        Width="256">
                 <Image x:Name="AppTitleBar_WindowIcon"
                        Height="32"
-                       MaxHeight="32"
+                       Margin="5,0,0,0"
                        Source="ms-appx:///Assets/app.ico" />
-                <!-- TODO: Create style in static resources: Style="{StaticResource AppTitleBarTitleStyle}" -->
                 <StackPanel x:Name="AppTitleBar_TitleStackPanel"
                             Orientation="Vertical"
                             VerticalAlignment="Top"
-                            Margin="5,0,0,0">
+                            Margin="5,0,0,0"
+                            Width="Auto">
                     <TextBlock x:Name="AppTitleBar_TitleTextBlock"
                                FontSize="16"
                                Text="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}" />
-                    <TextBlock x:Name="AppTitleBar_SubTitleTextBlock"
+                    <!--<TextBlock x:Name="AppTitleBar_SubTitleTextBlock"
                                FontSize="12"
+                               FontWeight="Bold"
+                               FontStyle="Italic"
                                HorizontalAlignment="Right"
-                               Text="electrifier" />
+                               Text="electrifier alpha" />-->
                 </StackPanel>
+                <Button x:Name="AppTitleBar_BackButton"
+                        Background="Transparent"
+                        Click="AppTitleBar_BackButton_Click"
+                        Margin="3,0,0,0">
+                    <Image MaxHeight="22"
+                           Source="ms-appx:///Assets/Themes/Aero Blackcomb/Back Button 48px.png" />
+                </Button>
+                <Button x:Name="AppTitleBar_ForwardButton"
+                        Background="Transparent"
+                        Click="AppTitleBar_ForwardButton_Click"
+                        Margin="5,0,0,0">
+                    <Image MaxHeight="22"
+                           Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png" />
+                </Button>
             </StackPanel>
+            <TextBlock x:Name="AppTitleBar_SubTitleTextBlock"
+                       FontSize="12"
+                       FontStyle="Italic"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Right"
+                       Margin="0,0,100,0"
+                       Text="electrifier alpha"
+                       VerticalAlignment="Bottom" />
         </Grid>
+
+        <!--IsBackButtonVisible="Visible"
+                        IsBackEnabled="False"-->
         <NavigationView x:Name="NavigationViewControl"
                         AlwaysShowHeader="True"
                         CompactPaneLength="72"
                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
-                        IsBackButtonVisible="Visible"
-                        IsBackEnabled="False"
+                        IsBackButtonVisible="Collapsed"
                         IsPaneOpen="True"
-                        IsPaneToggleButtonVisible="True"
                         IsSettingsVisible="True"
-                        IsTitleBarAutoPaddingEnabled="True">
-            <!--<NavigationView.IsTitleBarAutoPaddingEnabled />-->
-            <!--
-                TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
-                https://docs.microsoft.com/windows/uwp/app-resources/localize-strings-ui-manifest#refer-to-a-string-resource-identifier-from-xaml
-            
+                        IsTitleBarAutoPaddingEnabled="False">
+            <!--TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
+                        https://docs.microsoft.com/windows/uwp/app-resources/localize-strings-ui-manifest#refer-to-a-string-resource-identifier-from-xaml
+                TODO: Prefer Symbols over FontIcons for item icons.
+                        https://learn.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.symbol?view=winrt-22621
                 TODO: Update item icons by updating FontIcon.Glyph properties.
-                https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list
-                -->
-            <NavigationView.PaneHeader>
+                        https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list -->
+            <!--<NavigationView.PaneHeader>
                 <ImageIcon MaxHeight="32"
                            Visibility="Visible"
                            HorizontalAlignment="Right"
-                           Source="ms-appx:///Assets/WindowIcon.ico" />
-            </NavigationView.PaneHeader>
-            <!--<NavigationView.PaneTitle> electrifier </NavigationView.PaneTitle>-->
+                           Source="ms-appx:///Assets/app.ico" />
+            </NavigationView.PaneHeader>-->
+            <!--<NavigationView.PaneTitle>-= Workbench Name =-</NavigationView.PaneTitle>-->
             <NavigationView.MenuItems>
-                <NavigationViewItem x:Uid="NavigationView_Workbench"
+                <NavigationViewItem x:Uid="Shell_Workbench"
                                     IsSelected="True"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
-                    Workbench
                     <NavigationViewItem.Icon>
-                        <!-- Glyph "&#xe8d1;" => GotoToday -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe8d1;" />
                     </NavigationViewItem.Icon>
-                    <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Home"
-                                            Icon="Home"
-                                            ToolTipService.ToolTip="Go to Editor Home"
-                                            Tag="Editor Home" />
-                        <NavigationViewItemSeparator />
-                        <NavigationViewItem x:Uid="NavigationView_Footer_BucketList"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                            IsEnabled="False">
-                            Bucket List
-                            <NavigationViewItem.Icon>
-                                <!-- Glyph="&" -->
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xeb41;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-                    </NavigationViewItem.MenuItems>
+                </NavigationViewItem>
+                <NavigationViewItem x:Uid="Shell_KanbanBoard"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.KanbanBoardViewModel"
+                                    IsEnabled="False">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xebc6;" />
+                    </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItemSeparator />
-                <NavigationViewItem x:Uid="NavigationView_Editors">
-                    Editors
-                    <NavigationViewItem.Icon>
-                        <!-- Glyph="&" -->
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xe713;" />
-                    </NavigationViewItem.Icon>
-                    <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Home"
-                                            Icon="Home"
-                                            ToolTipService.ToolTip="Go to Editor Home"
-                                            Tag="Editor Home" />
-                        <NavigationViewItemSeparator />
-                        <NavigationViewItem x:Uid="NavigationView_Footer_ClipboardEditor"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                            IsEnabled="False">
-                            Clipboard History
-                            <NavigationViewItem.Icon>
-                                <!-- Glyph="&" -->
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xeb41;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-                        <NavigationViewItem x:Uid="NavigationView_Footer_ResourcesEditor"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                            IsEnabled="False">
-                            Resources
-                            <NavigationViewItem.Icon>
-                                <!-- Glyph="&" -->
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xeb41;" />
-                            </NavigationViewItem.Icon>
-                        </NavigationViewItem>
-                        <NavigationViewItem x:Uid="NavigationView_Footer_TextEditor"
-                                            helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                            IsEnabled="False">
-                            Text
-                            <NavigationViewItem.Icon>
-                                <!-- Glyph="&" -->
-                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                          Glyph="&#xeb41;" />
-                                
-                            </NavigationViewItem.Icon>
-                            <!--<MenuFlyout>
-
-</MenuFlyout>
-<MenuFlyoutSubItem>
-    
-</MenuFlyoutSubItem>-->
-
-                        </NavigationViewItem>
-                    </NavigationViewItem.MenuItems>
-                </NavigationViewItem>
-            </NavigationView.MenuItems>
-            <NavigationView.FooterMenuItems>
-                <NavigationViewItem x:Uid="NavigationView_Footer_ContactList"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                    IsEnabled="False">
-                    Contacts
-                    <NavigationViewItem.Icon>
-                        <!-- Glyph="&" -->
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb41;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_Footer_Ancients"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                    IsEnabled="False">
-                    Ancients
-                    <NavigationViewItem.Icon>
-                        <!-- Glyph="&" -->
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb41;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_Footer_Favorites"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel"
-                                    IsEnabled="False">
-                    Favorites
-                    <NavigationViewItem.Icon>
-                        <!-- Glyph="&" -->
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb41;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_Footer_WebView"
+                <NavigationViewItem x:Uid="Shell_WebView"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
-                    Web Browser
                     <NavigationViewItem.Icon>
-                        <!-- Glyph="&#xeb41" => "Website" is the icon for the Web Browser -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xeb41;" />
                     </NavigationViewItem.Icon>
+                    <!--<NavigationViewItem.MenuItems>
+                        <NavigationViewItem Content="Favorites"
+                                            Icon="Favorite"
+                                            IsEnabled="False"
+                                            Tag="Browser Favorites"
+                                            ToolTipService.ToolTip="Favorites" />
+                        <NavigationViewItem Content="History"
+                                            Icon="Clock"
+                                            IsEnabled="False"
+                                            Tag="Browser History"
+                                            ToolTipService.ToolTip="History" />
+                    </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_Footer_FileManager"
+                <NavigationViewItem x:Uid="Shell_FileManager"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
-                    File Manager
                     <NavigationViewItem.Icon>
-                        <!-- Glyph "&#xec50" => "FileExplorer" -->
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xec50;" />
                     </NavigationViewItem.Icon>
-                    <NavigationViewItem.MenuItems>
-                        <NavigationViewItem Content="Home"
-                                            Icon="Home"
-                                            ToolTipService.ToolTip="Go to Desktop folder"
-                                            Tag="FileExplorer Desktop Folder" />
+                    <!--<NavigationViewItem.MenuItems>
                         <NavigationViewItem Content="Documents"
                                             Icon="Document"
                                             ToolTipService.ToolTip="Documents"
@@ -241,18 +174,65 @@
                                             Icon="Video"
                                             ToolTipService.ToolTip="Videos"
                                             Tag="FileExplorer Videos Folder" />
-                        <NavigationViewItemSeparator />
-                        <NavigationViewItem Content="Settings"
-                                            Icon="Setting"
-                                            ToolTipService.ToolTip="Settings"
-                                            Tag="FileExplorer Settings" />
-                    </NavigationViewItem.MenuItems>
+                    </NavigationViewItem.MenuItems>-->
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="NavigationView_Footer_Workbench"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
-                    Workbench
+                <NavigationViewItem x:Uid="Shell_TextEditor"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.TextEditorViewModel">
                     <NavigationViewItem.Icon>
-                        <!-- Glyph="&#xe8d1;" => "GotoToday" is the icon for the Workbench -->
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xe70f;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <!--<NavigationViewItem.MenuItems>
+                        <NavigationViewItem x:Uid="NavigationView_Footer_ClipboardEditor" />
+                        <NavigationViewItem x:Uid="NavigationView_Footer_TextEditor" />
+                        <NavigationViewItem x:Uid="NavigationView_Footer_ResourcesEditor" />
+                    </NavigationViewItem.MenuItems>-->
+                <NavigationViewItem x:Uid="Shell_Microsoft365"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.Microsoft365ViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xeb3c;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <!--<NavigationViewItem x:Uid="Shell_Microsoft365"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.Microsoft365ViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xe774;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem> -->
+
+                <!--<NavigationViewItem.MenuItems>
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Calendar" />
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Mail" />
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Tasks" />
+                    </NavigationViewItem.MenuItems>-->
+                <NavigationViewItem x:Uid="Shell_People"
+                                    IsEnabled="False"
+                                    Visibility="Collapsed">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xe716;" />
+                    </NavigationViewItem.Icon>
+                    <!--<NavigationViewItem.MenuItems>
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Ancients" />
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Contacts" />
+                        <NavigationViewItem x:Uid="NavigationView_Footer_Favorites" />
+                    </NavigationViewItem.MenuItems>-->
+                </NavigationViewItem>
+                <!--<NavigationViewItem x:Uid="Shell_KanbanBoard"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.KanbanBoardViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xf0e2;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>-->
+            </NavigationView.MenuItems>
+            <NavigationView.FooterMenuItems>
+                <NavigationViewItem x:Uid="Shell_Workbench"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
+                    <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe8d1;" />
                     </NavigationViewItem.Icon>
@@ -279,7 +259,6 @@
                 </behaviors:NavigationViewHeaderBehavior>
             </i:Interaction.Behaviors>
             <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
-                <!-- TODO: set e.g. Background="Transparent" -->
                 <Frame x:Name="NavigationFrame" />
             </Grid>
         </NavigationView>

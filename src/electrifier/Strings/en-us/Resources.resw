@@ -212,4 +212,28 @@
   <data name="WebView_Reload.Content" xml:space="preserve">
     <value>Reload</value>
   </data>
+  <data name="Shell_TextEditor.Content" xml:space="preserve">
+    <value>Text Editor</value>
+  </data>
+  <data name="Shell_KanbanBoard.Content" xml:space="preserve">
+    <value>Kanban Board</value>
+  </data>
+  <data name="Shell_Microsoft365.Content" xml:space="preserve">
+    <value>Microsoft 365</value>
+  </data>
+  <data name="ShellPage_KanbanBoard.Content" xml:space="preserve">
+    <value>Kanban Board</value>
+  </data>
+  <data name="ShellPage_Browser.Content" xml:space="preserve">
+    <value>Browser</value>
+  </data>
+  <data name="ShellPage_Files.Content" xml:space="preserve">
+    <value>Manage Files</value>
+  </data>
+  <data name="ShellPage_Editor.Content" xml:space="preserve">
+    <value>Edit Files</value>
+  </data>
+  <data name="ShellPage_Microsoft365.Text" xml:space="preserve">
+    <value>Microsoft 365</value>
+  </data>
 </root>

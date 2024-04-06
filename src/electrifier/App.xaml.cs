@@ -8,6 +8,7 @@ using electrifier.Notifications;
 using electrifier.Services;
 using electrifier.ViewModels;
 using electrifier.Views;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
@@ -75,6 +76,14 @@ public partial class App : Application
             services.AddSingleton<IFileService, FileService>();
 
             // Views and ViewModels
+            services.AddTransient<Microsoft365ViewModel>();
+            services.AddTransient<Microsoft365Page>();
+            services.AddTransient<KanbanBoardDetailViewModel>();
+            services.AddTransient<KanbanBoardDetailPage>();
+            services.AddTransient<KanbanBoardViewModel>();
+            services.AddTransient<KanbanBoardPage>();
+            services.AddTransient<TextEditorViewModel>();
+            services.AddTransient<TextEditorPage>();
             services.AddTransient<FileManagerViewModel>();
             services.AddTransient<FileManagerPage>();
             services.AddTransient<SettingsViewModel>();

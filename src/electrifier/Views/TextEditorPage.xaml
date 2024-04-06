@@ -1,0 +1,67 @@
+﻿<!--
+    Copyright 2024 Thorsten Jung, aka tajbender
+        https://www.electrifier.org
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<Page x:Class="electrifier.Views.TextEditorPage"
+      xmlns:behaviors="using:electrifier.Behaviors"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:editor="using:WinUIEditor"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:viewmodels="using:electrifier.ViewModels"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+      d:DataContext="{d:DesignInstance Type=viewmodels:TextEditorViewModel}"
+      mc:Ignorable="d">
+    <Grid x:Name="ContentArea">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <StackPanel Orientation="Horizontal">
+                <AppBarButton x:Uid="LoadButton"
+                              Icon="OpenFile"
+                              IsEnabled="False"
+                              Label="Open..." />
+                <AppBarButton x:Uid="SaveButton"
+                              Icon="Save"
+                              IsEnabled="False"
+                              Label="Save" />
+                <AppBarButton x:Uid="SaveAsButton"
+                              Icon="Save"
+                              IsEnabled="False"
+                              Label="Save as..." />
+            </StackPanel >
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <AppBarButton x:Uid="RunButton"
+                              Icon="Play"
+                              IsEnabled="False"
+                              Label="Run" />
+                <!-- Glyph 'OpenInNewWindow' xe8a7 -->
+                <Button x:Uid="OpenInBrowserButton"
+                        IsEnabled="False">
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                              Glyph="&#xe8a7;" />
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <editor:CodeEditorControl x:Name="Editor"
+                                      HighlightingLanguage="csharp" />
+        </Grid>
+    </Grid>
+</Page>

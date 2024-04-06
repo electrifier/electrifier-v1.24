@@ -20,7 +20,6 @@ using CommunityToolkit.Mvvm.Input;
 using electrifier.Contracts.Services;
 using electrifier.Contracts.ViewModels;
 using Microsoft.Web.WebView2.Core;
-using Windows.System;
 
 namespace electrifier.ViewModels;
 
@@ -28,12 +27,11 @@ namespace electrifier.ViewModels;
 // https://docs.microsoft.com/microsoft-edge/webview2/get-started/winui
 // https://docs.microsoft.com/microsoft-edge/webview2/concepts/developer-guide
 // https://docs.microsoft.com/microsoft-edge/webview2/concepts/distribution
-public partial class WebViewViewModel : ObservableRecipient, INavigationAware
+public partial class Microsoft365ViewModel : ObservableRecipient, INavigationAware
 {
-    // DONE: Set the default URL to display.
-    // Was: https://docs.microsoft.com/windows/apps/
     [ObservableProperty]
-    private Uri source = new("https://www.bing.com/");
+    private Uri source = new("https://www.office.com/");
+    // private Uri source = new("https://docs.microsoft.com/windows/apps/");   // NOTE: This is a placeholder URL for Windows Dev Center.
 
     [ObservableProperty]
     private bool isLoading = true;
@@ -46,7 +44,7 @@ public partial class WebViewViewModel : ObservableRecipient, INavigationAware
         get;
     }
 
-    public WebViewViewModel(IWebViewService webViewService)
+    public Microsoft365ViewModel(IWebViewService webViewService)
     {
         WebViewService = webViewService;
     }
@@ -56,7 +54,7 @@ public partial class WebViewViewModel : ObservableRecipient, INavigationAware
     {
         if (WebViewService.Source != null)
         {
-            await Launcher.LaunchUriAsync(WebViewService.Source);
+            await Windows.System.Launcher.LaunchUriAsync(WebViewService.Source);
         }
     }
 

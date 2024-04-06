@@ -19,9 +19,9 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace electrifier.ViewModels;
 
-public partial class WorkbenchViewModel : ObservableRecipient
+public partial class TextEditorViewModel : ObservableRecipient
 {
-    public WorkbenchViewModel()
+    public TextEditorViewModel()
     {
     }
 }
