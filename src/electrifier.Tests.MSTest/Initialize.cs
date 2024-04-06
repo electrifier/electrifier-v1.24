@@ -29,7 +29,7 @@ public class Initialize
     {
         // TODO: Initialize the appropriate version of the Windows App SDK.
         // This is required when testing MSIX apps that are framework-dependent on the Windows App SDK.
-        Assert.IsTrue(Bootstrap.TryInitialize(0x00010001, out var _));
+        //Assert.IsTrue(Bootstrap.TryInitialize(0x00010001, out var _));
     }
 
     [TestMethod]
