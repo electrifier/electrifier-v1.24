@@ -26,10 +26,30 @@
       mc:Ignorable="d">
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid x:Name="ContentArea_WebView">
+            <WebView2 x:Name="WebView"
+                      Source="{x:Bind ViewModel.Source, Mode=OneWay}" />
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}">
+                <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+                <TextBlock x:Uid="WebView_Loading" />
+            </StackPanel>
+            <StackPanel HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Visibility="{x:Bind ViewModel.HasFailures, Mode=OneWay}">
+                <TextBlock x:Uid="WebView_FailedMessage"
+                           HorizontalAlignment="Center"
+                           TextWrapping="WrapWholeWords" />
+                <HyperlinkButton x:Uid="WebView_Reload"
+                                 Command="{x:Bind ViewModel.ReloadCommand}"
+                                 HorizontalAlignment="Center" />
+            </StackPanel>
+        </Grid>
+        <Grid x:Name="ContentArea_NavigationBar">
             <StackPanel Orientation="Horizontal">
                 <Button x:Uid="BrowserBackButton"
                         Command="{x:Bind ViewModel.BrowserBackCommand, Mode=OneWay}"
@@ -62,28 +82,6 @@
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                               Glyph="&#xE774;" />
                 </Button>
-            </StackPanel>
-        </Grid>
-        <Grid Grid.Row="1">
-            <WebView2 x:Name="WebView"
-                      Source="{x:Bind ViewModel.Source, Mode=OneWay}" />
-
-            <StackPanel HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}">
-                <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
-                <TextBlock x:Uid="WebView_Loading" />
-            </StackPanel>
-
-            <StackPanel HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Visibility="{x:Bind ViewModel.HasFailures, Mode=OneWay}">
-                <TextBlock x:Uid="WebView_FailedMessage"
-                           HorizontalAlignment="Center"
-                           TextWrapping="WrapWholeWords" />
-                <HyperlinkButton x:Uid="WebView_Reload"
-                                 Command="{x:Bind ViewModel.ReloadCommand}"
-                                 HorizontalAlignment="Center" />
             </StackPanel>
         </Grid>
     </Grid>
