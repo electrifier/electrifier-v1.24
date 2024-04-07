@@ -67,11 +67,11 @@ public class SimpleUnitTest
     [TestMethod]
     public void TestStringWriter()
     {
-        using var sw = new StringWriter();
-        Console.SetOut(sw);
-        //HelloWorld.Program.Main();
+        //using var sw = new StringWriter();
+        //Console.SetOut(sw);
+        ////HelloWorld.Program.Main();
 
-        var result = sw.ToString().Trim();
-        //Assert.AreEqual(Expected, result);
+        //var result = sw.ToString().Trim();
+        ////Assert.AreEqual(Expected, result);
     }
 }
