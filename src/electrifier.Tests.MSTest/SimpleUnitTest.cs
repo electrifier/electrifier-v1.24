@@ -15,19 +15,18 @@
     limitations under the License.
 */
 
-using Microsoft.UI.Xaml.Controls;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using Microsoft.UI.Xaml.Controls;
 
 namespace electrifier.Tests.MSTest;
 
-/// <summary>
-/// Summary description for TestClass
-/// <br/><see href="https://docs.microsoft.com/visualstudio/test/getting-started-with-unit-testing"/>
-/// <br/><see href="https://docs.microsoft.com/visualstudio/test/using-microsoft-visualstudio-testtools-unittesting-members-in-unit-tests"/>
-/// <br/><see href="https://docs.microsoft.com/visualstudio/test/run-unit-tests-with-test-explorer"/>
-/// </summary>
 [TestClass]
-public class TestClass
+public class SimpleUnitTest
 {
     [ClassInitialize]
     public static void ClassInitialize(TestContext context)
@@ -63,5 +62,16 @@ public class TestClass
     public void UITestMethod()
     {
         Assert.AreEqual(0, new Grid().ActualWidth);
+    }
+
+    [TestMethod]
+    public void TestStringWriter()
+    {
+        //using var sw = new StringWriter();
+        //Console.SetOut(sw);
+        ////HelloWorld.Program.Main();
+
+        //var result = sw.ToString().Trim();
+        ////Assert.AreEqual(Expected, result);
     }
 }

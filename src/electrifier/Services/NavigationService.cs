@@ -1,13 +1,27 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿/*
+    Copyright 2024 Thorsten Jung, aka tajbender
+        https://www.electrifier.org
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+*/
 
 using CommunityToolkit.WinUI.UI.Animations;
-
 using electrifier.Contracts.Services;
 using electrifier.Contracts.ViewModels;
 using electrifier.Helpers;
-
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
+using System.Diagnostics.CodeAnalysis;
 
 namespace electrifier.Services;
 
@@ -19,7 +33,11 @@ public class NavigationService : INavigationService
     private object? _lastParameterUsed;
     private Frame? _frame;
 
-    public event NavigatedEventHandler? Navigated;
+    [MemberNotNullWhen(true, nameof(Frame), nameof(_frame))]
+    public bool CanGoBack => Frame != null && Frame.CanGoBack;
+
+    [MemberNotNullWhen(true, nameof(Frame), nameof(_frame))]
+    public bool CanGoForward => Frame != null && Frame.CanGoForward;
 
     public Frame? Frame
     {
@@ -40,44 +58,53 @@ public class NavigationService : INavigationService
             _frame = value;
             RegisterFrameEvents();
         }
+
     }
 
-    [MemberNotNullWhen(true, nameof(Frame), nameof(_frame))]
-    public bool CanGoBack => Frame != null && Frame.CanGoBack;
+    public event NavigatedEventHandler? Navigated;
 
     public NavigationService(IPageService pageService)
     {
         _pageService = pageService;
     }
 
-    private void RegisterFrameEvents()
-    {
-        if (_frame != null)
-        {
-            _frame.Navigated += OnNavigated;
-        }
-    }
-
-    private void UnregisterFrameEvents()
-    {
-        if (_frame != null)
-        {
-            _frame.Navigated -= OnNavigated;
-        }
-    }
 
     public bool GoBack()
     {
-        if (CanGoBack)
+        if (_frame != null)
         {
-            var vmBeforeNavigation = _frame.GetPageViewModel();
-            _frame.GoBack();
-            if (vmBeforeNavigation is INavigationAware navigationAware)
+            if (CanGoBack)
             {
-                navigationAware.OnNavigatedFrom();
-            }
+                var vmBeforeNavigation = _frame.GetPageViewModel();
+                _frame.GoBack();
+                if (vmBeforeNavigation is INavigationAware navigationAware)
+                {
+                    navigationAware.OnNavigatedFrom();
+                }
 
-            return true;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public bool GoForward()
+    {
+        if (_frame != null)
+        {
+
+            if (CanGoForward)
+            {
+                var vmBeforeNavigation = _frame.GetPageViewModel();
+                _frame.GoForward();
+                if (vmBeforeNavigation is INavigationAware navigationAware)
+                {
+                    navigationAware.OnNavigatedFrom();
+                }
+
+                return true;
+            }
         }
 
         return false;
@@ -89,7 +116,7 @@ public class NavigationService : INavigationService
     /// <param name="pageKey"></param>
     /// <param name="parameter"></param>
     /// <param name="clearNavigation"></param>
-    /// <returns></returns>
+    /// <returns>bool Navigation has been successful.</returns>
     public bool NavigateTo(string pageKey, object? parameter = null, bool clearNavigation = false)
     {
         var pageType = _pageService.GetPageType(pageKey);
@@ -133,5 +160,25 @@ public class NavigationService : INavigationService
         }
     }
 
-    public void SetListDataItemForNextConnectedAnimation(object item) => Frame.SetListDataItemForNextConnectedAnimation(item);
+    private void RegisterFrameEvents()
+    {
+        if (_frame != null)
+        {
+            _frame.Navigated += OnNavigated;
+        }
+    }
+
+    private void UnregisterFrameEvents()
+    {
+        if (_frame != null)
+        {
+            _frame.Navigated -= OnNavigated;
+        }
+    }
+
+
+    public void SetListDataItemForNextConnectedAnimation(object item)
+    {
+        Frame.SetListDataItemForNextConnectedAnimation(item);
+    }
 }
