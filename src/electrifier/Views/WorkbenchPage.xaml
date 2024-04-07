@@ -14,6 +14,9 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
+
+<!-- TODO: Bind to App Notifications -->
+
 <Page x:Class="electrifier.Views.WorkbenchPage"
       xmlns:behaviors="using:electrifier.Behaviors"
       xmlns:controls="using:CommunityToolkit.WinUI.Controls"
@@ -30,44 +33,36 @@
     <!-- TODO: removed Background="{ThemeResource CardBackgroundFillColorDefaultBrush}" -->
     <Grid x:Name="ContentArea">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition MinWidth="250"
-                              MaxWidth="350"
-                              Width="300" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         <!-- TODO: Bind to App Notifications -->
-        <!--
-            <InfoBar x:Name="SettingsBackupWorkbenchInfoBar"
-                     BorderThickness="8"
-                     BorderBrush="Transparent"
-                     IsClosable="True"
-                     IsOpen="True"
-                     Message="Do you want to allow electrifier to make backups of your Workbench settings?"
-                     Title="Backup your Personal User Settings">
-                <InfoBar.Content>
-                    <ItemsStackPanel Height="Auto"
-                                     Orientation="Horizontal">
-                        <CheckBox x:Name="SettingsBackupWorkbenchAllowed">
-                            Enable automatic backups and don't show again
-                        </CheckBox>
-                    </ItemsStackPanel>
-                </InfoBar.Content>
-            </InfoBar>
-        </StackPanel>-->
         <Border x:Name="MainContentBorder"
                 Grid.Column="0"
                 AllowDrop="True"
                 BorderThickness="3">
             <Grid>
-                <!--<Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>-->
                 <StackPanel>
                     <TextBlock Text="ContentArea"
                                Style="{StaticResource SubtitleTextBlockStyle}" />
-                    <TextBlock Text="This is the border of ContentArea."
+                    <TextBlock Text="ContentArea.Border"
                                TextWrapping="Wrap" />
+                    <InfoBar x:Name="SettingsBackupWorkbenchInfoBar"
+                             BorderThickness="8"
+                             BorderBrush="Transparent"
+                             IsClosable="True"
+                             IsOpen="True"
+                             Message="Do you want to allow electrifier to make backups of your Workbench settings?"
+                             Title="Backup your Personal User Settings">
+                        <InfoBar.Content>
+                            <ItemsStackPanel Height="Auto"
+                                             Orientation="Horizontal">
+                                <CheckBox x:Name="SettingsBackupWorkbenchAllowed">
+                                    Enable automatic backups and don't show again
+                                </CheckBox>
+                            </ItemsStackPanel>
+                        </InfoBar.Content>
+                    </InfoBar>
                 </StackPanel>
             </Grid>
         </Border>
@@ -97,7 +92,6 @@
                 </TextBlock>
             </InfoBar>
             <InfoBar>
-                <!-- TODO: Bind to App Notifications -->
                 <TextBlock TextWrapping="Wrap">
                     <Run>Take a look at the </Run>
                     <Hyperlink NavigateUri="https://github.com/electrifier" />
