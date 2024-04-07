@@ -96,6 +96,8 @@
                         IsPaneOpen="True"
                         IsSettingsVisible="True"
                         IsTitleBarAutoPaddingEnabled="False">
+            <!-- TODO: <NavigationView.AutoSuggestBox> -->
+            <!-- TODO: NavigationViewItem's in the right upper border, as small icons -->
             <!--
             <NavigationView.PaneHeader>
                 <ImageIcon MaxHeight="32"

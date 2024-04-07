@@ -28,12 +28,11 @@ namespace electrifier.ViewModels;
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
 public partial class ShellViewModel : ObservableRecipient
 {
-
     [ObservableProperty]
     private bool isBackEnabled;
 
     [ObservableProperty]
-    private bool isForwardEnabled;
+    private bool isForwardEnabled = true;    // TODO: only test value
 
     [ObservableProperty]
     private object? selected;
@@ -56,6 +55,21 @@ public partial class ShellViewModel : ObservableRecipient
         // TODO: https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.navigation.framenavigationoptions?view=windows-app-sdk-1.4
         //navigationService.CanForwardChanged += (s, e) => IsForwardEnabled = e;
     }
+    public bool NavigateToWorkbench()
+    {
+        var viewModel = App.GetService<WorkbenchViewModel>();
+        var fullName = viewModel.GetType().FullName;
+
+        if (fullName is not null)
+        {
+            return NavigationService.NavigateTo(fullName);
+        }
+        return false;
+    }
+    protected void UnselectNavigationItem()
+    {
+        Selected = null;
+    }
 
     private void OnNavigated(object sender, NavigationEventArgs e)
     {
@@ -76,26 +90,7 @@ public partial class ShellViewModel : ObservableRecipient
 
         UnselectNavigationItem();
     }
-
-    protected void UnselectNavigationItem()
-    {
-        Selected = null;
-    }
-
-    public bool NavigateToWorkbench()
-    {
-        var viewModel = App.GetService<WorkbenchViewModel>();
-        var fullName = viewModel.GetType().FullName;
-
-        if (fullName is not null)
-        {
-            return NavigationService.NavigateTo(fullName);
-        }
-        return false;
-    }
-
     //    NavigationHelper.SetNavigateTo(navigationViewItem, typeof(MainViewModel).FullName)
-
     private string GetDebuggerDisplay()
     {
         var dbgDisplay = new StringBuilder();
