@@ -30,18 +30,14 @@ public partial class ShellViewModel : ObservableRecipient
 {
     [ObservableProperty]
     private bool isBackEnabled;
-
     [ObservableProperty]
     private bool isForwardEnabled = true;    // TODO: only test value
-
     [ObservableProperty]
     private object? selected;
-
     public INavigationService NavigationService
     {
         get;
     }
-
     public INavigationViewService NavigationViewService
     {
         get;
@@ -54,17 +50,6 @@ public partial class ShellViewModel : ObservableRecipient
         NavigationViewService = navigationViewService;
         // TODO: https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.navigation.framenavigationoptions?view=windows-app-sdk-1.4
         //navigationService.CanForwardChanged += (s, e) => IsForwardEnabled = e;
-    }
-    public bool NavigateToWorkbench()
-    {
-        var viewModel = App.GetService<WorkbenchViewModel>();
-        var fullName = viewModel.GetType().FullName;
-
-        if (fullName is not null)
-        {
-            return NavigationService.NavigateTo(fullName);
-        }
-        return false;
     }
     protected void UnselectNavigationItem()
     {

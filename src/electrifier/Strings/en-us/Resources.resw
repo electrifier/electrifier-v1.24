@@ -228,12 +228,15 @@
     <value>Browser</value>
   </data>
   <data name="ShellPage_Files.Content" xml:space="preserve">
-    <value>Manage Files</value>
+    <value>Files</value>
   </data>
   <data name="ShellPage_Editor.Content" xml:space="preserve">
-    <value>Edit Files</value>
+    <value>Edit</value>
   </data>
-  <data name="ShellPage_Microsoft365.Text" xml:space="preserve">
+  <data name="ShellPage_Microsoft365.Content" xml:space="preserve">
     <value>Microsoft 365</value>
+  </data>
+  <data name="ShellPage_People.Content" xml:space="preserve">
+    <value>People</value>
   </data>
 </root>
