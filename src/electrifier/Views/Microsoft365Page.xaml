@@ -29,7 +29,8 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid x:Name="ContentArea_WebView">
+        <Grid x:Name="ContentArea_WebView"
+              Grid.Row="0">
             <WebView2 x:Name="WebView"
                       Source="{x:Bind ViewModel.Source, Mode=OneWay}" />
             <StackPanel HorizontalAlignment="Center"
@@ -49,7 +50,8 @@
                                  HorizontalAlignment="Center" />
             </StackPanel>
         </Grid>
-        <Grid x:Name="ContentArea_NavigationBar">
+        <Grid x:Name="ContentArea_NavigationBar"
+              Grid.Row="1">
             <StackPanel Orientation="Horizontal">
                 <Button x:Uid="BrowserBackButton"
                         Command="{x:Bind ViewModel.BrowserBackCommand, Mode=OneWay}"

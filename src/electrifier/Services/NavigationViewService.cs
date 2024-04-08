@@ -96,21 +96,27 @@ public class NavigationViewService : INavigationViewService
             return;
         }
 
-        // Get the page type before navigation so you can prevent duplicate entries in the backstack
+        // Get the page type before navigation so you can prevent duplicate entries in the back stack
         var selectedItem = args.InvokedItemContainer as NavigationViewItem;
+        var selectedType = selectedItem?.GetType();
+        var pageKey = args.InvokedItemContainer.GetValue(NavigationHelper.NavigateToProperty) as string;
         // TODO: var selectedType = selectedItem?.GetType();
+        // TODO: var pageKey = args.InvokedItemContainer.GetValue(NavigationHelper.NavigateToProperty) as string;
 
         // WorkbenchViewModel
-        if (selectedItem?.GetValue(NavigationHelper.NavigateToProperty) is string selectedItemPageKey)
+        if (selectedItem is not null)
         {
-            _navigationService.NavigateTo(selectedItemPageKey);
+            if (selectedItem.GetValue(NavigationHelper.NavigateToProperty) is string pageKey1)
+            {
+                _navigationService.NavigateTo(pageKey1);
+            }
         }
 
         // doc: https://docs.microsoft.com/en-us/windows/apps/design/controls/navigationview#navigationview-and-the-back-button
-        if (selectedItem?.GetValue(NavigationHelper.NavigateToProperty) is string pageKey)
-        {
-            _navigationService.NavigateTo(pageKey);
-        }
+        //if (selectedItem?.GetValue(NavigationHelper.NavigateToProperty) is string pageKey2)
+        //{
+        //    _navigationService.NavigateTo(pageKey2);
+        //}
     }
 
     private NavigationViewItem? GetSelectedItem(IEnumerable<object> menuItems, Type pageType)

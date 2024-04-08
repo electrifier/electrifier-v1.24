@@ -43,9 +43,9 @@
                 BorderThickness="3">
             <Grid>
                 <StackPanel>
-                    <TextBlock Text="ContentArea"
+                    <TextBlock Text="Workbench"
                                Style="{StaticResource SubtitleTextBlockStyle}" />
-                    <TextBlock Text="ContentArea.Border"
+                    <TextBlock Text="Your Workbench is your customizable Navigation Hub"
                                TextWrapping="Wrap" />
                     <InfoBar x:Name="SettingsBackupWorkbenchInfoBar"
                              BorderThickness="8"
