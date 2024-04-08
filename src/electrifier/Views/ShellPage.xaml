@@ -42,55 +42,60 @@
               HorizontalAlignment="Stretch"
               IsHitTestVisible="True"
               VerticalAlignment="Top">
-            <StackPanel x:Name="AppTitleBar_LeftStackPanel"
-                        HorizontalAlignment="Left"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <StackPanel x:Name="AppTitleBar_TitleStackPanelLeft"
+                        Grid.Column="1"
+                        BackgroundSizing="OuterBorderEdge"
                         Margin="0,5,0,0"
                         Orientation="Horizontal"
-                        VerticalAlignment="Top"
-                        BackgroundSizing="OuterBorderEdge"
-                        Width="256">
+                        VerticalAlignment="Top">
                 <Button x:Name="AppTitleBar_ForwardButton"
-                        Background="Transparent"
-                        Click="AppTitleBar_ForwardButton_Click"
-                        Margin="5,0,0,0">
+                        Click="AppTitleBar_ForwardButton_Click">
                     <Image MaxHeight="22"
                            Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png" />
                 </Button>
                 <Image x:Name="AppTitleBar_WindowIcon"
                        Height="32"
-                       Margin="23,0,0,0"
+                       Margin="15,0,15,0"
                        Source="ms-appx:///Assets/Square44x44Logo.scale-200.png" />
-                <StackPanel x:Name="AppTitleBar_TitleStackPanel"
-                            Orientation="Vertical"
-                            VerticalAlignment="Top"
-                            Margin="5,0,0,0"
-                            Width="Auto">
-                    <TextBlock x:Name="AppTitleBar_TitleTextBlock"
-                               FontSize="16"
-                               Text="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}" />
-                    <TextBlock x:Name="AppTitleBar_SubTitleTextBlock"
-                               FontSize="12"
-                               FontWeight="Bold"
-                               FontStyle="Italic"
-                               HorizontalAlignment="Right"
-                               Text="electrifier alpha" />
-                </StackPanel>
+                <TextBlock x:Name="AppTitleBar_TitleTextBlockLeft"
+                           FontSize="16"
+                           Text="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}" />
             </StackPanel>
-            <TextBlock x:Name="AppTitleBar_SubTitleTextBlockCopy"
-                       FontSize="12"
-                       FontStyle="Italic"
-                       FontWeight="Bold"
-                       HorizontalAlignment="Right"
-                       Margin="0,0,100,0"
-                       Visibility="Collapsed"
-                       Text="electrifier alpha"
-                       VerticalAlignment="Bottom" />
+            <ItemsStackPanel x:Name="AppTitleBar_TitleStackPanelCenter"
+                             Grid.Column="2"
+                             HorizontalAlignment="Center"
+                             VerticalAlignment="Top">
+                <TextBlock x:Name="AppTitleBar_TitleTextBlockCenter"
+                           FontSize="16"
+                           Text="blubbdfgdfg" />
+                <TextBlock x:Name="AppTitleBar_SubTitleTextBlockCenter"
+                           FontSize="12"
+                           FontWeight="Bold"
+                           FontStyle="Italic"
+                           Text="[Workbench name]" />
+            </ItemsStackPanel>
+            <StackPanel x:Name="AppTitleBar_SubTitleTextBlockRightStackPanel"
+                        Grid.Column="3"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom">
+                <TextBlock x:Name="AppTitleBar_SubTitleTextBlockRight"
+                           VerticalAlignment="Bottom"
+                           FontSize="12"
+                           FontWeight="Bold"
+                           FontStyle="Italic"
+                           Text="electrifier alpha" />
+            </StackPanel>
         </Grid>
         <!-- CompactPaneGridLength: double -->
         <NavigationView x:Name="NavigationViewControl"
                         AlwaysShowHeader="True"
                         CompactPaneLength="72"
-                        
                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
                         IsBackButtonVisible="Visible"
                         IsBackEnabled="True"
