@@ -59,8 +59,6 @@
                                 IsEnabled="False" />
             </MenuBarItem>
         </MenuBar>
-
-
         <Grid Grid.Row="1">
             <StackPanel Orientation="Horizontal">
                 <Button x:Uid="BrowserBackButton"
@@ -117,7 +115,6 @@
             <WebView2 x:Name="WebView"
                       Source="{x:Bind ViewModel.Source, Mode=OneWay}" />
         </Grid>
-
         <CommandBar x:Name="StatusCommandBar"
                     Grid.Row="2"
                     Background="Transparent"
@@ -128,15 +125,12 @@
             <AppBarElementContainer>
                 <TextBlock Text="elementContainer" />
             </AppBarElementContainer>
-            <AppBarButton Icon="Folder"
-                          Label="folder"
-                          ToolTipService.ToolTip="Total number of Items" />
-            <AppBarButton Icon="Folder"
-                          Label="folder"
-                          ToolTipService.ToolTip="Number of Folders" />
-            <AppBarButton Icon="OpenFile"
-                          Label="open"
-                          ToolTipService.ToolTip="Number of Files" />
+            <AppBarButton Icon="AlignLeft"
+                          Label="Align left" />
+            <AppBarButton Icon="AlignCenter"
+                          Label="Align Center" />
+            <AppBarButton Icon="AlignRight"
+                          Label="Align Right" />
             <AppBarSeparator />
             <CommandBar.SecondaryCommands>
                 <AppBarButton Icon="Setting"
@@ -148,6 +142,5 @@
                 </AppBarButton>
             </CommandBar.SecondaryCommands>
         </CommandBar>
-
     </Grid>
 </Page>

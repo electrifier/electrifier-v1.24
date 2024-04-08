@@ -29,6 +29,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
@@ -52,7 +53,7 @@
                               IsEnabled="False"
                               Label="Run" />
                 <!-- Glyph 'OpenInNewWindow' xe8a7 -->
-                <Button x:Uid="OpenInBrowserButton"
+                <Button x:Uid="OpenInExternalBrowserButton"
                         IsEnabled="False">
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                               Glyph="&#xe8a7;" />
@@ -63,5 +64,34 @@
             <editor:CodeEditorControl x:Name="Editor"
                                       HighlightingLanguage="csharp" />
         </Grid>
+        <CommandBar x:Name="StatusCommandBar"
+                    Grid.Row="2"
+                    Background="Transparent"
+                    DefaultLabelPosition="Right"
+                    HorizontalAlignment="Left"
+                    IsOpen="False"
+                    IsSticky="True">
+            <AppBarButton Icon="AlignLeft"
+                          Label="99"
+                          ToolTipService.ToolTip="Column: ... of ..." />
+            <AppBarButton Icon="AlignCenter"
+                          Label="23"
+                          ToolTipService.ToolTip="Row: ... of ..." />
+            <AppBarButton Icon="AlignRight"
+                          Label="76"
+                          ToolTipService.ToolTip="Size ... KByte" />
+            <AppBarSeparator />
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Icon="Setting"
+                              Label="Settings"
+                              ToolTipService.ToolTip="Setting Ctrl + I">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control"
+                                             Key="I" />
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+
     </Grid>
 </Page>

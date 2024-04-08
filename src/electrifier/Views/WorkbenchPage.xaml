@@ -44,21 +44,26 @@
             <Grid>
                 <StackPanel>
                     <TextBlock Text="Workbench"
-                               Style="{StaticResource SubtitleTextBlockStyle}" />
-                    <TextBlock Text="Your Workbench is your customizable Navigation Hub"
-                               TextWrapping="Wrap" />
-                    <InfoBar x:Name="SettingsBackupWorkbenchInfoBar"
-                             BorderThickness="8"
-                             BorderBrush="Transparent"
+                               Style="{StaticResource TitleTextBlockStyle}" />
+                    <InfoBar BorderThickness="8"
                              IsClosable="True"
                              IsOpen="True"
-                             Message="Do you want to allow electrifier to make backups of your Workbench settings?"
+                             Message="Your Workbench is your personal workspace. You can customize it [here]."
+                             Title="Your Workbench">
+                    </InfoBar>
+                    <InfoBar x:Name="SettingsBackupWorkbenchInfoBar"
+                             BorderThickness="8"
+                             IsClosable="True"
+                             IsOpen="True"
                              Title="Backup your Personal User Settings">
+                        <!-- Message="Do you want to allow electrifier to make backups of your Workbench settings?" -->
                         <InfoBar.Content>
                             <ItemsStackPanel Height="Auto"
-                                             Orientation="Horizontal">
+                                             Orientation="Horizontal"
+                                             HorizontalAlignment="Right">
                                 <CheckBox x:Name="SettingsBackupWorkbenchAllowed">
-                                    Enable automatic backups and don't show again
+                                    HorizontalAlignment="Right"
+                                    sEnable automatic backups and don't show again
                                 </CheckBox>
                             </ItemsStackPanel>
                         </InfoBar.Content>
@@ -77,26 +82,12 @@
         </controls:GridSplitter>
         <StackPanel x:Name="SidebarStackPanel"
                     Grid.Column="2">
-            <InfoBar x:Name="LicenseAgreementInfoBar"
-                     BorderBrush="Transparent"
-                     BorderThickness="8"
+            <InfoBar BorderThickness="8"
                      IsClosable="True"
                      IsOpen="True"
-                     Message="Please read and accept the License Agreement"
-                     Title="License Agreement">
-                <TextBlock TextWrapping="Wrap">
-                    <Run>Take a look at the </Run>
-                    <Hyperlink NavigateUri="https://github.com/electrifier/electrifier">
-                        electrifier project page on GitHub...
-                    </Hyperlink>
-                </TextBlock>
-            </InfoBar>
-            <InfoBar>
-                <TextBlock TextWrapping="Wrap">
-                    <Run>Take a look at the </Run>
-                    <Hyperlink NavigateUri="https://github.com/electrifier" />
-                    <Run> project on GitHub.</Run>
-                </TextBlock>
+                     Message="electrifier is on GitHub:"
+                     Title="License">
+                <!-- <Hyperlink NavigateUri="https://github.com/electrifier">github.com/electrifier</Hyperlink>-->
             </InfoBar>
         </StackPanel>
     </Grid>
