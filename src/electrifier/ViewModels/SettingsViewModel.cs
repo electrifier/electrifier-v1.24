@@ -33,8 +33,10 @@ public partial class SettingsViewModel : ObservableRecipient
 {
     private readonly IThemeSelectorService _themeSelectorService;
 
-    [ObservableProperty]
-    private string _appearance = "Monochrome";
+
+    //[ObservableProperty]
+    //private string _appearance;
+
     [ObservableProperty]
     private ElementTheme _elementTheme;
 
@@ -55,6 +57,7 @@ public partial class SettingsViewModel : ObservableRecipient
         _themeSelectorService = themeSelectorService;
         _elementTheme = _themeSelectorService.Theme;
         _versionDescription = GetVersionDescription();
+        //_appearance = "Monochrome";
 
         SwitchThemeCommand = new RelayCommand<ElementTheme>(
             async (param) =>
@@ -74,7 +77,7 @@ public partial class SettingsViewModel : ObservableRecipient
     private string GetDebuggerDisplay()
     {
         return new StringBuilder().Append(nameof(SettingsViewModel))
-        .Append($" Appearance={Appearance}")
+        //.Append($" Appearance={Appearance}")
         .Append($" ElementTheme={ElementTheme}")
         .Append($" VersionDescription={VersionDescription}")
         .ToString();

@@ -52,7 +52,6 @@
                 <Button x:Name="AppTitleBar_ForwardButton"
                         Background="Transparent"
                         Click="AppTitleBar_ForwardButton_Click"
-                        IsEnabled="False"
                         Margin="5,0,0,0">
                     <Image MaxHeight="22"
                            Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png" />
@@ -87,9 +86,11 @@
                        Text="electrifier alpha"
                        VerticalAlignment="Bottom" />
         </Grid>
+        <!-- CompactPaneGridLength: double -->
         <NavigationView x:Name="NavigationViewControl"
                         AlwaysShowHeader="True"
                         CompactPaneLength="72"
+                        
                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
                         IsBackButtonVisible="Visible"
                         IsBackEnabled="True"

@@ -43,14 +43,20 @@
                         Margin="{StaticResource SmallTopBottomMargin}">
                 <TextBlock x:Uid="Settings_AppearanceTextBlock">Appearance</TextBlock>
                 <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                    <RadioButton x:Uid="Settings_Appearance_RadioButton"
-                                 Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                                 FontSize="15"
-                                 GroupName="Appearance">
-                        <RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Monochrome</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>
-                    </RadioButton>
+                    <DropDownButton Content="Monochrome">
+                        <DropDownButton.Flyout>
+                            <MenuFlyout Placement="BottomEdgeAlignedRight">
+                                <MenuFlyoutItem Text="Monochrome" />
+                                <MenuFlyoutItem Text="Longhorn"
+                                                IsEnabled="False" />
+                                <MenuFlyoutItem Text="Aero"
+                                                IsEnabled="False" />
+                                <MenuFlyoutSeparator />
+                                <MenuFlyoutItem Text="Customize..."
+                                                IsEnabled="False" />
+                            </MenuFlyout>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
                 </StackPanel>
             </StackPanel>
 

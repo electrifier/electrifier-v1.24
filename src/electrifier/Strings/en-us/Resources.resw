@@ -195,7 +195,7 @@
     <value>File Manager</value>
   </data>
   <data name="Shell_ListDetails.Content" xml:space="preserve">
-    <value>ListDetails</value>
+    <value>Details</value>
   </data>
   <data name="Shell_WebView.Content" xml:space="preserve">
     <value>Web Browser</value>
@@ -238,5 +238,11 @@
   </data>
   <data name="ShellPage_People.Content" xml:space="preserve">
     <value>People</value>
+  </data>
+  <data name="Settings_Appearance_Monochrome.Content" xml:space="preserve">
+    <value>Monochrome</value>
+  </data>
+  <data name="Settings_AppearanceTextBlock" xml:space="preserve">
+    <value>Appearance</value>
   </data>
 </root>
