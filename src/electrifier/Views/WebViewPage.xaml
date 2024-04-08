@@ -28,8 +28,40 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <MenuBar x:Name="ContentAreaTopMenuBar"
+                 Grid.Row="0">
+            <MenuBarItem Title="File">
+                <MenuFlyoutItem Text="New"
+                                IsEnabled="False" />
+                <MenuFlyoutItem Text="Open..."
+                                IsEnabled="False" />
+            </MenuBarItem>
+            <MenuBarItem Title="Edit">
+                <MenuFlyoutItem Text="Undo"
+                                IsEnabled="False" />
+                <MenuFlyoutItem Text="Cut"
+                                IsEnabled="False" />
+                <MenuFlyoutItem Text="Copy"
+                                IsEnabled="False" />
+                <MenuFlyoutItem Text="Paste"
+                                IsEnabled="False" />
+            </MenuBarItem>
+            <MenuBarItem Title="View">
+                <MenuFlyoutItem Text="Zoom In"
+                                IsEnabled="False" />
+                <MenuFlyoutItem Text="Zoom Out"
+                                IsEnabled="False" />
+            </MenuBarItem>
+            <MenuBarItem Title="Help">
+                <MenuFlyoutItem Text="About"
+                                IsEnabled="False" />
+            </MenuBarItem>
+        </MenuBar>
+
+
+        <Grid Grid.Row="1">
             <StackPanel Orientation="Horizontal">
                 <Button x:Uid="BrowserBackButton"
                         Command="{x:Bind ViewModel.BrowserBackCommand, Mode=OneWay}"
@@ -85,5 +117,37 @@
             <WebView2 x:Name="WebView"
                       Source="{x:Bind ViewModel.Source, Mode=OneWay}" />
         </Grid>
+
+        <CommandBar x:Name="StatusCommandBar"
+                    Grid.Row="2"
+                    Background="Transparent"
+                    DefaultLabelPosition="Right"
+                    HorizontalAlignment="Left"
+                    IsOpen="False"
+                    IsSticky="True">
+            <AppBarElementContainer>
+                <TextBlock Text="elementContainer" />
+            </AppBarElementContainer>
+            <AppBarButton Icon="Folder"
+                          Label="folder"
+                          ToolTipService.ToolTip="Total number of Items" />
+            <AppBarButton Icon="Folder"
+                          Label="folder"
+                          ToolTipService.ToolTip="Number of Folders" />
+            <AppBarButton Icon="OpenFile"
+                          Label="open"
+                          ToolTipService.ToolTip="Number of Files" />
+            <AppBarSeparator />
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Icon="Setting"
+                              Label="Settings">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control"
+                                             Key="I" />
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+
     </Grid>
 </Page>
