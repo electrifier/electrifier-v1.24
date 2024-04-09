@@ -1,8 +1,25 @@
-﻿using electrifier.Helpers;
+﻿/*
+    Copyright 2024 Thorsten Jung, aka tajbender
+        https://www.electrifier.org
 
-using Microsoft.UI;             // Needed for WindowId.
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+*/
+
+using electrifier.Helpers;
 using Microsoft.UI.Dispatching; // Needed for DispatcherQueue.
 using Microsoft.UI.Windowing;   // Needed for AppWindow.
+using Microsoft.UI.Xaml;
+using Microsoft.UI;             // Needed for WindowId.
 using Windows.UI.ViewManagement;
 using WinRT.Interop;            // Needed for XAML/HWND interop.
 
@@ -31,6 +48,7 @@ public sealed partial class MainWindow : WindowEx
         InitializeComponent();
 
         m_AppWindow = GetAppWindowForCurrentWindow();
+        //        m_AppWindow = AppWindow;
         var titleBar = m_AppWindow.TitleBar;
         // Hide system title bar.
         titleBar.ExtendsContentIntoTitleBar = true;
@@ -38,6 +56,8 @@ public sealed partial class MainWindow : WindowEx
         AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/WindowIcon.ico"));
         Content = null;
         Title = "electrifier";
+
+        m_AppWindow.Changed += AppWindow_Changed;
 
         // Theme change code picked from https://github.com/microsoft/WinUI-Gallery/pull/1239
         m_DispatcherQueue = DispatcherQueue.GetForCurrentThread();
@@ -53,6 +73,85 @@ public sealed partial class MainWindow : WindowEx
 
         return AppWindow.GetFromWindowId(wndId);
     }
+
+    private void AppWindow_Changed(AppWindow sender, AppWindowChangedEventArgs args)
+    {
+        if (args.DidPresenterChange)
+        {
+            object AppTitleBar = null;
+
+            switch (sender.Presenter.Kind)
+            {
+                case AppWindowPresenterKind.CompactOverlay:
+                    // Compact overlay - hide custom title bar
+                    // and use the default system title bar instead.
+                    //AppTitleBar.Visibility = Visibility.Collapsed;
+                    //sender.TitleBar.ResetToDefault();
+                    break;
+
+                case AppWindowPresenterKind.FullScreen:
+                    // Full screen - hide the custom title bar
+                    // and the default system title bar.
+                    //AppTitleBar.Visibility = Visibility.Collapsed;
+                    //sender.TitleBar.ExtendsContentIntoTitleBar = true;
+                    break;
+
+                case AppWindowPresenterKind.Overlapped:
+                    // Normal - hide the system title bar
+                    // and use the custom title bar instead.
+                    //AppTitleBar.Visibility = Visibility.Visible;
+                    //sender.TitleBar.ExtendsContentIntoTitleBar = true;
+                    break;
+
+                default:
+                    // Use the default system title bar.
+                    sender.TitleBar.ResetToDefault();
+                    break;
+            }
+        }
+    }
+    //    public MainWindow()
+    //    {
+    //        this.InitializeComponent();
+    //
+    //        m_AppWindow = this.AppWindow;
+    //        m_AppWindow.Changed += AppWindow_Changed;
+    //    }
+    //
+    //    private void AppWindow_Changed(AppWindow sender, AppWindowChangedEventArgs args)
+    //    {
+    //        if (args.DidPresenterChange)
+    //        {
+    //            switch (sender.Presenter.Kind)
+    //            {
+    //                case AppWindowPresenterKind.CompactOverlay:
+    //                    // Compact overlay - hide custom title bar
+    //                    // and use the default system title bar instead.
+    //                    AppTitleBar.Visibility = Visibility.Collapsed;
+    //                    sender.TitleBar.ResetToDefault();
+    //                    break;
+    //
+    //                case AppWindowPresenterKind.FullScreen:
+    //                    // Full screen - hide the custom title bar
+    //                    // and the default system title bar.
+    //                    AppTitleBar.Visibility = Visibility.Collapsed;
+    //                    sender.TitleBar.ExtendsContentIntoTitleBar = true;
+    //                    break;
+    //
+    //                case AppWindowPresenterKind.Overlapped:
+    //                    // Normal - hide the system title bar
+    //                    // and use the custom title bar instead.
+    //                    AppTitleBar.Visibility = Visibility.Visible;
+    //                    sender.TitleBar.ExtendsContentIntoTitleBar = true;
+    //                    break;
+    //
+    //                default:
+    //                    // Use the default system title bar.
+    //                    sender.TitleBar.ResetToDefault();
+    //                    break;
+    //            }
+    //        }
+    //    }
 
     // this handles updating the caption button colors correctly
     // when windows system theme is changed while the app is open
