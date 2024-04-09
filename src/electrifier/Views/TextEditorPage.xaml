@@ -68,17 +68,17 @@
                     Background="Transparent"
                     DefaultLabelPosition="Right"
                     HorizontalAlignment="Left">
-            <AppBarButton Icon="AlignLeft"
-                          Label="99"
-                          ToolTipService.ToolTip="Column: ... of ..." />
-            <AppBarButton Icon="AlignCenter"
-                          Label="23"
-                          ToolTipService.ToolTip="Row: ... of ..." />
-            <AppBarButton Icon="AlignRight"
-                          Label="76"
-                          ToolTipService.ToolTip="Size ... KByte" />
+            <AppBarElementContainer HorizontalAlignment="Left"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    VerticalContentAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="StatusTextBlockLine"
+                               Text="{x:Bind StatusTextBlockLine}" />
+                </StackPanel>
+            </AppBarElementContainer>
             <AppBarSeparator />
-            <CommandBar.SecondaryCommands>
+            <!--<CommandBar.SecondaryCommands>
                 <AppBarButton Icon="Setting"
                               Label="Settings"
                               ToolTipService.ToolTip="Setting Ctrl + I">
@@ -87,8 +87,7 @@
                                              Key="I" />
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
-            </CommandBar.SecondaryCommands>
+            </CommandBar.SecondaryCommands>-->
         </CommandBar>
-
     </Grid>
 </Page>

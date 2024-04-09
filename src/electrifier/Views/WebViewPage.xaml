@@ -119,18 +119,15 @@
                     Grid.Row="2"
                     Background="Transparent"
                     DefaultLabelPosition="Right"
-                    HorizontalAlignment="Left"
-                    IsOpen="False"
-                    IsSticky="True">
-            <AppBarElementContainer>
-                <TextBlock Text="elementContainer" />
+                    HorizontalAlignment="Left">
+            <AppBarElementContainer HorizontalAlignment="Left"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    VerticalContentAlignment="Center">
+                <AppBarElementContainer>
+                    <TextBlock Text="{x:Bind ViewModel.Source}" />
+                </AppBarElementContainer>
             </AppBarElementContainer>
-            <AppBarButton Icon="AlignLeft"
-                          Label="Align left" />
-            <AppBarButton Icon="AlignCenter"
-                          Label="Align Center" />
-            <AppBarButton Icon="AlignRight"
-                          Label="Align Right" />
             <AppBarSeparator />
             <CommandBar.SecondaryCommands>
                 <AppBarButton Icon="Setting"

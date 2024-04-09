@@ -54,8 +54,10 @@
                         Orientation="Horizontal"
                         VerticalAlignment="Stretch">
                 <Button x:Name="AppTitleBar_ForwardButton"
+                        Background="Transparent"
                         Click="AppTitleBar_ForwardButton_Click">
-                    <Image MaxHeight="22"
+                    <Image x:Name="AppTitleBar_ForwardButtonImage"
+                           MaxHeight="24"
                            Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png" />
                 </Button>
                 <Image x:Name="WindowIcon"
@@ -120,33 +122,9 @@
                         IsPaneOpen="True"
                         IsSettingsVisible="True"
                         IsTitleBarAutoPaddingEnabled="False">
-            <!-- TODO: <NavigationView.AutoSuggestBox> -->
-            <!-- TODO: NavigationViewItem's in the right upper border, as small icons -->
-            <!--
-            <NavigationView.PaneHeader>
-                <ImageIcon MaxHeight="32"
-                           Visibility="Visible"
-                           HorizontalAlignment="Right"
-                           Source="ms-appx:///Assets/app.ico" />
-            </NavigationView.PaneHeader>-->
-            <!--
-            <NavigationView.PaneTitle>
-                -= Workbench Name =-
-            </NavigationView.PaneTitle>-->
-
+            <!-- TODO: NavigationViewItems into the right upper border of header, as small icons -->
+            <!-- INFO: MultitaskExpanded -->
             <NavigationView.MenuItems>
-                <!--<NavigationView.PaneCustomContent>
-                    <HyperlinkButton x:Name="PaneHyperlink"
-                                     Content="More info"
-                                     Margin="12,0"
-                                     Visibility="Collapsed" />
-                </NavigationView.PaneCustomContent>-->
-
-                <!--<NavigationView.AutoSuggestBox>
-                    <AutoSuggestBox QueryIcon="Find"
-                                    AutomationProperties.Name="Search" />
-                </NavigationView.AutoSuggestBox>-->
-
                 <NavigationViewItem x:Uid="Shell_Workbench"
                                     IsSelected="True"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
@@ -161,7 +139,6 @@
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xeb91;" />
-                        <!-- INFO: MultitaskExpanded -->
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItemSeparator />
@@ -216,12 +193,6 @@
                                  Margin="12,0"
                                  Visibility="Collapsed" />
             </NavigationView.PaneCustomContent>
-
-            <!--<NavigationView.AutoSuggestBox>
-                <AutoSuggestBox QueryIcon="Find"
-                                AutomationProperties.Name="Search" />
-            </NavigationView.AutoSuggestBox>-->
-
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
