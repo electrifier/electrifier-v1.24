@@ -24,24 +24,8 @@
       behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
       d:DataContext="{d:DesignInstance Type=viewmodels:WebViewViewModel}"
       mc:Ignorable="d">
-    <Grid x:Name="ContentAreaGrid">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-        <!--<Grid x:Name="ContentArea_NavigationBar"
-              Grid.Row="0"
-              Height="Auto">
-            <AppBarElementContainer>
-                <TextBlock Foreground="DarkGray"
-                           Text="{x:Bind ViewModel.Source}" />
-            </AppBarElementContainer>
-            <AppBarSeparator />
-        </Grid>-->
+    <Grid x:Name="ContentArea">
         <StackPanel x:Name="NavigationBar"
-                    Grid.Row="1"
                     Orientation="Horizontal">
             <ProgressRing x:Name="NavigationBarProgressRing"
                           BorderThickness="1"
@@ -58,21 +42,20 @@
             </Button>
             <!-- <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />-->
         </StackPanel >
-        <Grid x:Name="ContentArea_WebView"
-              Grid.Row="2">
+        <Grid x:Name="ContentAreaWebView">
             <WebView2 x:Name="WebView"
                       Source="{x:Bind ViewModel.Source, Mode=OneWay}" />
         </Grid>
         <StackPanel x:Name="StatusCommandBarWebViewLoading"
-                    Grid.Row="2"
+                    Orientation="Horizontal"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}">
             <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
-            <TextBlock x:Uid="WebView_Loading" />
+            <TextBlock x:Uid="WebView_Loading"
+                       Text="Loading..." />
         </StackPanel>
         <StackPanel x:Name="StatusCommandBarWebViewFailed"
-                    Grid.Row="3"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Visibility="{x:Bind ViewModel.HasFailures, Mode=OneWay}">
@@ -84,7 +67,6 @@
                              HorizontalAlignment="Center" />
         </StackPanel>
         <CommandBar x:Name="StatusCommandBar"
-                    Grid.Row="4"
                     Background="Transparent"
                     DefaultLabelPosition="Right"
                     HorizontalAlignment="Left">

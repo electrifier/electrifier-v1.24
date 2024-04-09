@@ -33,36 +33,34 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <MenuBar x:Name="ContentAreaTopMenuBar"
-                 Grid.Row="0"
-                 Visibility="Collapsed">
-            <MenuBarItem Title="File">
-                <MenuFlyoutItem Text="New"
-                                IsEnabled="False" />
-                <MenuFlyoutItem Text="Open..."
-                                IsEnabled="False" />
-            </MenuBarItem>
-            <MenuBarItem Title="Edit">
-                <MenuFlyoutItem Text="Undo"
-                                IsEnabled="False" />
-                <MenuFlyoutItem Text="Cut"
-                                IsEnabled="False" />
-                <MenuFlyoutItem Text="Copy"
-                                IsEnabled="False" />
-                <MenuFlyoutItem Text="Paste"
-                                IsEnabled="False" />
-            </MenuBarItem>
-            <MenuBarItem Title="View">
-                <MenuFlyoutItem Text="Zoom In"
-                                IsEnabled="False" />
-                <MenuFlyoutItem Text="Zoom Out"
-                                IsEnabled="False" />
-            </MenuBarItem>
-            <MenuBarItem Title="Help">
-                <MenuFlyoutItem Text="About"
-                                IsEnabled="False" />
-            </MenuBarItem>
-        </MenuBar>
+        <Grid x:Name="TopCommandBar">
+            <StackPanel Orientation="Horizontal">
+                <AppBarButton x:Uid="LoadButton"
+                              Icon="OpenFile"
+                              IsEnabled="False"
+                              Label="Open..." />
+                <AppBarButton x:Uid="SaveButton"
+                              Icon="Save"
+                              IsEnabled="False"
+                              Label="Save" />
+                <AppBarButton x:Uid="SaveAsButton"
+                              Icon="SaveLocal"
+                              IsEnabled="False"
+                              Label="Save as..." />
+            </StackPanel >
+            <StackPanel Orientation="Horizontal"
+                        HorizontalAlignment="Right">
+                <AppBarButton x:Uid="RunButton"
+                              Icon="Play"
+                              IsEnabled="False"
+                              Label="Run" />
+                <Button x:Uid="OpenInExternalBrowserButton"
+                        IsEnabled="False">
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                              Glyph="&#xe8a7;" />
+                </Button>
+            </StackPanel>
+        </Grid>
         <Grid x:Name="ContentAreaGrid"
               x:Uid="ContentAreaGrid"
               Grid.Row="1">
@@ -151,7 +149,7 @@
                       ItemTemplate="{StaticResource ShellGridViewItemTemplate}"
                       SelectionMode="Extended" />
         </Grid>
-        <CommandBar x:Name="StatusCommandBar"
+        <CommandBar x:Name="BottomStatusCommandBar"
                     Grid.Row="2"
                     Background="Transparent"
                     DefaultLabelPosition="Right"
