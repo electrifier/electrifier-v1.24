@@ -27,12 +27,13 @@ public sealed partial class TextEditorPage : Page
         get;
     }
 
-    private string GetCursorPosition() => ViewModel.CursorPosition;
-
     public TextEditorViewModel ViewModel
     {
         get;
     }
+
+    public string StatusCursorPosition => GetCursorPosition();
+    private string GetCursorPosition() => ViewModel.StatusCursorPosition;
 
     public TextEditorPage()
     {

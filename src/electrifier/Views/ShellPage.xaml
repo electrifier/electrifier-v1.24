@@ -121,7 +121,8 @@
                         IsBackEnabled="True"
                         IsPaneOpen="True"
                         IsSettingsVisible="True"
-                        IsTitleBarAutoPaddingEnabled="False">
+                        IsTitleBarAutoPaddingEnabled="False"
+                        OpenPaneLength="192">
             <!-- TODO: NavigationViewItems into the right upper border of header, as small icons -->
             <!-- INFO: MultitaskExpanded -->
             <NavigationView.MenuItems>
