@@ -46,10 +46,15 @@
                     <DropDownButton Content="Monochrome">
                         <DropDownButton.Flyout>
                             <MenuFlyout Placement="BottomEdgeAlignedRight">
-                                <MenuFlyoutItem Text="Monochrome" />
-                                <MenuFlyoutItem Text="Longhorn"
+                                <MenuFlyoutItem Text="Aroma"
+                                                IsEnabled="False" />
+                                <MenuFlyoutItem Text="Monochrome"
+                                                IsEnabled="True" />
+                                <MenuFlyoutItem Text="Kiosk"
                                                 IsEnabled="False" />
                                 <MenuFlyoutItem Text="Aero"
+                                                IsEnabled="False" />
+                                <MenuFlyoutItem Text="Longhorn"
                                                 IsEnabled="False" />
                                 <MenuFlyoutSeparator />
                                 <MenuFlyoutItem Text="Customize..."

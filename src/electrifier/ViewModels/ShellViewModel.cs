@@ -25,15 +25,16 @@ using System.Text;
 
 namespace electrifier.ViewModels;
 
-[DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
+[DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
 public partial class ShellViewModel : ObservableRecipient
 {
     [ObservableProperty]
     private bool isBackEnabled;
     [ObservableProperty]
-    private bool isForwardEnabled = true;    // TODO: only test value
+    private bool isForwardEnabled = true;
     [ObservableProperty]
     private object? selected;
+
     public INavigationService NavigationService
     {
         get;
@@ -75,7 +76,7 @@ public partial class ShellViewModel : ObservableRecipient
 
         UnselectNavigationItem();
     }
-    //    NavigationHelper.SetNavigateTo(navigationViewItem, typeof(MainViewModel).FullName)
+
     private string GetDebuggerDisplay()
     {
         var dbgDisplay = new StringBuilder();

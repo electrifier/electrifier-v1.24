@@ -52,7 +52,6 @@
                               Icon="Play"
                               IsEnabled="False"
                               Label="Run" />
-                <!-- Glyph 'OpenInNewWindow' xe8a7 -->
                 <Button x:Uid="OpenInExternalBrowserButton"
                         IsEnabled="False">
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -61,16 +60,14 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-            <editor:CodeEditorControl x:Name="Editor"
+            <editor:CodeEditorControl x:Name="EditorControl"
                                       HighlightingLanguage="csharp" />
         </Grid>
         <CommandBar x:Name="StatusCommandBar"
                     Grid.Row="2"
                     Background="Transparent"
                     DefaultLabelPosition="Right"
-                    HorizontalAlignment="Left"
-                    IsOpen="False"
-                    IsSticky="True">
+                    HorizontalAlignment="Left">
             <AppBarButton Icon="AlignLeft"
                           Label="99"
                           ToolTipService.ToolTip="Column: ... of ..." />

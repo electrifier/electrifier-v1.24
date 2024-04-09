@@ -55,15 +55,14 @@
                              BorderThickness="8"
                              IsClosable="True"
                              IsOpen="True"
+                             Message="Do you want to allow electrifier to make backups of your Workbench settings?"
                              Title="Backup your Personal User Settings">
-                        <!-- Message="Do you want to allow electrifier to make backups of your Workbench settings?" -->
                         <InfoBar.Content>
                             <ItemsStackPanel Height="Auto"
                                              Orientation="Horizontal"
                                              HorizontalAlignment="Right">
                                 <CheckBox x:Name="SettingsBackupWorkbenchAllowed">
-                                    HorizontalAlignment="Right"
-                                    sEnable automatic backups and don't show again
+                                    Enable automatic backups and don't show again
                                 </CheckBox>
                             </ItemsStackPanel>
                         </InfoBar.Content>
@@ -82,13 +81,14 @@
         </controls:GridSplitter>
         <StackPanel x:Name="SidebarStackPanel"
                     Grid.Column="2">
-            <InfoBar BorderThickness="8"
+            <TextBlock Text="SideBar"
+                       Style="{StaticResource TitleTextBlockStyle}" />
+            <InfoBar x:Name="SettingsBackupWorkbenchLicenseInfoBar"
+                     BorderThickness="8"
                      IsClosable="True"
                      IsOpen="True"
-                     Message="electrifier is on GitHub:"
-                     Title="License">
-                <!-- <Hyperlink NavigateUri="https://github.com/electrifier">github.com/electrifier</Hyperlink>-->
-            </InfoBar>
+                     Message="Licensed under the Apache License, Version 2.0"
+                     Title="License" />
         </StackPanel>
     </Grid>
 </Page>
