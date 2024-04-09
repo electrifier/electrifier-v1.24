@@ -34,7 +34,8 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <MenuBar x:Name="ContentAreaTopMenuBar"
-                 Grid.Row="0">
+                 Grid.Row="0"
+                 Visibility="Collapsed">
             <MenuBarItem Title="File">
                 <MenuFlyoutItem Text="New"
                                 IsEnabled="False" />
