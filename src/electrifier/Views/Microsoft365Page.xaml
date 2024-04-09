@@ -61,7 +61,7 @@
                                  HorizontalAlignment="Center" />
             </StackPanel>
         </Grid>
-        <AppBar x:Name="StatusCommandBar"
+        <AppBar x:Name="ContentArea_StatusCommandBar"
                 Background="Transparent"
                 Grid.Row="2"
                 HorizontalAlignment="Stretch">

@@ -45,7 +45,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
+                <!--<ColumnDefinition Width="Auto" />-->
             </Grid.ColumnDefinitions>
             <StackPanel x:Name="AppTitleBar_TitleStackPanelLeft"
                         Grid.Column="0"
@@ -53,43 +53,23 @@
                         Margin="0,5,0,0"
                         Orientation="Horizontal"
                         VerticalAlignment="Stretch">
-                <Button x:Name="AppTitleBar_ForwardButton"
-                        Background="Transparent"
-                        Click="AppTitleBar_ForwardButton_Click">
-                    <Image x:Name="AppTitleBar_ForwardButtonImage"
-                           MaxHeight="24"
-                           Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png" />
-                </Button>
                 <Image x:Name="WindowIcon"
                        Height="32"
                        Margin="15,0,15,0"
                        Source="ms-appx:///Assets/Square44x44Logo.scale-200.png" />
+                <DropDownButton x:Name="AppTitleBar_ForwardButton"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                Click="AppTitleBar_ForwardButton_Click">
+                    <Image x:Name="AppTitleBar_ForwardButtonImage"
+                           MaxHeight="24"
+                           Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png" />
+                </DropDownButton>
                 <TextBlock x:Name="AppTitleBar_TitleTextBlockLeft"
-                           FontSize="16"
+                           FontSize="23"
                            Text="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}" />
             </StackPanel>
-            <!--<StackPanel x:Name="AppTitleBar_TitleStackPanelCenter"
-                        Grid.Column="2"
-                        Orientation="Vertical"
-                        VerticalAlignment="Top">
-                <TextBlock x:Name="AppTitleBar_TitleTextBlockCenter"
-                           FontSize="16"
-                           Text="blubbdfgdfg" />
-                <TextBlock x:Name="AppTitleBar_SubTitleTextBlockCenter"
-                           FontSize="12"
-                           FontWeight="Bold"
-                           FontStyle="Italic"
-                           Text="[Workbench name]" />
-            </StackPanel>-->
-            <!--<StackPanel x:Name="AppTitleBar_SubTitleTextBlockRightStackPanel"
-                        Grid.Column="3"
-                        Orientation="Horizontal"
-                        Margin="8, 0, 8, 0"
-                        HorizontalAlignment="Right"
-                        VerticalAlignment="Bottom">-->
-            <Grid Grid.Column="1">
-            </Grid>
-            <Grid Grid.Column="2"
+            <Grid Grid.Column="1"
                   Width="Auto"
                   VerticalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
@@ -122,7 +102,7 @@
                         IsPaneOpen="True"
                         IsSettingsVisible="True"
                         IsTitleBarAutoPaddingEnabled="False"
-                        OpenPaneLength="192">
+                        OpenPaneLength="195">
             <!-- TODO: NavigationViewItems into the right upper border of header, as small icons -->
             <!-- INFO: MultitaskExpanded -->
             <NavigationView.MenuItems>
