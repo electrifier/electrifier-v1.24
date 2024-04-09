@@ -22,6 +22,13 @@ namespace electrifier.Views;
 
 public sealed partial class TextEditorPage : Page
 {
+    public int TextEditorPageId
+    {
+        get;
+    }
+
+    private string GetCursorPosition() => ViewModel.CursorPosition;
+
     public TextEditorViewModel ViewModel
     {
         get;

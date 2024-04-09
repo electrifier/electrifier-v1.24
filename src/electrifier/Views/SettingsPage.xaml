@@ -43,16 +43,25 @@
                         Margin="{StaticResource SmallTopBottomMargin}">
                 <TextBlock x:Uid="Settings_AppearanceTextBlock">Appearance</TextBlock>
                 <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                    <RadioButton x:Uid="Settings_Appearance_RadioButton"
-                                 FontSize="15"
-                                 Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                                 IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}"
-                                 GroupName="Appearance">
-                        Monochrome
-                        <!--<RadioButton.CommandParameter>
-                            <xaml:ElementTheme>Monochrome</xaml:ElementTheme>
-                        </RadioButton.CommandParameter>-->
-                    </RadioButton>
+                    <DropDownButton Content="Monochrome">
+                        <DropDownButton.Flyout>
+                            <MenuFlyout Placement="BottomEdgeAlignedRight">
+                                <MenuFlyoutItem Text="Aroma"
+                                                IsEnabled="False" />
+                                <MenuFlyoutItem Text="Monochrome"
+                                                IsEnabled="True" />
+                                <MenuFlyoutItem Text="Kiosk"
+                                                IsEnabled="False" />
+                                <MenuFlyoutItem Text="Aero"
+                                                IsEnabled="False" />
+                                <MenuFlyoutItem Text="Longhorn"
+                                                IsEnabled="False" />
+                                <MenuFlyoutSeparator />
+                                <MenuFlyoutItem Text="Customize..."
+                                                IsEnabled="False" />
+                            </MenuFlyout>
+                        </DropDownButton.Flyout>
+                    </DropDownButton>
                 </StackPanel>
             </StackPanel>
 

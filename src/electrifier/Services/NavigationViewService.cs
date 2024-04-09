@@ -1,4 +1,21 @@
-﻿using electrifier.Contracts.Services;
+﻿/*
+    Copyright 2024 Thorsten Jung, aka tajbender
+        https://www.electrifier.org
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+*/
+
+using electrifier.Contracts.Services;
 using electrifier.Helpers;
 using electrifier.ViewModels;
 using Microsoft.UI.Xaml.Controls;
@@ -18,7 +35,7 @@ public class NavigationViewService : INavigationViewService
     public IList<object>? MenuItems => _navigationView?.MenuItems;
 
     public object? SettingsItem => _navigationView?.SettingsItem;
-    
+
     //public object? WorkbenchItem => _navigationView?.WorkbenchItem;
 
     public NavigationViewService(INavigationService navigationService, IPageService pageService)
@@ -79,21 +96,27 @@ public class NavigationViewService : INavigationViewService
             return;
         }
 
-        // Get the page type before navigation so you can prevent duplicate entries in the backstack
+        // Get the page type before navigation so you can prevent duplicate entries in the back stack
         var selectedItem = args.InvokedItemContainer as NavigationViewItem;
+        var selectedType = selectedItem?.GetType();
+        var pageKey = args.InvokedItemContainer.GetValue(NavigationHelper.NavigateToProperty) as string;
         // TODO: var selectedType = selectedItem?.GetType();
+        // TODO: var pageKey = args.InvokedItemContainer.GetValue(NavigationHelper.NavigateToProperty) as string;
 
         // WorkbenchViewModel
-        if (selectedItem?.GetValue(NavigationHelper.NavigateToProperty) is string selectedItemPageKey)
+        if (selectedItem is not null)
         {
-            _navigationService.NavigateTo(selectedItemPageKey);
+            if (selectedItem.GetValue(NavigationHelper.NavigateToProperty) is string pageKey1)
+            {
+                _navigationService.NavigateTo(pageKey1);
+            }
         }
 
         // doc: https://docs.microsoft.com/en-us/windows/apps/design/controls/navigationview#navigationview-and-the-back-button
-        if (selectedItem?.GetValue(NavigationHelper.NavigateToProperty) is string pageKey)
-        {
-            _navigationService.NavigateTo(pageKey);
-        }
+        //if (selectedItem?.GetValue(NavigationHelper.NavigateToProperty) is string pageKey2)
+        //{
+        //    _navigationService.NavigateTo(pageKey2);
+        //}
     }
 
     private NavigationViewItem? GetSelectedItem(IEnumerable<object> menuItems, Type pageType)
@@ -114,7 +137,7 @@ public class NavigationViewService : INavigationViewService
 
         return null;
     }
-    
+
     private bool IsMenuItemForPageType(NavigationViewItem menuItem, Type sourcePageType)
     {
         if (menuItem.GetValue(NavigationHelper.NavigateToProperty) is string pageKey)

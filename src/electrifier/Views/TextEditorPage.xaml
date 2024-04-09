@@ -29,6 +29,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
@@ -51,8 +52,7 @@
                               Icon="Play"
                               IsEnabled="False"
                               Label="Run" />
-                <!-- Glyph 'OpenInNewWindow' xe8a7 -->
-                <Button x:Uid="OpenInBrowserButton"
+                <Button x:Uid="OpenInExternalBrowserButton"
                         IsEnabled="False">
                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                               Glyph="&#xe8a7;" />
@@ -60,8 +60,34 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-            <editor:CodeEditorControl x:Name="Editor"
+            <editor:CodeEditorControl x:Name="EditorControl"
                                       HighlightingLanguage="csharp" />
         </Grid>
+        <CommandBar x:Name="StatusCommandBar"
+                    Grid.Row="2"
+                    Background="Transparent"
+                    DefaultLabelPosition="Right"
+                    HorizontalAlignment="Left">
+            <AppBarElementContainer HorizontalAlignment="Left"
+                                    HorizontalContentAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    VerticalContentAlignment="Center">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock x:Name="StatusTextBlockLine"
+                               Text="{x:Bind StatusTextBlockLine}" />
+                </StackPanel>
+            </AppBarElementContainer>
+            <AppBarSeparator />
+            <!--<CommandBar.SecondaryCommands>
+                <AppBarButton Icon="Setting"
+                              Label="Settings"
+                              ToolTipService.ToolTip="Setting Ctrl + I">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control"
+                                             Key="I" />
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
+            </CommandBar.SecondaryCommands>-->
+        </CommandBar>
     </Grid>
 </Page>

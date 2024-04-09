@@ -19,6 +19,7 @@ using CommunityToolkit.WinUI.UI.Animations;
 using electrifier.Contracts.Services;
 using electrifier.Contracts.ViewModels;
 using electrifier.Helpers;
+using electrifier.ViewModels;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 using System.Diagnostics.CodeAnalysis;
@@ -141,6 +142,22 @@ public class NavigationService : INavigationService
         return false;
     }
 
+    public bool NavigateToWorkbench()
+    {
+        var viewModel = App.GetService<WorkbenchViewModel>();
+        var fullName = viewModel.GetType().FullName;
+
+        if (fullName is not null)
+        {
+            return NavigateTo(fullName);
+        }
+        return false;
+    }
+    public void SetListDataItemForNextConnectedAnimation(object item)
+    {
+        Frame.SetListDataItemForNextConnectedAnimation(item);
+    }
+
     private void OnNavigated(object sender, NavigationEventArgs e)
     {
         if (sender is Frame frame)
@@ -174,11 +191,5 @@ public class NavigationService : INavigationService
         {
             _frame.Navigated -= OnNavigated;
         }
-    }
-
-
-    public void SetListDataItemForNextConnectedAnimation(object item)
-    {
-        Frame.SetListDataItemForNextConnectedAnimation(item);
     }
 }

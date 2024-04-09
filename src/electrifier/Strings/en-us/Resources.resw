@@ -195,7 +195,7 @@
     <value>File Manager</value>
   </data>
   <data name="Shell_ListDetails.Content" xml:space="preserve">
-    <value>ListDetails</value>
+    <value>Details</value>
   </data>
   <data name="Shell_WebView.Content" xml:space="preserve">
     <value>Web Browser</value>
@@ -213,7 +213,7 @@
     <value>Reload</value>
   </data>
   <data name="Shell_TextEditor.Content" xml:space="preserve">
-    <value>Text Editor</value>
+    <value>Editor</value>
   </data>
   <data name="Shell_KanbanBoard.Content" xml:space="preserve">
     <value>Kanban Board</value>
@@ -228,12 +228,21 @@
     <value>Browser</value>
   </data>
   <data name="ShellPage_Files.Content" xml:space="preserve">
-    <value>Manage Files</value>
+    <value>Files</value>
   </data>
   <data name="ShellPage_Editor.Content" xml:space="preserve">
-    <value>Edit Files</value>
+    <value>Edit</value>
   </data>
-  <data name="ShellPage_Microsoft365.Text" xml:space="preserve">
+  <data name="ShellPage_Microsoft365.Content" xml:space="preserve">
     <value>Microsoft 365</value>
+  </data>
+  <data name="ShellPage_People.Content" xml:space="preserve">
+    <value>People</value>
+  </data>
+  <data name="Settings_Appearance_Monochrome.Content" xml:space="preserve">
+    <value>Monochrome</value>
+  </data>
+  <data name="Settings_AppearanceTextBlock" xml:space="preserve">
+    <value>Appearance</value>
   </data>
 </root>

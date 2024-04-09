@@ -1,4 +1,21 @@
-﻿using electrifier.Activation;
+﻿/*
+    Copyright 2024 Thorsten Jung, aka tajbender
+        https://www.electrifier.org
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+*/
+
+using electrifier.Activation;
 using electrifier.Contracts.Services;
 using electrifier.Core.Contracts.Services;
 using electrifier.Core.Services;
@@ -8,7 +25,6 @@ using electrifier.Notifications;
 using electrifier.Services;
 using electrifier.ViewModels;
 using electrifier.Views;
-
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
@@ -23,28 +39,17 @@ public partial class App : Application
     // https://docs.microsoft.com/dotnet/core/extensions/dependency-injection
     // https://docs.microsoft.com/dotnet/core/extensions/configuration
     // https://docs.microsoft.com/dotnet/core/extensions/logging
+    public static UIElement? AppTitleBar
+    {
+        get; set;
+    }
     public IHost Host
     {
         get;
     }
 
-    public static T GetService<T>()
-        where T : class
-    {
-        if ((App.Current as App)!.Host.Services.GetService(typeof(T)) is not T service)
-        {
-            throw new ArgumentException($"{typeof(T)} needs to be registered in ConfigureServices within App.xaml.cs.");
-        }
-
-        return service;
-    }
-
     public static WindowEx MainWindow { get; } = new MainWindow();
 
-    public static UIElement? AppTitleBar
-    {
-        get; set;
-    }
 
     public App()
     {
@@ -104,11 +109,15 @@ public partial class App : Application
 
         UnhandledException += App_UnhandledException;
     }
-
-    private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+    public static T GetService<T>()
+        where T : class
     {
-        // TODO: Log and handle exceptions as appropriate.
-        // https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception.
+        if ((App.Current as App)!.Host.Services.GetService(typeof(T)) is not T service)
+        {
+            throw new ArgumentException($"{typeof(T)} needs to be registered in ConfigureServices within App.xaml.cs.");
+        }
+
+        return service;
     }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
@@ -118,5 +127,20 @@ public partial class App : Application
         App.GetService<IAppNotificationService>().Show(string.Format("AppNotificationSamplePayload".GetLocalized(), AppContext.BaseDirectory));
 
         await App.GetService<IActivationService>().ActivateAsync(args);
+    }
+
+    /// <summary>
+    /// Log and handle exceptions as appropriate.
+    /// 
+    /// <br>Best practices:</br>
+    /// - <see href="https://docs.microsoft.com/windows/apps/design/app-patterns/handling-exceptions">Handling exceptions</see>
+    /// - <see href="https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception"/>
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+    {
+        // TODO: 
+        // 
     }
 }
