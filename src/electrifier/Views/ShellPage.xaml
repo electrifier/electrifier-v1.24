@@ -60,7 +60,8 @@
                 <DropDownButton x:Name="AppTitleBar_ForwardButton"
                                 Background="Transparent"
                                 BorderBrush="Transparent"
-                                Click="AppTitleBar_ForwardButton_Click">
+                                Click="AppTitleBar_ForwardButton_Click"
+                                IsEnabled="False">
                     <Image x:Name="AppTitleBar_ForwardButtonImage"
                            MaxHeight="24"
                            Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png" />

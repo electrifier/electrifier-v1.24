@@ -61,7 +61,8 @@
         </Grid>
         <Grid Grid.Row="1">
             <editor:CodeEditorControl x:Name="CodeEditorControl"
-                                      HighlightingLanguage="csharp" />
+                                      HighlightingLanguage="csharp"
+                                      Loaded="CodeEditorControl_Loaded" />
         </Grid>
         <CommandBar x:Name="StatusCommandBar"
                     Grid.Row="2"

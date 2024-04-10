@@ -32,8 +32,7 @@
         </Grid.RowDefinitions>
         <Grid x:Name="ContentArea_NavigationBar"
               Grid.Row="0"
-              Height="Auto"
-              Visibility="Collapsed">
+              Height="Auto">
             <AppBarElementContainer>
                 <TextBlock Foreground="DarkGray"
                            Text="{x:Bind ViewModel.Source}" />
