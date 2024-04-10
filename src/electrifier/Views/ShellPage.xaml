@@ -71,25 +71,21 @@
                            Text="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}" />
             </StackPanel>
             <Grid Grid.Column="1"
-                  Width="Auto"
-                  VerticalAlignment="Stretch">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <HyperlinkButton x:Name="AppTitleBar_HelpButton"
+                  VerticalAlignment="Stretch"
+                  HorizontalAlignment="Right"
+                  Width="Auto">
+                <StackPanel VerticalAlignment="Bottom">
+                    <!--<HyperlinkButton x:Name="AppTitleBar_HelpButton"
                                  FontSize="13"
                                  NavigateUri="https://github.com/electrifier/docs"
-                                 VerticalAlignment="Top" />
-                <TextBlock x:Name="AppTitleBar_SubTitleTextBlockRight2"
-                           FontSize="11"
-                           Margin="11,0, 11, 0"
-                           VerticalAlignment="Bottom"
-                           FontStyle="Italic"
-                           Text="electrifier v1.24.406: april fool" />
+                                 VerticalAlignment="Top" />-->
+                    <TextBlock x:Name="AppTitleBar_SubTitleTextBlockRight2"
+                               FontSize="11"
+                               Margin="11,0, 11, 0"
+                               VerticalAlignment="Bottom"
+                               FontStyle="Italic"
+                               Text="electrifier v1.24.406: april fool" />
+                </StackPanel>
             </Grid>
         </Grid>
         <!-- CompactPaneGridLength: double -->
