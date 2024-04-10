@@ -25,7 +25,15 @@
       d:DataContext="{d:DesignInstance Type=viewmodels:WebViewViewModel}"
       mc:Ignorable="d">
     <Grid x:Name="ContentArea">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <StackPanel x:Name="NavigationBar"
+                    Grid.Row="0"
                     Orientation="Horizontal">
             <ProgressRing x:Name="NavigationBarProgressRing"
                           BorderThickness="1"
@@ -42,12 +50,14 @@
             </Button>
             <!-- <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />-->
         </StackPanel >
-        <Grid x:Name="ContentAreaWebView">
+        <Grid x:Name="ContentAreaWebView"
+              Grid.Row="1">
             <WebView2 x:Name="WebView"
                       Source="{x:Bind ViewModel.Source, Mode=OneWay}" />
         </Grid>
         <StackPanel x:Name="StatusCommandBarWebViewLoading"
                     Orientation="Horizontal"
+                    Grid.Row="2"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}">
@@ -56,6 +66,7 @@
                        Text="Loading..." />
         </StackPanel>
         <StackPanel x:Name="StatusCommandBarWebViewFailed"
+                    Grid.Row="3"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     Visibility="{x:Bind ViewModel.HasFailures, Mode=OneWay}">
@@ -67,8 +78,8 @@
                              HorizontalAlignment="Center" />
         </StackPanel>
         <CommandBar x:Name="StatusCommandBar"
-                    Background="Transparent"
                     DefaultLabelPosition="Right"
+                    Grid.Row="4"
                     HorizontalAlignment="Left">
             <AppBarElementContainer HorizontalAlignment="Left"
                                     HorizontalContentAlignment="Stretch"

@@ -33,7 +33,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid x:Name="TopCommandBar">
+        <Grid x:Name="TopCommandAppBar">
             <StackPanel Orientation="Horizontal">
                 <AppBarButton x:Uid="LoadButton"
                               Icon="OpenFile"
