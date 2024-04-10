@@ -103,6 +103,7 @@
                         IsPaneOpen="True"
                         IsSettingsVisible="True"
                         IsTitleBarAutoPaddingEnabled="False"
+                        Loaded="NavigationViewControl_Loaded"
                         OpenPaneLength="195">
             <!-- TODO: NavigationViewItems into the right upper border of header, as small icons -->
             <!-- INFO: MultitaskExpanded -->
