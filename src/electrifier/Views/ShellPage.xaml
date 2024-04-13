@@ -45,18 +45,13 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
-                <!--<ColumnDefinition Width="Auto" />-->
             </Grid.ColumnDefinitions>
             <StackPanel x:Name="AppTitleBar_TitleStackPanelLeft"
                         Grid.Column="0"
                         BackgroundSizing="OuterBorderEdge"
-                        Margin="0,5,0,0"
+                        Margin="0,3,0,0"
                         Orientation="Horizontal"
                         VerticalAlignment="Stretch">
-                <Image x:Name="WindowIcon"
-                       Height="32"
-                       Margin="15,0,15,0"
-                       Source="ms-appx:///Assets/Square44x44Logo.scale-200.png" />
                 <DropDownButton x:Name="AppTitleBar_ForwardButton"
                                 Background="Transparent"
                                 BorderBrush="Transparent"
@@ -66,25 +61,44 @@
                            MaxHeight="24"
                            Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png" />
                 </DropDownButton>
-                <TextBlock x:Name="AppTitleBar_TitleTextBlockLeft"
-                           FontSize="23"
-                           Text="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}" />
+                <Image x:Name="WindowIcon"
+                       Height="32"
+                       Margin="15,0,15,0"
+                       Source="ms-appx:///Assets/Square44x44Logo.scale-200.png" />
+                <StackPanel>
+                    <TextBlock x:Name="AppTitleBar_TitleTextBlockLeft"
+                               FontSize="23"
+                               Margin="0, -3"
+                               Text="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}" />
+                    <TextBlock x:Name="AppTitleBar_SubTitleTextBlockLeft"
+                               Margin="0, 0"
+                               FontSize="11"
+                               FontStyle="Italic"
+                               Text="{x:Bind ViewModel.BuildVersionDescription}" />
+                    <!-- {x:Bind BuildVersionDescription, Mode=OneWay} -->
+                    <!-- Text="{x:Bind (ContentControl)ViewModel.BuildVersionDescription}" -->
+                    <!--update release name-->
+                </StackPanel>
             </StackPanel>
             <Grid Grid.Column="1"
-                  VerticalAlignment="Stretch"
+                  VerticalAlignment="Bottom"
                   HorizontalAlignment="Right"
                   Width="Auto">
-                <StackPanel VerticalAlignment="Bottom">
+                <StackPanel Orientation="Horizontal">
                     <!--<HyperlinkButton x:Name="AppTitleBar_HelpButton"
                                  FontSize="13"
                                  NavigateUri="https://github.com/electrifier/docs"
                                  VerticalAlignment="Top" />-->
-                    <TextBlock x:Name="AppTitleBar_SubTitleTextBlockRight2"
+                    <TextBlock x:Name="AppTitleBar_SubTitleTextBlockRight"
                                FontSize="11"
-                               Margin="11,0, 11, 0"
+                               FontStyle="Italic"
+                               Text="electrifier" />
+                    <TextBlock x:Name="AppTitleBar_SubTitleTextBlockRightVersion"
+                               FontSize="11"
+                               Margin="3, 0, 11, 0"
                                VerticalAlignment="Bottom"
                                FontStyle="Italic"
-                               Text="electrifier v1.24.406: april fool" />
+                               Text="{x:Bind ViewModel.BuildVersionDescription}" />
                 </StackPanel>
             </Grid>
         </Grid>

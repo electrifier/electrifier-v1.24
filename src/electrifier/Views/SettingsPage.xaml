@@ -48,10 +48,17 @@
                             <MenuFlyout Placement="BottomEdgeAlignedRight">
                                 <MenuFlyoutItem Text="Aroma"
                                                 IsEnabled="False" />
-                                <MenuFlyoutItem Text="Monochrome"
-                                                IsEnabled="True" />
+                                <MenuFlyoutItem Text="Dawnbreed"
+                                                IsEnabled="False" />
                                 <MenuFlyoutItem Text="Kiosk"
                                                 IsEnabled="False" />
+                                <MenuFlyoutItem Text="Luxus"
+                                                IsEnabled="False" />
+                                <MenuFlyoutItem Text="Monochrome"
+                                                IsEnabled="True" />
+                                <MenuFlyoutItem Text="Robot"
+                                                IsEnabled="False" />
+                                <MenuFlyoutSeparator />
                                 <MenuFlyoutItem Text="Aero"
                                                 IsEnabled="False" />
                                 <MenuFlyoutItem Text="Longhorn"

@@ -22,9 +22,6 @@ namespace electrifier.Helpers;
 
 public class RuntimeHelper
 {
-    public static readonly string BuildNumber = "v1.24.406";
-    public static readonly string VersionDescription = "april fool";
-
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
     private static extern int GetCurrentPackageFullName(ref int packageFullNameLength, StringBuilder? packageFullName);
 
