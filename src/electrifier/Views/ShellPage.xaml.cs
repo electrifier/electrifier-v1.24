@@ -113,4 +113,9 @@ public sealed partial class ShellPage : Page
 
         args.Handled = result;
     }
+    private void NavigationViewControl_Loaded(object sender, RoutedEventArgs e)
+    {
+        // Needs to set focus explicitly due to WinUI 3 regression https://github.com/microsoft/microsoft-ui-xaml/issues/8816 
+        ((Control)sender).Focus(FocusState.Programmatic);
+    }
 }

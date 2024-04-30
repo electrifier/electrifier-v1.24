@@ -118,10 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppDescription" xml:space="preserve">
-    <value>electrifier</value>
-  </data>
-  <data name="AppDisplayName" xml:space="preserve">
-    <value>electrifier</value>
+    <value>electrifier app description</value>
   </data>
   <data name="AppNotificationSamplePayload" xml:space="preserve">
     <value>&lt;toast launch="action=ToastClick"&gt;

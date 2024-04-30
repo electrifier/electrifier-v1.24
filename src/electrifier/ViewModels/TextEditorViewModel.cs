@@ -21,7 +21,7 @@ namespace electrifier.ViewModels;
 
 public partial class TextEditorViewModel : ObservableRecipient
 {
-    public string CursorPosition
+    public string StatusCursorPosition
     {
         get;
         internal set;
@@ -29,11 +29,11 @@ public partial class TextEditorViewModel : ObservableRecipient
 
     public TextEditorViewModel()
     {
-        CursorPosition = SetCursorPosition(0, 0);
+        StatusCursorPosition = SetCursorPosition(0, 0);
     }
 
     internal string SetCursorPosition(int x, int y)
     {
-        return CursorPosition = $"x: {x} y: {y}";
+        return StatusCursorPosition = $"x: {x} y: {y}";
     }
 }

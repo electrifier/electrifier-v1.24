@@ -42,7 +42,7 @@
                               IsEnabled="False"
                               Label="Save" />
                 <AppBarButton x:Uid="SaveAsButton"
-                              Icon="Save"
+                              Icon="SaveLocal"
                               IsEnabled="False"
                               Label="Save as..." />
             </StackPanel >
@@ -60,8 +60,9 @@
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
-            <editor:CodeEditorControl x:Name="EditorControl"
-                                      HighlightingLanguage="csharp" />
+            <editor:CodeEditorControl x:Name="CodeEditorControl"
+                                      HighlightingLanguage="csharp"
+                                      Loaded="CodeEditorControl_Loaded" />
         </Grid>
         <CommandBar x:Name="StatusCommandBar"
                     Grid.Row="2"
@@ -74,11 +75,11 @@
                                     VerticalContentAlignment="Center">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock x:Name="StatusTextBlockLine"
-                               Text="{x:Bind StatusTextBlockLine}" />
+                               Text="{x:Bind StatusCursorPosition}" />
                 </StackPanel>
             </AppBarElementContainer>
             <AppBarSeparator />
-            <!--<CommandBar.SecondaryCommands>
+            <CommandBar.SecondaryCommands>
                 <AppBarButton Icon="Setting"
                               Label="Settings"
                               ToolTipService.ToolTip="Setting Ctrl + I">
@@ -87,7 +88,7 @@
                                              Key="I" />
                     </AppBarButton.KeyboardAccelerators>
                 </AppBarButton>
-            </CommandBar.SecondaryCommands>-->
+            </CommandBar.SecondaryCommands>
         </CommandBar>
     </Grid>
 </Page>

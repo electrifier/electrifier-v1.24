@@ -26,11 +26,22 @@
       mc:Ignorable="d">
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
+        <Grid x:Name="ContentArea_NavigationBar"
+              Grid.Row="0"
+              Height="Auto">
+            <AppBarElementContainer>
+                <TextBlock Foreground="DarkGray"
+                           Text="{x:Bind ViewModel.Source}" />
+            </AppBarElementContainer>
+            <AppBarSeparator />
+            <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
+        </Grid>
         <Grid x:Name="ContentArea_WebView"
-              Grid.Row="0">
+              Grid.Row="1">
             <WebView2 x:Name="WebView"
                       Source="{x:Bind ViewModel.Source, Mode=OneWay}" />
             <StackPanel HorizontalAlignment="Center"
@@ -49,15 +60,59 @@
                                  HorizontalAlignment="Center" />
             </StackPanel>
         </Grid>
-        <Grid x:Name="ContentArea_NavigationBar"
-              Grid.Row="1"
-              Height="Auto">
-            <AppBarElementContainer>
-                <TextBlock Foreground="DarkGray"
-                           Text="{x:Bind ViewModel.Source}" />
-            </AppBarElementContainer>
-            <AppBarSeparator />
-            <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
-        </Grid>
+        <AppBar x:Name="ContentArea_StatusCommandBar"
+                Background="Transparent"
+                Grid.Row="2"
+                HorizontalAlignment="Stretch">
+            <CommandBar>
+                <CommandBar.PrimaryCommands>
+                    <AppBarButton Icon="Back"
+                                  Label="Back"
+                                  ToolTipService.ToolTip="Navigate Back" />
+                    <AppBarButton Icon="Forward"
+                                  Label="Forward"
+                                  ToolTipService.ToolTip="Navigate Forward" />
+                    <AppBarSeparator />
+                    <AppBarSeparator />
+                    <AppBarButton Icon="Setting"
+                                  Label="Settings">
+                        <AppBarButton.KeyboardAccelerators>
+                            <KeyboardAccelerator Modifiers="Control"
+                                                 Key="I" />
+                        </AppBarButton.KeyboardAccelerators>
+                    </AppBarButton>
+                </CommandBar.PrimaryCommands>
+                <CommandBar.SecondaryCommands>
+                    <AppBarButton Icon="AttachCamera"
+                                  Label="Attach Camera" />
+                    <AppBarSeparator />
+                    <AppBarButton Icon="Like"
+                                  Label="Like" />
+                    <AppBarButton Icon="Dislike"
+                                  Label="Dislike" />
+                    <AppBarSeparator />
+                    <AppBarButton Icon="Orientation"
+                                  Label="Orientation" />
+                </CommandBar.SecondaryCommands>
+            </CommandBar>
+            <!--
+            <TextBlock Text="{x:Bind ViewModel.Source}" />
+                <AppBarButton Icon="Folder"
+                              Label="folder"
+                              ToolTipService.ToolTip="Number of Folders" />
+                <AppBarSeparator />
+                <AppBarButton Icon="OpenFile"
+                              Label="openfile"
+                              ToolTipService.ToolTip="Number of Files" />
+                <AppBarSeparator />
+                <AppBarButton Icon="Setting"
+                              Label="Settings">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Modifiers="Control"
+                                             Key="I" />
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
+            -->
+        </AppBar>
     </Grid>
 </Page>
