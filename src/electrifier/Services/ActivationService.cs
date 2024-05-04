@@ -2,8 +2,9 @@
 using electrifier.Contracts.Services;
 using electrifier.Helpers;
 using electrifier.Views;
-using Microsoft.UI.Xaml.Controls;
+
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace electrifier.Services;
 
