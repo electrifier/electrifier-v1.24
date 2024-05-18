@@ -1,6 +1,4 @@
-﻿using electrifier.Core.Helpers;
-
-using Windows.Storage;
+﻿using Windows.Storage;
 using Windows.Storage.Streams;
 
 namespace electrifier.Helpers;

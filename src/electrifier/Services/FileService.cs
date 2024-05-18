@@ -1,10 +1,8 @@
 ﻿using System.Text;
-
-using electrifier.Core.Contracts.Services;
-
+using electrifier.Contracts.Services;
 using Newtonsoft.Json;
 
-namespace electrifier.Core.Services;
+namespace electrifier.Services;
 
 public class FileService : IFileService
 {

@@ -1,4 +1,4 @@
-﻿namespace electrifier.Core.Contracts.Services;
+﻿namespace electrifier.Contracts.Services;
 
 public interface IFileService
 {

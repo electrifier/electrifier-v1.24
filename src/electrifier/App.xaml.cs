@@ -17,8 +17,6 @@
 
 using electrifier.Activation;
 using electrifier.Contracts.Services;
-using electrifier.Core.Contracts.Services;
-using electrifier.Core.Services;
 using electrifier.Helpers;
 using electrifier.Models;
 using electrifier.Notifications;
