@@ -52,7 +52,14 @@ public sealed partial class Shell32TreeView : UserControl
             {
                 rootShellItem.Children.Add(new Shell32TreeViewItem(item));
             }
+
+            //foreach (var item in rootShellItem.EnumerateChildren(FolderItemFilter.Folders))
+            //{
+            //    rootShellItem.Children.Add(new Shell32TreeViewItem(item));
+            //}
         }
+
+        
     }
 }
 public class Shell32TreeViewItem
