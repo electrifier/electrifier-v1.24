@@ -9,6 +9,16 @@
     mc:Ignorable="d">
 
     <Grid>
-
+        <TreeView x:Name="TreeView"
+                  ItemsSource="{x:Bind RootShellItems}">
+            <TreeView.ItemTemplate>
+                <DataTemplate x:DataType="local:Shell32TreeViewItem">
+                    <TreeViewItem Content="{x:Bind DisplayName}"
+                                  HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"
+                                  IsExpanded="True"
+                                  ItemsSource="{x:Bind Children}" />
+                </DataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
     </Grid>
 </UserControl>

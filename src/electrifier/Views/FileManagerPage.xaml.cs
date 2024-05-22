@@ -50,7 +50,6 @@ public sealed partial class FileManagerPage : Page
 
         InitializeComponent();
 
-        ShellTreeView.ItemsSource = ViewModel.TreeViewItemsCollection;
         ShellGridView.ItemsSource = ViewModel.GridAdvancedCollectionView;
     }
 }

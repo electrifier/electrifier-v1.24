@@ -383,7 +383,7 @@ public class DosShellItem : INotifyPropertyChanged
                 throw;
             }
             //return DosShellItemHelpers.DefaultFolderIcon;
-            // return new BitmapImage(new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 Folder containing File.ico"));
+            // return new BitmapImage(new System.Uri("ms-appx:///Assets/Views/Workbench/Shell32 ShellItem containing File.ico"));
         }
         else
         {

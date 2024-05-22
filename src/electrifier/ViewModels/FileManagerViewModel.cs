@@ -74,8 +74,8 @@ public partial class FileManagerViewModel : ObservableRecipient
         TreeAdvancedCollectionView.SortDescriptions.Add(new SortDescription("Name", SortDirection.Ascending));
         GridAdvancedCollectionView.SortDescriptions.Add(new SortDescription("Name", SortDirection.Ascending));
         // TODO: TreeView -> OnSelection: _ = ShellGridViewItems_GetItemsAsync(KnownLibraryId.Documents);
-        _ = ShellTreeViewItems_GetItemsAsync(KnownLibraryId.Documents);
-        _ = ShellGridViewItems_GetItemsAsync(KnownLibraryId.Documents);
+        //_ = ShellTreeViewItems_GetItemsAsync(KnownLibraryId.Documents);
+        //_ = ShellGridViewItems_GetItemsAsync(KnownLibraryId.Documents);
 
         //        GridViewItemsCollection.CollectionChanged += (s, e) => ShellGridViewItems_ContainerContentChanging(this, new C{ });
 

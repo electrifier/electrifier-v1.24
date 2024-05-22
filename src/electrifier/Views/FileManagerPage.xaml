@@ -24,6 +24,7 @@
       xmlns:viewmodels="using:electrifier.ViewModels"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:vanara="using:electrifier.Controls.Vanara"
       behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
       d:DataContext="{d:DesignInstance Type=viewmodels:FileManagerViewModel}"
       mc:Ignorable="d">
@@ -129,8 +130,7 @@
             <Border x:Name="NavigationBarBorder">
                 <!-- ItemTemplateSelector="{StaticResource ExplorerItemTemplateSelector}" -->
                 <!-- ItemsSource="{x:Bind ShellTreeViewItems}" -->
-                <TreeView x:Name="ShellTreeView"
-                          ItemTemplate="{StaticResource ShellTreeViewItemTemplate}" />
+                <vanara:Shell32TreeView x:Name="ShellTreeView"/>
             </Border>
             <controls:GridSplitter Grid.Column="1"
                                    Width="12"
