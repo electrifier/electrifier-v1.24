@@ -74,6 +74,7 @@ public class Shell32TreeViewItem
         }
     }
 
+    // TODO: Add observable flags for async property loading
     public bool HasUnrealizedChildren
     {
         get;
@@ -93,12 +94,18 @@ public class Shell32TreeViewItem
 
         HasUnrealizedChildren = true;
 
-        //var opt = SFGAO.SFGAO_FOLDER | SFGAO.SFGAO_GHOSTED | SFGAO.SFGAO_HASSUBFOLDER;
-        var attr = ShellItem.Attributes;
-        var img = ShellItem.Images;
+        _ = Task.Run(InitializeAsync);
 
-        // var hasSubFolder = folder.Attributes && SFGAO.SFGAO_HASSUBFOLDER;
-        // var isFolder = iItem.GetAttributes(SFGAO.SFGAO_FOLDER) != 0
+        //var img = ShellItem.Images;
+    }
+
+    public async Task InitializeAsync()
+    {
+        var attributes = await Task.Run(() => ShellItem.Attributes);
+        // var StorageCapMask = attributes & ShellItemAttribute.StorageCapMask; // This line is not necessary as 'StorageCapMask' is not used anywhere else
+
+        //HasUnrealizedChildren = await Task.Run(() => attributes.HasFlag(ShellItemAttribute.HasSubfolder));
+        HasUnrealizedChildren = attributes.HasFlag(ShellItemAttribute.HasSubfolder);
     }
 
     //async Task<Shell32TreeViewItem> GetChildAsync(ShellItem shItem)
@@ -117,9 +124,9 @@ public class Shell32TreeViewItem
     /// <exception cref="PlatformNotSupportedException"></exception>
     //public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false) => await TaskAgg.Run(() => GetImage(size, flags, forcePreVista), System.Threading.CancellationToken.None);
 
-//    public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false)
-//    {
-//        return ShellItem.GetImageAsync(size, flags, forcePreVista);
-//    }
+    //    public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false)
+    //    {
+    //        return ShellItem.GetImageAsync(size, flags, forcePreVista);
+    //    }
 
 }
