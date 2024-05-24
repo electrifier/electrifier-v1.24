@@ -19,29 +19,28 @@ using Windows.Storage;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Shell32;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 // TODO: For EnumerateChildren-Calls, add HWND handle
 // TODO: See ShellItemCollection, perhaps use this instead of ObservableCollection
 // https://github.com/dahall/Vanara/blob/master/Windows.Shell.Common/ShellObjects/ShellItemArray.cs
 
 namespace electrifier.Controls.Vanara;
+
 public sealed partial class Shell32TreeView : UserControl
 {
-    public ObservableCollection<Shell32TreeViewItem> RootShellItems;
+    public readonly ObservableCollection<Shell32TreeViewItem> RootShellItems;
 
     public Shell32TreeView()
     {
         InitializeComponent();
-
-        DataContext = this;     // TODO: is this necessary?
+        DataContext = this;
 
         // TODO: Add root items using an event handler
         RootShellItems = new ObservableCollection<Shell32TreeViewItem>
         {
             new(ShellFolder.Desktop)
         };
+
+        // TODO: Add event handler for item expansion
 
         foreach (var rootShellItem in RootShellItems)
         {
@@ -57,7 +56,10 @@ public sealed partial class Shell32TreeView : UserControl
 }
 public class Shell32TreeViewItem
 {
-    public ObservableCollection<Shell32TreeViewItem> Children;
+    public ObservableCollection<Shell32TreeViewItem> Children
+    {
+        get;
+    }
     public string DisplayName
     {
         get;
@@ -91,20 +93,16 @@ public class Shell32TreeViewItem
         ShellItem = shItem ?? throw new ArgumentNullException(nameof(shItem));
         DisplayName = ShellItem.Name ?? ShellItem.ToString();
         Children = new ObservableCollection<Shell32TreeViewItem>();
-
         HasUnrealizedChildren = true;
 
         _ = Task.Run(InitializeAsync);
-
-        //var img = ShellItem.Images;
     }
 
     public async Task InitializeAsync()
     {
         var attributes = await Task.Run(() => ShellItem.Attributes);
-        // var StorageCapMask = attributes & ShellItemAttribute.StorageCapMask; // This line is not necessary as 'StorageCapMask' is not used anywhere else
+        var StorageCapMask = await Task.Run(() => attributes & ShellItemAttribute.StorageCapMask);
 
-        //HasUnrealizedChildren = await Task.Run(() => attributes.HasFlag(ShellItemAttribute.HasSubfolder));
         HasUnrealizedChildren = attributes.HasFlag(ShellItemAttribute.HasSubfolder);
     }
 
