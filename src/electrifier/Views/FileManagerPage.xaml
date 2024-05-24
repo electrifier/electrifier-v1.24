@@ -1,20 +1,4 @@
-﻿<!--
-    Copyright 2024 Thorsten Jung, aka tajbender
-        https://www.electrifier.org
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
--->
-<Page x:Class="electrifier.Views.FileManagerPage"
+﻿<Page x:Class="electrifier.Views.FileManagerPage"
       xmlns:behaviors="using:electrifier.Behaviors"
       xmlns:controls="using:CommunityToolkit.WinUI.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -74,60 +58,13 @@
                                   Width="*" />
             </Grid.ColumnDefinitions>
             <Grid.Resources>
-                <DataTemplate x:Key="ShellTreeViewItemTemplate"
-                              x:DataType="local:DosShellItem">
-                    <StackPanel Orientation="Horizontal"
-                                MaxHeight="20">
-                        <ImageIcon x:Name="ShellViewItemTemplate_DefaultFolderIcon"
-                                   Visibility="{x:Bind IsFolder}"
-                                   Source="ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico" />
-                        <ImageIcon x:Name="ShellViewItemTemplate_DefaultFileIcon"
-                                   Visibility="{x:Bind IsFile}"
-                                   Source="ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico" />
-                        <!--<muxc:ImageIcon x:Name="muxcImageIcon"
-                                            x:Load="False"
-                                            Source="{x:Bind ShellIcon.Source}"/>-->
-                        <TextBlock x:Name="ShellViewItemTemplate_TextBlock"
-                                   Margin="5,0,5,0"
-                                   Text="{x:Bind Name}" />
-                    </StackPanel>
-                </DataTemplate>
-                <DataTemplate x:Key="ShellGridViewItemTemplate"
-                              x:DataType="local:DosShellItem">
-                    <Grid Height="150"
-                          Width="150"
-                          Margin="3">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition Height="45" />
-                        </Grid.RowDefinitions>
-                        <!-- muxc:ImageIcon Source="ms-appx:///Assets/Views/Workbench/Shell32 Folder containing File.ico" -->
-                        <!-- muxc:Source="ms-appx:///Assets/StoreLogo.png" -->
-                        <ImageIcon x:Name="ShellViewItemTemplate_DefaultFolderIcon"
-                                   Visibility="{x:Bind IsFolder}"
-                                   Source="ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico" />
-                        <ImageIcon x:Name="ShellViewItemTemplate_DefaultFileIcon"
-                                   Visibility="{x:Bind IsFile}"
-                                   Source="ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico" />
-                        <!--<muxc:ImageIcon x:Name="muxcImageIcon"
-                                            x:Load="False"
-                                            Source="{x:Bind ShellIcon.Source}"/>-->
-                        <!-- muxc:ImageIcon x:Load="False" -->
-                        <TextBlock x:Name="ImageGridView_ItemTemplate_TextBlock"
-                                   Grid.Row="1"
-                                   FontSize="12"
-                                   HorizontalAlignment="Center"
-                                   Style="{StaticResource SubtitleTextBlockStyle}"
-                                   Text="{x:Bind Name}" />
-                    </Grid>
-                </DataTemplate>
                 <Style x:Key="ShellGridViewItemContainerStyle"
                        TargetType="GridViewItem">
                     <Setter Property="Margin"
                             Value="3" />
                 </Style>
             </Grid.Resources>
-            <Border x:Name="NavigationBarBorder">
+            <Border x:Name="ShellTreeViewBorder">
                 <!-- ItemTemplateSelector="{StaticResource ExplorerItemTemplateSelector}" -->
                 <!-- ItemsSource="{x:Bind ShellTreeViewItems}" -->
                 <vanara:Shell32TreeView x:Name="ShellTreeView"/>
@@ -143,11 +80,16 @@
             </controls:GridSplitter>
             <!-- ItemsSource="{x:Bind ShellGridViewItems}" -->
             <!-- ContainerContentChanging="ShellGridViewItems_ContainerContentChanging" -->
-            <GridView x:Name="ShellGridView"
+            <!--<GridView x:Name="ShellGridView"
                       Grid.Column="2"
                       ItemContainerStyle="{StaticResource ShellGridViewItemContainerStyle}"
                       ItemTemplate="{StaticResource ShellGridViewItemTemplate}"
-                      SelectionMode="Extended" />
+                      SelectionMode="Extended" />-->
+            <Border x:Name="ShellGridViewBorder" Grid.Column="2">
+                <!-- ItemTemplateSelector="{StaticResource ExplorerItemTemplateSelector}" -->
+                <!-- ItemsSource="{x:Bind ShellTreeViewItems}" -->
+                <vanara:Shell32GridView x:Name="ShellGridView" />
+            </Border>
         </Grid>
         <CommandBar x:Name="BottomStatusCommandBar"
                     Grid.Row="2"

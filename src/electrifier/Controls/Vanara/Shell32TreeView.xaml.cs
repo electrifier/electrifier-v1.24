@@ -64,6 +64,12 @@ public class Shell32TreeViewItem
     {
         get;
     }
+
+    //public bool DisplayNameVisibility
+    //{
+    //    get; set;
+    //}
+
     public IEnumerable<ShellItem> EnumerateChildren(FolderItemFilter filter)
     {
         try
