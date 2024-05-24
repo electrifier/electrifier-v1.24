@@ -13,8 +13,7 @@
                   ItemsSource="{x:Bind RootShellItems}">
             <TreeView.ItemTemplate>
                 <DataTemplate x:DataType="local:Shell32TreeViewItem">
-                    <TreeViewItem Content="{x:Bind DisplayName}"
-                                  HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"
+                    <TreeViewItem HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"
                                   IsExpanded="True"
                                   ItemsSource="{x:Bind Children}">
                         <StackPanel Orientation="Horizontal"
