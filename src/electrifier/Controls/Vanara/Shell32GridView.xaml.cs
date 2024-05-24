@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -22,19 +23,19 @@ public sealed partial class Shell32GridView : UserControl
     public Shell32GridView()
     {
         InitializeComponent();
+
+        // TODO: Add root items using an event handler
+        var rootShellItems = new ObservableCollection<Shell32GridViewItem>
+            {
+                new Shell32GridViewItem(ShellFolder.Desktop)
+            };
     }
 }
 
 public class Shell32GridViewItem
 {
-    public string Name
-    {
-        get;
-    }
-    public string Path
-    {
-        get;
-    }
+    public string Name { get; }
+    public string Path { get; }
 
     public Shell32GridViewItem(ShellItem shellItem)
     {
