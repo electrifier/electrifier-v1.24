@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="electrifier.Controls.Vanara.Shell32GridView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:electrifier.Controls.Vanara"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid>
+        <!-- In this example, the GridView's ItemTemplate property is bound to a data template (shown below)
+        called ImageOverlayTemplate, defined in the Page.Resources section of the XAML file.
+
+        The data template is defined to display a CustomDataObject object (same type as in above sample). -->
+
+        <Grid.Resources>
+            <DataTemplate x:Name="ImageOverlayTemplate"
+                          x:DataType="local:Shell32GridViewItem">
+                <Grid Width="100">
+                    <!--<Image Source="{x:Bind ImageLocation}"
+                       Stretch="UniformToFill" />-->
+                    <StackPanel Orientation="Vertical"
+                                Height="40"
+                                VerticalAlignment="Bottom"
+                                Padding="5,1,5,1"
+                                Background="LightGray"
+                                Opacity=".75">
+                        <TextBlock Text="Bind Title" />
+                        <!--<StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Bind Likes"
+                                   Style="{ThemeResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
+                        <TextBlock Text=" Likes"
+                                   Style="{ThemeResource CaptionTextBlockStyle}"
+                                   Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
+                        </StackPanel>-->
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+        </Grid.Resources>
+        <!-- The GridView used for this example is shown below. Setter properties are used to customize
+        some parts of the GridViewItems (i.e. the margins). -->
+        <GridView x:Name="StyledGrid"
+                  >
+            <!-- ItemTemplate="{StaticResource ImageOverlayTemplate}" -->
+            <!--<GridView.ItemContainerStyle>
+                <Style TargetType="GridViewItem"
+                       BasedOn="{StaticResource DefaultGridViewItemStyle}">
+                    <Setter Property="Margin"
+                            Value="5, 5, 5, 5" />
+                </Style>
+            </GridView.ItemContainerStyle>-->
+
+            <!-- An extra property also needs to be added to the GridView's ItemsWrapGrid.
+            The following sets the maximum # of items to show before wrapping.-->
+            <GridView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+                                   MaximumRowsOrColumns="3"
+                                   Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
+        </GridView>
+    </Grid>
+</UserControl>

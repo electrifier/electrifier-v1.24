@@ -19,29 +19,28 @@ using Windows.Storage;
 using static Vanara.PInvoke.Gdi32;
 using static Vanara.PInvoke.Shell32;
 
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
-
 // TODO: For EnumerateChildren-Calls, add HWND handle
 // TODO: See ShellItemCollection, perhaps use this instead of ObservableCollection
 // https://github.com/dahall/Vanara/blob/master/Windows.Shell.Common/ShellObjects/ShellItemArray.cs
 
 namespace electrifier.Controls.Vanara;
+
 public sealed partial class Shell32TreeView : UserControl
 {
-    public ObservableCollection<Shell32TreeViewItem> RootShellItems;
+    public readonly ObservableCollection<Shell32TreeViewItem> RootShellItems;
 
     public Shell32TreeView()
     {
         InitializeComponent();
-
-        DataContext = this;     // TODO: is this necessary?
+        DataContext = this;
 
         // TODO: Add root items using an event handler
         RootShellItems = new ObservableCollection<Shell32TreeViewItem>
         {
             new(ShellFolder.Desktop)
         };
+
+        // TODO: Add event handler for item expansion
 
         foreach (var rootShellItem in RootShellItems)
         {
@@ -64,11 +63,20 @@ public sealed partial class Shell32TreeView : UserControl
 }
 public class Shell32TreeViewItem
 {
-    public ObservableCollection<Shell32TreeViewItem> Children;
+    public ObservableCollection<Shell32TreeViewItem> Children
+    {
+        get;
+    }
     public string DisplayName
     {
         get;
     }
+
+    //public bool DisplayNameVisibility
+    //{
+    //    get; set;
+    //}
+
     public IEnumerable<ShellItem> EnumerateChildren(FolderItemFilter filter)
     {
         try
@@ -81,6 +89,7 @@ public class Shell32TreeViewItem
         }
     }
 
+    // TODO: Add observable flags for async property loading
     public bool HasUnrealizedChildren
     {
         get;
@@ -97,15 +106,17 @@ public class Shell32TreeViewItem
         ShellItem = shItem ?? throw new ArgumentNullException(nameof(shItem));
         DisplayName = ShellItem.Name ?? ShellItem.ToString();
         Children = new ObservableCollection<Shell32TreeViewItem>();
-
         HasUnrealizedChildren = true;
 
-        //var opt = SFGAO.SFGAO_FOLDER | SFGAO.SFGAO_GHOSTED | SFGAO.SFGAO_HASSUBFOLDER;
-        var attr = ShellItem.Attributes;
-        var img = ShellItem.Images;
+        _ = Task.Run(InitializeAsync);
+    }
 
-        // var hasSubFolder = folder.Attributes && SFGAO.SFGAO_HASSUBFOLDER;
-        // var isFolder = iItem.GetAttributes(SFGAO.SFGAO_FOLDER) != 0
+    public async Task InitializeAsync()
+    {
+        var attributes = await Task.Run(() => ShellItem.Attributes);
+        var StorageCapMask = await Task.Run(() => attributes & ShellItemAttribute.StorageCapMask);
+
+        HasUnrealizedChildren = attributes.HasFlag(ShellItemAttribute.HasSubfolder);
     }
 
     //async Task<Shell32TreeViewItem> GetChildAsync(ShellItem shItem)
@@ -124,9 +135,9 @@ public class Shell32TreeViewItem
     /// <exception cref="PlatformNotSupportedException"></exception>
     //public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false) => await TaskAgg.Run(() => GetImage(size, flags, forcePreVista), System.Threading.CancellationToken.None);
 
-//    public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false)
-//    {
-//        return ShellItem.GetImageAsync(size, flags, forcePreVista);
-//    }
+    //    public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false)
+    //    {
+    //        return ShellItem.GetImageAsync(size, flags, forcePreVista);
+    //    }
 
 }

@@ -16,7 +16,23 @@
                     <TreeViewItem Content="{x:Bind DisplayName}"
                                   HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"
                                   IsExpanded="True"
-                                  ItemsSource="{x:Bind Children}" />
+                                  ItemsSource="{x:Bind Children}">
+                        <StackPanel Orientation="Horizontal"
+                                    MaxHeight="20">
+                            <!-- TODO: Embed Icon Ressources as binary for vanara package -->
+                            <ImageIcon x:Name="ImageIcon"
+                                       Source="ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico" />
+                            <!--<muxc:ImageIcon x:Name="muxcImageIcon"
+                                            x:Load="False"
+                                            Source="{x:Bind ShellIcon.Source}"/>-->
+                            <TextBlock x:Name="TextBlock"
+                                       Margin="5,0,5,0"
+                                       Text="{x:Bind DisplayName}"
+                                       />
+                            <!-- Visibility="{x:Bind DisplayNameVisibility}" -->
+                            <!-- "{x:Bind Images}" -->
+                        </StackPanel>
+                    </TreeViewItem>
                 </DataTemplate>
             </TreeView.ItemTemplate>
         </TreeView>
