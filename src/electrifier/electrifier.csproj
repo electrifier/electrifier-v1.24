@@ -43,6 +43,7 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240428000" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="Vanara.Windows.Shell" Version="4.0.1" />
     <PackageReference Include="WinUIEdit" Version="0.0.3-prerelease" />
     <PackageReference Include="WinUIEx" Version="2.3.4" />
@@ -63,7 +64,6 @@
 
   <ItemGroup>
     <Folder Include="Assets\Themes\Aero Blackcomb\" />
-    <Folder Include="Assets\Views\Workbench\" />
     <Folder Include="Controls\" />
   </ItemGroup>
 

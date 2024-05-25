@@ -20,15 +20,15 @@ namespace electrifier.Controls.Vanara;
 
 public sealed partial class Shell32GridView : UserControl
 {
+    public readonly ObservableCollection<Shell32GridViewItem> GridShellItems;
+
     public Shell32GridView()
     {
         InitializeComponent();
 
-        // TODO: Add root items using an event handler
-        var rootShellItems = new ObservableCollection<Shell32GridViewItem>
-            {
-                new Shell32GridViewItem(ShellFolder.Desktop)
-            };
+        GridShellItems = new ObservableCollection<Shell32GridViewItem>();
+
+        GridShellItems.Add(new Shell32GridViewItem(ShellFolder.Desktop));
     }
 }
 

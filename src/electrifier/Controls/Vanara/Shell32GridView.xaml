@@ -9,11 +9,6 @@
     mc:Ignorable="d">
 
     <Grid>
-        <!-- In this example, the GridView's ItemTemplate property is bound to a data template (shown below)
-        called ImageOverlayTemplate, defined in the Page.Resources section of the XAML file.
-
-        The data template is defined to display a CustomDataObject object (same type as in above sample). -->
-
         <Grid.Resources>
             <DataTemplate x:Name="ImageOverlayTemplate"
                           x:DataType="local:Shell32GridViewItem">
@@ -26,24 +21,14 @@
                                 Padding="5,1,5,1"
                                 Background="LightGray"
                                 Opacity=".75">
-                        <TextBlock Text="Bind Title" />
-                        <!--<StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Bind Likes"
-                                   Style="{ThemeResource CaptionTextBlockStyle}"
-                                   Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
-                        <TextBlock Text=" Likes"
-                                   Style="{ThemeResource CaptionTextBlockStyle}"
-                                   Foreground="{ThemeResource SystemControlPageTextBaseMediumBrush}" />
-                        </StackPanel>-->
+                        <TextBlock Text="{x:Bind Name}" />
                     </StackPanel>
                 </Grid>
             </DataTemplate>
         </Grid.Resources>
-        <!-- The GridView used for this example is shown below. Setter properties are used to customize
-        some parts of the GridViewItems (i.e. the margins). -->
-        <GridView x:Name="StyledGrid"
-                  >
-            <!-- ItemTemplate="{StaticResource ImageOverlayTemplate}" -->
+        <GridView x:Name="GridView"
+                  ItemsSource="{x:Bind GridShellItems}"
+                  ItemTemplate="{StaticResource ImageOverlayTemplate}">
             <!--<GridView.ItemContainerStyle>
                 <Style TargetType="GridViewItem"
                        BasedOn="{StaticResource DefaultGridViewItemStyle}">
