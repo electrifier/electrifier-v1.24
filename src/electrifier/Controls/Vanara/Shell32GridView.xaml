@@ -12,16 +12,18 @@
         <Grid.Resources>
             <DataTemplate x:Name="ImageOverlayTemplate"
                           x:DataType="local:Shell32GridViewItem">
-                <Grid Width="100">
-                    <!--<Image Source="{x:Bind ImageLocation}"
-                       Stretch="UniformToFill" />-->
+                <Grid>
                     <StackPanel Orientation="Vertical"
-                                Height="40"
-                                VerticalAlignment="Bottom"
-                                Padding="5,1,5,1"
-                                Background="LightGray"
-                                Opacity=".75">
-                        <TextBlock Text="{x:Bind Name}" />
+                                Height="96"
+                                Width="96">
+                        <ImageIcon x:Name="ImageIcon"
+                                   MaxHeight="64"
+                                   Source="ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico" />
+                        <TextBlock Text="{x:Bind DisplayName}"
+                                   VerticalAlignment="Center"
+                                   HorizontalTextAlignment="Center"
+                                   Foreground="WhiteSmoke"
+                                   FontSize="16" />
                     </StackPanel>
                 </Grid>
             </DataTemplate>
