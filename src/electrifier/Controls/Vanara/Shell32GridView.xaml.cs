@@ -24,10 +24,11 @@ public sealed partial class Shell32GridView : UserControl
 {
     public ObservableCollection<Shell32GridViewItem> GridShellItems
     {
-        get; private set;
-    }
+        get;
+        private set;
+    } = new();
 
-    private readonly ShellFolder CurrentFolder;
+    private readonly ShellFolder CurrentFolder = new(@"c:\");
     public FolderItemFilter Filter { get; private set; } = FolderItemFilter.Folders | FolderItemFilter.NonFolders;
 
     private readonly HWND windowHandle = default;
@@ -36,8 +37,6 @@ public sealed partial class Shell32GridView : UserControl
     public Shell32GridView(/* hwnd */)
     {
         InitializeComponent();
-        GridShellItems = new ObservableCollection<Shell32GridViewItem>();
-        CurrentFolder = new ShellFolder(@"c:\");
         DataContext = this;
 
         //ImageSource = new BitmapImage(new Uri("ms-appx:///Assets/StoreLogo.png"));
@@ -53,20 +52,12 @@ public sealed partial class Shell32GridView : UserControl
 
         if (folder is null) { throw new ArgumentNullException(nameof(folder)); }
 
-        try
-        {
-            var parentItem = Shell32GridViewItem.Parent(folder);
+        var parentItem = Shell32GridViewItem.Parent(folder);
+        if (parentItem is not null) { items.Add(parentItem); }
 
-            if (parentItem is not null) { items.Add(parentItem); }
-
-            foreach (var item in folder.EnumerateChildren(filter, windowHandle))
-            {
-                items.Add(new Shell32GridViewItem(item));
-            }
-        }
-        catch (Exception)
+        foreach (var item in folder.EnumerateChildren(filter: filter, parentWindow: windowHandle))
         {
-            throw;
+            items.Add(new Shell32GridViewItem(item));
         }
 
         return items;

@@ -55,7 +55,7 @@ public sealed partial class Shell32TreeView : UserControl
             //foreach (var item in rootShellItem.EnumerateChildren(FolderItemFilter.Folders))
             //{
             //    rootShellItem.Children.Add(new Shell32TreeViewItem(item));
-            //}
+        //}
         }
 
         
@@ -81,7 +81,7 @@ public class Shell32TreeViewItem
     {
         try
         {
-            return ShellItem is not ShellFolder ? Enumerable.Empty<ShellItem>() : ((ShellFolder)ShellItem).EnumerateChildren(filter);
+            return ShellItem is not ShellFolder folder ? Enumerable.Empty<ShellItem>() : folder.EnumerateChildren(filter);
         }
         finally
         {
