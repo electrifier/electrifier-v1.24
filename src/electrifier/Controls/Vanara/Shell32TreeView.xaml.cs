@@ -58,7 +58,7 @@ public sealed partial class Shell32TreeView : UserControl
         //}
         }
 
-        
+
     }
 }
 public class Shell32TreeViewItem
@@ -81,7 +81,9 @@ public class Shell32TreeViewItem
     {
         try
         {
-            return ShellItem is not ShellFolder folder ? Enumerable.Empty<ShellItem>() : folder.EnumerateChildren(filter);
+            return ShellItem is not ShellFolder folder
+                ? Enumerable.Empty<ShellItem>()
+                : folder.EnumerateChildren(filter);
         }
         finally
         {
@@ -95,7 +97,7 @@ public class Shell32TreeViewItem
         get;
         private set;
     }
-    public ShellItemImages Images => ShellItem.Images;
+    public ShellItemImages Images => ShellItem.Images; // GetImageAsync, GetImage 
     public ShellItem ShellItem
     {
         get;

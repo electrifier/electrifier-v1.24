@@ -14,15 +14,16 @@
                 <Grid>
                     <StackPanel Orientation="Vertical"
                                 Height="96"
-                                Width="96">
+                                Width="72">
                         <ImageIcon x:Name="ImageIcon"
-                                   MaxHeight="64"
-                                   Source="ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico" />
+                                   MaxHeight="42"
+                                   Source="{x:Bind ImageIconSource}" />
                         <TextBlock Text="{x:Bind DisplayName}"
                                    VerticalAlignment="Center"
                                    HorizontalTextAlignment="Center"
                                    Foreground="WhiteSmoke"
-                                   FontSize="16" />
+                                   FontSize="13" 
+                                   TextWrapping="Wrap"/>
                     </StackPanel>
                 </Grid>
             </DataTemplate>

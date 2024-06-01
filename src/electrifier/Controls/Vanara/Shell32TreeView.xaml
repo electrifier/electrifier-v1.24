@@ -14,7 +14,6 @@
             <TreeView.ItemTemplate>
                 <DataTemplate x:DataType="local:Shell32TreeViewItem">
                     <TreeViewItem HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"
-                                  IsExpanded="True"
                                   ItemsSource="{x:Bind Children}">
                         <StackPanel Orientation="Horizontal"
                                     MaxHeight="20">
