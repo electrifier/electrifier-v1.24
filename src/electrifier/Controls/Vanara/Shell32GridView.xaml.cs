@@ -28,7 +28,7 @@ public sealed partial class Shell32GridView : UserControl
         private set;
     } = new();
 
-    private readonly ShellFolder CurrentFolder = new(@"c:\");
+    private readonly ShellFolder CurrentFolder = ShellFolder.Desktop;
     public FolderItemFilter Filter { get; private set; } = FolderItemFilter.Folders | FolderItemFilter.NonFolders;
 
     private readonly HWND windowHandle = default;
@@ -48,16 +48,17 @@ public sealed partial class Shell32GridView : UserControl
 
     public ObservableCollection<Shell32GridViewItem> Navigate(ShellFolder folder, FolderItemFilter filter)
     {
-        var items = new ObservableCollection<Shell32GridViewItem>(Array.Empty<Shell32GridViewItem>());
-
         if (folder is null) { throw new ArgumentNullException(nameof(folder)); }
 
+        var items = new ObservableCollection<Shell32GridViewItem>(Array.Empty<Shell32GridViewItem>());
         var parentItem = Shell32GridViewItem.Parent(folder);
         if (parentItem is not null) { items.Add(parentItem); }
 
-        foreach (var item in folder.EnumerateChildren(filter: filter, parentWindow: windowHandle))
+        // TODO: make this async
+        var enumeratedChildren = folder.EnumerateChildren(filter: filter, parentWindow: windowHandle);
+        foreach (var shItem in enumeratedChildren)
         {
-            items.Add(new Shell32GridViewItem(item));
+            items.Add(new Shell32GridViewItem(shItem));
         }
 
         return items;
@@ -69,7 +70,7 @@ public sealed partial class Shell32GridView : UserControl
         {
             if (item.ShellItem is ShellFolder folder /*&& folder.Parent is not null*/)
             {
-                GridShellItems = Navigate(folder, Filter);
+                //GridShellItems = Navigate(folder, Filter);
             }
         }
     }
