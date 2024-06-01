@@ -26,7 +26,7 @@ public sealed partial class Shell32GridView : UserControl
     {
         get;
         private set;
-    } = new();
+    }
 
     private readonly ShellFolder CurrentFolder = ShellFolder.Desktop;
     public FolderItemFilter Filter { get; private set; } = FolderItemFilter.Folders | FolderItemFilter.NonFolders;
@@ -38,12 +38,13 @@ public sealed partial class Shell32GridView : UserControl
     {
         InitializeComponent();
         DataContext = this;
+        //WindowHandle = WinRT.Interop.WindowNative.GetWindowHandle(this);
 
         //ImageSource = new BitmapImage(new Uri("ms-appx:///Assets/StoreLogo.png"));
 
 
         // TODO: make this async
-        GridShellItems = Navigate(CurrentFolder, FolderItemFilter.Folders | FolderItemFilter.NonFolders);
+        GridShellItems = Navigate(CurrentFolder, Filter);
     }
 
     public ObservableCollection<Shell32GridViewItem> Navigate(ShellFolder folder, FolderItemFilter filter)
@@ -55,7 +56,8 @@ public sealed partial class Shell32GridView : UserControl
         if (parentItem is not null) { items.Add(parentItem); }
 
         // TODO: make this async
-        var enumeratedChildren = folder.EnumerateChildren(filter: filter, parentWindow: windowHandle);
+        var enumeratedChildren = folder.EnumerateChildren(filter: filter, parentWindow: windowHandle)
+            .OrderBy(item => item.Name);
         foreach (var shItem in enumeratedChildren)
         {
             items.Add(new Shell32GridViewItem(shItem));

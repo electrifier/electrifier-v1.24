@@ -28,6 +28,9 @@ namespace electrifier.Controls.Vanara;
 
 public class /*record*/ Shell32GridViewItem
 {
+    private static readonly BitmapImage DefaultFolderImage = new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico"));
+    private static readonly BitmapImage DefaultFileImage = new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
+
     public string DisplayName
     {
         get;
@@ -42,7 +45,7 @@ public class /*record*/ Shell32GridViewItem
 
     public bool IsFolder
     {
-        get; private set;
+        get; private init;
     }
 
     public ShellItem ShellItem
@@ -63,23 +66,9 @@ public class /*record*/ Shell32GridViewItem
         HintText = (IsFolder ? "Folder: " : "File: ") + shItem.ParsingName;
 
         ImageIconSource = shItem.IsFolder
-            ? new BitmapImage(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico"))
-            : new BitmapImage(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
-
-        //var bitmap = new BitmapImage
-        //{
-        //    // TODO: make async: bitmap.SetSourceAsync("ms-appx:///...");
-        //    UriSource = new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico")
-        //};
+            ? DefaultFolderImage
+            : DefaultFileImage;
     }
-
-    //public Shell32GridViewItem(ShellItem shItem, string displayName, string hintText, bool isFolder, ShellItem shellItem)
-    //    : this(shItem, displayName)
-    //{
-    //    HintText = hintText ?? throw new ArgumentNullException(nameof(hintText));
-    //    IsFolder = isFolder;
-    //    ShellItem = shellItem ?? throw new ArgumentNullException(nameof(shellItem));
-    //}
 
     internal static Shell32GridViewItem? Parent(ShellItem shItem)
     {
