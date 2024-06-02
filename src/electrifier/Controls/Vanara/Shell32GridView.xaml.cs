@@ -57,7 +57,8 @@ public sealed partial class Shell32GridView : UserControl
 
         // TODO: make this async
         var enumeratedChildren = folder.EnumerateChildren(filter: filter, parentWindow: windowHandle)
-            .OrderBy(item => item.Name);
+            .OrderBy(item => (item.Attributes & ShellItemAttribute.Folder) == 0)
+            .ThenBy(item => item.Name);
         foreach (var shItem in enumeratedChildren)
         {
             items.Add(new Shell32GridViewItem(shItem));

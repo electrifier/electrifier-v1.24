@@ -34,6 +34,8 @@ public sealed partial class Shell32TreeView : UserControl
         InitializeComponent();
         DataContext = this;
 
+        this.Loaded += OnLoaded;
+
         // TODO: Add root items using an event handler
         RootShellItems = new ObservableCollection<Shell32TreeViewItem>
         {
@@ -41,24 +43,25 @@ public sealed partial class Shell32TreeView : UserControl
         };
 
         // TODO: Add event handler for item expansion
+    }
 
+    private void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        IOrderedEnumerable<ShellItem> children;
         foreach (var rootShellItem in RootShellItems)
         {
             // TODO: sort children using ShellItem.Compare for sorting  // CompareTo(ShellItem)
-            var children = rootShellItem.EnumerateChildren(FolderItemFilter.Folders).OrderBy(item => item.Name);
+            children = rootShellItem.EnumerateChildren(filter: FolderItemFilter.Folders)
+                .OrderBy(keySelector: item => (item.Attributes & ShellItemAttribute.Browsable) != 0)
+                .ThenBy(keySelector: item => item.Name);
 
-            foreach (var item in children)
+            foreach (var shItem in children)
             {
-                rootShellItem.Children.Add(new Shell32TreeViewItem(item));
+                var tvItem = new Shell32TreeViewItem(shItem);
+                //tvItem.Expanded += OnItemExpanded;
+                rootShellItem.Children.Add(tvItem);
             }
-
-            //foreach (var item in rootShellItem.EnumerateChildren(FolderItemFilter.Folders))
-            //{
-            //    rootShellItem.Children.Add(new Shell32TreeViewItem(item));
-        //}
         }
-
-
     }
 }
 public class Shell32TreeViewItem
@@ -119,6 +122,21 @@ public class Shell32TreeViewItem
         var StorageCapMask = await Task.Run(() => attributes & ShellItemAttribute.StorageCapMask);
 
         HasUnrealizedChildren = attributes.HasFlag(ShellItemAttribute.HasSubfolder);
+    }
+
+    //public async TreeViewExpandingEventArgs
+    public async Task OnItemExpanded(TreeViewExpandingEventArgs e)
+    {
+        if (HasUnrealizedChildren)
+        {
+            var children = EnumerateChildren(FolderItemFilter.Folders);
+            foreach (var shItem in children)
+            {
+                var tvItem = new Shell32TreeViewItem(shItem);
+                //tvItem.Expanded += OnItemExpanded;
+                Children.Add(tvItem);
+            }
+        }
     }
 
     //async Task<Shell32TreeViewItem> GetChildAsync(ShellItem shItem)
