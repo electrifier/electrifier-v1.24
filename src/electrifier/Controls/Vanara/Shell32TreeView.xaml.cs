@@ -63,101 +63,56 @@ public sealed partial class Shell32TreeView : UserControl
             }
         }
     }
-}
-public class Shell32TreeViewItem
-{
-    public ObservableCollection<Shell32TreeViewItem> Children
-    {
-        get;
-    }
-    public string DisplayName
-    {
-        get;
-    }
 
-    //public bool DisplayNameVisibility
+
+
+    //async void OnItemExpanded(object sender, EventArgs e)
     //{
-    //    get; set;
-    //}
-
-    public IEnumerable<ShellItem> EnumerateChildren(FolderItemFilter filter)
-    {
-        try
-        {
-            return ShellItem is not ShellFolder folder
-                ? Enumerable.Empty<ShellItem>()
-                : folder.EnumerateChildren(filter);
-        }
-        finally
-        {
-            HasUnrealizedChildren = false;
-        }
-    }
-
-    // TODO: Add observable flags for async property loading
-    public bool HasUnrealizedChildren
-    {
-        get;
-        private set;
-    }
-    public ShellItemImages Images => ShellItem.Images; // GetImageAsync, GetImage 
-    public ShellItem ShellItem
-    {
-        get;
-    }
-
-    public Shell32TreeViewItem(ShellItem shItem)
-    {
-        ShellItem = shItem ?? throw new ArgumentNullException(nameof(shItem));
-        DisplayName = ShellItem.Name ?? ShellItem.ToString();
-        Children = new ObservableCollection<Shell32TreeViewItem>();
-        HasUnrealizedChildren = true;
-
-        _ = Task.Run(InitializeAsync);
-    }
-
-    public async Task InitializeAsync()
-    {
-        var attributes = await Task.Run(() => ShellItem.Attributes);
-        var StorageCapMask = await Task.Run(() => attributes & ShellItemAttribute.StorageCapMask);
-
-        HasUnrealizedChildren = attributes.HasFlag(ShellItemAttribute.HasSubfolder);
-    }
-
-    //public async TreeViewExpandingEventArgs
-    public async Task OnItemExpanded(TreeViewExpandingEventArgs e)
-    {
-        if (HasUnrealizedChildren)
-        {
-            var children = EnumerateChildren(FolderItemFilter.Folders);
-            foreach (var shItem in children)
-            {
-                var tvItem = new Shell32TreeViewItem(shItem);
-                //tvItem.Expanded += OnItemExpanded;
-                Children.Add(tvItem);
-            }
-        }
-    }
-
-    //async Task<Shell32TreeViewItem> GetChildAsync(ShellItem shItem)
-    //{
-    //    return await Task.Run(() => new Shell32TreeViewItem(shItem));
-    //}
-
-    /// <summary>
-    /// Gets an image that represents this item. The default behavior is to load a thumbnail. If there is no thumbnail for the current
-    /// item, it retrieves the icon of the item. The thumbnail or icon is extracted if it is not currently cached.
-    /// </summary>
-    /// <param name="size">A structure that specifies the size of the image to be received.</param>
-    /// <param name="flags">One or more of the option flags.</param>
-    /// <param name="forcePreVista">If set to <see langword="true"/>, ignore the use post vista interfaces like <see cref="IShellItemImageFactory"/>.</param>
-    /// <returns>The resulting image.</returns>
-    /// <exception cref="PlatformNotSupportedException"></exception>
-    //public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false) => await TaskAgg.Run(() => GetImage(size, flags, forcePreVista), System.Threading.CancellationToken.None);
-
-    //    public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false)
+    //    if (sender is not Shell32TreeViewItem item)
     //    {
-    //        return ShellItem.GetImageAsync(size, flags, forcePreVista);
+    //        return;
     //    }
 
+    //    //await item.OnItemExpanded(new TreeViewExpandingEventArgs());
+    //}
 }
+
+//public partial class Shell32TreeViewItem
+//{
+//    //public async TreeViewExpandingEventArgs
+//    public async Task OnItemExpanded(TreeViewExpandingEventArgs e)
+//    {
+//        //if (HasUnrealizedChildren)
+//        //{
+//        //    var children = EnumerateChildren(FolderItemFilter.Folders);
+//        //    foreach (var shItem in children)
+//        //    {
+//        //        var tvItem = new Shell32TreeViewItem(shItem);
+//        //        //tvItem.Expanded += OnItemExpanded;
+//        //        Children.Add(tvItem);
+//        //    }
+//        //}
+//    }
+
+//    //async Task<Shell32TreeViewItem> GetChildAsync(ShellItem shItem)
+//    //{
+//    //    return await Task.Run(() => new Shell32TreeViewItem(shItem));
+//    //}
+
+//    /// <summary>
+//    /// Gets an image that represents this item. The default behavior is to load a thumbnail. If there is no thumbnail for the current
+//    /// item, it retrieves the icon of the item. The thumbnail or icon is extracted if it is not currently cached.
+//    /// </summary>
+//    /// <param name="size">A structure that specifies the size of the image to be received.</param>
+//    /// <param name="flags">One or more of the option flags.</param>
+//    /// <param name="forcePreVista">If set to <see langword="true"/>, ignore the use post vista interfaces like <see cref="IShellItemImageFactory"/>.</param>
+//    /// <returns>The resulting image.</returns>
+//    /// <exception cref="PlatformNotSupportedException"></exception>
+//    //public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false) => await TaskAgg.Run(() => GetImage(size, flags, forcePreVista), System.Threading.CancellationToken.None);
+
+//    //    public async Task<SafeHBITMAP> GetImageAsync(SIZE size, ShellItemGetImageOptions flags = 0, bool forcePreVista = false)
+//    //    {
+//    //        return ShellItem.GetImageAsync(size, flags, forcePreVista);
+//    //    }
+
+//}
