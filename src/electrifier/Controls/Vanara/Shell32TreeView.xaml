@@ -11,6 +11,7 @@
     <Grid>
         <TreeView x:Name="TreeView"
                   ItemsSource="{x:Bind RootShellItems}">
+            <!-- ItemInvoked="TreeView_OnItemInvoked" -->
             <TreeView.ItemTemplate>
                 <DataTemplate x:DataType="local:Shell32TreeViewItem">
                     <TreeViewItem HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"

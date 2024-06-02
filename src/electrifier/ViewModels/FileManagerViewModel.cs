@@ -1,4 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using electrifier.Controls.Vanara;
+using Microsoft.UI.Xaml.Controls;
 
 namespace electrifier.ViewModels;
 
@@ -19,5 +21,14 @@ public partial class FileManagerViewModel : ObservableRecipient
     public FileManagerViewModel()
     {
 
+    }
+
+    private void TreeView_OnItemInvoked(TreeView sender, TreeViewItemInvokedEventArgs args)
+    {
+        var item = args.InvokedItem as Shell32TreeViewItem;
+        if (item is null)
+        {
+            return;
+        }
     }
 }
