@@ -59,11 +59,11 @@ public sealed partial class FileManagerPage : Page
         set;
     }
 
-    public Shell32GridView GridView
-    {
-        get;
-        set;
-    }
+    //public Shell32GridView GridView
+    //{
+    //    get;
+    //    set;
+    //}
 
     public Shell32TreeView TreeView;
 
@@ -76,8 +76,9 @@ public sealed partial class FileManagerPage : Page
     public FileManagerPage()
     {
         ViewModel = App.GetService<FileManagerViewModel>() ?? throw new InvalidOperationException();
-        DataContext = this;
         InitializeComponent();
+        DataContext = this;
+        CurrentFolderItem = ShellFolder.Desktop;
 
         var contentAreaGridView = this.Content;
         //var contentAreaGridView = this.Content;
@@ -117,7 +118,13 @@ public sealed partial class FileManagerPage : Page
 
             if (item is Shell32TreeViewItem treeViewItem)
             {
-                var folder = treeViewItem.ShellItem;
+                var targetShellItem = treeViewItem.ShellItem;
+
+                if(targetShellItem is null)
+                {
+                    continue;
+                }
+                CurrentFolderItem = targetShellItem;
 
 
                 //

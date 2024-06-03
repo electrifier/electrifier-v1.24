@@ -1,4 +1,4 @@
-﻿<Page x:Class="electrifier.Views.FileManagerPage"
+﻿        <Page x:Class="electrifier.Views.FileManagerPage"
       xmlns:behaviors="using:electrifier.Behaviors"
       xmlns:controls="using:CommunityToolkit.WinUI.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
