@@ -52,15 +52,6 @@ public partial class FileManagerViewModel : ObservableRecipient
         return;
     }
 
-    //public Shell32TreeView ShellTreeView 
-    //{
-    //    get;
-    //}
-    //public Shell32GridView ShellGridView 
-    //{
-    //    get;
-    //}
-
     /// <summary>FileManagerViewModel</summary>
     public FileManagerViewModel()
     {
@@ -72,6 +63,16 @@ public partial class FileManagerViewModel : ObservableRecipient
 
     }
 
+    #region obsolete code
+    //public Shell32TreeView ShellTreeView 
+    //{
+    //    get;
+    //}
+    //public Shell32GridView ShellGridView 
+    //{
+    //    get;
+    //}
+
     //private void TreeView_OnItemInvoked(TreeView sender, TreeViewItemInvokedEventArgs args)
     //{
     //    var item = args.InvokedItem as Shell32TreeViewItem;
@@ -79,18 +80,16 @@ public partial class FileManagerViewModel : ObservableRecipient
     //    {
     //        return;
     //    }
-
     //    if (item.ShellItem is ShellItem shItem)
     //    {
     //        this.CurrentFolder = shItem;
     //    }
-
     //    //var selectedItem = args.AddedItems.FirstOrDefault();
-
     //    //if (selectedItem is Shell32TreeViewItem shellItem)
     //    //{
     //    //    OnSelectionChanged?.Invoke(this, args);
     //    //    //throw new NotImplementedException();
     //    //}
     //}
+    #endregion
 }

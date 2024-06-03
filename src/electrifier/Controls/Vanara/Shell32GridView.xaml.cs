@@ -28,22 +28,19 @@ public sealed partial class Shell32GridView : UserControl
         private set;
     }
 
-    //private readonly ShellFolder CurrentFolder = ShellFolder.Desktop;
     public FolderItemFilter Filter
     {
         get;
         private set;
     } = FolderItemFilter.Folders | FolderItemFilter.NonFolders;
 
-    
     public ShellItem CurrentFolder
     {
-        //get;
+        //get => this.;
         set => Navigate(value);
     }
 
     private readonly HWND windowHandle = default;
-
 
     public Shell32GridView(/* hwnd */)
     {
@@ -96,13 +93,15 @@ public sealed partial class Shell32GridView : UserControl
 
     private void OnItemClickHandler(object _, ItemClickEventArgs e)
     {
-        if (e.ClickedItem is Shell32GridViewItem item)
+        if (e.ClickedItem is not Shell32GridViewItem item)
         {
-            if (item.ShellItem is ShellFolder folder /*&& folder.Parent is not null*/)
-            {
-                // TODO: fire event to request navigation
-                //GridShellItems = Navigate(folder, Filter);
-            }
+            return;
+        }
+
+        if (item.ShellItem is ShellFolder folder /*&& folder.Parent is not null*/)
+        {
+            // TODO: fire event to request navigation
+            //GridShellItems = Navigate(folder, Filter);
         }
     }
 
