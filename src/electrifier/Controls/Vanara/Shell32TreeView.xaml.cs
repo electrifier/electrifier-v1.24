@@ -60,11 +60,11 @@ public sealed partial class Shell32TreeView : UserControl
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
-        IOrderedEnumerable<ShellItem> children;
         foreach (var rootShellItem in RootShellItems)
         {
             // TODO: sort children using ShellItem.Compare for sorting  // CompareTo(ShellItem)
-            children = rootShellItem.EnumerateChildren(filter: FolderItemFilter.Folders)
+            var children =
+                rootShellItem.EnumerateChildren(filter: FolderItemFilter.Folders)
                 .OrderBy(keySelector: item => (item.Attributes & ShellItemAttribute.Browsable) != 0)
                 .ThenBy(keySelector: item => item.Name);
 

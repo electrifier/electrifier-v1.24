@@ -63,9 +63,10 @@ public sealed partial class Shell32GridView : UserControl
         if (targetItem is null) { throw new ArgumentNullException(nameof(targetItem)); }
         //if (filter is null) { filter = _filter; }
 
-        //var newEnumerateItems = 
-        //    EnumerateItems(targetItem, FolderItemFilter.Storage /* TODO: , filter*/);
+        var newEnumerateItems =
+            EnumerateItems(targetItem, FolderItemFilter.Storage /* TODO: , filter*/);
 
+        this.GridShellItems = newEnumerateItems;
     }
 
     private ObservableCollection<Shell32GridViewItem> EnumerateItems(ShellItem navigationTarget, FolderItemFilter filter)

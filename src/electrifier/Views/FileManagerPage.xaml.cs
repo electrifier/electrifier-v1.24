@@ -107,8 +107,6 @@ public sealed partial class FileManagerPage : Page
 
         foreach (var item in selectedItems)
         {
-//            var itm = item;
-
             if (item is Shell32TreeViewItem treeViewItem)
             {
                 var targetShellItem = treeViewItem.ShellItem;
