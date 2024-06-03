@@ -24,27 +24,25 @@ public sealed partial class Shell32GridView : UserControl
 {
     public ObservableCollection<Shell32GridViewItem> GridShellItems
     {
-        get => _gridShellItems;
-        private set => _gridShellItems = value;
+        get;
+        private set;
     }
 
     //private readonly ShellFolder CurrentFolder = ShellFolder.Desktop;
     public FolderItemFilter Filter
     {
-        get => _filter;
-        private set => _filter = value;
-    }
+        get;
+        private set;
+    } = FolderItemFilter.Folders | FolderItemFilter.NonFolders;
 
-    public ShellFolder CurrentFolder
+    
+    public ShellItem CurrentFolder
     {
-        get => _currentFolder;
-        private set => _currentFolder = value;
+        //get;
+        set => Navigate(value);
     }
 
     private readonly HWND windowHandle = default;
-    private ObservableCollection<Shell32GridViewItem> _gridShellItems;
-    private FolderItemFilter _filter = FolderItemFilter.Folders | FolderItemFilter.NonFolders;
-    private ShellFolder _currentFolder;
 
 
     public Shell32GridView(/* hwnd */)
@@ -60,28 +58,33 @@ public sealed partial class Shell32GridView : UserControl
         //GridShellItems = EnumerateItems(CurrentFolder, Filter);
     }
 
-    public void Navigate(ShellFolder folder /*, FolderItemFilter? filter */)
+    public void Navigate(ShellItem targetItem /*, FolderItemFilter? filter */)
     {
-        if (folder is null) { throw new ArgumentNullException(nameof(folder)); }
+        if (targetItem is null) { throw new ArgumentNullException(nameof(targetItem)); }
         //if (filter is null) { filter = _filter; }
 
-        var newEnumerateItems = 
-            EnumerateItems(folder, FolderItemFilter.Storage /* TODO: , filter*/);
+        //var newEnumerateItems = 
+        //    EnumerateItems(targetItem, FolderItemFilter.Storage /* TODO: , filter*/);
 
     }
 
-    private ObservableCollection<Shell32GridViewItem> EnumerateItems(ShellFolder folder, FolderItemFilter filter)
+    private ObservableCollection<Shell32GridViewItem> EnumerateItems(ShellItem navigationTarget, FolderItemFilter filter)
     {
-        if (folder is null) { throw new ArgumentNullException(nameof(folder)); }
+        if (navigationTarget is null) { throw new ArgumentNullException(nameof(navigationTarget)); }
 
+        using var newTarget = navigationTarget as ShellFolder;
         var items = new ObservableCollection<Shell32GridViewItem>(Array.Empty<Shell32GridViewItem>());
-        var parentItem = Shell32GridViewItem.Parent(folder);
+        if (newTarget is null) { return items; }
+
+        var parentItem = Shell32GridViewItem.Parent(navigationTarget);
         if (parentItem is not null) { items.Add(parentItem); }
 
         // TODO: make this async
-        var enumeratedChildren = folder.EnumerateChildren(filter: filter, parentWindow: windowHandle)
+        var enumeratedChildren =
+            newTarget.EnumerateChildren(filter: filter, parentWindow: windowHandle)
             .OrderBy(item => (item.Attributes & ShellItemAttribute.Folder) == 0)
             .ThenBy(item => item.Name);
+
         foreach (var shItem in enumeratedChildren)
         {
             items.Add(new Shell32GridViewItem(shItem));

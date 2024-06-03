@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Diagnostics;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Vanara.Windows.Shell;
 
 namespace electrifier.ViewModels;
@@ -9,18 +10,21 @@ public partial class FileManagerViewModel : ObservableRecipient
     public int FileCount
     {
         get;
+        private set;
     }
 
     /// <summary>Number of Folders</summary>
     public int FolderCount
     {
         get;
+        private set;
     }
 
     /// <summary>Count of Items</summary>
     public int ItemCount
     {
         get;
+        private set;
     }
 
     public ShellItem? CurrentFolder
@@ -37,11 +41,15 @@ public partial class FileManagerViewModel : ObservableRecipient
 
         if (item is null)
         {
-            // TODO: clear items
+            Debug.Print("{nameof(this)}.SetCurrentFolder: value is null");
             return;
         }
 
-
+        FileCount = 0;
+        FolderCount = 0;
+        ItemCount = 0;
+        // TODO: clear items
+        return;
     }
 
     //public Shell32TreeView ShellTreeView 

@@ -59,15 +59,9 @@ public sealed partial class FileManagerPage : Page
         set;
     }
 
-    //public Shell32GridView GridView
-    //{
-    //    get;
-    //    set;
-    //}
-
     public Shell32TreeView TreeView;
 
-    public ShellItem CurrentFolderItem;
+    public ShellItem CurrentFolder;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FileManagerPage"/> class.
@@ -78,9 +72,8 @@ public sealed partial class FileManagerPage : Page
         ViewModel = App.GetService<FileManagerViewModel>() ?? throw new InvalidOperationException();
         InitializeComponent();
         DataContext = this;
-        CurrentFolderItem = ShellFolder.Desktop;
+        CurrentFolder = ShellFolder.Desktop;
 
-        var contentAreaGridView = this.Content;
         //var contentAreaGridView = this.Content;
         //if(ContentAreaGrid is contents)
         //var children = contentAreaGridView.Children;
@@ -124,25 +117,13 @@ public sealed partial class FileManagerPage : Page
                 {
                     continue;
                 }
-                CurrentFolderItem = targetShellItem;
+                CurrentFolder = targetShellItem;
 
-
-                //
-                //Shell32GridView gridView = default;
-                //gridView.Navigate(shTreeViewItem.ShellItem);
-
-                //            NavigatedEventArgs(ContentAreaBottomAppBar)
-                //ViewModel.CurrentFolder = shTreeViewItem.ShellItem;
+                // Shell32GridView gridView = default;
+                // gridView.Navigate(shTreeViewItem.ShellItem);
+                // NavigatedEventArgs(ContentAreaBottomAppBar)
+                // ViewModel.CurrentFolder = shTreeViewItem.ShellItem;
             }
         }
-
-//        if (selectedItems is Shell32TreeViewItem shTreeViewItem)
-//        {
-//            Shell32GridView gridView = default;
-//            //gridView.Navigate(shTreeViewItem.ShellItem);
-
-////            NavigatedEventArgs(ContentAreaBottomAppBar)
-//            //ViewModel.CurrentFolder = shTreeViewItem.ShellItem;
-//        }
     }
 }

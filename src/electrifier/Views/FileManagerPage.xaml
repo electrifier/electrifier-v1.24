@@ -1,4 +1,4 @@
-﻿        <Page x:Class="electrifier.Views.FileManagerPage"
+﻿<Page x:Class="electrifier.Views.FileManagerPage"
       xmlns:behaviors="using:electrifier.Behaviors"
       xmlns:controls="using:CommunityToolkit.WinUI.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -68,8 +68,8 @@
                 <!-- ItemTemplateSelector="{StaticResource ExplorerItemTemplateSelector}" -->
                 <!-- ItemsSource="{x:Bind ShellTreeViewItems}" -->
                 <vanara:Shell32TreeView x:Name="ShellTreeView"
-                                        OnSelectionChanged="ShellTreeView_OnOnSelectionChanged"/>
-                <!-- TreeView_OnSelectionChanged -->
+                                        OnSelectionChanged="ShellTreeView_OnOnSelectionChanged" />
+                <!-- CurrentFolder="{x:Bind CurrentFolder}" -->
             </Border>
             <controls:GridSplitter Grid.Column="1"
                                    Width="12"
@@ -87,10 +87,12 @@
                       ItemContainerStyle="{StaticResource ShellGridViewItemContainerStyle}"
                       ItemTemplate="{StaticResource ShellGridViewItemTemplate}"
                       SelectionMode="Extended" />-->
-            <Border x:Name="ShellGridViewBorder" Grid.Column="2">
+            <Border x:Name="ShellGridViewBorder"
+                    Grid.Column="2">
                 <!-- ItemTemplateSelector="{StaticResource ExplorerItemTemplateSelector}" -->
                 <!-- ItemsSource="{x:Bind ShellTreeViewItems}" -->
-                <vanara:Shell32GridView x:Name="ShellGridView" />
+                <vanara:Shell32GridView x:Name="ShellGridView"
+                                        CurrentFolder="{x:Bind CurrentFolder}"/>
             </Border>
         </Grid>
         <CommandBar x:Name="BottomStatusCommandBar"
