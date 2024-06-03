@@ -30,9 +30,15 @@
         </Grid.Resources>
         <GridView x:Name="GridView"
                   IsItemClickEnabled="True"
+                  ItemClick="OnItemClickHandler"
                   ItemsSource="{x:Bind GridShellItems}"
                   ItemTemplate="{StaticResource ImageOverlayTemplate}"
-                  ItemClick="OnItemClickHandler">
+                  SelectionMode="Single"
+                                      
+                  >
+            <!-- TODO: SelectionChanged="OnSelectionChangedHandler" -->
+
+            
             <!--<GridView.ItemContainerStyle>
                 <Style TargetType="GridViewItem"
                        BasedOn="{StaticResource DefaultGridViewItemStyle}">

@@ -19,19 +19,32 @@ using System.Diagnostics;
 
 namespace electrifier.Controls.Vanara;
 
-[DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
+[DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
 public sealed partial class Shell32GridView : UserControl
 {
     public ObservableCollection<Shell32GridViewItem> GridShellItems
     {
-        get;
-        private set;
+        get => _gridShellItems;
+        private set => _gridShellItems = value;
     }
 
-    private readonly ShellFolder CurrentFolder = ShellFolder.Desktop;
-    public FolderItemFilter Filter { get; private set; } = FolderItemFilter.Folders | FolderItemFilter.NonFolders;
+    //private readonly ShellFolder CurrentFolder = ShellFolder.Desktop;
+    public FolderItemFilter Filter
+    {
+        get => _filter;
+        private set => _filter = value;
+    }
+
+    public ShellFolder CurrentFolder
+    {
+        get => _currentFolder;
+        private set => _currentFolder = value;
+    }
 
     private readonly HWND windowHandle = default;
+    private ObservableCollection<Shell32GridViewItem> _gridShellItems;
+    private FolderItemFilter _filter = FolderItemFilter.Folders | FolderItemFilter.NonFolders;
+    private ShellFolder _currentFolder;
 
 
     public Shell32GridView(/* hwnd */)
@@ -44,10 +57,20 @@ public sealed partial class Shell32GridView : UserControl
 
 
         // TODO: make this async
-        GridShellItems = Navigate(CurrentFolder, Filter);
+        //GridShellItems = EnumerateItems(CurrentFolder, Filter);
     }
 
-    public ObservableCollection<Shell32GridViewItem> Navigate(ShellFolder folder, FolderItemFilter filter)
+    public void Navigate(ShellFolder folder /*, FolderItemFilter? filter */)
+    {
+        if (folder is null) { throw new ArgumentNullException(nameof(folder)); }
+        //if (filter is null) { filter = _filter; }
+
+        var newEnumerateItems = 
+            EnumerateItems(folder, FolderItemFilter.Storage /* TODO: , filter*/);
+
+    }
+
+    private ObservableCollection<Shell32GridViewItem> EnumerateItems(ShellFolder folder, FolderItemFilter filter)
     {
         if (folder is null) { throw new ArgumentNullException(nameof(folder)); }
 
@@ -73,6 +96,7 @@ public sealed partial class Shell32GridView : UserControl
         {
             if (item.ShellItem is ShellFolder folder /*&& folder.Parent is not null*/)
             {
+                // TODO: fire event to request navigation
                 //GridShellItems = Navigate(folder, Filter);
             }
         }

@@ -29,6 +29,19 @@ public sealed partial class Shell32TreeView : UserControl
 {
     public readonly ObservableCollection<Shell32TreeViewItem> RootShellItems;
 
+    public Shell32TreeViewItem SelectedItem
+    {
+        get;
+    }
+
+    // Create a routed event by first registering a RoutedEventID
+    //public static readonly RoutedEvent SelectionChangedEvent = EventManager.RegisterRoutedEvent()
+    public event EventHandler<TreeViewSelectionChangedEventArgs> OnSelectionChanged;
+
+    //public event OnSelectionChanged => shellTreeViewCtrl.OnSelectionChanged;
+    //(TreeView sender, TreeViewSelectionChangedEventArgs args)
+
+    // TreeView_OnSelectionChanged
     public Shell32TreeView()
     {
         InitializeComponent();
@@ -75,6 +88,19 @@ public sealed partial class Shell32TreeView : UserControl
 
     //    //await item.OnItemExpanded(new TreeViewExpandingEventArgs());
     //}
+
+    private void TreeView_OnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
+    {
+        OnSelectionChanged?.Invoke(this, args);
+
+        //var selectedItem = args.AddedItems.FirstOrDefault();
+
+        //if (selectedItem is Shell32TreeViewItem shellItem)
+        //{
+        //    OnSelectionChanged?.Invoke(this, args);
+        //    //throw new NotImplementedException();
+        //}
+    }
 }
 
 //public partial class Shell32TreeViewItem

@@ -67,7 +67,9 @@
             <Border x:Name="ShellTreeViewBorder">
                 <!-- ItemTemplateSelector="{StaticResource ExplorerItemTemplateSelector}" -->
                 <!-- ItemsSource="{x:Bind ShellTreeViewItems}" -->
-                <vanara:Shell32TreeView x:Name="ShellTreeView"/>
+                <vanara:Shell32TreeView x:Name="ShellTreeView"
+                                        OnSelectionChanged="ShellTreeView_OnOnSelectionChanged"/>
+                <!-- TreeView_OnSelectionChanged -->
             </Border>
             <controls:GridSplitter Grid.Column="1"
                                    Width="12"
