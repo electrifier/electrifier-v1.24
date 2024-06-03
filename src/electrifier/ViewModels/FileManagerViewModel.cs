@@ -1,6 +1,4 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using electrifier.Controls.Vanara;
-using Microsoft.UI.Xaml.Controls;
 using Vanara.Windows.Shell;
 
 namespace electrifier.ViewModels;

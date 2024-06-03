@@ -51,21 +51,16 @@ public class Shell32TreeViewItem
         get;
         private set;
     }
+    public ShellItem ShellItem
+    {
+        get;
+    }
 
-    /// <summary>
-    /// TODO: See <code>public ShellItemImages Images =&gt; ShellItem.Images; // GetImageAsync, GetImage </code>
-    /// TODO: Override with ImageSource[ICON_SIZE]
-    /// </summary>
     public ImageSource ImageIconSource
     {
         get;
     }
 
-    public ShellItem ShellItem
-    {
-        get;
-    }
-    
     public Shell32TreeViewItem(ShellItem shItem)
     {
         ShellItem = shItem ?? throw new ArgumentNullException(nameof(shItem));

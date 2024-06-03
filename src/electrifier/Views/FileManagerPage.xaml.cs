@@ -67,6 +67,8 @@ public sealed partial class FileManagerPage : Page
 
     public Shell32TreeView TreeView;
 
+    public ShellItem CurrentFolderItem;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="FileManagerPage"/> class.
     /// </summary>
