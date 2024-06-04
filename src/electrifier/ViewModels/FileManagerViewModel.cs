@@ -33,7 +33,7 @@ public partial class FileManagerViewModel : ObservableRecipient
         set => SetCurrentFolder(value);
     }
 
-    private ShellItem? _currentFolder = default;
+    private readonly ShellItem? _currentFolder = default;
 
     private void SetCurrentFolder(ShellItem? value)
     {
@@ -44,11 +44,14 @@ public partial class FileManagerViewModel : ObservableRecipient
             Debug.Print("{nameof(this)}.SetCurrentFolder: value is null");
             return;
         }
-
         FileCount = 0;
         FolderCount = 0;
         ItemCount = 0;
         // TODO: clear items
+
+        //GridView.CurrentFolder = value;
+        ////GridView.Navigate
+
         return;
     }
 

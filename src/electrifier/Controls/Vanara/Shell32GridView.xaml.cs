@@ -16,6 +16,7 @@ using Vanara.Windows.Shell;
 using Windows.Foundation.Collections;
 using Windows.Foundation;
 using System.Diagnostics;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace electrifier.Controls.Vanara;
 
@@ -28,16 +29,36 @@ public sealed partial class Shell32GridView : UserControl
         private set;
     }
 
+    /**  -= Observable Examples: =-
+            [ObservableProperty]
+            private bool isLoading = true;
+            [ObservableProperty]
+            private bool hasFailures;
+            [ObservableProperty]
+            private Uri source = new("https://www.office.com/");
+            [ObservableProperty]
+            private bool isBackEnabled;
+            [ObservableProperty]
+            private bool isForwardEnabled = true;
+            [ObservableProperty]
+            private object? selected;
+            [ObservableProperty] **/
+
+    //[ObservableProperty]
     public FolderItemFilter Filter
     {
         get;
         private set;
     } = FolderItemFilter.Folders | FolderItemFilter.NonFolders;
 
-    public ShellItem CurrentFolder
+
+    //[ObservableProperty] 
+    //private object currentFolder;
+
+    public ShellItem? CurrentFolder
     {
-        //get => this.;
-        set => Navigate(value);
+        get => default;
+        internal set => Navigate(value);
     }
 
     private readonly HWND windowHandle = default;
@@ -63,7 +84,7 @@ public sealed partial class Shell32GridView : UserControl
         var newEnumerateItems =
             EnumerateItems(targetItem, FolderItemFilter.Storage /* TODO: , filter*/);
 
-        this.GridShellItems = newEnumerateItems;
+        GridShellItems = newEnumerateItems;
     }
 
     private ObservableCollection<Shell32GridViewItem> EnumerateItems(ShellItem navigationTarget, FolderItemFilter filter)
@@ -93,16 +114,18 @@ public sealed partial class Shell32GridView : UserControl
 
     private void OnItemClickHandler(object _, ItemClickEventArgs e)
     {
-        if (e.ClickedItem is not Shell32GridViewItem item)
+        if (e.ClickedItem is not Shell32GridViewItem gridViewItem)
         {
             return;
         }
 
-        if (item.ShellItem is ShellFolder folder /*&& folder.Parent is not null*/)
-        {
-            // TODO: fire event to request navigation
-            //GridShellItems = Navigate(folder, Filter);
-        }
+
+        Navigate(gridViewItem.ShellItem);
+        //if (gridViewItem.ShellItem is ShellFolder folder /*&& folder.Parent is not null*/)
+        //{
+        //    // TODO: fire event to request navigation
+        //    //GridShellItems = Navigate(folder, Filter);
+        //}
     }
 
     private string GetDebuggerDisplay()

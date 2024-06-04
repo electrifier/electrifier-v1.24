@@ -5,12 +5,12 @@
       xmlns:local="using:electrifier.Services"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:ui="using:CommunityToolkit.WinUI"
-      xmlns:viewmodels="using:electrifier.ViewModels"
+      xmlns:viewmodel="using:electrifier.ViewModels"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:vanara="using:electrifier.Controls.Vanara"
       behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
-      d:DataContext="{d:DesignInstance Type=viewmodels:FileManagerViewModel}"
+      d:DataContext="{d:DesignInstance Type=viewmodel:FileManagerViewModel}"
       mc:Ignorable="d">
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
@@ -68,8 +68,8 @@
                 <!-- ItemTemplateSelector="{StaticResource ExplorerItemTemplateSelector}" -->
                 <!-- ItemsSource="{x:Bind ShellTreeViewItems}" -->
                 <vanara:Shell32TreeView x:Name="ShellTreeView"
+                                        CurrentFolder="{x:Bind CurrentFolder}"
                                         OnSelectionChanged="ShellTreeView_OnOnSelectionChanged" />
-                <!-- CurrentFolder="{x:Bind CurrentFolder}" -->
             </Border>
             <controls:GridSplitter Grid.Column="1"
                                    Width="12"

@@ -28,10 +28,17 @@ namespace electrifier.Controls.Vanara;
 public sealed partial class Shell32TreeView : UserControl
 {
     public readonly ObservableCollection<Shell32TreeViewItem> RootShellItems;
+    public static readonly DependencyProperty CurrentFolderProperty = DependencyProperty.Register(nameof(CurrentFolder), typeof(object), typeof(Shell32TreeView), new PropertyMetadata(default(object)));
 
     public Shell32TreeViewItem SelectedItem
     {
         get;
+    }
+
+    public object CurrentFolder
+    {
+        get => (object)GetValue(CurrentFolderProperty);
+        set => SetValue(CurrentFolderProperty, value);
     }
 
     // Create a routed event by first registering a RoutedEventID

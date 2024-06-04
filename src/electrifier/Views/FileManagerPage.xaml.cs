@@ -70,8 +70,9 @@ public sealed partial class FileManagerPage : Page
     public FileManagerPage()
     {
         ViewModel = App.GetService<FileManagerViewModel>() ?? throw new InvalidOperationException();
-        InitializeComponent();
         DataContext = this;
+        InitializeComponent();
+
         CurrentFolder = ShellFolder.Desktop;
 
         //var contentAreaGridView = this.Content;
