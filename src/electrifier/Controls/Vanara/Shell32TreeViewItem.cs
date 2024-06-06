@@ -1,9 +1,30 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Controls.Primitives;
+using Microsoft.UI.Xaml.Data;
+using Microsoft.UI.Xaml.Input;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Navigation;
+using Vanara.PInvoke;
+using Vanara.Windows.Shell;
+using Windows.Foundation;
+using Windows.Foundation.Collections;
+using Windows.Storage;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
+using electrifier.ViewModels;
+using Microsoft.UI.Xaml.Controls;
 
 namespace electrifier.Controls.Vanara;
 
@@ -13,6 +34,7 @@ public class Shell32TreeViewItem
     private static readonly BitmapImage DefaultFileImage = new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
     private static readonly BitmapImage DefaultFolderImage = new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico"));
     private static readonly BitmapImage libraryBitmapImageImage = new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Library.ico"));
+    public static readonly DependencyProperty IsExpandedProperty = DependencyProperty.Register(nameof(IsExpanded), typeof(bool), typeof(Shell32TreeViewItem), new PropertyMetadata(default(bool)));
 
     public ObservableCollection<Shell32TreeViewItem> Children
     {
@@ -27,6 +49,8 @@ public class Shell32TreeViewItem
     {
         get; set;
     }
+
+    public bool IsExpanded;
 
     internal IEnumerable<ShellItem> EnumerateChildren(FolderItemFilter filter)
     {
@@ -60,6 +84,12 @@ public class Shell32TreeViewItem
     {
         get;
     }
+
+    //public bool IsExpanded
+    //{
+    //    get => (bool)GetValue(IsExpandedProperty);
+    //    set => SetValue(IsExpandedProperty, value);
+    //}
 
     public Shell32TreeViewItem(ShellItem shItem)
     {

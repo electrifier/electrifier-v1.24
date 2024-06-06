@@ -67,22 +67,21 @@ public sealed partial class Shell32GridView : UserControl
     {
         InitializeComponent();
         DataContext = this;
-        //WindowHandle = WinRT.Interop.WindowNative.GetWindowHandle(this);
+        GridShellItems = new ObservableCollection<Shell32GridViewItem>();
 
-        //ImageSource = new BitmapImage(new Uri("ms-appx:///Assets/StoreLogo.png"));
-
-
-        // TODO: make this async
-        //GridShellItems = EnumerateItems(CurrentFolder, Filter);
+        CurrentFolder = ShellFolder.Desktop;
     }
 
-    public void Navigate(ShellItem targetItem /*, FolderItemFilter? filter */)
+    public void Navigate(ShellItem? targetItem /*, FolderItemFilter? filter */)
     {
-        if (targetItem is null) { throw new ArgumentNullException(nameof(targetItem)); }
-        //if (filter is null) { filter = _filter; }
+        if (targetItem is null)
+        {
+            GridShellItems = new ObservableCollection<Shell32GridViewItem>();
+            return;
+        }
 
         var newEnumerateItems =
-            EnumerateItems(targetItem, FolderItemFilter.Storage /* TODO: , filter*/);
+            EnumerateItems(targetItem, Filter);
 
         GridShellItems = newEnumerateItems;
     }
@@ -119,13 +118,8 @@ public sealed partial class Shell32GridView : UserControl
             return;
         }
 
-
+        // TODO: fire event to request navigation
         Navigate(gridViewItem.ShellItem);
-        //if (gridViewItem.ShellItem is ShellFolder folder /*&& folder.Parent is not null*/)
-        //{
-        //    // TODO: fire event to request navigation
-        //    //GridShellItems = Navigate(folder, Filter);
-        //}
     }
 
     private string GetDebuggerDisplay()

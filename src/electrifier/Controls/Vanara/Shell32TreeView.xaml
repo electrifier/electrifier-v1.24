@@ -9,12 +9,12 @@
 
     <Grid>
         <TreeView x:Uid="shellTreeViewCtrl"
-                  ItemsSource="{x:Bind RootShellItems}"
-                  SelectionChanged="TreeView_OnSelectionChanged">
+                  ItemsSource="{x:Bind RootShellItems}">
             <TreeView.ItemTemplate>
                 <DataTemplate x:DataType="local:Shell32TreeViewItem">
                     <TreeViewItem HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"
-                                  ItemsSource="{x:Bind Children}">
+                                  ItemsSource="{x:Bind Children}"
+                                  IsExpanded="{x:Bind IsExpanded}">
                         <StackPanel Orientation="Horizontal"
                                     MaxHeight="20">
                             <ImageIcon x:Name="ImageIcon"
