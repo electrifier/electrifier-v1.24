@@ -42,8 +42,7 @@
             <Border Grid.Column="2" x:Name="GridViewBorder">
                 <!-- ItemsSource="{x:Bind ShellTreeViewItems}" -->
                 <!-- ItemsSource="{x:Bind ShellTreeViewItems}" -->
-                <local:Shell32GridView x:Name="ShellGridView"
-                                   CurrentFolder="{x:Bind CurrentFolder}" />
+                <local:Shell32GridView x:Name="ShellGridView" />
             </Border>
         </Grid>
     </Grid>

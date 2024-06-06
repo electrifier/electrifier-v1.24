@@ -8,8 +8,8 @@
              mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
-            <DataTemplate x:Name="ImageOverlayTemplate"
-                          x:DataType="local:Shell32GridViewItem">
+            <DataTemplate x:Name="ExplorerBrowserItemTemplate"
+                          x:DataType="local:ExplorerBrowserItem">
                 <Grid>
                     <StackPanel Orientation="Vertical"
                                 Height="96"
@@ -29,11 +29,11 @@
         </Grid.Resources>
         <GridView x:Name="GridView"
                   IsItemClickEnabled="True"
-                  ItemClick="OnItemClickHandler"
-                  ItemsSource="{x:Bind GridShellItems, Mode=OneWay}"
-                  ItemTemplate="{StaticResource ImageOverlayTemplate}"
-                  SelectionMode="Single">
-            <!-- {x:Bind MainViewModel.Items, Mode=OneWay}-->
+                  SelectionMode="Single"
+                  ItemTemplate="{StaticResource ExplorerBrowserItemTemplate}" >
+            <!--                   ItemsSource="{x:Bind GridShellItems, Mode=OneWay}"
+                                        {x:Bind MainViewModel.Items, Mode=OneWay}-->
+
             <!--<GridView.ItemContainerStyle>
                 <Style TargetType="GridViewItem"
                        BasedOn="{StaticResource DefaultGridViewItemStyle}">
@@ -50,7 +50,7 @@
                                    MaximumRowsOrColumns="3"
                                    Orientation="Horizontal" />
                 </ItemsPanelTemplate>
-            </GridView.ItemsPanel>-->
+            </GridView.ItemsPanel> -->
         </GridView>
     </Grid>
 </UserControl>

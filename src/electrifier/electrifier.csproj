@@ -64,7 +64,6 @@
 
   <ItemGroup>
     <Folder Include="Assets\Themes\Aero Blackcomb\" />
-    <Folder Include="Controls\" />
   </ItemGroup>
 
   <ItemGroup>

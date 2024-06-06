@@ -10,31 +10,38 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System;
+using System.Collections.ObjectModel;
 using Vanara.Windows.Shell;
 using Windows.Foundation.Collections;
 using Windows.Foundation;
+using CommunityToolkit.WinUI.Collections;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace electrifier.Controls.Vanara;
 
 public sealed partial class ExplorerBrowser : UserControl
 {
-    //private ShellItem CurrentFolder; 
-    public static readonly DependencyProperty CurrentFolderProperty = DependencyProperty.Register(nameof(CurrentFolder),
-        typeof(ShellItem), typeof(ExplorerBrowser), new PropertyMetadata(default(ShellItem)));
+    public ObservableCollection<ExplorerBrowserItem>? oc;
 
     public ExplorerBrowser()
     {
         InitializeComponent();
         DataContext = this;
 
+        // Set up the original list with a few sample items
+        oc = new ObservableCollection<ExplorerBrowserItem>
+        {
+            new ExplorerBrowserItem(ShellFolder.Desktop),
+        };
 
-        /* TODO: Remove and initialize by binding */
-        CurrentFolder = ShellFolder.Desktop;
-    }
 
-    private ShellItem CurrentFolder
-    {
-        get => (ShellItem)GetValue(CurrentFolderProperty);
-        set => SetValue(CurrentFolderProperty, value);
+        //oc.Append()
+
+        foreach (var item in oc[0]?.GetChildItems())
+        {
+            oc.Add(item);
+        }
+
+        ShellGridView.SetItemsSource(oc);
     }
 }
