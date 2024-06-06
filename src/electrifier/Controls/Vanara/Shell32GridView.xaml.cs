@@ -17,6 +17,7 @@ using Windows.Foundation.Collections;
 using Windows.Foundation;
 using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.WinUI.Collections;
 
 namespace electrifier.Controls.Vanara;
 
@@ -29,31 +30,11 @@ public sealed partial class Shell32GridView : UserControl
         private set;
     }
 
-    /**  -= Observable Examples: =-
-            [ObservableProperty]
-            private bool isLoading = true;
-            [ObservableProperty]
-            private bool hasFailures;
-            [ObservableProperty]
-            private Uri source = new("https://www.office.com/");
-            [ObservableProperty]
-            private bool isBackEnabled;
-            [ObservableProperty]
-            private bool isForwardEnabled = true;
-            [ObservableProperty]
-            private object? selected;
-            [ObservableProperty] **/
-
-    //[ObservableProperty]
     public FolderItemFilter Filter
     {
         get;
         private set;
     } = FolderItemFilter.Folders | FolderItemFilter.NonFolders;
-
-
-    //[ObservableProperty] 
-    //private object currentFolder;
 
     public ShellItem? CurrentFolder
     {
@@ -70,6 +51,9 @@ public sealed partial class Shell32GridView : UserControl
         GridShellItems = new ObservableCollection<Shell32GridViewItem>();
 
         CurrentFolder = ShellFolder.Desktop;
+
+        //var collection = new IncrementalLoadingCollection<GridViewItemsSource, GridViewItem>();
+        //PeopleListView.ItemsSource = collection;
     }
 
     public void Navigate(ShellItem? targetItem /*, FolderItemFilter? filter */)
@@ -125,5 +109,41 @@ public sealed partial class Shell32GridView : UserControl
     private string GetDebuggerDisplay()
     {
         return nameof(Shell32GridView) + ToString();
+    }
+
+    public class GridViewItemsSource : IIncrementalSource<Shell32GridViewItem>
+    {
+        private readonly List<Shell32GridViewItem> gridViewItems;
+
+        public GridViewItemsSource()
+        {
+            // Creates an example collection.
+            gridViewItems = new List<Shell32GridViewItem>();
+
+            for (var i = 1; i <= 200; i++)
+            {
+                var p = new Shell32GridViewItem(ShellFolder.Desktop);  // { Name = "Person " + i }
+                gridViewItems.Add(p);
+            }
+        }
+
+        public async Task<IEnumerable<Shell32GridViewItem>> GetPagedItemsAsync(int pageIndex, int pageSize)
+        {
+            // Gets items from the collection according to pageIndex and pageSize parameters.
+            var result = (from p in gridViewItems
+                          select p).Skip(pageIndex * pageSize).Take(pageSize);
+
+            return result;
+        }
+
+        public async Task<IEnumerable<Shell32GridViewItem>> GetPagedItemsAsync(int pageIndex, int pageSize, CancellationToken cToken)
+        {
+            // Gets items from the collection according to pageIndex and pageSize parameters.
+            var result = (from p in gridViewItems
+                    select p).Skip(pageIndex * pageSize)
+                .Take(pageSize);
+
+            return result;
+        }
     }
 }
