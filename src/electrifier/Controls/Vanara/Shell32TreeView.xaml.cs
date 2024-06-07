@@ -12,28 +12,17 @@ namespace electrifier.Controls.Vanara;
 
 public sealed partial class Shell32TreeView : UserControl
 {
-    //public readonly ObservableCollection<ExplorerBrowserItem> RootShellItems;
-
     public Shell32TreeView()
     {
         InitializeComponent();
         DataContext = this;
 
         this.Loaded += OnLoaded;
-
-        //RootShellItems = new ObservableCollection<ExplorerBrowserItem>
-        //{
-        //    new(ShellFolder.Desktop)
-        //};
-
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
-        // TODO: Add root items using an event handler
 
-        //CurrentFolder = RootShellItems.FirstOrDefault();
-        //CurrentFolder.IsExpanded = true;
     }
 
     public void SetItemsSource(ShellItem rootItem, ObservableCollection<ExplorerBrowserItem> itemSourceCollection)
@@ -45,6 +34,25 @@ public sealed partial class Shell32TreeView : UserControl
         };
         acv.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
 
-        TreeView.ItemsSource = acv;
+        if (acv.Count > 0)
+        {
+            TreeView.ItemsSource = acv;
+        }
+        else
+        {
+            TreeView.ItemsSource = itemSourceCollection;
+        }
+    }
+
+    private void TreeView_OnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs e)
+    {
+        var firstItem = e.AddedItems.First() as ExplorerBrowserItem;
+
+        if (firstItem is not { } ebItem)
+        {
+            return;
+        }
+
+        ebItem.Owner.TryNavigate(ebItem.ShellItem);
     }
 }

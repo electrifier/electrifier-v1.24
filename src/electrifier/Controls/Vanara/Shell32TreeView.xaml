@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UserControl x:Class="electrifier.Controls.Vanara.Shell32TreeView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="using:electrifier.Controls.Vanara"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="using:electrifier.Controls.Vanara"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              mc:Ignorable="d">
-
     <Grid>
-        <TreeView x:Name="TreeView" >
+        <TreeView x:Name="TreeView"
+                  SelectionMode="Single"
+                  SelectionChanged="TreeView_OnSelectionChanged">
             <TreeView.ItemTemplate>
                 <DataTemplate x:DataType="local:ExplorerBrowserItem">
-                    <TreeViewItem HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}" >
-                                  <!--ItemsSource="{x:Bind Children}"
-                                  IsExpanded="{x:Bind IsExpanded}"--> 
+                    <TreeViewItem HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"
+                                  ItemsSource="{x:Bind Children}">
                         <StackPanel Orientation="Horizontal"
                                     MaxHeight="20">
                             <ImageIcon x:Name="ImageIcon"
@@ -29,10 +29,3 @@
         </TreeView>
     </Grid>
 </UserControl>
-
-    
-<!--<GridView x:Name="GridView"
-          IsItemClickEnabled="True"
-          ItemClick="GridView_OnItemClick"
-          SelectionMode="Single"
-          ItemTemplate="{StaticResource ExplorerBrowserItemTemplate}" >-->

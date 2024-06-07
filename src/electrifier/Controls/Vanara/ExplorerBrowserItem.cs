@@ -36,15 +36,24 @@ public class ExplorerBrowserItem
         get; set;
     }
 
+    private bool IsExpanded
+    {
+        get; set;
+    }
+
     public ExplorerBrowser Owner
     {
         get;
     }
 
+    public List<ExplorerBrowserItem> Children;
+
+
     public ExplorerBrowserItem(ExplorerBrowser owner, ShellItem shItem, string? overrideDisplayName = default)
     {
         Owner = owner;
         ShellItem = shItem ?? throw new ArgumentNullException(nameof(shItem));
+        Children = new List<ExplorerBrowserItem>();
         DisplayName = overrideDisplayName ?? (ShellItem.Name ?? throw new Exception("shItem Display Name"));
         IsFolder = shItem.IsFolder;
 
@@ -69,18 +78,12 @@ public class ExplorerBrowserItem
     public List<ExplorerBrowserItem> GetChildItems(ShellItem enumerationShellItem)
     {
         var children = EnumerateChildren(enumerationShellItem, filter: FolderItemFilter.Storage);
-        var result = new List<ExplorerBrowserItem>();
-
-        foreach (var shellItem in children)
-        {
-            result.Add(new ExplorerBrowserItem(this.Owner, shellItem));
-        }
 
         // TODO:
         //  IsEnumerated = true;
         //  HasUnrealizedChildren = false;
 
-        return result;
+        return children.Select(shellItem => new ExplorerBrowserItem(this.Owner, shellItem)).ToList();
     }
 
     //internal static ExplorerBrowserItem? Parent(ShellItem shItem)
