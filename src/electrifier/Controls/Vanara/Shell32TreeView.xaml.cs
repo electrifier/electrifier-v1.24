@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using CommunityToolkit.WinUI.Collections;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Vanara.Windows.Shell;
@@ -11,46 +12,39 @@ namespace electrifier.Controls.Vanara;
 
 public sealed partial class Shell32TreeView : UserControl
 {
-    public readonly ObservableCollection<Shell32TreeViewItem> RootShellItems;
+    //public readonly ObservableCollection<ExplorerBrowserItem> RootShellItems;
 
     public Shell32TreeView()
     {
         InitializeComponent();
         DataContext = this;
 
-        //this.Loaded += OnLoaded;
+        this.Loaded += OnLoaded;
 
-        // TODO: Add root items using an event handler
-        RootShellItems = new ObservableCollection<Shell32TreeViewItem>
-        {
-            new(ShellFolder.Desktop)
-        };
+        //RootShellItems = new ObservableCollection<ExplorerBrowserItem>
+        //{
+        //    new(ShellFolder.Desktop)
+        //};
+
     }
 
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
-        EnumerateRootItems();
+        // TODO: Add root items using an event handler
 
         //CurrentFolder = RootShellItems.FirstOrDefault();
         //CurrentFolder.IsExpanded = true;
     }
 
-    internal void EnumerateRootItems()
+    public void SetItemsSource(ShellItem rootItem, ObservableCollection<ExplorerBrowserItem> itemSourceCollection)
     {
-        //foreach (var rootShellItem in RootShellItems)
-        //{
-        //    // TODO: sort children using ShellItem.Compare for sorting  // CompareTo(ShellItem)
-        //    var children =
-        //        rootShellItem.EnumerateChildren(filter: FolderItemFilter.Folders)
-        //            .OrderBy(keySelector: item => (item.Attributes & ShellItemAttribute.Browsable) != 0)
-        //            .ThenBy(keySelector: item => item.Name);
+        // TODO: add rootItem
+        var acv = new AdvancedCollectionView(itemSourceCollection, true)
+        {
+            Filter = x => ((ExplorerBrowserItem)x).IsFolder
+        };
+        acv.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
 
-        //    foreach (var shItem in children)
-        //    {
-        //        var tvItem = new Shell32TreeViewItem(shItem);
-        //        //tvItem.Expanded += OnItemExpanded;
-        //        rootShellItem.Children.Add(tvItem);
-        //    }
-        //}
+        TreeView.ItemsSource = acv;
     }
 }

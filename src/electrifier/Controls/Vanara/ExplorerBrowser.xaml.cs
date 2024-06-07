@@ -40,6 +40,7 @@ public sealed partial class ExplorerBrowser : UserControl
         finally
         {
             ExplorerBrowserItems = newItems;
+            ShellTreeView.SetItemsSource(shItem, ExplorerBrowserItems);
             ShellGridView.SetItemsSource(ExplorerBrowserItems); // TODO: Maybe use bind in xaml
             CurrentFolder = shItem;
         }

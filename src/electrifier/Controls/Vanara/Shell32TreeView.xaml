@@ -8,13 +8,12 @@
              mc:Ignorable="d">
 
     <Grid>
-        <TreeView x:Uid="shellTreeViewCtrl"
-                  ItemsSource="{x:Bind RootShellItems}">
+        <TreeView x:Name="TreeView" >
             <TreeView.ItemTemplate>
-                <DataTemplate x:DataType="local:Shell32TreeViewItem">
-                    <TreeViewItem HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"
-                                  ItemsSource="{x:Bind Children}"
-                                  IsExpanded="{x:Bind IsExpanded}">
+                <DataTemplate x:DataType="local:ExplorerBrowserItem">
+                    <TreeViewItem HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}" >
+                                  <!--ItemsSource="{x:Bind Children}"
+                                  IsExpanded="{x:Bind IsExpanded}"--> 
                         <StackPanel Orientation="Horizontal"
                                     MaxHeight="20">
                             <ImageIcon x:Name="ImageIcon"
@@ -30,3 +29,10 @@
         </TreeView>
     </Grid>
 </UserControl>
+
+    
+<!--<GridView x:Name="GridView"
+          IsItemClickEnabled="True"
+          ItemClick="GridView_OnItemClick"
+          SelectionMode="Single"
+          ItemTemplate="{StaticResource ExplorerBrowserItemTemplate}" >-->
