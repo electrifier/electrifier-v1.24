@@ -6,7 +6,7 @@ namespace electrifier.Controls.Vanara;
 
 public sealed partial class ExplorerBrowser : UserControl
 {
-    public ObservableCollection<ExplorerBrowserItem> ExplorerBrowserItems
+    public ObservableCollection<ExplorerBrowserItem> CurrentFolderItems
     {
         get;
         private set;
@@ -18,7 +18,7 @@ public sealed partial class ExplorerBrowser : UserControl
     {
         InitializeComponent();
         DataContext = this;
-        ExplorerBrowserItems = new ObservableCollection<ExplorerBrowserItem>();
+        CurrentFolderItems = new ObservableCollection<ExplorerBrowserItem>();
         CurrentFolder = ShellFolder.Desktop;
 
         TryNavigate(CurrentFolder);
@@ -39,9 +39,9 @@ public sealed partial class ExplorerBrowser : UserControl
         }
         finally
         {
-            ExplorerBrowserItems = newItems;
-            ShellTreeView.SetItemsSource(shItem, ExplorerBrowserItems);
-            ShellGridView.SetItemsSource(ExplorerBrowserItems); // TODO: Maybe use bind in xaml
+            CurrentFolderItems = newItems;
+            ShellTreeView.SetItemsSource(shItem, CurrentFolderItems);
+            ShellGridView.SetItemsSource(CurrentFolderItems); // TODO: Maybe use bind in xaml
             CurrentFolder = shItem;
         }
     }
