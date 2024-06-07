@@ -43,9 +43,7 @@ public sealed partial class Shell32GridView : UserControl
 
     private void GridView_OnItemClick(object sender, ItemClickEventArgs e)
     {
-        var clicked = e.ClickedItem;
-
-        if (clicked is not ExplorerBrowserItem ebItem)
+        if (e.ClickedItem is not ExplorerBrowserItem ebItem)
         {
             return;
         }

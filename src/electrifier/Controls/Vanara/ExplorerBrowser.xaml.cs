@@ -21,7 +21,7 @@ namespace electrifier.Controls.Vanara;
 
 public sealed partial class ExplorerBrowser : UserControl
 {
-    public ObservableCollection<ExplorerBrowserItem> oc
+    public ObservableCollection<ExplorerBrowserItem> ExplorerBrowserItems
     {
         get;
         private set;
@@ -33,9 +33,9 @@ public sealed partial class ExplorerBrowser : UserControl
     {
         InitializeComponent();
         DataContext = this;
-        oc = new ObservableCollection<ExplorerBrowserItem>();
+        ExplorerBrowserItems = new ObservableCollection<ExplorerBrowserItem>();
         CurrentFolder = ShellFolder.Desktop;
-        
+
         TryNavigate(CurrentFolder);
     }
 
@@ -54,18 +54,9 @@ public sealed partial class ExplorerBrowser : UserControl
         }
         finally
         {
-            if (oc is not null)     // TODO: should be not null able
-            {
-                oc.Clear();
-
-                foreach (var item in newItems)
-                {
-                    oc.Add(item);
-                }
-
-                ShellGridView.SetItemsSource(oc);
-                CurrentFolder = shItem;
-            }
+            ExplorerBrowserItems = newItems;
+            ShellGridView.SetItemsSource(ExplorerBrowserItems); // TODO: Maybe use bind in xaml
+            CurrentFolder = shItem;
         }
     }
 }
