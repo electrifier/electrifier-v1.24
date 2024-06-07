@@ -1,24 +1,6 @@
-﻿using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media.Imaging;
+﻿using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Microsoft.UI.Xaml;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System;
-using Vanara.Extensions;
-using Vanara.InteropServices;
-using Vanara.PInvoke;
 using Vanara.Windows.Shell;
-using Windows.Foundation.Collections;
-using Windows.Foundation;
 
 
 namespace electrifier.Controls.Vanara;
