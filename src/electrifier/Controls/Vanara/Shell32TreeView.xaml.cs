@@ -29,8 +29,6 @@ public sealed partial class Shell32TreeView : UserControl
 {
     public readonly ObservableCollection<Shell32TreeViewItem> RootShellItems;
 
-
-
     public Shell32TreeView()
     {
         InitializeComponent();
@@ -55,20 +53,20 @@ public sealed partial class Shell32TreeView : UserControl
 
     internal void EnumerateRootItems()
     {
-        foreach (var rootShellItem in RootShellItems)
-        {
-            // TODO: sort children using ShellItem.Compare for sorting  // CompareTo(ShellItem)
-            var children =
-                rootShellItem.EnumerateChildren(filter: FolderItemFilter.Folders)
-                    .OrderBy(keySelector: item => (item.Attributes & ShellItemAttribute.Browsable) != 0)
-                    .ThenBy(keySelector: item => item.Name);
+        //foreach (var rootShellItem in RootShellItems)
+        //{
+        //    // TODO: sort children using ShellItem.Compare for sorting  // CompareTo(ShellItem)
+        //    var children =
+        //        rootShellItem.EnumerateChildren(filter: FolderItemFilter.Folders)
+        //            .OrderBy(keySelector: item => (item.Attributes & ShellItemAttribute.Browsable) != 0)
+        //            .ThenBy(keySelector: item => item.Name);
 
-            foreach (var shItem in children)
-            {
-                var tvItem = new Shell32TreeViewItem(shItem);
-                //tvItem.Expanded += OnItemExpanded;
-                rootShellItem.Children.Add(tvItem);
-            }
-        }
+        //    foreach (var shItem in children)
+        //    {
+        //        var tvItem = new Shell32TreeViewItem(shItem);
+        //        //tvItem.Expanded += OnItemExpanded;
+        //        rootShellItem.Children.Add(tvItem);
+        //    }
+        //}
     }
 }

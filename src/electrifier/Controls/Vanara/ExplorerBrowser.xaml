@@ -25,9 +25,7 @@
                 </Style>
             </Grid.Resources>
             <Border x:Name="TreeViewBorder">
-                <!-- ItemsSource="{x:Bind ShellTreeViewItems}" -->
-                <!--<local:Shell32TreeView x:Name="ShellTreeView"
-                                       CurrentFolder="{x:Bind CurrentFolder}" />-->
+                <local:Shell32TreeView x:Name="ShellTreeView" />
             </Border>
             <controls:GridSplitter x:Name="GridSplitter"
                                    Grid.Column="1"
@@ -39,9 +37,8 @@
                     <TranslateTransform X="-6" />
                 </controls:GridSplitter.RenderTransform>
             </controls:GridSplitter>
-            <Border Grid.Column="2" x:Name="GridViewBorder">
-                <!-- ItemsSource="{x:Bind ShellTreeViewItems}" -->
-                <!-- ItemsSource="{x:Bind ShellTreeViewItems}" -->
+            <Border Grid.Column="2"
+                    x:Name="GridViewBorder">
                 <local:Shell32GridView x:Name="ShellGridView" />
             </Border>
         </Grid>

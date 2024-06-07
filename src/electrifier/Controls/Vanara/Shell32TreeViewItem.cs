@@ -52,23 +52,6 @@ public class Shell32TreeViewItem
 
     public bool IsExpanded;
 
-    internal IEnumerable<ShellItem> EnumerateChildren(FolderItemFilter filter)
-    {
-        IsEnumerated = false;
-
-        try
-        {
-            return ShellItem is not ShellFolder folder
-                ? Enumerable.Empty<ShellItem>()
-                : folder.EnumerateChildren(filter);
-        }
-        finally
-        {
-            IsEnumerated = true;
-            HasUnrealizedChildren = false;
-        }
-    }
-
     // TODO: Add observable flags for async property loading
     public bool HasUnrealizedChildren
     {
@@ -127,6 +110,26 @@ public class Shell32TreeViewItem
 
         HasUnrealizedChildren = attributes.HasFlag(ShellItemAttribute.HasSubfolder);
     }
+
+    /*
+    internal IEnumerable<ShellItem> EnumerateChildren(FolderItemFilter filter)
+       {
+           IsEnumerated = false;
+
+           try
+           {
+               return ShellItem is not ShellFolder folder
+                   ? Enumerable.Empty<ShellItem>()
+                   : folder.EnumerateChildren(filter);
+           }
+           finally
+           {
+               IsEnumerated = true;
+               HasUnrealizedChildren = false;
+           }
+       }
+
+     */
 
     private string GetDebuggerDisplay()
     {
