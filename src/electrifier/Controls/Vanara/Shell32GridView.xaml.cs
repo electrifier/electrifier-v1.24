@@ -41,6 +41,19 @@ public sealed partial class Shell32GridView : UserControl
         GridView.ItemsSource = acv;
     }
 
+    private void GridView_OnItemClick(object sender, ItemClickEventArgs e)
+    {
+        var clicked = e.ClickedItem;
+
+        if (clicked is not ExplorerBrowserItem ebItem)
+        {
+            return;
+        }
+
+        var shItem = ebItem.ShellItem;
+        ebItem.Owner.TryNavigate(shItem);
+    }
+
     private string GetDebuggerDisplay()
     {
         return nameof(Shell32GridView) + ToString();

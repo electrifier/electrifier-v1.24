@@ -36,8 +36,14 @@ public class ExplorerBrowserItem
         get; set;
     }
 
-    public ExplorerBrowserItem(ShellItem shItem, string? overrideDisplayName = default)
+    public ExplorerBrowser Owner
     {
+        get;
+    }
+
+    public ExplorerBrowserItem(ExplorerBrowser owner, ShellItem shItem, string? overrideDisplayName = default)
+    {
+        Owner = owner;
         ShellItem = shItem ?? throw new ArgumentNullException(nameof(shItem));
         DisplayName = overrideDisplayName ?? (ShellItem.Name ?? throw new Exception("shItem Display Name"));
         IsFolder = shItem.IsFolder;
@@ -47,32 +53,32 @@ public class ExplorerBrowserItem
             : DefaultFileImage;
     }
 
-    internal IEnumerable<ShellItem> EnumerateChildren(FolderItemFilter filter)
+    internal IEnumerable<ShellItem> EnumerateChildren(ShellItem enumerationShellItem, FolderItemFilter filter)
     {
         IsEnumerated = false;
 
-        try
-        {
-            return ShellItem is not ShellFolder folder
-                ? Enumerable.Empty<ShellItem>()
-                : folder.EnumerateChildren(filter);
-        }
-        finally
-        {
-            IsEnumerated = true;
-            HasUnrealizedChildren = false;
-        }
+        return enumerationShellItem is not ShellFolder folder
+            ? Enumerable.Empty<ShellItem>()
+            : folder.EnumerateChildren(filter);
+
+        // TODO:
+        //  IsEnumerated = true;
+        //  HasUnrealizedChildren = false;
     }
 
-    public List<ExplorerBrowserItem> GetChildItems()
+    public List<ExplorerBrowserItem> GetChildItems(ShellItem enumerationShellItem)
     {
-        var children = EnumerateChildren(FolderItemFilter.Storage);
+        var children = EnumerateChildren(enumerationShellItem, filter: FolderItemFilter.Storage);
         var result = new List<ExplorerBrowserItem>();
 
         foreach (var shellItem in children)
         {
-            result.Add(new ExplorerBrowserItem(shellItem));
+            result.Add(new ExplorerBrowserItem(this.Owner, shellItem));
         }
+
+        // TODO:
+        //  IsEnumerated = true;
+        //  HasUnrealizedChildren = false;
 
         return result;
     }
