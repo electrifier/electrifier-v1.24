@@ -1,9 +1,12 @@
-﻿using Microsoft.UI.Xaml.Media.Imaging;
+﻿using System.Diagnostics;
+using System.Text;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Media;
 using Vanara.Windows.Shell;
 
 namespace electrifier.Controls.Vanara;
 
+[DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
 public class ExplorerBrowserItem
 {
     private static readonly BitmapImage DefaultFileImage = new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
@@ -103,5 +106,16 @@ public class ExplorerBrowserItem
     //        IsFolder = true,
     //    };
     //}
+
+    private string GetDebuggerDisplay()
+    {
+        var sb = new StringBuilder();
+        sb.Append(nameof(ExplorerBrowserItem));
+        sb.Append($" {DisplayName} ");
+        if (IsFolder)
+            sb.Append("Folder");
+        return sb.ToString();
+        //return nameof(this) + ToString();
+    }
 
 }

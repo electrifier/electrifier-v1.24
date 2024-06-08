@@ -17,13 +17,13 @@ public sealed partial class Shell32TreeView : UserControl
         InitializeComponent();
         DataContext = this;
 
-        this.Loaded += OnLoaded;
+        //this.Loaded += Shell32TreeView_Loaded;
+        //this.Loading += Shell32TreeView_Loading;
     }
 
-    private void OnLoaded(object sender, RoutedEventArgs e)
-    {
+    private void Shell32TreeView_Loading(FrameworkElement sender, object args) => throw new NotImplementedException();
 
-    }
+    private void Shell32TreeView_Loaded(object sender, RoutedEventArgs e) => throw new NotImplementedException();
 
     public void SetItemsSource(ShellItem rootItem, ObservableCollection<ExplorerBrowserItem> itemSourceCollection)
     {
@@ -34,15 +34,19 @@ public sealed partial class Shell32TreeView : UserControl
         };
         acv.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
 
-        if (acv.Count > 0)
-        {
-            TreeView.ItemsSource = acv;
-        }
-        else
-        {
-            TreeView.ItemsSource = itemSourceCollection;
-        }
+        TreeView.ItemsSource = acv;
+
+        //if (acv.Count > 0)
+        //{
+        //    TreeView.ItemsSource = acv;
+        //}
+        //else
+        //{
+        //    TreeView.ItemsSource = itemSourceCollection;
+        //}
     }
+
+//    public event EventHandler SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs e);
 
     private void TreeView_OnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs e)
     {
