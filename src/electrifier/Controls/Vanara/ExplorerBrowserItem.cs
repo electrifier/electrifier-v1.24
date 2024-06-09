@@ -39,7 +39,12 @@ public class ExplorerBrowserItem
         get; set;
     }
 
-    private bool IsExpanded
+    public bool IsExpanded
+    {
+        get; set;
+    }
+
+    public bool IsSelected
     {
         get; set;
     }
@@ -62,6 +67,8 @@ public class ExplorerBrowserItem
         Children = new List<ExplorerBrowserItem>();
         DisplayName = overrideDisplayName ?? (ShellItem.Name ?? throw new Exception("shItem Display Name"));
         IsFolder = shItem.IsFolder;
+        IsExpanded = true;
+        IsSelected = false;
 
         ImageIconSource = shItem.IsFolder
             ? DefaultFolderImage

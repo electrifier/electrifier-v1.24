@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using Windows.UI.Notifications;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.Collections;
@@ -85,15 +86,31 @@ public sealed partial class Shell32TreeView : UserControl
         //    destinationTargetItem = rootItem;
         //}
         //destinationTargetItem.Children = itemSourceCollection;
-        
+
+        var targetItem = _items.Find(x => parentItem.ShellItem.Equals(x.ShellItem));
+        if (targetItem != null)
+        {
+            targetItem.Children = itemSourceCollection;
+        }
+        else
+        {
+            var newTargetItem = _items[0].Children.Find(x => parentItem.ShellItem.Equals(x.ShellItem));
+            if (newTargetItem != null)
+            {
+                newTargetItem.Children = itemSourceCollection;
+                newTargetItem.IsExpanded = true;
+            }
+            else Debug.Print("TreeView.SetItemsSource found no targetItem");
+        }
+
 
 
         //parentItem.Children = itemSourceCollection;
         //_items.Add(parentItem);
-        var myItem = _items[0];
-        myItem.Children = itemSourceCollection;
+        //var myItem = _items[0];
+        //myItem.Children = itemSourceCollection;
 
-//        UpdateCollectionView();
+        UpdateCollectionView();
 
 //        var  = TreeView.FindChildOrSelf<ExplorerBrowserItem>(parentItem);
         //FindChildOrSelf(parentItem);
