@@ -51,6 +51,9 @@ public class ExplorerBrowserItem
 
     public List<ExplorerBrowserItem> Children;
 
+    // TODO: TreeViewNode - Property
+    // TODO: ExplorerBrowserItem.TreeNodeSelected = bool; => Initiate selection of this node
+    // TODO: GridViewItem - Property
 
     public ExplorerBrowserItem(ExplorerBrowser owner, ShellItem shItem, string? overrideDisplayName = default)
     {

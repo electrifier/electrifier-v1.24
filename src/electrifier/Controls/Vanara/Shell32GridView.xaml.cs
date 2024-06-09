@@ -14,7 +14,7 @@ public sealed partial class Shell32GridView : UserControl
         DataContext = this;
     }
 
-    public void SetItemsSource(ObservableCollection<ExplorerBrowserItem> itemSourceCollection)
+    public void SetItemsSource(List<ExplorerBrowserItem> itemSourceCollection)
     {
         var acv = new AdvancedCollectionView(itemSourceCollection, true)
         {

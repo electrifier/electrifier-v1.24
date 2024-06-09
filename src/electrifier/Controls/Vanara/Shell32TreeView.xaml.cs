@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using Windows.UI.Notifications;
 using CommunityToolkit.WinUI.Collections;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -12,20 +13,43 @@ namespace electrifier.Controls.Vanara;
 
 public sealed partial class Shell32TreeView : UserControl
 {
+//    public SelectionChangedEventHandler(object sender, SelectionChangedEventArgs e);
+    //public delegate void SelectionChangedEventHandler   //.SelectionChanged;
+
+    public TreeView myTreeView => TreeView;
+
     public Shell32TreeView()
     {
         InitializeComponent();
         DataContext = this;
 
+        //var test = this.TreeView.SelectionChanged
+        //object slChanged = this.TreeView.SelectionChanged;
+        // TreeView_OnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs e)
+
         //this.Loaded += Shell32TreeView_Loaded;
         //this.Loading += Shell32TreeView_Loading;
     }
 
-    private void Shell32TreeView_Loading(FrameworkElement sender, object args) => throw new NotImplementedException();
 
-    private void Shell32TreeView_Loaded(object sender, RoutedEventArgs e) => throw new NotImplementedException();
 
-    public void SetItemsSource(ShellItem rootItem, ObservableCollection<ExplorerBrowserItem> itemSourceCollection)
+    public void InitializeRoot(ShellItem currentFolder)
+    {
+        //if (currentFolder == null)
+        //{
+        //    var acv = new AdvancedCollectionView(itemSourceCollection, true)
+        //    {
+        //        Filter = x => ((ExplorerBrowserItem)x).IsFolder
+        //    };
+        //    acv.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
+        //}
+    }
+
+    //private void Shell32TreeView_Loading(FrameworkElement sender, object args) => throw new NotImplementedException();
+
+    //private void Shell32TreeView_Loaded(object sender, RoutedEventArgs e) => throw new NotImplementedException();
+
+    public void SetItemsSource(ShellItem rootItem, List<ExplorerBrowserItem> itemSourceCollection)
     {
         // TODO: add rootItem
         var acv = new AdvancedCollectionView(itemSourceCollection, true)
@@ -46,17 +70,9 @@ public sealed partial class Shell32TreeView : UserControl
         //}
     }
 
-//    public event EventHandler SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs e);
-
-    private void TreeView_OnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs e)
+    public class TreeViewSelectionChanged : EventArgs
     {
-        var firstItem = e.AddedItems.First() as ExplorerBrowserItem;
-
-        if (firstItem is not { } ebItem)
-        {
-            return;
-        }
-
-        ebItem.Owner.TryNavigate(ebItem.ShellItem);
+        public IList<object> AddedItems { get; }
+        public IList<object> RemovedItems { get; }
     }
 }

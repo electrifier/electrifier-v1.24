@@ -8,8 +8,7 @@
              mc:Ignorable="d">
     <Grid>
         <TreeView x:Name="TreeView"
-                  SelectionMode="Single"
-                  SelectionChanged="TreeView_OnSelectionChanged">
+                  SelectionMode="Single">
             <TreeView.ItemTemplate>
                 <DataTemplate x:DataType="local:ExplorerBrowserItem">
                     <TreeViewItem HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"
