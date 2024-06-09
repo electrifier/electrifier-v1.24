@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using Windows.UI.Notifications;
+using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.Collections;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -16,12 +17,25 @@ public sealed partial class Shell32TreeView : UserControl
 //    public SelectionChangedEventHandler(object sender, SelectionChangedEventArgs e);
     //public delegate void SelectionChangedEventHandler   //.SelectionChanged;
 
+    private readonly List<ExplorerBrowserItem> _items;
+    private AdvancedCollectionView _advancedCollectionView;
+
     public TreeView myTreeView => TreeView;
 
     public Shell32TreeView()
     {
         InitializeComponent();
         DataContext = this;
+
+        _items = new List<ExplorerBrowserItem>();
+        _advancedCollectionView = new AdvancedCollectionView(_items, true)
+        {
+            Filter = x => ((ExplorerBrowserItem)x).IsFolder
+        };
+
+        _advancedCollectionView.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
+        TreeView.ItemsSource = _advancedCollectionView;
+
 
         //var test = this.TreeView.SelectionChanged
         //object slChanged = this.TreeView.SelectionChanged;
@@ -33,41 +47,58 @@ public sealed partial class Shell32TreeView : UserControl
 
 
 
-    public void InitializeRoot(ShellItem currentFolder)
+    public void InitializeRoot(ExplorerBrowserItem rootItem)
     {
-        //if (currentFolder == null)
-        //{
-        //    var acv = new AdvancedCollectionView(itemSourceCollection, true)
-        //    {
-        //        Filter = x => ((ExplorerBrowserItem)x).IsFolder
-        //    };
-        //    acv.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
-        //}
+        if (rootItem == null)
+        {
+            throw new ArgumentNullException(nameof(rootItem));
+        }
+
+        _items.Add(rootItem);
+
+        UpdateCollectionView();
+    }
+
+    private void UpdateCollectionView()
+    {
+        _advancedCollectionView = new AdvancedCollectionView(_items, true)
+        {
+            Filter = x => ((ExplorerBrowserItem)x).IsFolder
+        };
+
+        _advancedCollectionView.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
+        TreeView.ItemsSource = _advancedCollectionView;
     }
 
     //private void Shell32TreeView_Loading(FrameworkElement sender, object args) => throw new NotImplementedException();
 
     //private void Shell32TreeView_Loaded(object sender, RoutedEventArgs e) => throw new NotImplementedException();
 
-    public void SetItemsSource(ShellItem rootItem, List<ExplorerBrowserItem> itemSourceCollection)
+    public void SetItemsSource(ExplorerBrowserItem parentItem, List<ExplorerBrowserItem> itemSourceCollection)
     {
-        // TODO: add rootItem
-        var acv = new AdvancedCollectionView(itemSourceCollection, true)
-        {
-            Filter = x => ((ExplorerBrowserItem)x).IsFolder
-        };
-        acv.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
-
-        TreeView.ItemsSource = acv;
-
-        //if (acv.Count > 0)
-        //{
-        //    TreeView.ItemsSource = acv;
-        //}
+        //var rootItem = _items[0];
+        //ExplorerBrowserItem destinationTargetItem = null;
+        //if (rootItem.ShellItem == parentItem.ShellItem)
+        //    destinationTargetItem = rootItem;
         //else
         //{
-        //    TreeView.ItemsSource = itemSourceCollection;
+        //    destinationTargetItem = rootItem;
         //}
+        //destinationTargetItem.Children = itemSourceCollection;
+        
+
+
+        //parentItem.Children = itemSourceCollection;
+        //_items.Add(parentItem);
+        var myItem = _items[0];
+        myItem.Children = itemSourceCollection;
+
+//        UpdateCollectionView();
+
+//        var  = TreeView.FindChildOrSelf<ExplorerBrowserItem>(parentItem);
+        //FindChildOrSelf(parentItem);
+        // TODO: add this collection to rootItem
+
     }
 
     public class TreeViewSelectionChanged : EventArgs

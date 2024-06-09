@@ -16,10 +16,10 @@ public sealed partial class Shell32GridView : UserControl
 
     public void SetItemsSource(List<ExplorerBrowserItem> itemSourceCollection)
     {
-        var acv = new AdvancedCollectionView(itemSourceCollection, true)
-        {
-            Filter = x => !int.TryParse(((ExplorerBrowserItem)x).DisplayName, out _),
-        };
+        var acv = new AdvancedCollectionView(itemSourceCollection, true);
+        //{
+        //    Filter = x => !int.TryParse(((ExplorerBrowserItem)x).DisplayName, out _),
+        //};
         acv.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
 
         GridView.ItemsSource = acv;
