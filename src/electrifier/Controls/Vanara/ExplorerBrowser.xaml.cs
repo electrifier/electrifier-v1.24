@@ -8,6 +8,10 @@ namespace electrifier.Controls.Vanara;
 
 // https://github.com/dahall/Vanara/blob/master/Windows.Forms/Controls/ExplorerBrowser.cs
 
+// TODO: See also https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs
+
+
+
 public sealed partial class ExplorerBrowser : UserControl
 {
     // TODO: Use ShellItemArray for ShellItem Collections
