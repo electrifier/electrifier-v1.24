@@ -1,5 +1,6 @@
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Drawing.Text;
 using Windows.UI.Notifications;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.Collections;
@@ -64,22 +65,34 @@ public sealed partial class Shell32TreeView : UserControl
         if (targetItem != null)
         {
             targetItem.Children = itemSourceCollection;
+            targetItem.IsExpanded = true;
         }
         else
+        {
+            if (FindNodeInCollection())
+            {
+
+            }
+        }
+
+        UpdateCollectionView();
+
+        bool FindNodeInCollection()
         {
             var newTargetItem = _items[0].Children.Find(x => parentItem.ShellItem.Equals(x.ShellItem));
             if (newTargetItem != null)
             {
                 newTargetItem.Children = itemSourceCollection;
                 newTargetItem.IsExpanded = true;
+                return true;
             }
             else
             {
                 Debug.Print("TreeView.SetItemsSource found no targetItem to add folder items to.");
             }
-        }
 
-        UpdateCollectionView();
+            return false;
+        }
     }
 
     public class TreeViewSelectionChanged(IList<object> addedItems, IList<object> removedItems) : EventArgs
