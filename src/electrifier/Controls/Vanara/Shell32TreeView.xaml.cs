@@ -33,14 +33,6 @@ public sealed partial class Shell32TreeView : UserControl
         _advancedCollectionView.SortDescriptions.Add(new SortDescription("IsFolder", SortDirection.Descending));
         _advancedCollectionView.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
         TreeView.ItemsSource = _advancedCollectionView;
-
-
-        //var test = this.TreeView.SelectionChanged
-        //object slChanged = this.TreeView.SelectionChanged;
-        // TreeView_OnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs e)
-
-        //this.Loaded += Shell32TreeView_Loaded;
-        //this.Loading += Shell32TreeView_Loading;
     }
 
     public void InitializeRoot(ExplorerBrowserItem rootItem)
@@ -59,29 +51,15 @@ public sealed partial class Shell32TreeView : UserControl
     {
         _advancedCollectionView = new AdvancedCollectionView(_items, true)
         {
-            Filter = x => ((ExplorerBrowserItem)x).IsFolder
+            Filter = (x => ((ExplorerBrowserItem)x).IsFolder == true)
         };
 
         _advancedCollectionView.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
         TreeView.ItemsSource = _advancedCollectionView;
     }
 
-    //private void Shell32TreeView_Loading(FrameworkElement sender, object args) => throw new NotImplementedException();
-
-    //private void Shell32TreeView_Loaded(object sender, RoutedEventArgs e) => throw new NotImplementedException();
-
     public void SetItemsSource(ExplorerBrowserItem parentItem, List<ExplorerBrowserItem> itemSourceCollection)
     {
-        //var rootItem = _items[0];
-        //ExplorerBrowserItem destinationTargetItem = null;
-        //if (rootItem.ShellItem == parentItem.ShellItem)
-        //    destinationTargetItem = rootItem;
-        //else
-        //{
-        //    destinationTargetItem = rootItem;
-        //}
-        //destinationTargetItem.Children = itemSourceCollection;
-
         var targetItem = _items.Find(x => parentItem.ShellItem.Equals(x.ShellItem));
         if (targetItem != null)
         {
@@ -101,17 +79,7 @@ public sealed partial class Shell32TreeView : UserControl
             }
         }
 
-        //parentItem.Children = itemSourceCollection;
-        //_items.Add(parentItem);
-        //var myItem = _items[0];
-        //myItem.Children = itemSourceCollection;
-
         UpdateCollectionView();
-
-//        var  = TreeView.FindChildOrSelf<ExplorerBrowserItem>(parentItem);
-        //FindChildOrSelf(parentItem);
-        // TODO: add this collection to rootItem
-
     }
 
     public class TreeViewSelectionChanged(IList<object> addedItems, IList<object> removedItems) : EventArgs
