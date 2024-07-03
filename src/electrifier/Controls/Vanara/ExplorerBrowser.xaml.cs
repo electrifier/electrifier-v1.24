@@ -1,20 +1,16 @@
-using Microsoft.UI.Xaml.Controls;
-using System.Collections.ObjectModel;
-using System.Diagnostics;
-using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.UI;
+using Microsoft.UI.Xaml.Controls;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using Vanara.Windows.Shell;
-using static electrifier.Controls.Vanara.Shell32TreeView;
 
 namespace electrifier.Controls.Vanara;
 
 // https://github.com/dahall/Vanara/blob/master/Windows.Forms/Controls/ExplorerBrowser.cs
-
 // TODO: See also https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs
 
-
-
-public sealed partial class ExplorerBrowser : UserControl
+public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
     // TODO: Use ShellItemArray for ShellItem Collections
     public List<ExplorerBrowserItem> CurrentFolderItems
@@ -87,31 +83,44 @@ public sealed partial class ExplorerBrowser : UserControl
     }
 
 
+    public event PropertyChangedEventHandler? PropertyChanged;
 
-    #region The following is original copy & paste from Vanara
-    /// <summary>Event argument for The Navigated event</summary>
-    public class NavigatedEventArgs : EventArgs
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
-        /// <summary>The new location of the explorer browser</summary>
-        public ShellItem? NewLocation { get; set; }
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    /// <summary>Event argument for The Navigating event</summary>
-    public class NavigatingEventArgs : EventArgs
+    private bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
-        /// <summary>Set to 'True' to cancel the navigation.</summary>
-        public bool Cancel { get; set; }
-
-        /// <summary>The location being navigated to</summary>
-        public ShellItem? PendingLocation { get; set; }
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
     }
-
-    /// <summary>Event argument for the NavigatinoFailed event</summary>
-    public class NavigationFailedEventArgs : EventArgs
-    {
-        /// <summary>The location the browser would have navigated to.</summary>
-        public ShellItem? FailedLocation { get; set; }
-    }
-    #endregion
-
 }
+
+#region The following is original copy & paste from Vanara
+/// <summary>Event argument for The Navigated event</summary>
+public class NavigatedEventArgs : EventArgs
+{
+    /// <summary>The new location of the explorer browser</summary>
+    public ShellItem? NewLocation { get; set; }
+}
+
+/// <summary>Event argument for The Navigating event</summary>
+public class NavigatingEventArgs : EventArgs
+{
+    /// <summary>Set to 'True' to cancel the navigation.</summary>
+    public bool Cancel { get; set; }
+
+    /// <summary>The location being navigated to</summary>
+    public ShellItem? PendingLocation { get; set; }
+}
+
+/// <summary>Event argument for the NavigatinoFailed event</summary>
+public class NavigationFailedEventArgs : EventArgs
+{
+    /// <summary>The location the browser would have navigated to.</summary>
+    public ShellItem? FailedLocation { get; set; }
+}
+#endregion
