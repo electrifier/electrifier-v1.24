@@ -67,6 +67,7 @@ public class ExplorerBrowserItem
         Children = new List<ExplorerBrowserItem>();
         DisplayName = overrideDisplayName ?? (ShellItem.Name ?? throw new Exception("shItem Display Name"));
         IsFolder = shItem.IsFolder;
+        HasUnrealizedChildren = true;
         IsExpanded = true;
         IsSelected = false;
 
@@ -105,12 +106,10 @@ public class ExplorerBrowserItem
     //    {
     //        throw new ArgumentNullException(nameof(shItem));
     //    }
-
     //    if (shItem.Parent is null)
     //    {
     //        return null;
     //    }
-
     //    return new ExplorerBrowserItem(shItem.Parent, overrideDisplayName: "..")
     //    {
     //        IsFolder = true,
@@ -125,7 +124,5 @@ public class ExplorerBrowserItem
         if (IsFolder)
             sb.Append("Folder");
         return sb.ToString();
-        //return nameof(this) + ToString();
     }
-
 }

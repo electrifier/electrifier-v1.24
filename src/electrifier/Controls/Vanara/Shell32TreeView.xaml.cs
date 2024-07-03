@@ -29,11 +29,8 @@ public sealed partial class Shell32TreeView : UserControl
         DataContext = this;
 
         _items = new List<ExplorerBrowserItem>();
-        _advancedCollectionView = new AdvancedCollectionView(_items, true)
-        {
-            Filter = x => ((ExplorerBrowserItem)x).IsFolder
-        };
-
+        _advancedCollectionView = new AdvancedCollectionView(_items, true);
+        _advancedCollectionView.SortDescriptions.Add(new SortDescription("IsFolder", SortDirection.Descending));
         _advancedCollectionView.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
         TreeView.ItemsSource = _advancedCollectionView;
 
@@ -45,8 +42,6 @@ public sealed partial class Shell32TreeView : UserControl
         //this.Loaded += Shell32TreeView_Loaded;
         //this.Loading += Shell32TreeView_Loading;
     }
-
-
 
     public void InitializeRoot(ExplorerBrowserItem rootItem)
     {
