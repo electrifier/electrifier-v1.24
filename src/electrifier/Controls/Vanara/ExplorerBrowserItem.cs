@@ -19,7 +19,7 @@ public class ExplorerBrowserItem
     }
     public bool IsFolder
     {
-        get; private init;
+        get;
     }
     public ShellItem ShellItem
     {
@@ -64,40 +64,34 @@ public class ExplorerBrowserItem
     {
         Owner = owner;
         ShellItem = shItem ?? throw new ArgumentNullException(nameof(shItem));
-        Children = new List<ExplorerBrowserItem>();
         DisplayName = overrideDisplayName ?? (ShellItem.Name ?? throw new Exception("shItem Display Name"));
+        Children = [];
+        HasUnrealizedChildren = shItem.IsFolder;
         IsFolder = shItem.IsFolder;
-        HasUnrealizedChildren = true;
+        ImageIconSource = shItem is { IsFolder: true } ? DefaultFolderImage : DefaultFileImage;
         IsExpanded = true;
         IsSelected = false;
-
-        ImageIconSource = shItem.IsFolder
-            ? DefaultFolderImage
-            : DefaultFileImage;
     }
 
-    internal IEnumerable<ShellItem> EnumerateChildren(ShellItem enumerationShellItem, FolderItemFilter filter)
+    internal static IEnumerable<ShellItem> EnumerateChildren(ShellItem enumerationShellItem, FolderItemFilter filter)
     {
-        IsEnumerated = false;
-
-        return enumerationShellItem is not ShellFolder folder
-            ? Enumerable.Empty<ShellItem>()
-            : folder.EnumerateChildren(filter);
-
-        // TODO:
-        //  IsEnumerated = true;
-        //  HasUnrealizedChildren = false;
+        return enumerationShellItem is not ShellFolder folder ? [] : folder.EnumerateChildren(filter);
     }
 
     public List<ExplorerBrowserItem> GetChildItems(ShellItem enumerationShellItem)
     {
         var children = EnumerateChildren(enumerationShellItem, filter: FolderItemFilter.Storage);
 
-        // TODO:
-        //  IsEnumerated = true;
-        //  HasUnrealizedChildren = false;
+        var shellItems = children as ShellItem[] ?? children.ToArray();
+        IsEnumerated = true;            // TODO: SetProperty
+        HasUnrealizedChildren = false;  // TODO: SetProperty
 
-        return children.Select(shellItem => new ExplorerBrowserItem(this.Owner, shellItem)).ToList();
+        if (shellItems.Any())
+        {
+            return shellItems.Select(shellItem => new ExplorerBrowserItem(Owner, shellItem)).ToList();
+        }
+
+        return [];
     }
 
     //internal static ExplorerBrowserItem? Parent(ShellItem shItem)
@@ -122,7 +116,10 @@ public class ExplorerBrowserItem
         sb.Append(nameof(ExplorerBrowserItem));
         sb.Append($" {DisplayName} ");
         if (IsFolder)
+        {
             sb.Append("Folder");
+        }
+
         return sb.ToString();
     }
 }
