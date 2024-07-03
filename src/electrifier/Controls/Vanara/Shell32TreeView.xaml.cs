@@ -100,10 +100,11 @@ public sealed partial class Shell32TreeView : UserControl
                 newTargetItem.Children = itemSourceCollection;
                 newTargetItem.IsExpanded = true;
             }
-            else Debug.Print("TreeView.SetItemsSource found no targetItem");
+            else
+            {
+                Debug.Print("TreeView.SetItemsSource found no targetItem to add folder items to.");
+            }
         }
-
-
 
         //parentItem.Children = itemSourceCollection;
         //_items.Add(parentItem);
@@ -118,9 +119,9 @@ public sealed partial class Shell32TreeView : UserControl
 
     }
 
-    public class TreeViewSelectionChanged : EventArgs
+    public class TreeViewSelectionChanged(IList<object> addedItems, IList<object> removedItems) : EventArgs
     {
-        public IList<object> AddedItems { get; }
-        public IList<object> RemovedItems { get; }
+        public IList<object> AddedItems { get; } = addedItems ?? throw new ArgumentNullException(nameof(addedItems));
+        public IList<object> RemovedItems { get; } = removedItems ?? throw new ArgumentNullException(nameof(removedItems));
     }
 }
