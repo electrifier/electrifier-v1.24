@@ -35,7 +35,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         var currentFolderExplorerBrowserItem = new ExplorerBrowserItem(this, CurrentFolder);
         ShellTreeView.InitializeRoot(currentFolderExplorerBrowserItem);
         ShellTreeView.myTreeView.SelectedItem = currentFolderExplorerBrowserItem;
-        ShellTreeView.myTreeView.SelectionChanged += MyTreeView_SelectionChanged;
+        ShellTreeView.myTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
 
         TryNavigate(CurrentFolder);
     }
@@ -77,14 +77,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
 
-    private void MyTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
+    private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
         var selectedNode = ShellTreeView.myTreeView.SelectedNode;
         var selectedItem = ShellTreeView.myTreeView.SelectedItem;
         var addedItems = args.AddedItems;
         var removedItems = args.RemovedItems;
 
-        Debug.Print($"MyTreeView_SelectionChanged SelectedItem: {selectedItem} ");
+        Debug.Print($"ShellTreeView_SelectionChanged SelectedItem: {selectedItem} ");
 
         if (selectedNode != null)
         {
@@ -92,12 +92,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
             if (nodeContent is ExplorerBrowserItem ebItem)
             {
-                Debug.Print($"nameof({MyTreeView_SelectionChanged}) - {ebItem}");
+                Debug.Print($"nameof({ShellTreeView_SelectionChanged}) - {ebItem}");
                 TryNavigate(ebItem.ShellItem);
             }
         }
     }
-
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
