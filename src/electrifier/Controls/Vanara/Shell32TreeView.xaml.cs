@@ -19,7 +19,7 @@ public sealed partial class Shell32TreeView : UserControl
     private readonly List<ExplorerBrowserItem> _items = [];
     private AdvancedCollectionView _advancedCollectionView;
 
-    public TreeView myTreeView => TreeView;
+    public TreeView NativeTreeView => TreeView;
 
     public Shell32TreeView()
     {

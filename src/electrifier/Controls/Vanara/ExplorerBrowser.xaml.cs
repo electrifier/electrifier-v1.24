@@ -34,8 +34,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         var currentFolderExplorerBrowserItem = new ExplorerBrowserItem(this, CurrentFolder);
         ShellTreeView.InitializeRoot(currentFolderExplorerBrowserItem);
-        ShellTreeView.myTreeView.SelectedItem = currentFolderExplorerBrowserItem;
-        ShellTreeView.myTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
+        ShellTreeView.NativeTreeView.SelectedItem = currentFolderExplorerBrowserItem;
+        ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
 
         TryNavigate(CurrentFolder);
     }
@@ -79,8 +79,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
-        var selectedNode = ShellTreeView.myTreeView.SelectedNode;
-        var selectedItem = ShellTreeView.myTreeView.SelectedItem;
+        var selectedNode = ShellTreeView.NativeTreeView.SelectedNode;
+        var selectedItem = ShellTreeView.NativeTreeView.SelectedItem;
         var addedItems = args.AddedItems;
         var removedItems = args.RemovedItems;
 
