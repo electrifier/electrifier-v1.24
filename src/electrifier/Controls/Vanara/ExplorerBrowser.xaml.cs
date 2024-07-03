@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Vanara.Windows.Shell;
+using static Vanara.PInvoke.Shell32;
 
 namespace electrifier.Controls.Vanara;
 
@@ -33,31 +34,47 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         var currentFolderExplorerBrowserItem = new ExplorerBrowserItem(this, CurrentFolder);
         ShellTreeView.InitializeRoot(currentFolderExplorerBrowserItem);
-        ShellTreeView.myTreeView.SelectionChanged += MyTreeView_SelectionChanged;
         ShellTreeView.myTreeView.SelectedItem = currentFolderExplorerBrowserItem;
+        ShellTreeView.myTreeView.SelectionChanged += MyTreeView_SelectionChanged;
 
         TryNavigate(CurrentFolder);
     }
 
     public void TryNavigate(ShellItem shItem)
     {
-        //var newItems = new List<ExplorerBrowserItem>();
-        var rootItem = new ExplorerBrowserItem(this, shItem);
+        CurrentFolderItems.Clear();
 
+        if (!shItem.IsFileSystem)
+        {
+            Debug.Fail($"TryNavigate: IsFileSystem of item {shItem} is false.");
+            return;
+        }
+        if (!shItem.IsFolder)
+        {
+            Debug.Write($"TryNavigate: IsFolder of item {shItem} is false.");
+            return;
+        }
+
+        using var shFolder = new ShellFolder(shItem);
         try
         {
+            var rootItem = new ExplorerBrowserItem(this, shItem); //shFolder
+            //var newItems = new List<ExplorerBrowserItem>();
+
             // TODO: Add directly to ExplorerBrowserItem, newItems.Add(item);
             foreach (var item in rootItem.GetChildItems(shItem))
             {
                 rootItem.Children.Add(item);
             }
-        }
-        finally
-        {
+
             CurrentFolderItems = rootItem.Children;
             ShellTreeView.SetItemsSource(rootItem, CurrentFolderItems);
             ShellGridView.SetItemsSource(CurrentFolderItems); // TODO: binding
-            CurrentFolder = shItem;
+        }
+        finally
+        {
+            SetField(ref CurrentFolder, shFolder);
+            Debug.Write($"TryNavigate: Done {shItem}.");
         }
     }
 
@@ -66,10 +83,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         var selectedNode = ShellTreeView.myTreeView.SelectedNode;
         var selectedItem = ShellTreeView.myTreeView.SelectedItem;
         var addedItems = args.AddedItems;
-        var removedItems= args.RemovedItems;
+        var removedItems = args.RemovedItems;
 
-        Debug.Print($"MyTreeView_SelectionChanged SelectedItem: { selectedItem } ");
-        
+        Debug.Print($"MyTreeView_SelectionChanged SelectedItem: {selectedItem} ");
+
         if (selectedNode != null)
         {
             var nodeContent = selectedNode.Content;
@@ -108,23 +125,35 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 public class NavigatedEventArgs : EventArgs
 {
     /// <summary>The new location of the explorer browser</summary>
-    public ShellItem? NewLocation { get; set; }
+    public ShellItem? NewLocation
+    {
+        get; set;
+    }
 }
 
 /// <summary>Event argument for The Navigating event</summary>
 public class NavigatingEventArgs : EventArgs
 {
     /// <summary>Set to 'True' to cancel the navigation.</summary>
-    public bool Cancel { get; set; }
+    public bool Cancel
+    {
+        get; set;
+    }
 
     /// <summary>The location being navigated to</summary>
-    public ShellItem? PendingLocation { get; set; }
+    public ShellItem? PendingLocation
+    {
+        get; set;
+    }
 }
 
 /// <summary>Event argument for the NavigatinoFailed event</summary>
 public class NavigationFailedEventArgs : EventArgs
 {
     /// <summary>The location the browser would have navigated to.</summary>
-    public ShellItem? FailedLocation { get; set; }
+    public ShellItem? FailedLocation
+    {
+        get; set;
+    }
 }
 #endregion

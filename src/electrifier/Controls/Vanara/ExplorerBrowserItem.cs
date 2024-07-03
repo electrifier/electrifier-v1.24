@@ -80,15 +80,22 @@ public class ExplorerBrowserItem
 
     public List<ExplorerBrowserItem> GetChildItems(ShellItem enumerationShellItem)
     {
-        var children = EnumerateChildren(enumerationShellItem, filter: FolderItemFilter.Storage);
-
-        var shellItems = children as ShellItem[] ?? children.ToArray();
-        IsEnumerated = true;            // TODO: SetProperty
-        HasUnrealizedChildren = false;  // TODO: SetProperty
-
-        if (shellItems.Any())
+        try
         {
-            return shellItems.Select(shellItem => new ExplorerBrowserItem(Owner, shellItem)).ToList();
+            var children = EnumerateChildren(enumerationShellItem, filter: FolderItemFilter.Storage);
+            var shellItems = children as ShellItem[] ?? children.ToArray();
+            IsEnumerated = true;            // TODO: SetProperty
+            HasUnrealizedChildren = false;  // TODO: SetProperty
+
+            if (shellItems.Any())
+            {
+                return shellItems.Select(shellItem => new ExplorerBrowserItem(Owner, shellItem)).ToList();
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
         }
 
         return [];
