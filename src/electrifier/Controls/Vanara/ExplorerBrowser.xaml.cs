@@ -27,36 +27,35 @@ public sealed partial class ExplorerBrowser : UserControl
     {
         InitializeComponent();
         DataContext = this;
-        CurrentFolderItems = new List<ExplorerBrowserItem>();
+        CurrentFolderItems = [];
         CurrentFolder = ShellFolder.Desktop;
 
         var currentFolderExplorerBrowserItem = new ExplorerBrowserItem(this, CurrentFolder);
         ShellTreeView.InitializeRoot(currentFolderExplorerBrowserItem);
         ShellTreeView.myTreeView.SelectionChanged += MyTreeView_SelectionChanged;
-        //ShellTreeView.myTreeView.SelectedItem = currentFolderExplorerBrowserItem;
+        ShellTreeView.myTreeView.SelectedItem = currentFolderExplorerBrowserItem;
 
         TryNavigate(CurrentFolder);
     }
 
     public void TryNavigate(ShellItem shItem)
     {
-
         //var newItems = new List<ExplorerBrowserItem>();
         var rootItem = new ExplorerBrowserItem(this, shItem);
 
         try
         {
+            // TODO: Add directly to ExplorerBrowserItem, newItems.Add(item);
             foreach (var item in rootItem.GetChildItems(shItem))
             {
                 rootItem.Children.Add(item);
-                //newItems.Add(item);     // TODO: Add directly to ExplorerBrowserItem
             }
         }
         finally
         {
             CurrentFolderItems = rootItem.Children;
             ShellTreeView.SetItemsSource(rootItem, CurrentFolderItems);
-            ShellGridView.SetItemsSource(CurrentFolderItems); // TODO: Maybe use bind in xaml
+            ShellGridView.SetItemsSource(CurrentFolderItems); // TODO: binding
             CurrentFolder = shItem;
         }
     }
