@@ -15,12 +15,35 @@
         </Grid.RowDefinitions>
         <CommandBar
             Grid.Row="0"
+            HorizontalAlignment="Left"
             Background="Transparent"
-            DefaultLabelPosition="Right"
+            DefaultLabelPosition="Collapsed"
             IsOpen="False">
-            <AppBarButton Icon="Add" Label="Add" />
-            <AppBarButton Icon="Edit" Label="Edit" />
+            <AppBarButton Icon="Up" Label="Parent" />
+            <AppBarElementContainer>
+                <ComboBox x:Uid="NewComboBox" Header="New">
+                    <ComboBoxItem>Folder</ComboBoxItem>
+                    <ComboBoxItem>Shortcut</ComboBoxItem>
+                </ComboBox>
+            </AppBarElementContainer>
+            <AppBarSeparator />
+            <AppBarButton Icon="Cut" Label="Cut" />
+            <AppBarButton Icon="Copy" Label="Copy" />
+            <AppBarButton Icon="Paste" Label="Paste" />
+            <AppBarButton Icon="Rename" Label="Rename" />
             <AppBarButton Icon="Share" Label="Share" />
+            <AppBarButton Icon="Delete" Label="Delete" />
+            <AppBarSeparator />
+            <AppBarElementContainer>
+                <ComboBox />
+            </AppBarElementContainer>
+            <AppBarElementContainer>
+                <ComboBox />
+            </AppBarElementContainer>
+            <AppBarElementContainer>
+                <ComboBox />
+            </AppBarElementContainer>
+            <AppBarSeparator />
             <CommandBar.SecondaryCommands>
                 <AppBarButton Icon="Setting" Label="Settings">
                     <AppBarButton.KeyboardAccelerators>

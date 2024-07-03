@@ -16,10 +16,7 @@ namespace electrifier.Controls.Vanara;
 
 public sealed partial class Shell32TreeView : UserControl
 {
-//    public SelectionChangedEventHandler(object sender, SelectionChangedEventArgs e);
-    //public delegate void SelectionChangedEventHandler   //.SelectionChanged;
-
-    private readonly List<ExplorerBrowserItem> _items;
+    private readonly List<ExplorerBrowserItem> _items = [];
     private AdvancedCollectionView _advancedCollectionView;
 
     public TreeView myTreeView => TreeView;
@@ -29,11 +26,11 @@ public sealed partial class Shell32TreeView : UserControl
         InitializeComponent();
         DataContext = this;
 
-        _items = new List<ExplorerBrowserItem>();
         _advancedCollectionView = new AdvancedCollectionView(_items, true);
-        _advancedCollectionView.SortDescriptions.Add(new SortDescription("IsFolder", SortDirection.Descending));
-        _advancedCollectionView.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
-        TreeView.ItemsSource = _advancedCollectionView;
+
+        //_advancedCollectionView.SortDescriptions.Add(new SortDescription("IsFolder", SortDirection.Descending));
+        //_advancedCollectionView.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
+        //TreeView.ItemsSource = _advancedCollectionView;
     }
 
     public void InitializeRoot(ExplorerBrowserItem rootItem)
