@@ -1,6 +1,8 @@
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using CommunityToolkit.WinUI;
+using CommunityToolkit.WinUI.UI;
 using Vanara.Windows.Shell;
 using static electrifier.Controls.Vanara.Shell32TreeView;
 
@@ -23,12 +25,15 @@ public sealed partial class ExplorerBrowser : UserControl
 
     public ShellItem CurrentFolder;
 
+    private readonly ImageCache _imageCache;
+
     public ExplorerBrowser()
     {
         InitializeComponent();
         DataContext = this;
-        CurrentFolderItems = [];
         CurrentFolder = ShellFolder.Desktop;
+        CurrentFolderItems = [];
+        _imageCache = new ImageCache();
 
         var currentFolderExplorerBrowserItem = new ExplorerBrowserItem(this, CurrentFolder);
         ShellTreeView.InitializeRoot(currentFolderExplorerBrowserItem);
