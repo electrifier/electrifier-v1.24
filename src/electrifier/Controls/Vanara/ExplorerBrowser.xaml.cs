@@ -59,9 +59,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         try
         {
             var rootItem = new ExplorerBrowserItem(this, shItem); //shFolder
-            //var newItems = new List<ExplorerBrowserItem>();
 
-            // TODO: Add directly to ExplorerBrowserItem, newItems.Add(item);
             foreach (var item in rootItem.GetChildItems(shItem))
             {
                 rootItem.Children.Add(item);
@@ -74,6 +72,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         finally
         {
             SetField(ref CurrentFolder, shFolder);
+            // TODO: Raise navigated event
             Debug.Write($"TryNavigate: Done {shItem}.");
         }
     }
