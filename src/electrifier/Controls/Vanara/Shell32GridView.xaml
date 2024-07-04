@@ -22,7 +22,6 @@
                         <TextBlock
                             VerticalAlignment="Center"
                             FontSize="13"
-                            Foreground="WhiteSmoke"
                             HorizontalTextAlignment="Center"
                             Text="{x:Bind DisplayName}"
                             TextWrapping="Wrap" />
