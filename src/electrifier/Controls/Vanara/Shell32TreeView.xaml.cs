@@ -73,6 +73,7 @@ public sealed partial class Shell32TreeView : UserControl
         }
 
         UpdateCollectionView();
+        return;
 
         bool FindNodeInCollection()
         {
