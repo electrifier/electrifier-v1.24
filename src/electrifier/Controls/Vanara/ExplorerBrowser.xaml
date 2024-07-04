@@ -21,6 +21,7 @@
             DefaultLabelPosition="Collapsed"
             IsOpen="False">
             <AppBarButton Icon="Up" Label="Parent" />
+            <AppBarSeparator />
             <AppBarElementContainer>
                 <ComboBox x:Uid="NewComboBox" HorizontalAlignment="Center">
                     <ComboBoxItem>Folder</ComboBoxItem>
@@ -42,10 +43,10 @@
                     <ComboBoxItem>Type</ComboBoxItem>
 
                     <ComboBoxItem>More</ComboBoxItem>
-
+                    <ComboBoxItem IsEnabled="False" />
                     <ComboBoxItem>Ascending</ComboBoxItem>
                     <ComboBoxItem>Descending</ComboBoxItem>
-
+                    <ComboBoxItem IsEnabled="False" />
                     <ComboBoxItem>Group by</ComboBoxItem>
                 </ComboBox>
             </AppBarElementContainer>
@@ -53,16 +54,19 @@
                 <ComboBox x:Uid="ViewComboBox">
                     <ComboBoxItem>Tiles</ComboBoxItem>
                     <ComboBoxItem>Content</ComboBoxItem>
-
+                    <ComboBoxItem IsEnabled="False" />
                     <ComboBoxItem>Details pane</ComboBoxItem>
                     <ComboBoxItem>Preview pane</ComboBoxItem>
-
+                    <ComboBoxItem IsEnabled="False" />
                     <ComboBoxItem>Show</ComboBoxItem>
                 </ComboBox>
             </AppBarElementContainer>
             <AppBarElementContainer>
                 <ComboBox x:Uid="FilterComboBox">
                     <ComboBoxItem>All File Types</ComboBoxItem>
+                    <ComboBoxItem IsEnabled="False" />
+                    <ComboBoxItem>Files</ComboBoxItem>
+                    <ComboBoxItem>Folders</ComboBoxItem>
                 </ComboBox>
             </AppBarElementContainer>
             <AppBarSeparator />
