@@ -52,6 +52,26 @@
                             </ItemsStackPanel>
                         </InfoBar.Content>
                     </InfoBar>
+
+                    <InfoBar
+                        x:Name="QuickLaunchInfoBar"
+                        Title="Quick launch to your last used tabs"
+                        BorderThickness="8"
+                        IsClosable="True"
+                        IsOpen="True"
+                        Message="Quick launch last used tabs">
+                        <InfoBar.Content>
+                            <ItemsStackPanel
+                                Height="Auto"
+                                HorizontalAlignment="Right"
+                                Orientation="Horizontal">
+                                <CheckBox x:Name="NewInfoBa___Allowed">
+                                    Enable automatic backups and don't show again
+                                </CheckBox>
+                            </ItemsStackPanel>
+                        </InfoBar.Content>
+                    </InfoBar>
+
                 </StackPanel>
             </Grid>
         </Border>
