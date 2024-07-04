@@ -1,10 +1,9 @@
-using CommunityToolkit.WinUI.UI;
-using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using CommunityToolkit.WinUI.UI;
+using Microsoft.UI.Xaml.Controls;
 using Vanara.Windows.Shell;
-using static Vanara.PInvoke.Shell32;
 
 namespace electrifier.Controls.Vanara;
 

@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
-using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Vanara.Windows.Shell;
 
 namespace electrifier.Controls.Vanara;

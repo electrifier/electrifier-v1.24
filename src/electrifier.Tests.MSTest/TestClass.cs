@@ -1,5 +1,5 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using System.Diagnostics;
+﻿using System.Diagnostics;
+using Microsoft.UI.Xaml.Controls;
 
 namespace electrifier.Tests.MSTest;
 

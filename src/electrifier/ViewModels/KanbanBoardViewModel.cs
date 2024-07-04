@@ -2,8 +2,6 @@
 using CommunityToolkit.Mvvm.Input;
 using electrifier.Contracts.Services;
 using electrifier.Contracts.ViewModels;
-using System.Collections.ObjectModel;
-using System.Windows.Input;
 //using electrifier.Core.Contracts.Services;
 //using electrifier.Core.Models;
 

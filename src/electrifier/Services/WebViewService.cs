@@ -1,7 +1,7 @@
-﻿using electrifier.Contracts.Services;
+﻿using System.Diagnostics.CodeAnalysis;
+using electrifier.Contracts.Services;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.Web.WebView2.Core;
-using System.Diagnostics.CodeAnalysis;
 
 namespace electrifier.Services;
 

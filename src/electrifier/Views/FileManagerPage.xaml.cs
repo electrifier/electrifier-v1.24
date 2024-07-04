@@ -1,18 +1,6 @@
-﻿using electrifier.Controls.Vanara;
-using electrifier.ViewModels;
+﻿using electrifier.ViewModels;
 using Microsoft.UI.Xaml.Controls;
 using Vanara.Windows.Shell;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using electrifier.Contracts.Services;
-using electrifier.Helpers;
-using Microsoft.UI.Xaml;
-using System.Diagnostics;
-using System.Reflection;
-using System.Text;
-using System.Windows.Input;
-using Windows.ApplicationModel;
-using CommunityToolkit.WinUI;
 
 
 namespace electrifier.Views;

@@ -1,12 +1,6 @@
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Drawing.Text;
-using Windows.UI.Notifications;
-using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.Collections;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Vanara.Windows.Shell;
 
 // TODO: For EnumerateChildren-Calls, add HWND handle
 // TODO: See ShellItemCollection, perhaps use this instead of ObservableCollection

@@ -1,12 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Diagnostics;
+using System.Reflection;
+using System.Text;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using electrifier.Contracts.Services;
 using electrifier.Helpers;
 using Microsoft.UI.Xaml;
-using System.Diagnostics;
-using System.Reflection;
-using System.Text;
-using System.Windows.Input;
 using Windows.ApplicationModel;
 
 namespace electrifier.ViewModels;

@@ -1,5 +1,4 @@
 ﻿using CommunityToolkit.WinUI.UI.Animations;
-using electrifier.Contracts.Services;
 using electrifier.ViewModels;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
