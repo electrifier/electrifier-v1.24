@@ -61,8 +61,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         {
             var rootItem = new ExplorerBrowserItem(this, shItem); //shFolder
 
-            foreach (var item in rootItem.GetChildItems(shItem))
+            var list = rootItem.GetChildItems(shItem);
+            for (var index = 0; index < list.Count; index++)
             {
+                var item = list[index];
                 rootItem.Children.Add(item);
             }
 
