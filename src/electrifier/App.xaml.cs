@@ -1,4 +1,5 @@
-﻿using electrifier.Activation;
+﻿using System.Diagnostics;
+using electrifier.Activation;
 using electrifier.Contracts.Services;
 using electrifier.Helpers;
 using electrifier.Models;
@@ -9,6 +10,7 @@ using electrifier.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
+using UnhandledExceptionEventArgs = Microsoft.UI.Xaml.UnhandledExceptionEventArgs;
 
 namespace electrifier;
 
@@ -86,14 +88,14 @@ public partial class App : Application
         }).
         Build();
 
-        App.GetService<IAppNotificationService>().Initialize();
+        GetService<IAppNotificationService>().Initialize();
 
         UnhandledException += App_UnhandledException;
     }
     public static T GetService<T>()
         where T : class
     {
-        if ((App.Current as App)!.Host.Services.GetService(typeof(T)) is not T service)
+        if ((Current as App)!.Host.Services.GetService(typeof(T)) is not T service)
         {
             throw new ArgumentException($"{typeof(T)} needs to be registered in ConfigureServices within App.xaml.cs.");
         }
@@ -105,9 +107,9 @@ public partial class App : Application
     {
         base.OnLaunched(args);
 
-        App.GetService<IAppNotificationService>().Show(string.Format("AppNotificationSamplePayload".GetLocalized(), AppContext.BaseDirectory));
+        GetService<IAppNotificationService>().Show(string.Format("AppNotificationSamplePayload".GetLocalized(), AppContext.BaseDirectory));
 
-        await App.GetService<IActivationService>().ActivateAsync(args);
+        await GetService<IActivationService>().ActivateAsync(args);
     }
 
     /// <summary>
@@ -119,9 +121,12 @@ public partial class App : Application
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+    private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
-        // TODO: 
-        // 
+        // TODO: Handle all exceptions
+        Debug.Indent();
+        Debug.Fail("Software Failure. Press left mouse button to continue.");
+        Debug.WriteLine($"*** Guru Meditation #{sender}.{e.Message}");
+        Debug.Flush();
     }
 }
