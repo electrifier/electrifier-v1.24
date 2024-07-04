@@ -70,7 +70,7 @@ public class ExplorerBrowserItem
         IsFolder = shItem.IsFolder;
         ImageIconSource = shItem is { IsFolder: true } ? DefaultFolderImage : DefaultFileImage;
         IsExpanded = true;
-        IsSelected = false;
+        //IsSelected = false;
     }
 
     internal static IEnumerable<ShellItem> EnumerateChildren(ShellItem enumerationShellItem, FolderItemFilter filter)
@@ -82,6 +82,12 @@ public class ExplorerBrowserItem
     {
         try
         {
+            if ((enumerationShellItem.Attributes & ShellItemAttribute.Removable) != 0)
+            {
+                Debug.WriteLine($"GetChildItems: IsRemovable = true");
+                return [];
+            }
+
             var children = EnumerateChildren(enumerationShellItem, filter: FolderItemFilter.Storage);
             var shellItems = children as ShellItem[] ?? children.ToArray();
             IsEnumerated = true;            // TODO: SetProperty
@@ -94,7 +100,7 @@ public class ExplorerBrowserItem
         }
         catch (Exception e)
         {
-            Console.WriteLine(e);
+            Debug.WriteLine(e);
             throw;
         }
 

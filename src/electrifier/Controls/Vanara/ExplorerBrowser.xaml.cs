@@ -21,6 +21,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     }
 
     public ShellItem CurrentFolder;
+    private ExplorerBrowserItem ebCurrentFolderItem;
 
     private readonly ImageCache _imageCache;
 
@@ -32,9 +33,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         CurrentFolderItems = [];
         _imageCache = new ImageCache();
 
-        var currentFolderExplorerBrowserItem = new ExplorerBrowserItem(this, CurrentFolder);
-        ShellTreeView.InitializeRoot(currentFolderExplorerBrowserItem);
-        ShellTreeView.NativeTreeView.SelectedItem = currentFolderExplorerBrowserItem;
+        ebCurrentFolderItem = new ExplorerBrowserItem(this, CurrentFolder);
+        ShellTreeView.InitializeRoot(ebCurrentFolderItem);
+        //ShellTreeView.NativeTreeView.SelectedItem = ebCurrentFolderItem;
         ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
 
         TryNavigate(CurrentFolder);
