@@ -125,11 +125,16 @@
             </AppBarElementContainer>
             <AppBarSeparator />
             <CommandBar.SecondaryCommands>
-                <AppBarButton Icon="Setting" Label="Settings">
-                    <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="I" Modifiers="Control" />
-                    </AppBarButton.KeyboardAccelerators>
-                </AppBarButton>
+                <AppBarButton Icon="Undo" Label="Undo" />
+                <AppBarSeparator />
+                <AppBarButton Icon="Pin" Label="Pin to Quick access" />
+                <AppBarSeparator />
+                <AppBarButton Icon="Undo" Label="Select all" />
+                <AppBarButton Icon="Undo" Label="Select none" />
+                <AppBarButton Icon="Undo" Label="Invert selection" />
+                <AppBarSeparator />
+                <AppBarButton Icon="Undo" Label="Properties" />
+                <AppBarButton Icon="Setting" Label="Options" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
         <Grid x:Name="ContentAreaGrid" Grid.Row="1">
