@@ -9,19 +9,33 @@ namespace electrifier.Controls.Vanara;
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
 public class ExplorerBrowserItem
 {
-    private static readonly BitmapImage DefaultFileImage = new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
-    private static readonly BitmapImage DefaultFolderImage = new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico"));
-    private static readonly BitmapImage DefaultLibraryImage = new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Library.ico"));
+    // TODO: Use shell32 stock icons
+    private static readonly BitmapImage DefaultFileImage =
+        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
 
+    private static readonly BitmapImage DefaultFolderImage =
+        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico"));
+
+    private static readonly BitmapImage DefaultLibraryImage =
+        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Library.ico"));
+
+    // primary properties
     public string DisplayName
-    {
-        get; set;
-    }
-    public bool IsFolder
     {
         get;
     }
     public ShellItem ShellItem
+    {
+        get;
+    }
+    public ExplorerBrowser Owner
+    {
+        get;
+    }
+    public List<ExplorerBrowserItem> Children;
+
+    // secondary properties
+    public bool IsFolder
     {
         get;
     }
@@ -49,13 +63,6 @@ public class ExplorerBrowserItem
         get; set;
     }
 
-    public ExplorerBrowser Owner
-    {
-        get;
-    }
-
-    public List<ExplorerBrowserItem> Children;
-
     // TODO: TreeViewNode - Property
     // TODO: ExplorerBrowserItem.TreeNodeSelected = bool; => Initiate selection of this node
     // TODO: GridViewItem - Property
@@ -66,11 +73,12 @@ public class ExplorerBrowserItem
         ShellItem = shItem ?? throw new ArgumentNullException(nameof(shItem));
         DisplayName = overrideDisplayName ?? (ShellItem.Name ?? throw new Exception("shItem Display Name"));
         Children = [];
+        
+        // secondary properties
         HasUnrealizedChildren = shItem.IsFolder;
         IsFolder = shItem.IsFolder;
         ImageIconSource = shItem is { IsFolder: true } ? DefaultFolderImage : DefaultFileImage;
         IsExpanded = true;
-        //IsSelected = false;
     }
 
     internal static IEnumerable<ShellItem> EnumerateChildren(ShellItem enumerationShellItem, FolderItemFilter filter)
@@ -106,22 +114,6 @@ public class ExplorerBrowserItem
 
         return [];
     }
-
-    //internal static ExplorerBrowserItem? Parent(ShellItem shItem)
-    //{
-    //    if (shItem is null)
-    //    {
-    //        throw new ArgumentNullException(nameof(shItem));
-    //    }
-    //    if (shItem.Parent is null)
-    //    {
-    //        return null;
-    //    }
-    //    return new ExplorerBrowserItem(shItem.Parent, overrideDisplayName: "..")
-    //    {
-    //        IsFolder = true,
-    //    };
-    //}
 
     private string GetDebuggerDisplay()
     {
