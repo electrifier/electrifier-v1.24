@@ -9,7 +9,6 @@
                         https://learn.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.symbol?view=winrt-22621
            TODO: Update item icons by updating FontIcon.Glyph properties.
                         https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list-->
-
 <Page
     x:Class="electrifier.Views.ShellPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -32,14 +31,14 @@
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
             <StackPanel
-                x:Name="AppTitleBar_TitleStackPanelLeft"
+                x:Name="TitleStackPanelLeft"
                 Grid.Column="0"
                 Margin="0,3,0,0"
                 VerticalAlignment="Stretch"
                 BackgroundSizing="OuterBorderEdge"
                 Orientation="Horizontal">
                 <DropDownButton
-                    x:Name="AppTitleBar_ForwardButton"
+                    x:Name="ForwardButton"
                     Background="Transparent"
                     BorderBrush="Transparent"
                     Click="AppTitleBar_ForwardButton_Click"
@@ -56,12 +55,12 @@
                     Source="ms-appx:///Assets/Square44x44Logo.scale-200.png" />
                 <StackPanel>
                     <TextBlock
-                        x:Name="AppTitleBar_TitleTextBlockLeft"
+                        x:Name="TitleTextBlockLeft"
                         Margin="0,-3"
                         FontSize="23"
                         Text="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}" />
                     <TextBlock
-                        x:Name="AppTitleBar_SubTitleTextBlockLeft"
+                        x:Name="SubTitleTextBlockLeft"
                         Margin="0,0"
                         FontSize="11"
                         FontStyle="Italic"
@@ -77,17 +76,17 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom">
                 <StackPanel Orientation="Horizontal">
-                    <!--<HyperlinkButton x:Name="AppTitleBar_HelpButton"
+                    <!--<HyperlinkButton x:Name="HelpButton"
                                  FontSize="13"
                                  NavigateUri="https://github.com/electrifier/docs"
                                  VerticalAlignment="Top" />-->
                     <TextBlock
-                        x:Name="AppTitleBar_SubTitleTextBlockRight"
+                        x:Name="SubTitleTextBlockRight"
                         FontSize="11"
                         FontStyle="Italic"
                         Text="electrifier" />
                     <TextBlock
-                        x:Name="AppTitleBar_SubTitleTextBlockRightVersion"
+                        x:Name="SubTitleTextBlockRightVersion"
                         Margin="3,0,11,0"
                         VerticalAlignment="Bottom"
                         FontSize="11"
