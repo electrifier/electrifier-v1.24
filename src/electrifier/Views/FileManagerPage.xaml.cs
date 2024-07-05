@@ -2,17 +2,13 @@
 using Microsoft.UI.Xaml.Controls;
 using Vanara.Windows.Shell;
 
-
 namespace electrifier.Views;
 
 public sealed partial class FileManagerPage : Page
 {
-    public FileManagerViewModel ViewModel
-    {
-        get;
-        set;
-    }
+    public FileManagerViewModel ViewModel { get;  set; }
 
+    // primary member
     public ShellItem CurrentFolder;
 
     /// <summary>
@@ -26,25 +22,5 @@ public sealed partial class FileManagerPage : Page
         InitializeComponent();
 
         CurrentFolder = ShellFolder.Desktop;
-    }
-
-    private void ShellTreeView_OnOnSelectionChanged(object? sender, TreeViewSelectionChangedEventArgs e)
-    {
-        //var selectedItems = e.AddedItems;
-        ////var newSelection? = default;
-
-        //foreach (var item in selectedItems)
-        //{
-        //    if (item is Shell32TreeViewItem treeViewItem)
-        //    {
-        //        var targetShellItem = treeViewItem.ShellItem;
-
-        //        if(targetShellItem is null)
-        //        {
-        //            continue;
-        //        }
-        //        CurrentFolder = targetShellItem;
-        //    }
-        //}
     }
 }
