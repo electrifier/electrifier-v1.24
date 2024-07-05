@@ -35,30 +35,16 @@
             ItemClick="GridView_OnItemClick"
             ItemTemplate="{StaticResource ExplorerBrowserItemTemplate}"
             SelectionMode="Single">
-            <!--
-                ItemsSource="{x:Bind GridShellItems, Mode=OneWay}"
-                {x:Bind MainViewModel.Items, Mode=OneWay}
+            <!-- An extra property also needs to be added to the GridView's ItemsWrapGrid.
+                 The following sets the maximum # of items to show before wrapping.
+            //<GridView.ItemsPanel>
+            //    <ItemsPanelTemplate>
+            //        <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
+            //                       MaximumRowsOrColumns="3"
+            //                       Orientation="Horizontal" />
+            //    </ItemsPanelTemplate>
+            </GridView.ItemsPanel>
             -->
-
-            <!--<GridView.ItemContainerStyle>
-                <Style TargetType="GridViewItem"
-                       BasedOn="{StaticResource DefaultGridViewItemStyle}">
-                    <Setter Property="Margin"
-                            Value="5, 5, 5, 5" />
-                </Style>
-            </GridView.ItemContainerStyle>-->
-
-            <!--
-                An extra property also needs to be added to the GridView's ItemsWrapGrid.
-                The following sets the maximum # of items to show before wrapping.
-            -->
-            <!--<GridView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
-                                   MaximumRowsOrColumns="3"
-                                   Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </GridView.ItemsPanel>-->
         </GridView>
     </Grid>
 </UserControl>

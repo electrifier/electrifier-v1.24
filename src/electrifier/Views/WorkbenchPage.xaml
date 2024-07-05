@@ -15,7 +15,7 @@
     <d:Page.DataContext>
         <d:DesignInstance Type="viewmodels:WorkbenchViewModel" />
     </d:Page.DataContext>
-    <Grid x:Name="ContentArea">
+    <Grid x:Name="WorkbenchGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
             <ColumnDefinition Width="2*" />
