@@ -11,8 +11,6 @@ namespace electrifier.Controls.Vanara;
 // TODO: See also https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
-    private ExplorerBrowserItem ebCurrentFolderItem;
-
     // TODO: Probably use ShellItemArray for ShellItem Collections
     public List<ExplorerBrowserItem> CurrentFolderItems
     {
@@ -36,18 +34,19 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         CurrentFolderItems = [];
         ImageCache = new ImageCache();
 
-        ebCurrentFolderItem = new ExplorerBrowserItem(this, CurrentFolder);
+        // wire events
+        ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
+
+        // Initialize root TreeView item(s)
+        var ebCurrentFolderItem = new ExplorerBrowserItem(this, CurrentFolder);
         ShellTreeView.InitializeRoot(ebCurrentFolderItem);
         //ShellTreeView.NativeTreeView.SelectedItem = ebCurrentFolderItem;
-        ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
 
         TryNavigate(CurrentFolder);
     }
 
     public void TryNavigate(ShellItem shItem)
     {
-        CurrentFolderItems.Clear();
-
         if (!shItem.IsFileSystem)
         {
             Debug.Fail($"TryNavigate: IsFileSystem of item {shItem} is false.");
@@ -64,14 +63,16 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         {
             var rootItem = new ExplorerBrowserItem(this, shItem); //shFolder
 
-            var list = rootItem.GetChildItems(shItem);
-            for (var index = 0; index < list.Count; index++)
+            var childItems = rootItem.GetChildItems(shItem);
+            foreach (var item in childItems)
             {
-                var item = list[index];
                 rootItem.Children.Add(item);
             }
 
+            // TODO: Rebuild CurrentFolderItems.Clear(); to build complete item list
             CurrentFolderItems = rootItem.Children;
+
+            // Update TreeView and ListView
             ShellTreeView.SetItemsSource(rootItem, CurrentFolderItems);
             ShellGridView.SetItemsSource(CurrentFolderItems); // TODO: binding
         }

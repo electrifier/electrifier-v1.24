@@ -66,6 +66,7 @@
 
   <ItemGroup>
     <Folder Include="Assets\Themes\Aero Blackcomb\" />
+    <Folder Include="Helpers\Vanara\" />
   </ItemGroup>
 
   <ItemGroup>

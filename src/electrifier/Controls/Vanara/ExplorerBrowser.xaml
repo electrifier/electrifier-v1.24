@@ -17,7 +17,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <CommandBar
-            x:Uid="CommandBar"
+            x:Name="TopCommandBar"
             Grid.Row="0"
             HorizontalAlignment="Left"
             Background="Transparent"
@@ -26,7 +26,7 @@
             <AppBarButton Icon="Up" Label="Parent" />
             <AppBarSeparator />
             <AppBarElementContainer>
-                <SplitButton x:Name="NewSplitButton" Content="New">
+                <SplitButton x:Name="NewItemSplitButton" Content="New">
                     <SplitButton.Flyout>
                         <Flyout>
                             <StackPanel>
@@ -39,10 +39,10 @@
                     </SplitButton.Flyout>
                     <SplitButton.Resources>
                         <TeachingTip
-                            x:Name="NewSplitButtonTip"
+                            x:Name="NewItemTeachingTip"
                             Title="Create a new item in the current location."
                             Subtitle="Use the dropdown button option to save your item and create another."
-                            Target="{x:Bind NewSplitButton}" />
+                            Target="{x:Bind NewItemSplitButton}" />
                     </SplitButton.Resources>
                 </SplitButton>
             </AppBarElementContainer>
