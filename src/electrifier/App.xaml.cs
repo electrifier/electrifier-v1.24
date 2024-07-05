@@ -30,9 +30,7 @@ public partial class App : Application
     {
         get;
     }
-
     public static WindowEx MainWindow { get; } = new MainWindow();
-
 
     public App()
     {

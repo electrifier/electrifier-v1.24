@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using CommunityToolkit.WinUI.Collections;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
 // TODO: For EnumerateChildren-Calls, add HWND handle
@@ -14,6 +15,8 @@ public sealed partial class Shell32TreeView : UserControl
     private AdvancedCollectionView _advancedCollectionView;
 
     public TreeView NativeTreeView => TreeView;
+
+    public Visibility FileNameVisibility;
 
     public Shell32TreeView()
     {
