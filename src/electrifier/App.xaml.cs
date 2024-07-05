@@ -14,14 +14,18 @@ using UnhandledExceptionEventArgs = Microsoft.UI.Xaml.UnhandledExceptionEventArg
 
 namespace electrifier;
 
-// To learn more about WinUI 3, see https://docs.microsoft.com/windows/apps/winui/winui3/.
+/// <summary>
+/// App
+/// 
+/// The .NET Generic Host provides dependency injection, configuration, logging, and other services:
+/// <a href="https://docs.microsoft.com/dotnet/core/extensions/generic-host"/>,
+/// <a href="https://docs.microsoft.com/dotnet/core/extensions/dependency-injection"/>,
+/// <a href="https://docs.microsoft.com/dotnet/core/extensions/configuration"/>,
+/// <a href="https://docs.microsoft.com/dotnet/core/extensions/logging"/>
+/// To learn more about WinUI 3, see https://docs.microsoft.com/windows/apps/winui/winui3/.
+/// </summary>
 public partial class App : Application
 {
-    // The .NET Generic Host provides dependency injection, configuration, logging, and other services.
-    // https://docs.microsoft.com/dotnet/core/extensions/generic-host
-    // https://docs.microsoft.com/dotnet/core/extensions/dependency-injection
-    // https://docs.microsoft.com/dotnet/core/extensions/configuration
-    // https://docs.microsoft.com/dotnet/core/extensions/logging
     public static UIElement? AppTitleBar
     {
         get; set;
@@ -90,6 +94,13 @@ public partial class App : Application
 
         UnhandledException += App_UnhandledException;
     }
+
+    /// <summary>
+    /// GetService
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public static T GetService<T>()
         where T : class
     {
@@ -101,6 +112,10 @@ public partial class App : Application
         return service;
     }
 
+    /// <summary>
+    /// OnLaunched
+    /// </summary>
+    /// <param name="args"></param>
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
     {
         base.OnLaunched(args);
@@ -112,8 +127,7 @@ public partial class App : Application
 
     /// <summary>
     /// Log and handle exceptions as appropriate.
-    /// 
-    /// <br>Best practices:</br>
+    /// Best practices:
     /// - <see href="https://docs.microsoft.com/windows/apps/design/app-patterns/handling-exceptions">Handling exceptions</see>
     /// - <see href="https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception"/>
     /// </summary>
