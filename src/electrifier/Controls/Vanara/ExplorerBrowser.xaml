@@ -142,10 +142,7 @@
         </CommandBar>
         <Grid x:Name="ArenaGrid" Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition
-                    Width="300"
-                    MinWidth="76"
-                    MaxWidth="600" />
+                <ColumnDefinition Width="128" MinWidth="76" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" MinWidth="76" />
             </Grid.ColumnDefinitions>
@@ -172,7 +169,7 @@
                 <local:Shell32GridView x:Name="ShellGridView" />
             </Border>
         </Grid>
-        <!--  Bikini Bottom  -->
+        <!--  Bikini Bottom -> AppBar  -->
         <AppBar
             x:Name="AppBarBottomUid"
             x:Uid="AppBarBottomUid"
@@ -198,7 +195,7 @@
                 </AppBarButton>
             </StackPanel>
         </AppBar>
-        <!--  Bikini Bottom  -->
+        <!--  Bikini Bottom -> CommandBar  -->
         <CommandBar
             x:Name="CommandBarBottom"
             Grid.Row="3"

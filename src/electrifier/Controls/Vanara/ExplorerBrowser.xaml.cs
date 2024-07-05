@@ -9,10 +9,11 @@ namespace electrifier.Controls.Vanara;
 
 // https://github.com/dahall/Vanara/blob/master/Windows.Forms/Controls/ExplorerBrowser.cs
 // TODO: See also https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs
-
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
-    // TODO: Use ShellItemArray for ShellItem Collections
+    private ExplorerBrowserItem ebCurrentFolderItem;
+
+    // TODO: Probably use ShellItemArray for ShellItem Collections
     public List<ExplorerBrowserItem> CurrentFolderItems
     {
         get;
@@ -20,9 +21,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     }
 
     public ShellItem CurrentFolder;
-    private ExplorerBrowserItem ebCurrentFolderItem;
 
-    private readonly ImageCache _imageCache;
+    public ImageCache ImageCache
+    {
+        get;
+        set;
+    }
 
     public ExplorerBrowser()
     {
@@ -30,7 +34,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         DataContext = this;
         CurrentFolder = ShellFolder.Desktop;
         CurrentFolderItems = [];
-        _imageCache = new ImageCache();
+        ImageCache = new ImageCache();
 
         ebCurrentFolderItem = new ExplorerBrowserItem(this, CurrentFolder);
         ShellTreeView.InitializeRoot(ebCurrentFolderItem);

@@ -64,9 +64,8 @@ public class ExplorerBrowserItem
     }
 
     // TODO: TreeViewNode - Property
-    // TODO: ExplorerBrowserItem.TreeNodeSelected = bool; => Initiate selection of this node
     // TODO: GridViewItem - Property
-
+    // TODO: ExplorerBrowserItem.TreeNodeSelected = bool; => Initiate selection of this node
     public ExplorerBrowserItem(ExplorerBrowser owner, ShellItem shItem, string? overrideDisplayName = default)
     {
         Owner = owner;
@@ -92,7 +91,7 @@ public class ExplorerBrowserItem
         {
             if ((enumerationShellItem.Attributes & ShellItemAttribute.Removable) != 0)
             {
-                Debug.WriteLine($"GetChildItems: IsRemovable = true");
+                Debug.WriteLine($"`{GetDebuggerDisplay}` is <ShellItemAttribute.Removable>");
                 return [];
             }
 
@@ -118,11 +117,11 @@ public class ExplorerBrowserItem
     private string GetDebuggerDisplay()
     {
         var sb = new StringBuilder();
-        sb.Append(nameof(ExplorerBrowserItem));
-        sb.Append($" {DisplayName} ");
+        sb.Append($"`{DisplayName}` - <{nameof(ExplorerBrowserItem)}>");
+ 
         if (IsFolder)
         {
-            sb.Append("Folder");
+            sb.Append(", [folder]");
         }
 
         return sb.ToString();
