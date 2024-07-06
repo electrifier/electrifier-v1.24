@@ -95,6 +95,7 @@ public class ExplorerBrowserItem
                 return [];
             }
 
+            // TODO: This takes ages on folder: @"C:\Users\tajbe\OneDrive\Desktop\aktuelle.projekte\Alte Desktop-Icons"
             var children = EnumerateChildren(enumerationShellItem, filter: FolderItemFilter.Storage);
             var shellItems = children as ShellItem[] ?? children.ToArray();
             IsEnumerated = true;            // TODO: SetProperty

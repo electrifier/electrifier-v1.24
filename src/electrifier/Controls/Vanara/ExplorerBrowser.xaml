@@ -142,7 +142,7 @@
         </CommandBar>
         <Grid x:Name="ArenaGrid" Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="128" MinWidth="76" />
+                <ColumnDefinition Width="300" MinWidth="76" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" MinWidth="76" />
             </Grid.ColumnDefinitions>

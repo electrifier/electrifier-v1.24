@@ -55,6 +55,14 @@ public sealed partial class Shell32TreeView : UserControl
 
     public void SetItemsSource(ExplorerBrowserItem parentItem, List<ExplorerBrowserItem> itemSourceCollection)
     {
+        Debug.WriteLine("Entering SetItemsSource()");
+        FindParentNode(parentItem);
+
+        //if (result != null)
+        {
+            Debug.WriteLine("JUChU!");
+        }
+
         var targetItem = _items.Find(x => parentItem.ShellItem.Equals(x.ShellItem));
         if (targetItem != null)
         {
@@ -89,6 +97,22 @@ public sealed partial class Shell32TreeView : UserControl
             return false;
         }
     }
+
+    /// <summary>
+    /// Sucht nach dem übergeordneten TreeNode, der dem übergeordneten Ordner entspricht...
+    /// </summary>
+    /// <param name="source"></param>
+    public async void FindParentNode(ExplorerBrowserItem source)
+    {
+        var rootNode = source.ShellItem;
+        //Debug.Assert(rootNode.PIDL.IsParentOf());
+
+        var parentItem = rootNode.Parent;
+        // rootNode.PIDL.IsParentOf()
+
+        return ; // return ExplorerBrowserItem? parentItem
+    }
+    //public event ParentShellItemFound...
 
     public class TreeViewSelectionChanged(IList<object> addedItems, IList<object> removedItems) : EventArgs
     {
