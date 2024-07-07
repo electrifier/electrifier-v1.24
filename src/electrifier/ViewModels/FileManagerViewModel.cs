@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using CommunityToolkit.Mvvm.ComponentModel;
+using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 
 namespace electrifier.ViewModels;
@@ -9,32 +10,28 @@ public partial class FileManagerViewModel : ObservableRecipient
     public ShellItem? CurrentFolder
     {
         get => _currentFolder;
-        set => SetCurrentFolder(value);
+        private set => SetCurrentFolder(value);
     }
 
-    private readonly ShellItem? _currentFolder = default;
+    private ShellItem? _currentFolder;
 
-    private void SetCurrentFolder(ShellItem? value)
+    private HRESULT SetCurrentFolder(ShellItem? value)
     {
         var item = value;
 
         if (item is null)
         {
             Debug.Print("{nameof(this)}.SetCurrentFolder: value is null");
-            return;
+            return HRESULT.S_OK;
         }
 
-        //GridView.CurrentFolder = value;
-        ////GridView.Navigate
-
-        return;
+        return HRESULT.S_OK;
     }
 
     /// <summary>FileManagerViewModel</summary>
     public FileManagerViewModel()
     {
         // TODO: this.ShellGridView = this.ShellGridView;
-
         // TODO: refactor getting child items
         //var Shell32TreeView = this.FindName("ShellTreeView");
         //var Shell32GridView = this.FindName("ShellGridView");
