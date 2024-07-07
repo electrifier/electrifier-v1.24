@@ -98,25 +98,40 @@ public sealed partial class Shell32TreeView : UserControl
         }
     }
 
-    /// <summary>
-    /// Sucht nach dem übergeordneten TreeNode, der dem übergeordneten Ordner entspricht...
-    /// </summary>
-    /// <param name="source"></param>
-    public async void FindParentNode(ExplorerBrowserItem source)
-    {
-        var rootNode = source.ShellItem;
-        //Debug.Assert(rootNode.PIDL.IsParentOf());
-
-        var parentItem = rootNode.Parent;
-        // rootNode.PIDL.IsParentOf()
-
-        return ; // return ExplorerBrowserItem? parentItem
-    }
-    //public event ParentShellItemFound...
-
     public class TreeViewSelectionChanged(IList<object> addedItems, IList<object> removedItems) : EventArgs
     {
         public IList<object> AddedItems { get; } = addedItems ?? throw new ArgumentNullException(nameof(addedItems));
         public IList<object> RemovedItems { get; } = removedItems ?? throw new ArgumentNullException(nameof(removedItems));
     }
+
+
+    // TODO: Unit test
+
+    /// <summary>
+    /// Sucht nach dem übergeordneten TreeNode, der dem übergeordneten Ordner entspricht...
+    /// </summary>
+    /// <param name="source"></param>
+    public static ExplorerBrowserItem? FindParentNode(ExplorerBrowserItem source)
+    {
+        var rootBrowserItem = source;
+        var rootShellItem = source?.ShellItem;
+
+        // When we are the root of all evil, return us itself
+        if ((source == null) || (source.ShellItem == null))
+        {
+            return source;
+        }
+
+        var rootNode = source.ShellItem;
+        var parentItem = rootNode.Parent;
+        var resultBrowserItem = source;
+
+        // rootNode.PIDL.IsParentOf()
+
+        return source; // return ExplorerBrowserItem? parentItem
+    }
+
+    //public event ParentShellItemFound...
+
+
 }
