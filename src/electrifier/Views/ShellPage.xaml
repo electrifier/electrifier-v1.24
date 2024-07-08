@@ -42,7 +42,8 @@
                     Background="Transparent"
                     BorderBrush="Transparent"
                     Click="AppTitleBar_ForwardButton_Click"
-                    IsEnabled="False">
+                    IsEnabled="False"
+                    Visibility="Collapsed">
                     <Image
                         x:Name="AppTitleBar_ForwardButtonImage"
                         MaxHeight="24"
@@ -51,7 +52,7 @@
                 <Image
                     x:Name="WindowIcon"
                     Height="32"
-                    Margin="15,0,15,0"
+                    Margin="8,0,15,0"
                     Source="ms-appx:///Assets/Square44x44Logo.scale-200.png" />
                 <StackPanel>
                     <TextBlock
