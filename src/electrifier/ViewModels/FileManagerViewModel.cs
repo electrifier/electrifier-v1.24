@@ -24,6 +24,7 @@ public partial class FileManagerViewModel : ObservableRecipient
             Debug.Print("{nameof(this)}.SetCurrentFolder: value is null");
             return HRESULT.S_OK;
         }
+        _currentFolder = item;
 
         return HRESULT.S_OK;
     }

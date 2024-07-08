@@ -1,22 +1,17 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.WinUI.UI;
+using electrifier.Controls.Vanara;
+using Vanara.Windows.Shell;
 
 namespace electrifier.ViewModels;
 
 public partial class TextEditorViewModel : ObservableRecipient
 {
-    public string StatusCursorPosition
-    {
-        get;
-        internal set;
-    }
+    public ShellItem CurrentFolder;
 
-    public TextEditorViewModel()
-    {
-        StatusCursorPosition = SetCursorPosition(0, 0);
-    }
+    public string CursorPosition => $"Column: {CursorX} Line: {CursorY}";
+    public int CursorX { get; set; } = 666;
+    public int CursorY { get; set; } = 0;
 
-    internal string SetCursorPosition(int x, int y)
-    {
-        return StatusCursorPosition = $"x: {x} y: {y}";
-    }
+    public TextEditorViewModel() => CurrentFolder = ShellFolder.Desktop;
 }

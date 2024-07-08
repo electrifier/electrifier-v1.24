@@ -6,7 +6,10 @@ namespace electrifier.Views;
 
 public sealed partial class FileManagerPage : Page
 {
-    public FileManagerViewModel ViewModel { get;  set; }
+    public FileManagerViewModel ViewModel
+    {
+        get; set;
+    }
 
     // primary member
     public ShellItem CurrentFolder;

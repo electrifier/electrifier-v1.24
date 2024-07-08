@@ -67,6 +67,9 @@
   <ItemGroup>
     <Folder Include="Assets\Themes\Aero Blackcomb\" />
     <Folder Include="Helpers\Vanara\" />
+    <Folder Include="Services\Vanara\" />
+    <Folder Include="Styles\Vanara\" />
+    <Folder Include="ViewModels\Vanara\" />
   </ItemGroup>
 
   <ItemGroup>
