@@ -38,6 +38,8 @@ public sealed partial class TextEditorPage : Page
     {
         // Needs to set focus explicitly due to WinUI 3 regression
         // https://github.com/microsoft/microsoft-ui-xaml/issues/8816 
-        ((Control)sender).Focus(FocusState.Programmatic);
+        
+        
+        // INFO: Disabled cause of tab navigation: ((Control)sender).Focus(FocusState.Programmatic);
     }
 }
