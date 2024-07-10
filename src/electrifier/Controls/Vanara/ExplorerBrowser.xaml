@@ -26,7 +26,10 @@
             <AppBarButton Icon="Up" Label="Parent" />
             <AppBarSeparator />
             <AppBarElementContainer>
-                <SplitButton x:Name="NewItemSplitButton" Content="New">
+                <SplitButton
+                    x:Name="NewItemSplitButton"
+                    Content="New"
+                    IsEnabled="False">
                     <SplitButton.Flyout>
                         <Flyout>
                             <StackPanel>
@@ -37,25 +40,39 @@
                             </StackPanel>
                         </Flyout>
                     </SplitButton.Flyout>
-                    <SplitButton.Resources>
-                        <TeachingTip
-                            x:Name="NewItemTeachingTip"
-                            Title="Create a new item in the current location."
-                            Subtitle="Use the dropdown button option to save your item and create another."
-                            Target="{x:Bind NewItemSplitButton}" />
-                    </SplitButton.Resources>
                 </SplitButton>
             </AppBarElementContainer>
             <AppBarSeparator />
-            <AppBarButton Icon="Cut" Label="Cut" />
-            <AppBarButton Icon="Copy" Label="Copy" />
-            <AppBarButton Icon="Paste" Label="Paste" />
-            <AppBarButton Icon="Rename" Label="Rename" />
-            <AppBarButton Icon="Share" Label="Share" />
-            <AppBarButton Icon="Delete" Label="Delete" />
+            <AppBarButton
+                Icon="Cut"
+                IsEnabled="False"
+                Label="Cut" />
+            <AppBarButton
+                Icon="Copy"
+                IsEnabled="False"
+                Label="Copy" />
+            <AppBarButton
+                Icon="Paste"
+                IsEnabled="False"
+                Label="Paste" />
+            <AppBarButton
+                Icon="Rename"
+                IsEnabled="False"
+                Label="Rename" />
+            <AppBarButton
+                Icon="Share"
+                IsEnabled="False"
+                Label="Share" />
+            <AppBarButton
+                Icon="Delete"
+                IsEnabled="False"
+                Label="Delete" />
             <AppBarSeparator />
             <AppBarElementContainer>
-                <SplitButton x:Name="SortSplitButton" Content="Sort">
+                <SplitButton
+                    x:Name="SortSplitButton"
+                    Content="Sort"
+                    IsEnabled="False">
                     <SplitButton.Flyout>
                         <Flyout>
                             <StackPanel>
@@ -82,7 +99,10 @@
                 </SplitButton>
             </AppBarElementContainer>
             <AppBarElementContainer>
-                <SplitButton x:Name="ViewSplitButton" Content="View">
+                <SplitButton
+                    x:Name="ViewSplitButton"
+                    Content="View"
+                    IsEnabled="False">
                     <SplitButton.Flyout>
                         <Flyout>
                             <StackPanel>
@@ -106,7 +126,10 @@
                 </SplitButton>
             </AppBarElementContainer>
             <AppBarElementContainer>
-                <SplitButton x:Name="FilterSplitButton" Content="Filter">
+                <SplitButton
+                    x:Name="FilterSplitButton"
+                    Content="Filter"
+                    IsEnabled="False">
                     <SplitButton.Flyout>
                         <Flyout>
                             <StackPanel>
