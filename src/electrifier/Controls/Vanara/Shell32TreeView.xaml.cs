@@ -56,11 +56,11 @@ public sealed partial class Shell32TreeView : UserControl
     public void SetItemsSource(ExplorerBrowserItem parentItem, List<ExplorerBrowserItem> itemSourceCollection)
     {
         Debug.WriteLine("Entering SetItemsSource()");
-        FindParentNode(parentItem);
 
-        //if (result != null)
+        var result = FindParentNode(parentItem);
+        if (result != null)
         {
-            Debug.WriteLine("JUChU!");
+            Debug.WriteLine("TreeView.SetItemsSource: Found parent Node.");
         }
 
         var targetItem = _items.Find(x => parentItem.ShellItem.Equals(x.ShellItem));
@@ -91,7 +91,7 @@ public sealed partial class Shell32TreeView : UserControl
             }
             else
             {
-                Debug.Print("TreeView.SetItemsSource found no targetItem to add folder items to.");
+                Debug.Print("TreeView.SetItemsSource: Found no TargetItem to add folder items to.");
             }
 
             return false;
