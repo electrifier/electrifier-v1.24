@@ -1,6 +1,12 @@
-﻿using electrifier.ViewModels;
+﻿using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using CommunityToolkit.WinUI.UI;
+using electrifier.Controls.Vanara;
+using electrifier.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Vanara.Windows.Shell;
 
 namespace electrifier.Views;
 
@@ -11,13 +17,21 @@ public sealed partial class TextEditorPage : Page
         get;
     }
 
+    public ShellItem CurrentFolder;
+
     public string StatusCursorPosition => GetCursorPosition();
     private string GetCursorPosition() => ViewModel.CursorPosition;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TextEditorPage"/> class.
+    /// </summary>
     public TextEditorPage()
     {
         ViewModel = App.GetService<TextEditorViewModel>();
+        DataContext = this;
         InitializeComponent();
+
+        CurrentFolder = ShellFolder.Desktop;
     }
 
     private void CodeEditorControl_Loaded(object sender, RoutedEventArgs e)
