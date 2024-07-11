@@ -53,7 +53,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         // Initialize root TreeView item(s)
         CurrentFolder = ShellFolder.Desktop;
         CurrentFolderItems = [];
-        var ebCurrentFolderItem = new ExplorerBrowserItem(this, CurrentFolder);
+        var ebCurrentFolderItem = new ExplorerBrowserItem(CurrentFolder);
         ShellTreeView.InitializeRoot(ebCurrentFolderItem);
         ShellTreeView.NativeTreeView.SelectedItem = ebCurrentFolderItem;
 
@@ -80,10 +80,16 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             return;
         }
 
+        //  Navigate2Target(new ShellItem(shItem.PIDL)); => TODO: Check why a copy of ShItem won't result in expanded TreeNode
+        Navigate2Target(shItem);
+    }
+
+    private void Navigate2Target(ShellItem shItem)
+    {
         using var shFolder = new ShellFolder(shItem);
         try
         {
-            var parentItem = new ExplorerBrowserItem(this, shItem); //shFolder
+            var parentItem = new ExplorerBrowserItem(shItem);
 
             var childItems = parentItem.GetChildItems(shItem);
             foreach (var item in childItems)

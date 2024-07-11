@@ -29,7 +29,7 @@ public sealed partial class Shell32GridView : UserControl
         }
 
         var shItem = ebItem.ShellItem;
-        ebItem.Owner.TryNavigate(shItem);
+        // TODO: ebItem.Owner.TryNavigate(shItem);
     }
 
     private string GetDebuggerDisplay()

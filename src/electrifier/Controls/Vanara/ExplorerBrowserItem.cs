@@ -29,10 +29,6 @@ public class ExplorerBrowserItem
     {
         get;
     }
-    public ExplorerBrowser Owner
-    {
-        get;
-    }
     public List<ExplorerBrowserItem> Children;
 
     // secondary properties
@@ -67,9 +63,8 @@ public class ExplorerBrowserItem
     // TODO: TreeViewNode - Property
     // TODO: GridViewItem - Property
     // TODO: ExplorerBrowserItem.TreeNodeSelected = bool; => Initiate selection of this node
-    public ExplorerBrowserItem(ExplorerBrowser owner, ShellItem shItem, string? overrideDisplayName = default)
+    public ExplorerBrowserItem(ShellItem shItem, string? overrideDisplayName = default)
     {
-        Owner = owner;
         ShellItem = shItem ?? throw new ArgumentNullException(nameof(shItem));
         DisplayName = overrideDisplayName ?? (ShellItem.Name ?? throw new Exception("shItem Display Name"));
         Children = [];
@@ -105,7 +100,7 @@ public class ExplorerBrowserItem
             foreach (var child in children)
             {
                 var childItem = child as ShellItem;
-                var ebItem = new ExplorerBrowserItem(Owner, childItem);
+                var ebItem = new ExplorerBrowserItem(childItem);
 
                 childItems.Add(ebItem);
             }

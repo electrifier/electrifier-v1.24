@@ -135,7 +135,7 @@ public partial class App : Application
     /// <param name="e"></param>
     private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
-        // TODO: Handle all exceptions
+        // TODO: Handle all exceptions. Use Shell32-Vanara Dialog to Display
         Debug.Indent();
         Debug.Fail("Software Failure. Press left mouse button to continue.");
         Debug.WriteLine($"*** Guru Meditation #{sender}.{e.Message}");
