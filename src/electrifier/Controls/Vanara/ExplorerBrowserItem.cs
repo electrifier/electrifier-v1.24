@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -80,51 +81,63 @@ public class ExplorerBrowserItem
         IsExpanded = true;
     }
 
+    // TODO: async
     internal static IEnumerable<ShellItem> EnumerateChildren(ShellItem enumerationShellItem, FolderItemFilter filter)
     {
         return enumerationShellItem is not ShellFolder folder ? [] : folder.EnumerateChildren(filter);
     }
 
+    // TODO: async
     public List<ExplorerBrowserItem> GetChildItems(ShellItem enumerationShellItem)
     {
         try
         {
             if ((enumerationShellItem.Attributes & ShellItemAttribute.Removable) != 0)
             {
-                Debug.WriteLine($"`{GetDebuggerDisplay}` is <ShellItemAttribute.Removable>");
+                Debug.WriteLine($"`{GetDebuggerDisplay}` is <ShellItemAttribute.Removable>: Skipping Enumeration");
                 return [];
             }
 
             // TODO: This takes ages on folder: @"C:\Users\tajbe\OneDrive\Desktop\aktuelle.projekte\Alte Desktop-Icons"
             var children = EnumerateChildren(enumerationShellItem, filter: FolderItemFilter.Storage);
-            var shellItems = children as ShellItem[] ?? children.ToArray();
-            IsEnumerated = true;            // TODO: SetProperty
-            HasUnrealizedChildren = false;  // TODO: SetProperty
+            var childItems = new List<ExplorerBrowserItem>();
 
-            if (shellItems.Any())
+            foreach (var child in children)
             {
-                return shellItems.Select(shellItem => new ExplorerBrowserItem(Owner, shellItem)).ToList();
+                var childItem = child as ShellItem;
+                var ebItem = new ExplorerBrowserItem(this.Owner, childItem);
+
+                childItems.Add(ebItem);
             }
+
+            IsEnumerated = true; // TODO: SetProperty
+            HasUnrealizedChildren = false; // TODO: SetProperty
+
+            return childItems;
+        }
+        catch (COMException comException)
+        {
+            Debug.WriteLine($"ExplorerBrowserItem: GetChildItems() failed: {comException.Message}");
+            throw;
         }
         catch (Exception e)
         {
-            Debug.WriteLine(e);
+            Debug.WriteLine(e.Message);
             throw;
         }
 
         return [];
     }
 
+    #region GetDebuggerDisplay()
     private string GetDebuggerDisplay()
     {
         var sb = new StringBuilder();
         sb.Append($"`{DisplayName}` - <{nameof(ExplorerBrowserItem)}>");
- 
-        if (IsFolder)
-        {
-            sb.Append(", [folder]");
-        }
+
+        if (IsFolder) { sb.Append(", [folder]"); }
 
         return sb.ToString();
     }
+    #endregion
 }
