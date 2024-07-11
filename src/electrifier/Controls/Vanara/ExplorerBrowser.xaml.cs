@@ -12,7 +12,6 @@ namespace electrifier.Controls.Vanara;
 // TODO: See also https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
-    // TODO: Probably use ShellItemArray for ShellItem Collections
     public List<ExplorerBrowserItem> CurrentFolderItems
     {
         get; private set;
@@ -49,18 +48,22 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         InitializeComponent();
         DataContext = this;
-        CurrentFolder = ShellFolder.Desktop;
-        CurrentFolderItems = [];
         ImageCache = new ImageCache();
 
-        // wire events
-        ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
-
         // Initialize root TreeView item(s)
+        CurrentFolder = ShellFolder.Desktop;
+        CurrentFolderItems = [];
         var ebCurrentFolderItem = new ExplorerBrowserItem(this, CurrentFolder);
         ShellTreeView.InitializeRoot(ebCurrentFolderItem);
-        //ShellTreeView.NativeTreeView.SelectedItem = ebCurrentFolderItem;
+        ShellTreeView.NativeTreeView.SelectedItem = ebCurrentFolderItem;
 
+        // Wire Events
+        Loading += ExplorerBrowser_Loading;
+        ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
+    }
+
+    private void ExplorerBrowser_Loading(FrameworkElement sender, object args)
+    {
         TryNavigate(CurrentFolder);
     }
 
@@ -80,19 +83,19 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         using var shFolder = new ShellFolder(shItem);
         try
         {
-            var rootItem = new ExplorerBrowserItem(this, shItem); //shFolder
+            var parentItem = new ExplorerBrowserItem(this, shItem); //shFolder
 
-            var childItems = rootItem.GetChildItems(shItem);
+            var childItems = parentItem.GetChildItems(shItem);
             foreach (var item in childItems)
             {
-                rootItem.Children.Add(item);
+                parentItem.Children.Add(item);
             }
 
             // TODO: Rebuild CurrentFolderItems.Clear(); to build complete item list
-            CurrentFolderItems = rootItem.Children;
+            CurrentFolderItems = parentItem.Children;
 
             // Update TreeView and ListView
-            ShellTreeView.SetItemsSource(rootItem, CurrentFolderItems);
+            ShellTreeView.SetItemsSource(parentItem, CurrentFolderItems);
 
             if (GridViewVisibility == Microsoft.UI.Xaml.Visibility.Visible)
             {

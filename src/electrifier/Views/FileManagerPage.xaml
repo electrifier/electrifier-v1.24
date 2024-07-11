@@ -3,11 +3,8 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:electrifier.Behaviors"
-    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:electrifier.Services"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:ui="using:CommunityToolkit.WinUI"
     xmlns:vanara="using:electrifier.Controls.Vanara"
     xmlns:viewmodel="using:electrifier.ViewModels"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
@@ -17,10 +14,10 @@
         <Border x:Name="ExplorerBrowserBorder">
             <vanara:ExplorerBrowser
                 x:Name="ExplorerBrowserControl"
-                BottomAppBarVisibility="Collapsed"
+                BottomAppBarVisibility="Visible"
                 BottomCommandBarVisibility="Collapsed"
                 GridViewVisibility="Visible"
-                TopCommandBarVisibility="Collapsed" />
+                TopCommandBarVisibility="Visible" />
         </Border>
     </Grid>
 </Page>

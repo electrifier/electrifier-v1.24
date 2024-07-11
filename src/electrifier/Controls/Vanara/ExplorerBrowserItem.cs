@@ -105,7 +105,7 @@ public class ExplorerBrowserItem
             foreach (var child in children)
             {
                 var childItem = child as ShellItem;
-                var ebItem = new ExplorerBrowserItem(this.Owner, childItem);
+                var ebItem = new ExplorerBrowserItem(Owner, childItem);
 
                 childItems.Add(ebItem);
             }
