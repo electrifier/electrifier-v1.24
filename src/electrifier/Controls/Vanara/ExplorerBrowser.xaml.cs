@@ -1,11 +1,10 @@
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using CommunityToolkit.WinUI.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using Vanara.Windows.Shell;
-using Visibility = Microsoft.UI.Xaml.Visibility;
 
 namespace electrifier.Controls.Vanara;
 
@@ -26,7 +25,22 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         get; set;
     }
 
-    public Visibility GridViewVisibility
+    public Microsoft.UI.Xaml.Visibility GridViewVisibility
+    {
+        get; set;
+    }
+
+    public Microsoft.UI.Xaml.Visibility TopCommandBarVisibility
+    {
+        get; set;
+    }
+
+    public Microsoft.UI.Xaml.Visibility BottomAppBarVisibility
+    {
+        get; set;
+    }
+
+    public Microsoft.UI.Xaml.Visibility BottomCommandBarVisibility
     {
         get; set;
     }
@@ -79,7 +93,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
             // Update TreeView and ListView
             ShellTreeView.SetItemsSource(rootItem, CurrentFolderItems);
-            if (GridViewVisibility  == Visibility.Visible)
+
+            if (GridViewVisibility == Microsoft.UI.Xaml.Visibility.Visible)
             {
                 ShellGridView.SetItemsSource(CurrentFolderItems); // TODO: binding
             }

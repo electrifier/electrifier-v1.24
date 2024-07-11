@@ -14,6 +14,13 @@
     d:DataContext="{d:DesignInstance Type=viewmodel:FileManagerViewModel}"
     mc:Ignorable="d">
     <Grid x:Name="ContentArea">
-        <vanara:ExplorerBrowser />
+        <Border x:Name="ExplorerBrowserBorder">
+            <vanara:ExplorerBrowser
+                x:Name="ExplorerBrowserControl"
+                BottomAppBarVisibility="Collapsed"
+                BottomCommandBarVisibility="Collapsed"
+                GridViewVisibility="Visible"
+                TopCommandBarVisibility="Collapsed" />
+        </Border>
     </Grid>
 </Page>

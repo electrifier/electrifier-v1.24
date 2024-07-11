@@ -22,7 +22,8 @@
             HorizontalAlignment="Left"
             Background="Transparent"
             DefaultLabelPosition="Collapsed"
-            IsOpen="False">
+            IsOpen="False"
+            Visibility="{x:Bind TopCommandBarVisibility}">
             <AppBarButton Icon="Up" Label="Parent" />
             <AppBarSeparator />
             <AppBarElementContainer>
@@ -188,13 +189,12 @@
                 <local:Shell32GridView x:Name="ShellGridView" Visibility="{x:Bind GridViewVisibility}" />
             </Border>
         </Grid>
-        <!--  Bikini Bottom -> AppBar  -->
         <AppBar
-            x:Name="AppBarBottomUid"
-            x:Uid="AppBarBottomUid"
+            x:Name="BottomAppBar"
             Grid.Row="2"
             HorizontalAlignment="Stretch"
-            Background="Transparent">
+            Background="Transparent"
+            Visibility="{x:Bind BottomAppBarVisibility}">
             <StackPanel>
                 <TextBlock Text="no binding :(" />
                 <AppBarButton
@@ -214,11 +214,11 @@
                 </AppBarButton>
             </StackPanel>
         </AppBar>
-        <!--  Bikini Bottom -> CommandBar  -->
         <CommandBar
-            x:Name="CommandBarBottom"
+            x:Name="BottomCommandBar"
             Grid.Row="3"
-            HorizontalAlignment="Left">
+            HorizontalAlignment="Left"
+            Visibility="{x:Bind BottomCommandBarVisibility}">
             <CommandBar.PrimaryCommands>
                 <AppBarButton
                     Icon="Back"

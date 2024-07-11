@@ -53,8 +53,13 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" MinWidth="76" />
             </Grid.ColumnDefinitions>
-            <Border x:Name="TreeViewBorder">
-                <vanara:ExplorerBrowser x:Name="ExplorerBrowserControl" GridViewVisibility="Collapsed" />
+            <Border x:Name="ExplorerBrowserBorder">
+                <vanara:ExplorerBrowser
+                    x:Name="ExplorerBrowserControl"
+                    BottomAppBarVisibility="Collapsed"
+                    BottomCommandBarVisibility="Collapsed"
+                    GridViewVisibility="Collapsed"
+                    TopCommandBarVisibility="Collapsed" />
             </Border>
             <controls:GridSplitter
                 x:Name="GridSplitter"
