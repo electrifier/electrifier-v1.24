@@ -125,8 +125,6 @@ public class ExplorerBrowserItem
             Debug.WriteLine(e.Message);
             throw;
         }
-
-        return [];
     }
 
     #region GetDebuggerDisplay()

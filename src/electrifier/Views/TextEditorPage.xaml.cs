@@ -1,10 +1,4 @@
-﻿using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using CommunityToolkit.WinUI.UI;
-using electrifier.Controls.Vanara;
-using electrifier.ViewModels;
-using Microsoft.UI.Xaml;
+﻿using electrifier.ViewModels;
 using Microsoft.UI.Xaml.Controls;
 using Vanara.Windows.Shell;
 
@@ -25,6 +19,7 @@ public sealed partial class TextEditorPage : Page
     /// <summary>
     /// Initializes a new instance of the <see cref="TextEditorPage"/> class.
     /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
     public TextEditorPage()
     {
         ViewModel = App.GetService<TextEditorViewModel>();
