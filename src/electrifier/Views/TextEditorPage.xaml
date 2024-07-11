@@ -53,6 +53,7 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" MinWidth="76" />
             </Grid.ColumnDefinitions>
+            <!--  TODO: ExplorerBrowser isn't stretching horizontally  -->
             <Border x:Name="ExplorerBrowserBorder">
                 <vanara:ExplorerBrowser
                     x:Name="ExplorerBrowserControl"
@@ -73,7 +74,7 @@
                 </controls:GridSplitter.RenderTransform>
             </controls:GridSplitter>
             <Border x:Name="CodeEditorBorder" Grid.Column="2">
-                <editor:CodeEditorControl x:Name="CodeEditorControl" HighlightingLanguage="csharp" />
+                <editor:CodeEditorControl x:Name="CodeEditorControl" />
             </Border>
         </Grid>
         <CommandBar

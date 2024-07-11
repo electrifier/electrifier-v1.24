@@ -29,6 +29,7 @@ public sealed partial class TextEditorPage : Page
         InitializeComponent();
 
         CurrentFolder = ShellFolder.Desktop;
+        CodeEditorControl.ApplyDefaultsToDocument();
     }
 
     #region obsolete code
