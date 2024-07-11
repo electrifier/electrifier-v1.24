@@ -68,10 +68,7 @@
                 </controls:GridSplitter.RenderTransform>
             </controls:GridSplitter>
             <Border x:Name="CodeEditorBorder" Grid.Column="2">
-                <editor:CodeEditorControl
-                    x:Name="CodeEditorControl"
-                    HighlightingLanguage="csharp"
-                    Loaded="CodeEditorControl_Loaded" />
+                <editor:CodeEditorControl x:Name="CodeEditorControl" HighlightingLanguage="csharp" />
             </Border>
         </Grid>
         <CommandBar

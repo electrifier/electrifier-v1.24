@@ -34,12 +34,11 @@ public sealed partial class TextEditorPage : Page
         CurrentFolder = ShellFolder.Desktop;
     }
 
-    private void CodeEditorControl_Loaded(object sender, RoutedEventArgs e)
-    {
-        // Needs to set focus explicitly due to WinUI 3 regression
-        // https://github.com/microsoft/microsoft-ui-xaml/issues/8816 
-        
-        
-        // INFO: Disabled cause of tab navigation: ((Control)sender).Focus(FocusState.Programmatic);
-    }
+    //private void CodeEditorControl_Loaded(object sender, RoutedEventArgs e)
+    //{
+    //    // Needs to set focus explicitly due to WinUI 3 regression
+    //    // https://github.com/microsoft/microsoft-ui-xaml/issues/8816 
+    //    
+    //    // INFO: Disabled cause of tab navigation: ((Control)sender).Focus(FocusState.Programmatic);
+    //}
 }
