@@ -11,10 +11,12 @@ public sealed partial class TextEditorPage : Page
         get;
     }
 
+    /// <summary>
+    /// The current Folder of left Pane ExplorerBrowser - TreeView
+    /// </summary>
     public ShellItem CurrentFolder;
 
-    public string StatusCursorPosition => GetCursorPosition();
-    private string GetCursorPosition() => ViewModel.CursorPosition;
+    public string StatusCursorPosition => ViewModel.CursorPosition;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="TextEditorPage"/> class.
@@ -29,6 +31,7 @@ public sealed partial class TextEditorPage : Page
         CurrentFolder = ShellFolder.Desktop;
     }
 
+    #region obsolete code
     //private void CodeEditorControl_Loaded(object sender, RoutedEventArgs e)
     //{
     //    // Needs to set focus explicitly due to WinUI 3 regression
@@ -36,4 +39,5 @@ public sealed partial class TextEditorPage : Page
     //    
     //    // INFO: Disabled cause of tab navigation: ((Control)sender).Focus(FocusState.Programmatic);
     //}
+    #endregion
 }

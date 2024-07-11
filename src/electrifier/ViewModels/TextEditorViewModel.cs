@@ -7,7 +7,7 @@ public partial class TextEditorViewModel : ObservableRecipient
 {
     public ShellItem CurrentFolder = ShellFolder.Desktop;
 
-    public string CursorPosition => $"Column: {CursorX} Line: {CursorY}";
+    public string CursorPosition => $"Ln: {CursorY}   Ch: {CursorX}";
     public int CursorX { get; set; } = 0;
     public int CursorY { get; set; } = 0;
 }
