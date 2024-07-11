@@ -8,7 +8,7 @@
     xmlns:local="using:electrifier.Controls.Vanara"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
-    <!--  TODO: Fix  TeachingTip  -->
+    <!--  TODO: Fix TeachingTip  -->
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -169,11 +169,6 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" MinWidth="76" />
             </Grid.ColumnDefinitions>
-            <Grid.Resources>
-                <Style x:Key="ShellGridViewItemContainerStyle" TargetType="GridViewItem">
-                    <Setter Property="Margin" Value="3" />
-                </Style>
-            </Grid.Resources>
             <Border x:Name="TreeViewBorder">
                 <local:Shell32TreeView x:Name="ShellTreeView" />
             </Border>
@@ -183,13 +178,14 @@
                 Width="12"
                 HorizontalAlignment="Left"
                 ResizeBehavior="BasedOnAlignment"
-                ResizeDirection="Columns">
+                ResizeDirection="Columns"
+                Visibility="{x:Bind GridViewVisibility}">
                 <controls:GridSplitter.RenderTransform>
                     <TranslateTransform X="-6" />
                 </controls:GridSplitter.RenderTransform>
             </controls:GridSplitter>
             <Border x:Name="GridViewBorder" Grid.Column="2">
-                <local:Shell32GridView x:Name="ShellGridView" />
+                <local:Shell32GridView x:Name="ShellGridView" Visibility="{x:Bind GridViewVisibility}" />
             </Border>
         </Grid>
         <!--  Bikini Bottom -> AppBar  -->

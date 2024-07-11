@@ -2,8 +2,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using CommunityToolkit.WinUI.UI;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Vanara.Windows.Shell;
+using Visibility = Microsoft.UI.Xaml.Visibility;
 
 namespace electrifier.Controls.Vanara;
 
@@ -14,16 +16,19 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     // TODO: Probably use ShellItemArray for ShellItem Collections
     public List<ExplorerBrowserItem> CurrentFolderItems
     {
-        get;
-        private set;
+        get; private set;
     }
 
     public ShellItem CurrentFolder;
 
     public ImageCache ImageCache
     {
-        get;
-        set;
+        get; set;
+    }
+
+    public Visibility GridViewVisibility
+    {
+        get; set;
     }
 
     public ExplorerBrowser()
@@ -74,7 +79,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
             // Update TreeView and ListView
             ShellTreeView.SetItemsSource(rootItem, CurrentFolderItems);
-            ShellGridView.SetItemsSource(CurrentFolderItems); // TODO: binding
+            if (GridViewVisibility  == Visibility.Visible)
+            {
+                ShellGridView.SetItemsSource(CurrentFolderItems); // TODO: binding
+            }
         }
         finally
         {
@@ -105,12 +113,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
+    #region Property stuff
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     private bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
@@ -123,6 +133,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         OnPropertyChanged(propertyName);
         return true;
     }
+
+    #endregion Property stuff
 }
 
 #region The following is original copy & paste from Vanara
