@@ -1,27 +1,18 @@
 ﻿using electrifier.ViewModels;
 using Microsoft.UI.Xaml.Controls;
+using Vanara.Windows.Shell;
 
 namespace electrifier.Views;
 
 public sealed partial class FileManagerPage : Page
 {
-    #region ContentAreaBottomAppBar
-
-    public int ItemCount => ViewModel.ItemCount;
-
-    public int FolderCount => ViewModel.FolderCount;
-
-    public bool HasFolders => FolderCount > 0;
-
-    public int FileCount => ViewModel.FileCount;
-    public bool HasFiles => FileCount > 0;
-
-    #endregion
-
     public FileManagerViewModel ViewModel
     {
-        get;
+        get; set;
     }
+
+    // primary member
+    public ShellItem CurrentFolder;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FileManagerPage"/> class.
@@ -30,7 +21,9 @@ public sealed partial class FileManagerPage : Page
     public FileManagerPage()
     {
         ViewModel = App.GetService<FileManagerViewModel>() ?? throw new InvalidOperationException();
-
+        DataContext = this;
         InitializeComponent();
+
+        CurrentFolder = ShellFolder.Desktop;
     }
 }

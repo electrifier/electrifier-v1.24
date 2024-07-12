@@ -1,196 +1,179 @@
-﻿<!--
-    Copyright 2024 Thorsten Jung, aka tajbender
-        https://www.electrifier.org
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
--->
-
-<!-- TODO: Insert MenuItemsSource -->
-<!-- TODO: IsPaneToggleButtonVisible = True -> PaneToggle-Style and overlap -->
+﻿<!--  TODO: Insert MenuItemsSource  -->
+<!--  TODO: IsPaneToggleButtonVisible = True -> PaneToggle-Style and overlap  -->
 <!-- TODO: <NavigationMode /> -->
-<!-- TODO: See winui3gallery://item/AnimatedIcon -->
-<!-- TODO: Create style in static resources: Style="{StaticResource AppTitleBarTitleStyle}" -->
+<!--  TODO: See winui3gallery://item/AnimatedIcon  -->
+<!--  TODO: Create style in static resources: Style="{StaticResource AppTitleBarTitleStyle}"  -->
 <!-- TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
                         https://docs.microsoft.com/windows/uwp/app-resources/localize-strings-ui-manifest#refer-to-a-string-resource-identifier-from-xaml
            TODO: Prefer Symbols over FontIcons for item icons.
                         https://learn.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.symbol?view=winrt-22621
            TODO: Update item icons by updating FontIcon.Glyph properties.
-                        https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list -->
-
-<Page x:Class="electrifier.Views.ShellPage"
-      xmlns:behaviors="using:electrifier.Behaviors"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:helpers="using:electrifier.Helpers"
-      xmlns:i="using:Microsoft.Xaml.Interactivity"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:viewmodels="using:electrifier.ViewModels"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      Loaded="OnLoaded">
+                        https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list-->
+<Page
+    x:Class="electrifier.Views.ShellPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="using:electrifier.Behaviors"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:helpers="using:electrifier.Helpers"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewmodels="using:electrifier.ViewModels"
+    Loaded="OnLoaded">
     <Grid>
-        <Grid x:Name="AppTitleBar"
-              HorizontalAlignment="Stretch"
-              IsHitTestVisible="True"
-              VerticalAlignment="Top">
+        <Grid
+            x:Name="AppTitleBar"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Top"
+            IsHitTestVisible="True">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <StackPanel x:Name="AppTitleBar_TitleStackPanelLeft"
-                        Grid.Column="0"
-                        BackgroundSizing="OuterBorderEdge"
-                        Margin="0,3,0,0"
-                        Orientation="Horizontal"
-                        VerticalAlignment="Stretch">
-                <DropDownButton x:Name="AppTitleBar_ForwardButton"
-                                Background="Transparent"
-                                BorderBrush="Transparent"
-                                Click="AppTitleBar_ForwardButton_Click"
-                                IsEnabled="False">
-                    <Image x:Name="AppTitleBar_ForwardButtonImage"
-                           MaxHeight="24"
-                           Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png" />
+            <StackPanel
+                x:Name="TitleStackPanelLeft"
+                Grid.Column="0"
+                Margin="0,3,0,0"
+                VerticalAlignment="Stretch"
+                BackgroundSizing="OuterBorderEdge"
+                Orientation="Horizontal">
+                <DropDownButton
+                    x:Name="ForwardButton"
+                    Background="Transparent"
+                    BorderBrush="Transparent"
+                    Click="AppTitleBar_ForwardButton_Click"
+                    IsEnabled="False"
+                    Visibility="Collapsed">
+                    <Image
+                        x:Name="AppTitleBar_ForwardButtonImage"
+                        MaxHeight="24"
+                        Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png" />
                 </DropDownButton>
-                <Image x:Name="WindowIcon"
-                       Height="32"
-                       Margin="15,0,15,0"
-                       Source="ms-appx:///Assets/Square44x44Logo.scale-200.png" />
+                <Image
+                    x:Name="WindowIcon"
+                    Height="32"
+                    Margin="8,0,15,0"
+                    Source="ms-appx:///Assets/Square44x44Logo.scale-200.png" />
                 <StackPanel>
-                    <TextBlock x:Name="AppTitleBar_TitleTextBlockLeft"
-                               FontSize="23"
-                               Margin="0, -3"
-                               Text="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}" />
-                    <TextBlock x:Name="AppTitleBar_SubTitleTextBlockLeft"
-                               Margin="0, 0"
-                               FontSize="11"
-                               FontStyle="Italic"
-                               Text="{x:Bind ViewModel.BuildVersionDescription}" />
-                    <!-- {x:Bind BuildVersionDescription, Mode=OneWay} -->
-                    <!-- Text="{x:Bind (ContentControl)ViewModel.BuildVersionDescription}" -->
-                    <!--update release name-->
+                    <TextBlock
+                        x:Name="TitleTextBlockLeft"
+                        Margin="0,-3"
+                        FontSize="23"
+                        Text="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}" />
+                    <TextBlock
+                        x:Name="SubTitleTextBlockLeft"
+                        Margin="0,0"
+                        FontSize="11"
+                        FontStyle="Italic"
+                        Text="{x:Bind ViewModel.BuildVersionDescription}" />
+                    <!--  {x:Bind BuildVersionDescription, Mode=OneWay}  -->
+                    <!--  Text="{x:Bind (ContentControl)ViewModel.BuildVersionDescription}"  -->
+                    <!--  update release name  -->
                 </StackPanel>
             </StackPanel>
-            <Grid Grid.Column="1"
-                  VerticalAlignment="Bottom"
-                  HorizontalAlignment="Right"
-                  Width="Auto">
+            <Grid
+                Grid.Column="1"
+                Width="Auto"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom">
                 <StackPanel Orientation="Horizontal">
-                    <!--<HyperlinkButton x:Name="AppTitleBar_HelpButton"
+                    <!--<HyperlinkButton x:Name="HelpButton"
                                  FontSize="13"
                                  NavigateUri="https://github.com/electrifier/docs"
                                  VerticalAlignment="Top" />-->
-                    <TextBlock x:Name="AppTitleBar_SubTitleTextBlockRight"
-                               FontSize="11"
-                               FontStyle="Italic"
-                               Text="electrifier" />
-                    <TextBlock x:Name="AppTitleBar_SubTitleTextBlockRightVersion"
-                               FontSize="11"
-                               Margin="3, 0, 11, 0"
-                               VerticalAlignment="Bottom"
-                               FontStyle="Italic"
-                               Text="{x:Bind ViewModel.BuildVersionDescription}" />
+                    <TextBlock
+                        x:Name="SubTitleTextBlockRight"
+                        FontSize="11"
+                        FontStyle="Italic"
+                        Text="electrifier" />
+                    <TextBlock
+                        x:Name="SubTitleTextBlockRightVersion"
+                        Margin="3,0,11,0"
+                        VerticalAlignment="Bottom"
+                        FontSize="11"
+                        FontStyle="Italic"
+                        Text="{x:Bind ViewModel.BuildVersionDescription}" />
                 </StackPanel>
             </Grid>
         </Grid>
-        <!-- CompactPaneGridLength: double -->
-        <!-- DefaultStyleResourceUri="" -->
-        <NavigationView x:Name="NavigationViewControl"
-                        AlwaysShowHeader="True"
-                        CompactPaneLength="72"
-                        DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
-                        IsBackButtonVisible="Visible"
-                        IsBackEnabled="True"
-                        IsPaneOpen="True"
-                        IsSettingsVisible="True"
-                        IsTitleBarAutoPaddingEnabled="False"
-                        Loaded="NavigationViewControl_Loaded"
-                        OpenPaneLength="195">
-            <!-- TODO: NavigationViewItems into the right upper border of header, as small icons -->
-            <!-- INFO: MultitaskExpanded -->
+        <!--  CompactPaneGridLength: double  -->
+        <!--  DefaultStyleResourceUri=""  -->
+        <NavigationView
+            x:Name="NavigationViewControl"
+            AlwaysShowHeader="True"
+            CompactPaneLength="72"
+            DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
+            IsBackButtonVisible="Visible"
+            IsBackEnabled="True"
+            IsPaneOpen="True"
+            IsSettingsVisible="True"
+            IsTitleBarAutoPaddingEnabled="False"
+            Loaded="NavigationViewControl_Loaded"
+            OpenPaneLength="195">
+            <!--  TODO: NavigationViewItems into the right upper border of header, as small icons  -->
+            <!--  INFO: MultitaskExpanded  -->
             <NavigationView.MenuItems>
-                <NavigationViewItem x:Uid="Shell_Workbench"
-                                    IsSelected="True"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
+                <NavigationViewItem
+                    x:Uid="Shell_Workbench"
+                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel"
+                    IsSelected="True">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xe8d1;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe8d1;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_KanbanBoard"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.KanbanBoardViewModel"
-                                    IsEnabled="False">
+                <NavigationViewItem
+                    x:Uid="Shell_KanbanBoard"
+                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.KanbanBoardViewModel"
+                    IsEnabled="False">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb91;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xeb91;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItemSeparator />
-                <NavigationViewItem x:Uid="Shell_WebView"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
+                <NavigationViewItem x:Uid="Shell_WebView" helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb41;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xeb41;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_FileManager"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
+                <NavigationViewItem x:Uid="Shell_FileManager" helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xec50;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xec50;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_TextEditor"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.TextEditorViewModel">
+                <NavigationViewItem x:Uid="Shell_TextEditor" helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.TextEditorViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xe70f;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe70f;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_Microsoft365"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.Microsoft365ViewModel">
+                <NavigationViewItem x:Uid="Shell_Microsoft365" helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.Microsoft365ViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb3c;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xeb3c;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="ShellPage_People"
-                                    IsEnabled="False">
+                <NavigationViewItem x:Uid="ShellPage_People" IsEnabled="False">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xe716;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe716;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
-                <NavigationViewItem x:Uid="Shell_Workbench"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
+                <NavigationViewItem x:Uid="Shell_Workbench" helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xe8d1;" />
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe8d1;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.FooterMenuItems>
             <NavigationView.PaneCustomContent>
-                <HyperlinkButton x:Name="PaneHyperlink"
-                                 Content="More info"
-                                 Margin="12,0"
-                                 Visibility="Collapsed" />
+                <HyperlinkButton
+                    x:Name="PaneHyperlink"
+                    Margin="12,0"
+                    Content="More info"
+                    Visibility="Collapsed" />
             </NavigationView.PaneCustomContent>
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
-                        <TextBlock Text="{Binding}"
-                                   Style="{ThemeResource TitleTextBlockStyle}" />
+                        <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{Binding}" />
                     </Grid>
                 </DataTemplate>
             </NavigationView.HeaderTemplate>
@@ -199,8 +182,7 @@
                     <behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                         <DataTemplate>
                             <Grid>
-                                <TextBlock Text="{Binding}"
-                                           Style="{ThemeResource TitleTextBlockStyle}" />
+                                <TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{Binding}" />
                             </Grid>
                         </DataTemplate>
                     </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>

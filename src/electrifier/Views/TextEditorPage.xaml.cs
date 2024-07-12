@@ -1,50 +1,44 @@
-﻿/*
-    Copyright 2024 Thorsten Jung, aka tajbender
-        https://www.electrifier.org
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-*/
-
-using electrifier.ViewModels;
-using Microsoft.UI.Xaml;
+﻿using electrifier.ViewModels;
 using Microsoft.UI.Xaml.Controls;
+using Vanara.Windows.Shell;
 
 namespace electrifier.Views;
 
 public sealed partial class TextEditorPage : Page
 {
-    public int TextEditorPageId
-    {
-        get;
-    }
-
     public TextEditorViewModel ViewModel
     {
         get;
     }
 
-    public string StatusCursorPosition => GetCursorPosition();
-    private string GetCursorPosition() => ViewModel.StatusCursorPosition;
+    /// <summary>
+    /// The current Folder of left Pane ExplorerBrowser - TreeView
+    /// </summary>
+    public ShellItem CurrentFolder;
 
+    public string StatusCursorPosition => ViewModel.CursorPosition;
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="TextEditorPage"/> class.
+    /// </summary>
+    /// <exception cref="InvalidOperationException"></exception>
     public TextEditorPage()
     {
         ViewModel = App.GetService<TextEditorViewModel>();
+        DataContext = this;
         InitializeComponent();
+
+        CurrentFolder = ShellFolder.Desktop;
+        CodeEditorControl.ApplyDefaultsToDocument();
     }
 
-    private void CodeEditorControl_Loaded(object sender, RoutedEventArgs e)
-    {
-        // Needs to set focus explicitly due to WinUI 3 regression https://github.com/microsoft/microsoft-ui-xaml/issues/8816 
-        ((Control)sender).Focus(FocusState.Programmatic);
-    }
+    #region obsolete code
+    //private void CodeEditorControl_Loaded(object sender, RoutedEventArgs e)
+    //{
+    //    // Needs to set focus explicitly due to WinUI 3 regression
+    //    // https://github.com/microsoft/microsoft-ui-xaml/issues/8816 
+    //    
+    //    // INFO: Disabled cause of tab navigation: ((Control)sender).Focus(FocusState.Programmatic);
+    //}
+    #endregion
 }

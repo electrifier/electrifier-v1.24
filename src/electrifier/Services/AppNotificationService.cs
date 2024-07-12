@@ -2,7 +2,6 @@
 using System.Web;
 
 using electrifier.Contracts.Services;
-using electrifier.ViewModels;
 
 using Microsoft.Windows.AppNotifications;
 

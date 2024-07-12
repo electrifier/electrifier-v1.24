@@ -1,7 +1,7 @@
-﻿using electrifier.Contracts.Services;
+﻿using System.Diagnostics;
+using electrifier.Contracts.Services;
 using electrifier.Helpers;
 using Microsoft.UI.Xaml;
-using System.Diagnostics;
 
 namespace electrifier.Services;
 

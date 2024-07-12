@@ -1,45 +1,39 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Microsoft.UI.Xaml;
+using System.Diagnostics;
+using CommunityToolkit.WinUI.Collections;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
-using Vanara.PInvoke;
-using Vanara.Windows.Shell;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 
 namespace electrifier.Controls.Vanara;
 
+[DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
 public sealed partial class Shell32GridView : UserControl
 {
     public Shell32GridView()
     {
         InitializeComponent();
-
-        // TODO: Add root items using an event handler
-        var rootShellItems = new ObservableCollection<Shell32GridViewItem>
-            {
-                new Shell32GridViewItem(ShellFolder.Desktop)
-            };
+        DataContext = this;
     }
-}
 
-public class Shell32GridViewItem
-{
-    public string Name { get; }
-    public string Path { get; }
-
-    public Shell32GridViewItem(ShellItem shellItem)
+    public void SetItemsSource(List<ExplorerBrowserItem> itemSourceCollection)
     {
-        Name = shellItem.Name ?? "NoName";
-        Path = shellItem.ParsingName ?? "NoParsingName";
+        var acv = new AdvancedCollectionView(itemSourceCollection, true);
+        acv.SortDescriptions.Add(new SortDescription("IsFolder", SortDirection.Descending));
+        acv.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
+        GridView.ItemsSource = acv;
+    }
+
+    private void GridView_OnItemClick(object sender, ItemClickEventArgs e)
+    {
+        if (e.ClickedItem is not ExplorerBrowserItem ebItem)
+        {
+            return;
+        }
+
+        var shItem = ebItem.ShellItem;
+        // TODO: ebItem.Owner.TryNavigate(shItem);
+    }
+
+    private string GetDebuggerDisplay()
+    {
+        return nameof(Shell32GridView) + ToString();
     }
 }

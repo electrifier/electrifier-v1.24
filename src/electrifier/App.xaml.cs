@@ -1,20 +1,4 @@
-﻿/*
-    Copyright 2024 Thorsten Jung, aka tajbender
-        https://www.electrifier.org
-
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
-
-        http://www.apache.org/licenses/LICENSE-2.0
-
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
-*/
-
+﻿using System.Diagnostics;
 using electrifier.Activation;
 using electrifier.Contracts.Services;
 using electrifier.Helpers;
@@ -26,17 +10,22 @@ using electrifier.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
+using UnhandledExceptionEventArgs = Microsoft.UI.Xaml.UnhandledExceptionEventArgs;
 
 namespace electrifier;
 
-// To learn more about WinUI 3, see https://docs.microsoft.com/windows/apps/winui/winui3/.
+/// <summary>
+/// App
+/// 
+/// The .NET Generic Host provides dependency injection, configuration, logging, and other services:
+/// <a href="https://docs.microsoft.com/dotnet/core/extensions/generic-host"/>,
+/// <a href="https://docs.microsoft.com/dotnet/core/extensions/dependency-injection"/>,
+/// <a href="https://docs.microsoft.com/dotnet/core/extensions/configuration"/>,
+/// <a href="https://docs.microsoft.com/dotnet/core/extensions/logging"/>
+/// To learn more about WinUI 3, see https://docs.microsoft.com/windows/apps/winui/winui3/.
+/// </summary>
 public partial class App : Application
 {
-    // The .NET Generic Host provides dependency injection, configuration, logging, and other services.
-    // https://docs.microsoft.com/dotnet/core/extensions/generic-host
-    // https://docs.microsoft.com/dotnet/core/extensions/dependency-injection
-    // https://docs.microsoft.com/dotnet/core/extensions/configuration
-    // https://docs.microsoft.com/dotnet/core/extensions/logging
     public static UIElement? AppTitleBar
     {
         get; set;
@@ -45,9 +34,7 @@ public partial class App : Application
     {
         get;
     }
-
     public static WindowEx MainWindow { get; } = new MainWindow();
-
 
     public App()
     {
@@ -103,14 +90,21 @@ public partial class App : Application
         }).
         Build();
 
-        App.GetService<IAppNotificationService>().Initialize();
+        GetService<IAppNotificationService>().Initialize();
 
         UnhandledException += App_UnhandledException;
     }
+
+    /// <summary>
+    /// GetService
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
     public static T GetService<T>()
         where T : class
     {
-        if ((App.Current as App)!.Host.Services.GetService(typeof(T)) is not T service)
+        if ((Current as App)!.Host.Services.GetService(typeof(T)) is not T service)
         {
             throw new ArgumentException($"{typeof(T)} needs to be registered in ConfigureServices within App.xaml.cs.");
         }
@@ -118,27 +112,33 @@ public partial class App : Application
         return service;
     }
 
+    /// <summary>
+    /// OnLaunched
+    /// </summary>
+    /// <param name="args"></param>
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
     {
         base.OnLaunched(args);
 
-        App.GetService<IAppNotificationService>().Show(string.Format("AppNotificationSamplePayload".GetLocalized(), AppContext.BaseDirectory));
+        GetService<IAppNotificationService>().Show(string.Format("AppNotificationSamplePayload".GetLocalized(), AppContext.BaseDirectory));
 
-        await App.GetService<IActivationService>().ActivateAsync(args);
+        await GetService<IActivationService>().ActivateAsync(args);
     }
 
     /// <summary>
     /// Log and handle exceptions as appropriate.
-    /// 
-    /// <br>Best practices:</br>
+    /// Best practices:
     /// - <see href="https://docs.microsoft.com/windows/apps/design/app-patterns/handling-exceptions">Handling exceptions</see>
     /// - <see href="https://docs.microsoft.com/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.application.unhandledexception"/>
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void App_UnhandledException(object sender, Microsoft.UI.Xaml.UnhandledExceptionEventArgs e)
+    private void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
     {
-        // TODO: 
-        // 
+        // TODO: Handle all exceptions. Use Shell32-Vanara Dialog to Display
+        Debug.Indent();
+        Debug.Fail("Software Failure. Press left mouse button to continue.");
+        Debug.WriteLine($"*** Guru Meditation #{sender}.{e.Message}");
+        Debug.Flush();
     }
 }
