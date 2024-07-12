@@ -80,40 +80,68 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             return;
         }
 
+        var targetFolder = new ShellFolder(shItem);
+
         //  Navigate2Target(new ShellItem(shItem.PIDL)); => TODO: Check why a copy of ShItem won't result in expanded TreeNode
-        Navigate2Target(shItem);
+        Navigate2Target(targetFolder);
     }
 
-    private void Navigate2Target(ShellItem shItem)
+    private void Navigate2Target(ShellFolder targetFolder)
     {
-        using var shFolder = new ShellFolder(shItem);
-        try
+        Debug.Assert(targetFolder is not null);
+        var iconExt = new ShellIconExtractor(targetFolder);
+        iconExt.IconExtracted += IconExtOnIconExtracted;
+        iconExt.Complete += IconExtOnComplete;
+
+        iconExt.Start();
+
+
+        void IconExtOnIconExtracted(object? sender, ShellIconExtractedEventArgs e)
         {
-            var parentItem = new ExplorerBrowserItem(shItem);
+            var shItem = new ShellItem(e.ItemID);
+            Debug.Print($".IconExtOnIconExtracted(): {shItem}");
+            CurrentFolderItems.Add(new ExplorerBrowserItem(shItem));
+        }
 
-            var childItems = parentItem.GetChildItems(shItem);
-            foreach (var item in childItems)
-            {
-                parentItem.Children.Add(item);
-            }
-
-            // TODO: Rebuild CurrentFolderItems.Clear(); to build complete item list
-            CurrentFolderItems = parentItem.Children;
-
-            // Update TreeView and ListView
-            ShellTreeView.SetItemsSource(parentItem, CurrentFolderItems);
-
+        void IconExtOnComplete(object? sender, EventArgs e)
+        {
+            var cnt = CurrentFolderItems.Count;
+            Debug.Print($".IconExtOnComplete(): {cnt} items");
             if (GridViewVisibility == Microsoft.UI.Xaml.Visibility.Visible)
             {
-                ShellGridView.SetItemsSource(CurrentFolderItems); // TODO: binding
+                Debug.Print($".GridViewVisibility = {Microsoft.UI.Xaml.Visibility.Visible}");
+                ShellGridView.SetItemsSource(CurrentFolderItems); // TODO: Throws Exception
             }
         }
-        finally
-        {
-            SetField(ref CurrentFolder, shFolder);
-            // TODO: Raise navigated event
-            Debug.Write($"TryNavigate: Done {shItem}.");
-        }
+
+        //using var shFolder = new ShellFolder(shItem);
+        //try
+        //{
+        //    var parentItem = new ExplorerBrowserItem(shItem);
+
+        //    var childItems = parentItem.GetChildItems(shItem);
+        //    foreach (var item in childItems)
+        //    {
+        //        parentItem.Children.Add(item);
+        //    }
+
+        //    // TODO: Rebuild CurrentFolderItems.Clear(); to build complete item list
+        //    CurrentFolderItems = parentItem.Children;
+
+        //    // Update TreeView and ListView
+        //    ShellTreeView.SetItemsSource(parentItem, CurrentFolderItems);
+
+        //    if (GridViewVisibility == Microsoft.UI.Xaml.Visibility.Visible)
+        //    {
+        //        ShellGridView.SetItemsSource(CurrentFolderItems); // TODO: binding
+        //    }
+        //}
+        //finally
+        //{
+        //    SetField(ref CurrentFolder, shFolder);
+        //    // TODO: Raise navigated event
+        //    Debug.Write($"TryNavigate: Done {shItem}.");
+        //}
     }
 
     private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
