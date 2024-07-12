@@ -24,11 +24,6 @@
             DefaultLabelPosition="Collapsed"
             IsOpen="False"
             Visibility="{x:Bind TopCommandBarVisibility}">
-            <AppBarButton Icon="Back" Label="Left" />
-            <AppBarButton Icon="Forward" Label="Right" />
-            <AppBarButton Icon="Up" Label="Up" />
-            <AppBarButton Icon="Refresh" Label="Refresh" />
-            <AppBarSeparator />
             <AppBarElementContainer>
                 <SplitButton
                     x:Name="NewItemSplitButton"

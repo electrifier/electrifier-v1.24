@@ -16,7 +16,14 @@ public sealed partial class Shell32TreeView : UserControl
 
     public TreeView NativeTreeView => TreeView;
 
+    public Visibility TopCommandBarVisibility
+    {
+        get => (Visibility)GetValue(TopCommandBarVisibilityProperty);
+        set => SetValue(TopCommandBarVisibilityProperty, value);
+    }
+
     public Visibility FileNameVisibility;
+    public static readonly DependencyProperty TopCommandBarVisibilityProperty = DependencyProperty.Register(nameof(TopCommandBarVisibility), typeof(Visibility), typeof(Shell32TreeView), new PropertyMetadata(default(Visibility)));
 
     public Shell32TreeView()
     {

@@ -8,7 +8,33 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <Grid>
-        <TreeView x:Name="TreeView" SelectionMode="Single">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <CommandBar
+            x:Name="TopCommandBar"
+            Grid.Row="0"
+            HorizontalAlignment="Left"
+            Background="Transparent"
+            DefaultLabelPosition="Collapsed"
+            IsOpen="False"
+            Visibility="{x:Bind TopCommandBarVisibility}">
+            <AppBarButton
+                Icon="Back"
+                Label="Left"
+                Visibility="Collapsed" />
+            <AppBarButton
+                Icon="Forward"
+                Label="Right"
+                Visibility="Collapsed" />
+            <AppBarButton Icon="Up" Label="Up" />
+            <AppBarButton Icon="Refresh" Label="Refresh" />
+        </CommandBar>
+        <TreeView
+            x:Name="TreeView"
+            Grid.Row="1"
+            SelectionMode="Single">
             <TreeView.ItemTemplate>
                 <DataTemplate x:DataType="local:ExplorerBrowserItem">
                     <TreeViewItem
