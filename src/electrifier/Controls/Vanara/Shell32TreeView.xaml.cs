@@ -1,7 +1,10 @@
 using System.Diagnostics;
+using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.Collections;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Vanara.Windows.Shell;
+using Visibility = Microsoft.UI.Xaml.Visibility;
 
 // TODO: For EnumerateChildren-Calls, add HWND handle
 // TODO: See ShellItemCollection, perhaps use this instead of ObservableCollection
@@ -60,49 +63,16 @@ public sealed partial class Shell32TreeView : UserControl
         TreeView.ItemsSource = _advancedCollectionView;
     }
 
-    public void SetItemsSource(ExplorerBrowserItem parentItem, List<ExplorerBrowserItem> itemSourceCollection)
+    public void SetItemsSource(ExplorerBrowserItem folder, List<ExplorerBrowserItem> itemSourceCollection)
     {
-        Debug.WriteLine("Entering SetItemsSource()");
+        Debug.WriteLine($".SetItemsSource(): `{folder.DisplayName}` {itemSourceCollection.Count} items.");
 
-        var result = FindParentNode(parentItem);
-        if (result != null)
+        if (_items.Find(x => x.ShellItem.PIDL.Equals(folder.ShellItem.PIDL)) is { } node)
         {
-            Debug.WriteLine("TreeView.SetItemsSource: Found parent Node.");
+            node.Children = itemSourceCollection;
         }
 
-        var targetItem = _items.Find(x => parentItem.ShellItem.Equals(x.ShellItem));
-        if (targetItem != null)
-        {
-            targetItem.Children = itemSourceCollection;
-            targetItem.IsExpanded = true;
-        }
-        else
-        {
-            if (FindNodeInCollection())
-            {
-
-            }
-        }
-
-        UpdateCollectionView();
         return;
-
-        bool FindNodeInCollection()
-        {
-            var newTargetItem = _items[0].Children.Find(x => parentItem.ShellItem.Equals(x.ShellItem));
-            if (newTargetItem != null)
-            {
-                newTargetItem.Children = itemSourceCollection;
-                newTargetItem.IsExpanded = true;
-                return true;
-            }
-            else
-            {
-                Debug.Print("TreeView.SetItemsSource: Found no TargetItem to add folder items to.");
-            }
-
-            return false;
-        }
     }
 
     public class TreeViewSelectionChanged(IList<object> addedItems, IList<object> removedItems) : EventArgs
@@ -110,35 +80,4 @@ public sealed partial class Shell32TreeView : UserControl
         public IList<object> AddedItems { get; } = addedItems ?? throw new ArgumentNullException(nameof(addedItems));
         public IList<object> RemovedItems { get; } = removedItems ?? throw new ArgumentNullException(nameof(removedItems));
     }
-
-
-    // TODO: Unit test
-
-    /// <summary>
-    /// Sucht nach dem übergeordneten TreeNode, der dem übergeordneten Ordner entspricht...
-    /// </summary>
-    /// <param name="source"></param>
-    public static ExplorerBrowserItem? FindParentNode(ExplorerBrowserItem source)
-    {
-        var rootBrowserItem = source;
-        var rootShellItem = source?.ShellItem;
-
-        // When we are the root of all evil, return us itself
-        if ((source == null) || (source.ShellItem == null))
-        {
-            return source;
-        }
-
-        var rootNode = source.ShellItem;
-        var parentItem = rootNode.Parent;
-        var resultBrowserItem = source;
-
-        // rootNode.PIDL.IsParentOf()
-
-        return source; // return ExplorerBrowserItem? parentItem
-    }
-
-    //public event ParentShellItemFound...
-
-
 }

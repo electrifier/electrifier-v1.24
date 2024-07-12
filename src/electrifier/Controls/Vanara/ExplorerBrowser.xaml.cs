@@ -17,6 +17,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         get; private set;
     }
 
+    public ExplorerBrowserItem ebCurrentFolderItem;
+
     public ShellItem CurrentFolder;
 
     public ImageCache ImageCache
@@ -53,7 +55,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         // Initialize root TreeView item(s)
         CurrentFolder = ShellFolder.Desktop;
         CurrentFolderItems = [];
-        var ebCurrentFolderItem = new ExplorerBrowserItem(CurrentFolder);
+        ebCurrentFolderItem = new ExplorerBrowserItem(CurrentFolder);
         ShellTreeView.InitializeRoot(ebCurrentFolderItem);
         ShellTreeView.NativeTreeView.SelectedItem = ebCurrentFolderItem;
 
@@ -107,6 +109,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             iconExt.Cancel();
             var cnt = CurrentFolderItems.Count;
             Debug.Print($".IconExtOnComplete(): {cnt} items");
+
+            ShellTreeView.SetItemsSource(ebCurrentFolderItem, CurrentFolderItems);
             if (GridViewVisibility == Microsoft.UI.Xaml.Visibility.Visible)
             {
                 Debug.Print($".GridViewVisibility = {Microsoft.UI.Xaml.Visibility.Visible}");
