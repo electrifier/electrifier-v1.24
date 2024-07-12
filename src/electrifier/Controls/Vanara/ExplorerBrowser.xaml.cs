@@ -99,18 +99,18 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         void IconExtOnIconExtracted(object? sender, ShellIconExtractedEventArgs e)
         {
             var shItem = new ShellItem(e.ItemID);
-            Debug.Print($".IconExtOnIconExtracted(): {shItem}");
             CurrentFolderItems.Add(new ExplorerBrowserItem(shItem));
         }
 
         void IconExtOnComplete(object? sender, EventArgs e)
         {
+            iconExt.Cancel();
             var cnt = CurrentFolderItems.Count;
             Debug.Print($".IconExtOnComplete(): {cnt} items");
             if (GridViewVisibility == Microsoft.UI.Xaml.Visibility.Visible)
             {
                 Debug.Print($".GridViewVisibility = {Microsoft.UI.Xaml.Visibility.Visible}");
-                ShellGridView.SetItemsSource(CurrentFolderItems); // TODO: Throws Exception
+                ShellGridView.SetItemsSource(CurrentFolderItems);
             }
         }
 

@@ -76,52 +76,6 @@ public class ExplorerBrowserItem
         IsExpanded = true;
     }
 
-    // TODO: async
-    internal static IEnumerable<ShellItem> EnumerateChildren(ShellItem enumerationShellItem, FolderItemFilter filter)
-    {
-        return enumerationShellItem is not ShellFolder folder ? [] : folder.EnumerateChildren(filter);
-    }
-
-    // TODO: async
-    public List<ExplorerBrowserItem> GetChildItems(ShellItem enumerationShellItem)
-    {
-        try
-        {
-            if ((enumerationShellItem.Attributes & ShellItemAttribute.Removable) != 0)
-            {
-                Debug.WriteLine($"`{GetDebuggerDisplay}` is <ShellItemAttribute.Removable>: Skipping Enumeration");
-                return [];
-            }
-
-            // TODO: This takes ages on folder: @"C:\Users\tajbe\OneDrive\Desktop\aktuelle.projekte\Alte Desktop-Icons"
-            var children = EnumerateChildren(enumerationShellItem, filter: FolderItemFilter.Storage);
-            var childItems = new List<ExplorerBrowserItem>();
-
-            foreach (var child in children)
-            {
-                var childItem = child as ShellItem;
-                var ebItem = new ExplorerBrowserItem(childItem);
-
-                childItems.Add(ebItem);
-            }
-
-            IsEnumerated = true; // TODO: SetProperty
-            HasUnrealizedChildren = false; // TODO: SetProperty
-
-            return childItems;
-        }
-        catch (COMException comException)
-        {
-            Debug.WriteLine($"ExplorerBrowserItem: GetChildItems() failed: {comException.Message}");
-            throw;
-        }
-        catch (Exception e)
-        {
-            Debug.WriteLine(e.Message);
-            throw;
-        }
-    }
-
     #region GetDebuggerDisplay()
     private string GetDebuggerDisplay()
     {

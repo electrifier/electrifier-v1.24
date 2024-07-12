@@ -30,10 +30,11 @@
             </DataTemplate>
         </Grid.Resources>
         <GridView
-            x:Name="GridView"
+            x:Name="NativeGridView"
             IsItemClickEnabled="True"
             ItemClick="GridView_OnItemClick"
             ItemTemplate="{StaticResource ExplorerBrowserItemTemplate}"
+            ItemsSource="{x:Bind Items}"
             SelectionMode="Single">
             <!-- An extra property also needs to be added to the GridView's ItemsWrapGrid.
                  The following sets the maximum # of items to show before wrapping.
