@@ -63,17 +63,17 @@ public class ExplorerBrowserItem
     // TODO: TreeViewNode - Property
     // TODO: GridViewItem - Property
     // TODO: ExplorerBrowserItem.TreeNodeSelected = bool; => Initiate selection of this node
-    public ExplorerBrowserItem(ShellItem shItem, string? overrideDisplayName = default)
+    public ExplorerBrowserItem(ShellItem shItem)
     {
         ShellItem = shItem ?? throw new ArgumentNullException(nameof(shItem));
-        DisplayName = overrideDisplayName ?? (ShellItem.Name ?? throw new Exception("shItem Display Name"));
+        DisplayName = ShellItem.Name ?? throw new Exception("shItem Display Name");
         Children = [];
         
         // secondary properties
-        HasUnrealizedChildren = shItem.IsFolder;
         IsFolder = shItem.IsFolder;
         ImageIconSource = shItem is { IsFolder: true } ? DefaultFolderImage : DefaultFileImage;
         IsExpanded = true;
+        //HasUnrealizedChildren = (shItem.Attributes & ShellItemAttribute.Browsable) != 0;
     }
 
     #region GetDebuggerDisplay()
