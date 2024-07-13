@@ -67,7 +67,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         TryNavigate(CurrentFolder);
     }
 
-    public void TryNavigate(ShellItem shItem)
+    public bool TryNavigate(ShellItem shItem)
     {
         if (!shItem.IsFolder)
         {
@@ -75,10 +75,22 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             throw new InvalidOperationException($"TryNavigate: IsFolder of item {shItem} is false.");
         }
 
-        var targetFolder = new ShellFolder(shItem);
+        try
+        {
+            var targetFolder = new ShellFolder(shItem);
+            //  Navigate2Target(new ShellItem(shItem.PIDL)); => TODO: Check why a copy of ShItem won't result in expanded TreeNode
 
-        //  Navigate2Target(new ShellItem(shItem.PIDL)); => TODO: Check why a copy of ShItem won't result in expanded TreeNode
-        Navigate2Target(targetFolder);
+            Navigate2Target(targetFolder);
+
+            this.CurrentFolder = targetFolder;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+        return true;
     }
 
     private void Navigate2Target(ShellFolder targetFolder)
