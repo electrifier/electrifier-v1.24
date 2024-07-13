@@ -74,10 +74,4 @@ public sealed partial class Shell32TreeView : UserControl
 
         return;
     }
-
-    public class TreeViewSelectionChanged(IList<object> addedItems, IList<object> removedItems) : EventArgs
-    {
-        public IList<object> AddedItems { get; } = addedItems ?? throw new ArgumentNullException(nameof(addedItems));
-        public IList<object> RemovedItems { get; } = removedItems ?? throw new ArgumentNullException(nameof(removedItems));
-    }
 }

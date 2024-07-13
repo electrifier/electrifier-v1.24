@@ -12,14 +12,12 @@ namespace electrifier.Controls.Vanara;
 // TODO: See also https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
+    public ShellItem CurrentFolder;
+    public ExplorerBrowserItem CurrentFolderItem;
     public List<ExplorerBrowserItem> CurrentFolderItems
     {
         get; private set;
     }
-
-    public ExplorerBrowserItem ebCurrentFolderItem;
-
-    public ShellItem CurrentFolder;
 
     public ImageCache ImageCache
     {
@@ -54,14 +52,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         // Initialize root TreeView item(s)
         CurrentFolder = ShellFolder.Desktop;
+        CurrentFolderItem = new ExplorerBrowserItem(CurrentFolder);
         CurrentFolderItems = [];
-        ebCurrentFolderItem = new ExplorerBrowserItem(CurrentFolder);
-        ShellTreeView.InitializeRoot(ebCurrentFolderItem);
-        ShellTreeView.NativeTreeView.SelectedItem = ebCurrentFolderItem;
 
-        // Wire Events
-        Loading += ExplorerBrowser_Loading;
+        ShellTreeView.InitializeRoot(CurrentFolderItem);
+        ShellTreeView.NativeTreeView.SelectedItem = CurrentFolderItem;
         ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
+
+        Loading += ExplorerBrowser_Loading;
     }
 
     private void ExplorerBrowser_Loading(FrameworkElement sender, object args)
@@ -71,15 +69,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     public void TryNavigate(ShellItem shItem)
     {
-        if (!shItem.IsFileSystem)
-        {
-            Debug.Fail($"TryNavigate: IsFileSystem of item {shItem} is false.");
-            return;
-        }
         if (!shItem.IsFolder)
         {
-            Debug.Write($"TryNavigate: IsFolder of item {shItem} is false.");
-            return;
+            Debug.Fail($"TryNavigate: IsFolder of item {shItem} is false.");
+            throw new InvalidOperationException($"TryNavigate: IsFolder of item {shItem} is false.");
         }
 
         var targetFolder = new ShellFolder(shItem);
@@ -110,7 +103,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             var cnt = CurrentFolderItems.Count;
             Debug.Print($".IconExtOnComplete(): {cnt} items");
 
-            ShellTreeView.SetItemsSource(ebCurrentFolderItem, CurrentFolderItems);
+            ShellTreeView.SetItemsSource(CurrentFolderItem, CurrentFolderItems);  // TODO: using root item here, should be targetfolder?!?
             if (GridViewVisibility == Microsoft.UI.Xaml.Visibility.Visible)
             {
                 Debug.Print($".GridViewVisibility = {Microsoft.UI.Xaml.Visibility.Visible}");
@@ -152,8 +145,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         var selectedNode = ShellTreeView.NativeTreeView.SelectedNode;
         var selectedItem = ShellTreeView.NativeTreeView.SelectedItem;
-        var addedItems = args.AddedItems;
-        var removedItems = args.RemovedItems;
 
         Debug.Print($"ShellTreeView_SelectionChanged SelectedItem: {selectedItem} ");
 

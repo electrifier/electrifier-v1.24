@@ -72,7 +72,10 @@ public class ExplorerBrowserItem
         // secondary properties
         IsFolder = shItem.IsFolder;
         ImageIconSource = shItem is { IsFolder: true } ? DefaultFolderImage : DefaultFileImage;
-        IsExpanded = true;
+
+        // dummy values for testing
+        IsExpanded = false;
+        HasUnrealizedChildren = true;
         //HasUnrealizedChildren = (shItem.Attributes & ShellItemAttribute.Browsable) != 0;
     }
 
