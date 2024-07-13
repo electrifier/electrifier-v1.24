@@ -55,6 +55,11 @@ public class ExplorerBrowserItem
         get; set;
     }
 
+    public bool IsLink
+    {
+        get;
+    }
+
     public bool IsSelected
     {
         get; set;
@@ -70,13 +75,16 @@ public class ExplorerBrowserItem
         Children = [];
         
         // secondary properties
+        IsEnumerated = false;
         IsFolder = shItem.IsFolder;
+        IsLink = shItem.IsLink;
+
+        // TODO: Library default image (DefaultLibraryImage)
         ImageIconSource = shItem is { IsFolder: true } ? DefaultFolderImage : DefaultFileImage;
 
         // dummy values for testing
         IsExpanded = false;
-        HasUnrealizedChildren = true;
-        //HasUnrealizedChildren = (shItem.Attributes & ShellItemAttribute.Browsable) != 0;
+        HasUnrealizedChildren = (shItem.Attributes.HasFlag(ShellItemAttribute.Folder));
     }
 
     #region GetDebuggerDisplay()
