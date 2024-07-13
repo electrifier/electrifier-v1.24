@@ -1,11 +1,10 @@
-using System.Diagnostics;
 using CommunityToolkit.WinUI.Collections;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using System;
 using Vanara.Windows.Shell;
 
 namespace electrifier.Controls.Vanara;
@@ -25,12 +24,11 @@ public sealed partial class Shell32GridView : UserControl, INotifyPropertyChange
         ObservableItemsCollection.CollectionChanged += ObservableItemsCollection_CollectionChanged;
     }
 
-    public void SetItemsSource(List<ExplorerBrowserItem> itemSourceCollection)
+    public void SetItems(List<ExplorerBrowserItem> itemSourceCollection)
     {
         try
         {
-            Items.Clear();
-            Items.AddRange(itemSourceCollection);
+            SetField(ref Items, itemSourceCollection);
         }
         catch (Exception e)
         {
@@ -39,17 +37,22 @@ public sealed partial class Shell32GridView : UserControl, INotifyPropertyChange
         }
     }
 
-    private void ObservableItemsCollection_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) => throw new NotImplementedException();
+    private void ObservableItemsCollection_CollectionChanged(object? sender,
+        System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    {
+        throw new NotImplementedException();
+    }
 
     private void GridView_OnItemClick(object sender, ItemClickEventArgs e)
     {
         if (e.ClickedItem is not ExplorerBrowserItem ebItem)
         {
+            Debug.Print($"GridView_OnItemClick: OnItemClick: No valid ExplorerBrowserItem");
             return;
         }
 
         var shItem = ebItem.ShellItem;
-        // TODO: ebItem.Owner.TryNavigate(shItem);
+        // TODO: Raise event on DblClick to call 'ebItem.Owner.TryNavigate(shItem);'
     }
 
     private string GetDebuggerDisplay()

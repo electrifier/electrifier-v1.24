@@ -119,7 +119,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             if (GridViewVisibility == Microsoft.UI.Xaml.Visibility.Visible)
             {
                 Debug.Print($".GridViewVisibility = {Microsoft.UI.Xaml.Visibility.Visible}");
-                ShellGridView.SetItemsSource(CurrentFolderItems);
+                ShellGridView.SetItems(CurrentFolderItems);
             }
         }
 
@@ -138,11 +138,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         //    CurrentFolderItems = parentItem.Children;
 
         //    // Update TreeView and ListView
-        //    ShellTreeView.SetItemsSource(parentItem, CurrentFolderItems);
+        //    ShellTreeView.SetItems(parentItem, CurrentFolderItems);
 
         //    if (GridViewVisibility == Microsoft.UI.Xaml.Visibility.Visible)
         //    {
-        //        ShellGridView.SetItemsSource(CurrentFolderItems); // TODO: binding
+        //        ShellGridView.SetItems(CurrentFolderItems); // TODO: binding
         //    }
         //}
         //finally
@@ -156,9 +156,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
         var selectedNode = ShellTreeView.NativeTreeView.SelectedNode;
-        var selectedItem = ShellTreeView.NativeTreeView.SelectedItem;
-
-        Debug.Print($"ShellTreeView_SelectionChanged SelectedItem: {selectedItem} ");
+        //var selectedItem = ShellTreeView.NativeTreeView.SelectedItem;
 
         if (selectedNode != null)
         {
@@ -166,7 +164,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
             if (nodeContent is ExplorerBrowserItem ebItem)
             {
-                Debug.Print($"nameof({ShellTreeView_SelectionChanged}) - {ebItem}");
+                Debug.Print($"ShellTreeView_SelectionChanged: SelectedItem <{ebItem.DisplayName}>");
+
+                //Debug.Print($"nameof({ShellTreeView_SelectionChanged}) - {ebItem}");
                 TryNavigate(ebItem.ShellItem);
             }
         }
