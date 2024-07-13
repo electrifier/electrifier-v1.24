@@ -70,8 +70,11 @@ public sealed partial class Shell32TreeView : UserControl
         if (_items.Find(x => x.ShellItem.PIDL.Equals(folder.ShellItem.PIDL)) is { } node)
         {
             node.Children = itemSourceCollection;
+            node.IsExpanded = true;
         }
-
-        return;
+        else
+        {
+            Debug.Print("SetItemsSource() failed: Folder Target not found!");
+        }
     }
 }
