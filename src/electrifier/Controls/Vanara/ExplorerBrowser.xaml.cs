@@ -50,14 +50,13 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         DataContext = this;
         ImageCache = new ImageCache();
 
-        ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
+        // wire events
         Loading += ExplorerBrowser_Loading;
 
         // Initialize root TreeView item(s)
         CurrentFolder = ShellFolder.Desktop;
         CurrentFolderItem = new ExplorerBrowserItem(CurrentFolder);
         CurrentFolderItems = [];
-
         ShellTreeView.InitializeRoot(CurrentFolderItem);
         ShellTreeView.NativeTreeView.SelectedItem = CurrentFolderItem;
     }

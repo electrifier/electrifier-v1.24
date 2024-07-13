@@ -33,6 +33,8 @@ public sealed partial class Shell32TreeView : UserControl
         InitializeComponent();
         DataContext = this;
 
+        NativeTreeView.SelectionChanged += NativeTreeView_SelectionChanged;
+
         _advancedCollectionView = new AdvancedCollectionView(_items, true);
 
         //_advancedCollectionView.SortDescriptions.Add(new SortDescription("IsFolder", SortDirection.Descending));
@@ -75,6 +77,25 @@ public sealed partial class Shell32TreeView : UserControl
         else
         {
             Debug.Print("SetItemsSource() failed: Folder Target not found!");
+        }
+    }
+
+    private void NativeTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
+    {
+        var selectedNode = NativeTreeView.SelectedNode;
+        //var selectedItem = ShellTreeView.NativeTreeView.SelectedItem;
+
+        if (selectedNode != null)
+        {
+            var nodeContent = selectedNode.Content;
+
+            if (nodeContent is ExplorerBrowserItem ebItem)
+            {
+                Debug.Print($"NativeTreeView_SelectionChanged: SelectedItem <{ebItem.DisplayName}>");
+
+                //Debug.Print($"nameof({ShellTreeView_SelectionChanged}) - {ebItem}");
+                //TryNavigate(ebItem.ShellItem);
+            }
         }
     }
 }
