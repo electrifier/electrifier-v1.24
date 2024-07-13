@@ -12,27 +12,23 @@ namespace electrifier.Controls.Vanara;
 public sealed partial class Shell32GridView : UserControl
 {
     public List<ExplorerBrowserItem> Items = [];
+    public ObservableCollection<ExplorerBrowserItem> ObservableItemsCollection;
 
     public Shell32GridView()
     {
         InitializeComponent();
         DataContext = this;
+
+        ObservableItemsCollection = new ObservableCollection<ExplorerBrowserItem>(Items);
+        ObservableItemsCollection.CollectionChanged += ObservableItemsCollection_CollectionChanged;
     }
 
     public void SetItemsSource(List<ExplorerBrowserItem> itemSourceCollection)
     {
         try
         {
-            //var oc = new ObservableCollection<ExplorerBrowserItem>();
+            Items.Clear();
             Items.AddRange(itemSourceCollection);
-
-            NativeGridView.ItemsSource = Items;
-
-            //var acv = new AdvancedCollectionView(itemSourceCollection, true);
-            //acv.SortDescriptions.Add(new SortDescription("IsFolder", SortDirection.Descending));
-            //acv.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
-            //NativeGridView.ItemsSource = acv;
-            //NativeGridView.ItemsSource = oc;
         }
         catch (Exception e)
         {
@@ -40,6 +36,8 @@ public sealed partial class Shell32GridView : UserControl
             throw;
         }
     }
+
+    private void ObservableItemsCollection_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e) => throw new NotImplementedException();
 
     private void GridView_OnItemClick(object sender, ItemClickEventArgs e)
     {

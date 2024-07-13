@@ -34,7 +34,7 @@
             IsItemClickEnabled="True"
             ItemClick="GridView_OnItemClick"
             ItemTemplate="{StaticResource ExplorerBrowserItemTemplate}"
-            ItemsSource="{x:Bind Items}"
+            ItemsSource="{x:Bind ObservableItemsCollection}"
             SelectionMode="Single">
             <!-- An extra property also needs to be added to the GridView's ItemsWrapGrid.
                  The following sets the maximum # of items to show before wrapping.
