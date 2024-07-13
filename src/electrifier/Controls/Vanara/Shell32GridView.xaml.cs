@@ -3,13 +3,15 @@ using CommunityToolkit.WinUI.Collections;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using Vanara.Windows.Shell;
 
 namespace electrifier.Controls.Vanara;
 
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
-public sealed partial class Shell32GridView : UserControl
+public sealed partial class Shell32GridView : UserControl, INotifyPropertyChanged   
 {
     public List<ExplorerBrowserItem> Items = [];
     public ObservableCollection<ExplorerBrowserItem> ObservableItemsCollection;
@@ -54,4 +56,21 @@ public sealed partial class Shell32GridView : UserControl
     {
         return nameof(Shell32GridView) + ToString();
     }
+
+    #region INotifyPropertyChanged
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    private bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
+    #endregion
 }
