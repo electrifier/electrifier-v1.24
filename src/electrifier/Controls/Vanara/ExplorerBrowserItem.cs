@@ -45,21 +45,18 @@ public class ExplorerBrowserItem
     {
         get;
     }
-    private bool IsEnumerated
-    {
-        get; set;
-    }
-
+    //private bool IsEnumerated
+    //{
+    //    get; set;
+    //}
     public bool IsExpanded
     {
         get; set;
     }
-
     public bool IsLink
     {
         get;
     }
-
     public bool IsSelected
     {
         get; set;
@@ -75,7 +72,7 @@ public class ExplorerBrowserItem
         Children = [];
         
         // secondary properties
-        IsEnumerated = false;
+        // INFO: Removed IsEnumerated = false;
         IsFolder = shItem.IsFolder;
         IsLink = shItem.IsLink;
 
@@ -84,7 +81,7 @@ public class ExplorerBrowserItem
 
         // dummy values for testing
         IsExpanded = false;
-        HasUnrealizedChildren = (shItem.Attributes.HasFlag(ShellItemAttribute.Folder));
+        HasUnrealizedChildren = (shItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
     }
 
     #region GetDebuggerDisplay()

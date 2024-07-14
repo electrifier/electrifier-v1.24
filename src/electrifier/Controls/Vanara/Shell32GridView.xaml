@@ -32,7 +32,6 @@
         <GridView
             x:Name="NativeGridView"
             IsItemClickEnabled="True"
-            ItemClick="GridView_OnItemClick"
             ItemTemplate="{StaticResource ExplorerBrowserItemTemplate}"
             ItemsSource="{x:Bind Items, Mode=OneWay}"
             SelectionMode="Extended">

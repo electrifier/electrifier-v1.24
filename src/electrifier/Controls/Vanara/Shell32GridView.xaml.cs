@@ -43,17 +43,16 @@ public sealed partial class Shell32GridView : UserControl, INotifyPropertyChange
         throw new NotImplementedException();
     }
 
-    private void GridView_OnItemClick(object sender, ItemClickEventArgs e)
-    {
-        if (e.ClickedItem is not ExplorerBrowserItem ebItem)
-        {
-            Debug.Print($"GridView_OnItemClick: OnItemClick: No valid ExplorerBrowserItem");
-            return;
-        }
-
-        var shItem = ebItem.ShellItem;
-        // TODO: Raise event on DblClick to call 'ebItem.Owner.TryNavigate(shItem);'
-    }
+    //private void GridView_OnItemClick(object sender, ItemClickEventArgs e)
+    //{
+    //    if (e.ClickedItem is not ExplorerBrowserItem ebItem)
+    //    {
+    //        Debug.Print($"GridView_OnItemClick: OnItemClick: No valid ExplorerBrowserItem");
+    //        return;
+    //    }
+    //    var shItem = ebItem.ShellItem;
+    //    // TODO: Raise event on DblClick to call 'ebItem.Owner.TryNavigate(shItem);'
+    //}
 
     private string GetDebuggerDisplay()
     {
