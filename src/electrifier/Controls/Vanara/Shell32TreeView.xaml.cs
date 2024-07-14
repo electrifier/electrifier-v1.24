@@ -112,6 +112,7 @@ public sealed partial class Shell32TreeView : UserControl
                 Debug.Print($".NativeTreeView_SelectionChanged: SelectedItem `{ebItem.DisplayName}`");
 
                 SelectedItem = ebItem;
+                // TODO: Initiate Navigation. Change `CurrentFolderBrowserItem` on ExplorerBrowser
             }
         }
     }

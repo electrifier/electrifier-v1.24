@@ -12,8 +12,8 @@ namespace electrifier.Controls.Vanara;
 // TODO: See also https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
-    public ShellItem CurrentFolder;
-    public ExplorerBrowserItem CurrentFolderItem;
+    private ShellItem CurrentFolder;        // TODO Remove, replace by `=> CurrentFolderBrowserItem.Item`
+    public ExplorerBrowserItem CurrentFolderBrowserItem;
     public List<ExplorerBrowserItem> CurrentFolderItems
     {
         get; private set;
@@ -63,10 +63,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         // Initialize root TreeView item(s)
         CurrentFolder = ShellFolder.Desktop;
-        CurrentFolderItem = new ExplorerBrowserItem(CurrentFolder);
+        CurrentFolderBrowserItem = new ExplorerBrowserItem(CurrentFolder);
         CurrentFolderItems = [];
-        ShellTreeView.InitializeRoot(CurrentFolderItem);
-        ShellTreeView.SelectedItem = CurrentFolderItem;
+        ShellTreeView.InitializeRoot(CurrentFolderBrowserItem);
+        ShellTreeView.SelectedItem = CurrentFolderBrowserItem;
 
         // wire events
         Loading += ExplorerBrowser_Loading;
@@ -127,7 +127,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             var cnt = CurrentFolderItems.Count;
             Debug.Print($".IconExtOnComplete(): {cnt} items");
 
-            ShellTreeView.SetItemsSource(CurrentFolderItem, CurrentFolderItems);  // TODO: using root item here, should be target folder?!?
+            ShellTreeView.SetItemsSource(CurrentFolderBrowserItem, CurrentFolderItems);  // TODO: using root item here, should be target folder?!?
             if (GridViewVisibility == Microsoft.UI.Xaml.Visibility.Visible)
             {
                 ShellGridView.SetItems(CurrentFolderItems);
