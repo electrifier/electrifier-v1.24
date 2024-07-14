@@ -164,26 +164,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         //}
     }
 
-/*
-    private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
-    {
-        var selectedNode = ShellTreeView.SelectedNode;
-        //var selectedItem = ShellTreeView.NativeTreeView.SelectedItem;
-
-        if (selectedNode != null)
-        {
-            var nodeContent = selectedNode.Content;
-
-            if (nodeContent is ExplorerBrowserItem ebItem)
-            {
-                Debug.Print($"ShellTreeView_SelectionChanged: SelectedItem <{ebItem.DisplayName}>");
-
-                //Debug.Print($"nameof({ShellTreeView_SelectionChanged}) - {ebItem}");
-                TryNavigate(ebItem.ShellItem);
-            }
-        }
-    }
-*/
 
     #region Property stuff
 

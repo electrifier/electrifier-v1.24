@@ -30,9 +30,13 @@ public sealed partial class Shell32TreeView : UserControl
 
     public ExplorerBrowserItem? SelectedItem
     {
-        get;
-        set;
+        get => (ExplorerBrowserItem?)GetValue(SelectedItemProperty);
+        set => SetValue(SelectedItemProperty, value);
     }
+
+    public static readonly DependencyProperty SelectedItemProperty =
+        DependencyProperty.Register(nameof(SelectedItem), typeof(ExplorerBrowserItem), typeof(Shell32TreeView),
+            new PropertyMetadata(default(ExplorerBrowserItem?)));
 
     public TreeViewNode SelectedNode => NativeTreeView.SelectedNode;
 
@@ -105,7 +109,7 @@ public sealed partial class Shell32TreeView : UserControl
 
             if (nodeContent is ExplorerBrowserItem ebItem)
             {
-                Debug.Print($".NativeTreeView_SelectionChanged: SelectedItem `<{ebItem.DisplayName}>`");
+                Debug.Print($".NativeTreeView_SelectionChanged: SelectedItem `{ebItem.DisplayName}`");
 
                 SelectedItem = ebItem;
             }
