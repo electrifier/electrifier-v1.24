@@ -52,13 +52,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         // wire events
         Loading += ExplorerBrowser_Loading;
+        //ShellTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
 
         // Initialize root TreeView item(s)
         CurrentFolder = ShellFolder.Desktop;
         CurrentFolderItem = new ExplorerBrowserItem(CurrentFolder);
         CurrentFolderItems = [];
         ShellTreeView.InitializeRoot(CurrentFolderItem);
-        ShellTreeView.NativeTreeView.SelectedItem = CurrentFolderItem;
+        ShellTreeView.SelectedItem = CurrentFolderItem;
     }
 
     private void ExplorerBrowser_Loading(FrameworkElement sender, object args)
@@ -81,7 +82,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
             Navigate2Target(targetFolder);
 
-            this.CurrentFolder = targetFolder;
+            CurrentFolder = targetFolder;
         }
         catch (Exception e)
         {
@@ -114,7 +115,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             var cnt = CurrentFolderItems.Count;
             Debug.Print($".IconExtOnComplete(): {cnt} items");
 
-            ShellTreeView.SetItemsSource(CurrentFolderItem, CurrentFolderItems);  // TODO: using root item here, should be targetfolder?!?
+            ShellTreeView.SetItemsSource(CurrentFolderItem, CurrentFolderItems);  // TODO: using root item here, should be target folder?!?
             if (GridViewVisibility == Microsoft.UI.Xaml.Visibility.Visible)
             {
                 Debug.Print($".GridViewVisibility = {Microsoft.UI.Xaml.Visibility.Visible}");
@@ -154,7 +155,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
-        var selectedNode = ShellTreeView.NativeTreeView.SelectedNode;
+        var selectedNode = ShellTreeView.SelectedNode;
         //var selectedItem = ShellTreeView.NativeTreeView.SelectedItem;
 
         if (selectedNode != null)

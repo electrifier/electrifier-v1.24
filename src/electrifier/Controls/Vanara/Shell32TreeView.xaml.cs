@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Diagnostics;
 using CommunityToolkit.WinUI;
 using CommunityToolkit.WinUI.Collections;
@@ -17,7 +18,21 @@ public sealed partial class Shell32TreeView : UserControl
     private readonly List<ExplorerBrowserItem> _items = [];
     private AdvancedCollectionView _advancedCollectionView;
 
-    public TreeView NativeTreeView => TreeView;
+    private TreeView NativeTreeView => TreeView;
+
+    public Visibility FileNameVisibility
+    {
+        get => (Visibility)GetValue(FileNameVisibilityProperty);
+        set => SetValue(FileNameVisibilityProperty, value);
+    }
+
+    public static readonly DependencyProperty FileNameVisibilityProperty = DependencyProperty.Register(nameof(FileNameVisibility), typeof(Visibility), typeof(Shell32TreeView), new PropertyMetadata(default(Visibility)));
+
+    public ExplorerBrowserItem? SelectedItem
+    {
+        get;
+        set;
+    }
 
     public Visibility TopCommandBarVisibility
     {
@@ -25,7 +40,8 @@ public sealed partial class Shell32TreeView : UserControl
         set => SetValue(TopCommandBarVisibilityProperty, value);
     }
 
-    public Visibility FileNameVisibility;
+    public TreeViewNode SelectedNode => NativeTreeView.SelectedNode;
+
     public static readonly DependencyProperty TopCommandBarVisibilityProperty = DependencyProperty.Register(nameof(TopCommandBarVisibility), typeof(Visibility), typeof(Shell32TreeView), new PropertyMetadata(default(Visibility)));
 
     public Shell32TreeView()
@@ -82,8 +98,8 @@ public sealed partial class Shell32TreeView : UserControl
 
     private void NativeTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
+        // TODO: Add Multi-Select abilities
         var selectedNode = NativeTreeView.SelectedNode;
-        //var selectedItem = ShellTreeView.NativeTreeView.SelectedItem;
 
         if (selectedNode != null)
         {
@@ -91,10 +107,9 @@ public sealed partial class Shell32TreeView : UserControl
 
             if (nodeContent is ExplorerBrowserItem ebItem)
             {
-                Debug.Print($"NativeTreeView_SelectionChanged: SelectedItem <{ebItem.DisplayName}>");
+                Debug.Print($".NativeTreeView_SelectionChanged: SelectedItem `<{ebItem.DisplayName}>`");
 
-                //Debug.Print($"nameof({ShellTreeView_SelectionChanged}) - {ebItem}");
-                //TryNavigate(ebItem.ShellItem);
+                SelectedItem = ebItem;
             }
         }
     }
