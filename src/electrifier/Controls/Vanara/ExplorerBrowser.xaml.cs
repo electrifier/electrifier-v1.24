@@ -19,6 +19,17 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         get; private set;
     }
 
+    private ShellIconExtractor? _iconExtractor;
+    public ShellIconExtractor? IconExtractor
+    {
+        get => _iconExtractor;
+        private set
+        {
+            IconExtractor?.Cancel();
+            _iconExtractor = value;
+        }
+    }
+    
     public ImageCache ImageCache
     {
         get; set;
@@ -50,16 +61,16 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         DataContext = this;
         ImageCache = new ImageCache();
 
-        // wire events
-        Loading += ExplorerBrowser_Loading;
-        //ShellTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
-
         // Initialize root TreeView item(s)
         CurrentFolder = ShellFolder.Desktop;
         CurrentFolderItem = new ExplorerBrowserItem(CurrentFolder);
         CurrentFolderItems = [];
         ShellTreeView.InitializeRoot(CurrentFolderItem);
         ShellTreeView.SelectedItem = CurrentFolderItem;
+
+        // wire events
+        Loading += ExplorerBrowser_Loading;
+        //ShellTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
     }
 
     private void ExplorerBrowser_Loading(FrameworkElement sender, object args)
@@ -96,12 +107,13 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     private void Navigate2Target(ShellFolder targetFolder)
     {
         Debug.Assert(targetFolder is not null);
-        var iconExt = new ShellIconExtractor(targetFolder);
-        iconExt.IconExtracted += IconExtOnIconExtracted;
-        iconExt.Complete += IconExtOnComplete;
 
-        iconExt.Start();
+        var shellIconExtractor = new ShellIconExtractor(targetFolder);
+        shellIconExtractor.IconExtracted += IconExtOnIconExtracted;
+        shellIconExtractor.Complete += IconExtOnComplete;
+        shellIconExtractor.Start();
 
+        IconExtractor = shellIconExtractor;
 
         void IconExtOnIconExtracted(object? sender, ShellIconExtractedEventArgs e)
         {
@@ -111,7 +123,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         void IconExtOnComplete(object? sender, EventArgs e)
         {
-            iconExt.Cancel();
             var cnt = CurrentFolderItems.Count;
             Debug.Print($".IconExtOnComplete(): {cnt} items");
 

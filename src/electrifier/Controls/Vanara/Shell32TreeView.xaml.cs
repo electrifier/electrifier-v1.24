@@ -1,9 +1,9 @@
+using CommunityToolkit.WinUI.Collections;
+using CommunityToolkit.WinUI;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml;
 using System.ComponentModel;
 using System.Diagnostics;
-using CommunityToolkit.WinUI;
-using CommunityToolkit.WinUI.Collections;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using Vanara.Windows.Shell;
 using Visibility = Microsoft.UI.Xaml.Visibility;
 
@@ -34,13 +34,14 @@ public sealed partial class Shell32TreeView : UserControl
         set;
     }
 
+    public TreeViewNode SelectedNode => NativeTreeView.SelectedNode;
+
     public Visibility TopCommandBarVisibility
     {
         get => (Visibility)GetValue(TopCommandBarVisibilityProperty);
         set => SetValue(TopCommandBarVisibilityProperty, value);
     }
 
-    public TreeViewNode SelectedNode => NativeTreeView.SelectedNode;
 
     public static readonly DependencyProperty TopCommandBarVisibilityProperty = DependencyProperty.Register(nameof(TopCommandBarVisibility), typeof(Visibility), typeof(Shell32TreeView), new PropertyMetadata(default(Visibility)));
 
