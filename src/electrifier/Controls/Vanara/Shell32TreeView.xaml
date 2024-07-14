@@ -34,6 +34,7 @@
         <TreeView
             x:Name="TreeView"
             Grid.Row="1"
+            SelectionChanged="NativeTreeView_OnSelectionChanged"
             SelectionMode="Single">
             <TreeView.ItemTemplate>
                 <DataTemplate x:DataType="local:ExplorerBrowserItem">

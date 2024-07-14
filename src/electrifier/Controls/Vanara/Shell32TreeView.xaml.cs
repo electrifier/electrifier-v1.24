@@ -42,15 +42,12 @@ public sealed partial class Shell32TreeView : UserControl
         set => SetValue(TopCommandBarVisibilityProperty, value);
     }
 
-
     public static readonly DependencyProperty TopCommandBarVisibilityProperty = DependencyProperty.Register(nameof(TopCommandBarVisibility), typeof(Visibility), typeof(Shell32TreeView), new PropertyMetadata(default(Visibility)));
 
     public Shell32TreeView()
     {
         InitializeComponent();
         DataContext = this;
-
-        NativeTreeView.SelectionChanged += NativeTreeView_SelectionChanged;
 
         _advancedCollectionView = new AdvancedCollectionView(_items, true);
 
@@ -97,7 +94,7 @@ public sealed partial class Shell32TreeView : UserControl
         }
     }
 
-    private void NativeTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
+    private void NativeTreeView_OnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
         // TODO: Add Multi-Select abilities
         var selectedNode = NativeTreeView.SelectedNode;

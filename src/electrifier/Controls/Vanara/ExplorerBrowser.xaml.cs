@@ -25,7 +25,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         get => _iconExtractor;
         private set
         {
-            IconExtractor?.Cancel();
+            _iconExtractor?.Cancel();
             _iconExtractor = value;
         }
     }
@@ -118,7 +118,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         void IconExtOnIconExtracted(object? sender, ShellIconExtractedEventArgs e)
         {
             var shItem = new ShellItem(e.ItemID);
-            CurrentFolderItems.Add(new ExplorerBrowserItem(shItem));
+            var ebItem = new ExplorerBrowserItem(shItem);
+            CurrentFolderItems.Add(ebItem);
         }
 
         void IconExtOnComplete(object? sender, EventArgs e)
@@ -129,7 +130,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             ShellTreeView.SetItemsSource(CurrentFolderItem, CurrentFolderItems);  // TODO: using root item here, should be target folder?!?
             if (GridViewVisibility == Microsoft.UI.Xaml.Visibility.Visible)
             {
-                Debug.Print($".GridViewVisibility = {Microsoft.UI.Xaml.Visibility.Visible}");
                 ShellGridView.SetItems(CurrentFolderItems);
             }
         }
@@ -164,6 +164,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         //}
     }
 
+/*
     private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
         var selectedNode = ShellTreeView.SelectedNode;
@@ -182,6 +183,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             }
         }
     }
+*/
 
     #region Property stuff
 
