@@ -74,7 +74,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
         CurrentFolderItems = [];
         ShellTreeView.InitializeRoot(CurrentFolderBrowserItem);
-        ShellTreeView.SelectedItem = CurrentFolderBrowserItem;
 
         // wire events
         Loading += ExplorerBrowser_Loading;
@@ -84,6 +83,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     private void ExplorerBrowser_Loading(FrameworkElement sender, object args)
     {
         TryNavigate(CurrentFolderBrowserItem.ShellItem);
+
+        ShellTreeView.SelectedItem = CurrentFolderBrowserItem;
     }
 
     public bool TryNavigate(ShellItem shItem)

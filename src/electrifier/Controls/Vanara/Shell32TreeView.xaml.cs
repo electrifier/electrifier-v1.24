@@ -16,17 +16,8 @@ namespace electrifier.Controls.Vanara;
 public sealed partial class Shell32TreeView : UserControl
 {
     private readonly List<ExplorerBrowserItem> _items = [];
-    private AdvancedCollectionView _advancedCollectionView;
 
     private TreeView NativeTreeView => TreeView;
-
-    public Visibility FileNameVisibility
-    {
-        get => (Visibility)GetValue(FileNameVisibilityProperty);
-        set => SetValue(FileNameVisibilityProperty, value);
-    }
-
-    public static readonly DependencyProperty FileNameVisibilityProperty = DependencyProperty.Register(nameof(FileNameVisibility), typeof(Visibility), typeof(Shell32TreeView), new PropertyMetadata(default(Visibility)));
 
     public ExplorerBrowserItem? SelectedItem
     {
@@ -40,25 +31,16 @@ public sealed partial class Shell32TreeView : UserControl
 
     public TreeViewNode SelectedNode => NativeTreeView.SelectedNode;
 
-    public Visibility TopCommandBarVisibility
-    {
-        get => (Visibility)GetValue(TopCommandBarVisibilityProperty);
-        set => SetValue(TopCommandBarVisibilityProperty, value);
-    }
-
-    public static readonly DependencyProperty TopCommandBarVisibilityProperty = DependencyProperty.Register(nameof(TopCommandBarVisibility), typeof(Visibility), typeof(Shell32TreeView), new PropertyMetadata(default(Visibility)));
-
     public Shell32TreeView()
     {
         InitializeComponent();
         DataContext = this;
 
-        _advancedCollectionView = new AdvancedCollectionView(_items, true);
-
-        //_advancedCollectionView.SortDescriptions.Add(new SortDescription("IsFolder", SortDirection.Descending));
-        //_advancedCollectionView.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
-        //TreeView.ItemsSource = _advancedCollectionView;
+        //NativeTreeView.ItemFromContainer() = _items;
+        NativeTreeView.ItemsSource = _items;
     }
+
+    // TODO: public object ItemFromContainer => NativeTreeView.ItemFromContainer()
 
     public void InitializeRoot(ExplorerBrowserItem rootItem)
     {
@@ -68,19 +50,6 @@ public sealed partial class Shell32TreeView : UserControl
         }
 
         _items.Add(rootItem);
-
-        UpdateCollectionView();
-    }
-
-    private void UpdateCollectionView()
-    {
-        _advancedCollectionView = new AdvancedCollectionView(_items, true)
-        {
-            Filter = (x => ((ExplorerBrowserItem)x).IsFolder == true)
-        };
-
-        _advancedCollectionView.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
-        TreeView.ItemsSource = _advancedCollectionView;
     }
 
     public void SetItemsSource(ExplorerBrowserItem folder, List<ExplorerBrowserItem> itemSourceCollection)
