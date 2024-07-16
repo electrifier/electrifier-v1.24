@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:electrifier.Controls.Vanara"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=local:ExplorerBrowser}"
     mc:Ignorable="d">
     <!--  TODO: Fix TeachingTip  -->
     <Grid>
@@ -215,8 +216,7 @@
         <CommandBar
             x:Name="BottomCommandBar"
             Grid.Row="3"
-            HorizontalAlignment="Left"
-            Visibility="{x:Bind BottomCommandBarVisibility}">
+            HorizontalAlignment="Left">
             <CommandBar.PrimaryCommands>
                 <AppBarButton
                     Icon="Back"
