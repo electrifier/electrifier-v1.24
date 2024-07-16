@@ -172,6 +172,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         //}
     }
 
+    private void RefreshButtonClick(object sender, RoutedEventArgs e)
+    {
+        TryNavigate(CurrentFolderBrowserItem.ShellItem);
+    }
+
 
     #region Property stuff
 

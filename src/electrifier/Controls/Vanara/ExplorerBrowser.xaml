@@ -38,8 +38,8 @@
                 IsEnabled="False"
                 Label="Up" />
             <AppBarButton
+                Click="RefreshButtonClick"
                 Icon="Refresh"
-                IsEnabled="False"
                 Label="Refresh" />
             <AppBarElementContainer>
                 <SplitButton

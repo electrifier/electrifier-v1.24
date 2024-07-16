@@ -40,7 +40,7 @@ public sealed partial class Shell32GridView : UserControl, INotifyPropertyChange
     private void ObservableItemsCollection_CollectionChanged(object? sender,
         System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
-        throw new NotImplementedException();
+        throw new NotImplementedException("ObservableItemsCollection_CollectionChanged");
     }
 
     //private void GridView_OnItemClick(object sender, ItemClickEventArgs e)

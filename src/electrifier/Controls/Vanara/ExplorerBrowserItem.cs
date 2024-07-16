@@ -1,4 +1,6 @@
-﻿using System.Diagnostics;
+﻿using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.UI.Xaml.Media;
@@ -7,8 +9,12 @@ using Vanara.Windows.Shell;
 
 namespace electrifier.Controls.Vanara;
 
+/// <summary>
+/// A ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32GridView"/> Items.
+/// </summary>
+
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
-public class ExplorerBrowserItem
+public class ExplorerBrowserItem : INotifyPropertyChanged
 {
     // primary properties
     public string DisplayName
@@ -25,10 +31,6 @@ public class ExplorerBrowserItem
     {
         get;
     }
-    public bool IsLibrary
-    {
-        get;
-    }
     public bool HasUnrealizedChildren
     {
         get;
@@ -38,14 +40,20 @@ public class ExplorerBrowserItem
     {
         get;
     }
-    //private bool IsEnumerated
-    //{
-    //    get; set;
-    //}
+
     public bool IsExpanded
     {
-        get; set;
+        get => _isExpanded;
+        set
+        {
+            if (_isExpanded != value)
+            {
+                _isExpanded = value;
+                OnPropertyChanged();
+            }
+        }
     }
+
     public bool IsLink
     {
         get;
@@ -55,6 +63,8 @@ public class ExplorerBrowserItem
         get; set;
     }
 
+    private bool _isExpanded;
+
     // TODO: TreeViewNode - Property
     // TODO: GridViewItem - Property
     // TODO: ExplorerBrowserItem.TreeNodeSelected = bool; => Initiate selection of this node
@@ -63,23 +73,16 @@ public class ExplorerBrowserItem
         ShellItem = shItem ?? throw new ArgumentNullException(nameof(shItem));
         DisplayName = ShellItem.Name ?? throw new Exception("shItem Display Name");
         Children = [];
-        // INFO: Removed IsEnumerated = false;
+        HasUnrealizedChildren = (shItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
+        IsExpanded = false;
         IsFolder = shItem.IsFolder;
         IsLink = shItem.IsLink;
-        //var shLib = ShellLibrary.Open(shItem.PIDL);
-        //if (shLib != null)
-        //{
-        //    IsLibrary = true;
-        //    shLib.Dispose();
-        //}
+        IsSelected = false;
 
 
-        // TODO: Library default image (DefaultLibraryImage)
-        ImageIconSource = shItem is { IsFolder: true } ? ExplorerBrowser.DefaultFolderImage : ExplorerBrowser.DefaultFileImage;
-
-        // dummy values for testing
-        IsExpanded = false;
-        HasUnrealizedChildren = (shItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
+        ImageIconSource = shItem is { IsFolder: true }
+            ? ExplorerBrowser.DefaultFolderImage
+            : ExplorerBrowser.DefaultFileImage;
     }
 
     #region GetDebuggerDisplay()
@@ -93,4 +96,19 @@ public class ExplorerBrowserItem
         return sb.ToString();
     }
     #endregion
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
 }
