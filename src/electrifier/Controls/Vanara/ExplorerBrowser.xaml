@@ -25,10 +25,22 @@
             DefaultLabelPosition="Collapsed"
             IsOpen="False"
             Visibility="{x:Bind TopCommandBarVisibility}">
-            <AppBarButton Icon="Back" Label="Left" />
-            <AppBarButton Icon="Forward" Label="Right" />
-            <AppBarButton Icon="Up" Label="Up" />
-            <AppBarButton Icon="Refresh" Label="Refresh" />
+            <AppBarButton
+                Icon="Back"
+                IsEnabled="False"
+                Label="Left" />
+            <AppBarButton
+                Icon="Forward"
+                IsEnabled="False"
+                Label="Right" />
+            <AppBarButton
+                Icon="Up"
+                IsEnabled="False"
+                Label="Up" />
+            <AppBarButton
+                Icon="Refresh"
+                IsEnabled="False"
+                Label="Refresh" />
             <AppBarElementContainer>
                 <SplitButton
                     x:Name="NewItemSplitButton"
@@ -165,6 +177,7 @@
                 <AppBarSeparator />
                 <AppBarButton Icon="Undo" Label="Properties" />
                 <AppBarButton Icon="Setting" Label="Options" />
+                <AppBarButton Icon="Orientation" Label="Orientation" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
         <Grid x:Name="ArenaGrid" Grid.Row="1">
@@ -217,36 +230,5 @@
                 </AppBarButton>
             </StackPanel>
         </AppBar>
-        <CommandBar
-            x:Name="BottomCommandBar"
-            Grid.Row="3"
-            HorizontalAlignment="Left"
-            Visibility="{x:Bind BottomCommandBarVisibility}">
-            <CommandBar.PrimaryCommands>
-                <AppBarButton
-                    Icon="Back"
-                    Label="Back"
-                    ToolTipService.ToolTip="Navigate Back" />
-                <AppBarButton
-                    Icon="Forward"
-                    Label="Forward"
-                    ToolTipService.ToolTip="Navigate Forward" />
-                <AppBarSeparator />
-                <AppBarSeparator />
-                <AppBarButton Icon="Setting" Label="Settings">
-                    <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="I" Modifiers="Control" />
-                    </AppBarButton.KeyboardAccelerators>
-                </AppBarButton>
-            </CommandBar.PrimaryCommands>
-            <CommandBar.SecondaryCommands>
-                <AppBarButton Icon="AttachCamera" Label="Attach Camera" />
-                <AppBarSeparator />
-                <AppBarButton Icon="Like" Label="Like" />
-                <AppBarButton Icon="Dislike" Label="Dislike" />
-                <AppBarSeparator />
-                <AppBarButton Icon="Orientation" Label="Orientation" />
-            </CommandBar.SecondaryCommands>
-        </CommandBar>
     </Grid>
 </UserControl>
