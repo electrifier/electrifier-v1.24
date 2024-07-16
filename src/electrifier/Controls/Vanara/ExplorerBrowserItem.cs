@@ -10,16 +10,6 @@ namespace electrifier.Controls.Vanara;
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
 public class ExplorerBrowserItem
 {
-    // TODO: Use shell32 stock icons
-    private static readonly BitmapImage DefaultFileImage =
-        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
-
-    private static readonly BitmapImage DefaultFolderImage =
-        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico"));
-
-    private static readonly BitmapImage DefaultLibraryImage =
-        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Library.ico"));
-
     // primary properties
     public string DisplayName
     {
@@ -31,8 +21,11 @@ public class ExplorerBrowserItem
     }
     public List<ExplorerBrowserItem> Children;
 
-    // secondary properties
     public bool IsFolder
+    {
+        get;
+    }
+    public bool IsLibrary
     {
         get;
     }
@@ -70,14 +63,19 @@ public class ExplorerBrowserItem
         ShellItem = shItem ?? throw new ArgumentNullException(nameof(shItem));
         DisplayName = ShellItem.Name ?? throw new Exception("shItem Display Name");
         Children = [];
-        
-        // secondary properties
         // INFO: Removed IsEnumerated = false;
         IsFolder = shItem.IsFolder;
         IsLink = shItem.IsLink;
+        //var shLib = ShellLibrary.Open(shItem.PIDL);
+        //if (shLib != null)
+        //{
+        //    IsLibrary = true;
+        //    shLib.Dispose();
+        //}
+
 
         // TODO: Library default image (DefaultLibraryImage)
-        ImageIconSource = shItem is { IsFolder: true } ? DefaultFolderImage : DefaultFileImage;
+        ImageIconSource = shItem is { IsFolder: true } ? ExplorerBrowser.DefaultFolderImage : ExplorerBrowser.DefaultFileImage;
 
         // dummy values for testing
         IsExpanded = false;

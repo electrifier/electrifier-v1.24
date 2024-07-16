@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Vanara.Windows.Shell;
 
 namespace electrifier.Controls.Vanara;
@@ -12,12 +13,20 @@ namespace electrifier.Controls.Vanara;
 // TODO: See also https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
-    private ShellItem CurrentFolder;        // TODO Remove, replace by `=> CurrentFolderBrowserItem.Item`
     public ExplorerBrowserItem CurrentFolderBrowserItem;
     public List<ExplorerBrowserItem> CurrentFolderItems
     {
         get; private set;
     }
+    // TODO: Use shell32 stock icons
+    internal static readonly BitmapImage DefaultFileImage =
+        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
+
+    internal static readonly BitmapImage DefaultFolderImage =
+        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico"));
+
+    internal static readonly BitmapImage DefaultLibraryImage =
+        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Library.ico"));
 
     private ShellIconExtractor? _iconExtractor;
     public ShellIconExtractor? IconExtractor
@@ -62,8 +71,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         ImageCache = new ImageCache();
 
         // Initialize root TreeView item(s)
-        CurrentFolder = ShellFolder.Desktop;
-        CurrentFolderBrowserItem = new ExplorerBrowserItem(CurrentFolder);
+        CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
         CurrentFolderItems = [];
         ShellTreeView.InitializeRoot(CurrentFolderBrowserItem);
         ShellTreeView.SelectedItem = CurrentFolderBrowserItem;
@@ -75,7 +83,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     private void ExplorerBrowser_Loading(FrameworkElement sender, object args)
     {
-        TryNavigate(CurrentFolder);
+        TryNavigate(CurrentFolderBrowserItem.ShellItem);
     }
 
     public bool TryNavigate(ShellItem shItem)
@@ -92,8 +100,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             //  Navigate2Target(new ShellItem(shItem.PIDL)); => TODO: Check why a copy of ShItem won't result in expanded TreeNode
 
             Navigate2Target(targetFolder);
-
-            CurrentFolder = targetFolder;
         }
         catch (Exception e)
         {
@@ -113,6 +119,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         shellIconExtractor.Complete += IconExtOnComplete;
         shellIconExtractor.Start();
 
+        // TODO: `CurrentFolderBrowserItem` shouldn't be created, but found in the tree!
+        CurrentFolderBrowserItem = new ExplorerBrowserItem(targetFolder);
         IconExtractor = shellIconExtractor;
 
         void IconExtOnIconExtracted(object? sender, ShellIconExtractedEventArgs e)
