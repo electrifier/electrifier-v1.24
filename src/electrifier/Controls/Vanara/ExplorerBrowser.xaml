@@ -25,6 +25,10 @@
             DefaultLabelPosition="Collapsed"
             IsOpen="False"
             Visibility="{x:Bind TopCommandBarVisibility}">
+            <AppBarButton Icon="Back" Label="Left" />
+            <AppBarButton Icon="Forward" Label="Right" />
+            <AppBarButton Icon="Up" Label="Up" />
+            <AppBarButton Icon="Refresh" Label="Refresh" />
             <AppBarElementContainer>
                 <SplitButton
                     x:Name="NewItemSplitButton"
@@ -216,7 +220,8 @@
         <CommandBar
             x:Name="BottomCommandBar"
             Grid.Row="3"
-            HorizontalAlignment="Left">
+            HorizontalAlignment="Left"
+            Visibility="{x:Bind BottomCommandBarVisibility}">
             <CommandBar.PrimaryCommands>
                 <AppBarButton
                     Icon="Back"

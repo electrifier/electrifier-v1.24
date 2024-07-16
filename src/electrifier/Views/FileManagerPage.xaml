@@ -15,7 +15,7 @@
             <vanara:ExplorerBrowser
                 x:Name="ExplorerBrowserControl"
                 BottomAppBarVisibility="Visible"
-                BottomCommandBarVisibility="Collapsed"
+                BottomCommandBarVisibility="Visible"
                 GridViewVisibility="Visible"
                 TopCommandBarVisibility="Visible" />
         </Border>
