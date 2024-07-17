@@ -6,53 +6,72 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System;
 using Vanara.Windows.Shell;
+using System.Collections.Specialized;
+using Microsoft.UI.Dispatching;
+using Visibility = Microsoft.UI.Xaml.Visibility;
 
 namespace electrifier.Controls.Vanara;
 
+// ObservableRecipient ???
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
-public sealed partial class Shell32GridView : UserControl, INotifyPropertyChanged   
+public sealed partial class Shell32GridView : UserControl, INotifyPropertyChanged
 {
-    public List<ExplorerBrowserItem> Items = [];
-    public ObservableCollection<ExplorerBrowserItem> ObservableItemsCollection;
-
     public Shell32GridView()
     {
         InitializeComponent();
-        DataContext = this;
-
-        ObservableItemsCollection = new ObservableCollection<ExplorerBrowserItem>(Items);
-        ObservableItemsCollection.CollectionChanged += ObservableItemsCollection_CollectionChanged;
+        //DataContext = this;
     }
 
     public void SetItems(ExplorerBrowserItem ebItem)
     {
-        try
+        Debug.Assert(ebItem != null);
+        //if (Visibility == Visibility.Collapsed)
+        //{
+        //    // TODO: bool NeedsRefresh = true;
+        //    return;
+        //}
+
+        // INFO: This works with breakpoint for delay I guess:
+        var name = nameof(Shell32GridView) +".SetItems";
+        var itemName = ebItem.DisplayName;
+        var childCount = ebItem.Children?.Count;
+
+        DispatcherQueue.TryEnqueue(() =>
         {
-            SetField(ref Items, ebItem.Children);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+            var itmSource = ebItem.Children;
+
+            NativeGridView.ItemsSource = itmSource;
+
+            Debug.WriteLine($"{name}(`{itemName}`), {childCount} items");
+        });
+
+
+        //try
+        //{
+        //    var dispatcherQueue = DispatcherQueue.GetForCurrentThread();
+
+        //    Task.Run(() => 
+        //    {
+        //        var itmSrc = ebItem.Children;
+        //        var testthis = NativeGridView.IsSynchronizedWithCurrentItem;
+        //    });
+        //}
+        //catch (Exception e)
+        //{
+        //    Console.WriteLine(e);
+        //    throw;
+        //}
     }
 
-    private void ObservableItemsCollection_CollectionChanged(object? sender,
-        System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    private void ObservableItemsCollection_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        throw new NotImplementedException("ObservableItemsCollection_CollectionChanged");
+        Debug.WriteLine($".ObservableItemsCollection_CollectionChanged()");
     }
 
-    //private void GridView_OnItemClick(object sender, ItemClickEventArgs e)
-    //{
-    //    if (e.ClickedItem is not ExplorerBrowserItem ebItem)
-    //    {
-    //        Debug.Print($"GridView_OnItemClick: OnItemClick: No valid ExplorerBrowserItem");
-    //        return;
-    //    }
-    //    var shItem = ebItem.ShellItem;
-    //    // TODO: Raise event on DblClick to call 'ebItem.Owner.TryNavigate(shItem);'
-    //}
+    private void NativeGridView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+    {
+        Debug.WriteLine($".NativeGridView_ContainerContentChanging()");
+    }
 
     private string GetDebuggerDisplay()
     {

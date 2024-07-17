@@ -13,8 +13,6 @@ namespace electrifier.Controls.Vanara;
 // TODO: See also https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
-    public ExplorerBrowserItem CurrentFolderBrowserItem;
-
     // TODO: Use shell32 stock icons
     internal static readonly BitmapImage DefaultFileImage =
         new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
@@ -24,6 +22,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     internal static readonly BitmapImage DefaultLibraryImage =
         new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Library.ico"));
+
+    public ExplorerBrowserItem CurrentFolderBrowserItem;
 
     private ShellIconExtractor? _iconExtractor;
     public ShellIconExtractor? IconExtractor
@@ -76,6 +76,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         ImageCache = new ImageCache();
         CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
         ShellTreeView.InitializeRoot(CurrentFolderBrowserItem);
+
+        ShellGridView.DataContext = this;
+        ShellTreeView.DataContext = this;
+
+        TryNavigate(CurrentFolderBrowserItem);
     }
 
 

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -41,6 +42,7 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
         get;
     }
 
+    private bool _isExpanded;
     public bool IsExpanded
     {
         get => _isExpanded;
@@ -63,7 +65,6 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
         get; set;
     }
 
-    private bool _isExpanded;
 
     // TODO: TreeViewNode - Property
     // TODO: GridViewItem - Property
