@@ -36,8 +36,6 @@ public sealed partial class Shell32TreeView : UserControl
     {
         InitializeComponent();
         DataContext = this;
-
-        //NativeTreeView.ItemFromContainer() = _items;
     }
 
     // TODO: public object ItemFromContainer => NativeTreeView.ItemFromContainer()
@@ -51,21 +49,7 @@ public sealed partial class Shell32TreeView : UserControl
 
         _items.Add(rootItem);
         NativeTreeView.ItemsSource = _items;
-    }
-
-    public void SetItemsSource(ExplorerBrowserItem folder)
-    {
-        Debug.WriteLine($".SetItemsSource(): `{folder.DisplayName}` {folder.Children.Count} items.");
-
-        if (_items.Find(x => x.ShellItem.PIDL.Equals(folder.ShellItem.PIDL)) is { } node)
-        {
-            node.Children = folder.Children;
-            node.IsExpanded = true;
-        }
-        else
-        {
-            Debug.Print("SetItemsSource() failed: Folder Target not found!");
-        }
+        SelectedItem = rootItem;
     }
 
     private void NativeTreeView_OnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
