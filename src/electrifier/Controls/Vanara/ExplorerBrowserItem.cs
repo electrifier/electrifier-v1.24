@@ -84,13 +84,15 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
         ImageIconSource = shItem is { IsFolder: true }
             ? ExplorerBrowser.DefaultFolderImage
             : ExplorerBrowser.DefaultFileImage;
+
+        Debug.WriteLine($"{GetDebuggerDisplay()} created.");
     }
 
     #region GetDebuggerDisplay()
     private string GetDebuggerDisplay()
     {
         var sb = new StringBuilder();
-        sb.Append($"`{DisplayName}` - <{nameof(ExplorerBrowserItem)}>");
+        sb.Append($"<{nameof(ExplorerBrowserItem)}> `{DisplayName}`");
 
         if (IsFolder) { sb.Append(", [folder]"); }
 

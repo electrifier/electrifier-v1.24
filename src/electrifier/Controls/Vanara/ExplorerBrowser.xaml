@@ -202,7 +202,22 @@
                 </controls:GridSplitter.RenderTransform>
             </controls:GridSplitter>
             <Border x:Name="GridViewBorder" Grid.Column="2">
-                <local:Shell32GridView x:Name="ShellGridView" Visibility="{x:Bind GridViewVisibility}" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition />
+                    </Grid.RowDefinitions>
+                    <local:Shell32GridView
+                        x:Name="ShellGridView"
+                        BorderThickness="3"
+                        ItemsSource="{x:Bind CurrentFolderItems}"
+                        Visibility="{x:Bind GridViewVisibility}" />
+                    <GridView
+                        x:Name="TestGridView"
+                        Grid.Row="1"
+                        BorderThickness="3"
+                        ItemsSource="{x:Bind CurrentFolderItems}" />
+                </Grid>
             </Border>
         </Grid>
         <AppBar

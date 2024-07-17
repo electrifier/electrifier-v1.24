@@ -16,56 +16,17 @@ namespace electrifier.Controls.Vanara;
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
 public sealed partial class Shell32GridView : UserControl, INotifyPropertyChanged
 {
+    public object ItemsSource
+    {
+        get => NativeGridView.ItemsSource;
+        set => NativeGridView.ItemsSource = value;
+    }
+
     public Shell32GridView()
     {
         InitializeComponent();
-        //DataContext = this;
-    }
 
-    public void SetItems(ExplorerBrowserItem ebItem)
-    {
-        Debug.Assert(ebItem != null);
-        //if (Visibility == Visibility.Collapsed)
-        //{
-        //    // TODO: bool NeedsRefresh = true;
-        //    return;
-        //}
-
-        // INFO: This works with breakpoint for delay I guess:
-        var name = nameof(Shell32GridView) +".SetItems";
-        var itemName = ebItem.DisplayName;
-        var childCount = ebItem.Children?.Count;
-
-        DispatcherQueue.TryEnqueue(() =>
-        {
-            var itmSource = ebItem.Children;
-
-            NativeGridView.ItemsSource = itmSource;
-
-            Debug.WriteLine($"{name}(`{itemName}`), {childCount} items");
-        });
-
-
-        //try
-        //{
-        //    var dispatcherQueue = DispatcherQueue.GetForCurrentThread();
-
-        //    Task.Run(() => 
-        //    {
-        //        var itmSrc = ebItem.Children;
-        //        var testthis = NativeGridView.IsSynchronizedWithCurrentItem;
-        //    });
-        //}
-        //catch (Exception e)
-        //{
-        //    Console.WriteLine(e);
-        //    throw;
-        //}
-    }
-
-    private void ObservableItemsCollection_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
-    {
-        Debug.WriteLine($".ObservableItemsCollection_CollectionChanged()");
+        var itmSrc = NativeGridView.ItemsSource;
     }
 
     private void NativeGridView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)

@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Vanara.Windows.Shell;
+using System.Collections.ObjectModel;
 
 namespace electrifier.Controls.Vanara;
 
@@ -23,7 +24,17 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     internal static readonly BitmapImage DefaultLibraryImage =
         new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Library.ico"));
 
-    public ExplorerBrowserItem CurrentFolderBrowserItem;
+    public ExplorerBrowserItem? CurrentFolderBrowserItem
+    {
+        get;
+        set;
+    }
+
+    public ObservableCollection<ExplorerBrowserItem>? CurrentFolderItems
+    {
+        get => (ObservableCollection<ExplorerBrowserItem>?)GetValue(CurrentFolderItemsProperty);
+        set => SetValue(CurrentFolderItemsProperty, value);
+    }
 
     private ShellIconExtractor? _iconExtractor;
     public ShellIconExtractor? IconExtractor
@@ -34,6 +45,20 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             _iconExtractor?.Cancel();
             _iconExtractor = value;
         }
+    }
+
+    public static readonly DependencyProperty CurrentFolderItemsProperty = DependencyProperty.Register(
+        nameof(CurrentFolderItems),
+        typeof(ObservableCollection<ExplorerBrowserItem>),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(null, new PropertyChangedCallback(OnCurrentFolderItemsChanged))
+    );
+
+    private static void OnCurrentFolderItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        //ImageWithLabelControl iwlc = d as ImageWithLabelControl; //null checks omitted
+        var s = e.NewValue; //null checks omitted
+        Debug.WriteLine($"OnCurrentFolderItemsChanged(): {s}");
     }
 
     public ImageCache ImageCache
@@ -129,11 +154,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         void IconExtOnComplete(object? sender, EventArgs e)
         {
             var cnt = CurrentFolderBrowserItem.Children.Count;
-            Debug.Print($".IconExtOnComplete(): {cnt} items");
+            Debug.Print($"Navigate2Target().IconExtOnComplete(): {cnt} items");
 
-            // TODO: using root item here, should be target folder?!?
-            ShellTreeView.SetItemsSource(CurrentFolderBrowserItem);
-            ShellGridView.SetItems(CurrentFolderBrowserItem);
+            //CurrentFolderItems = new ObservableCollection<ExplorerBrowserItem>(CurrentFolderBrowserItem.Children);
         }
     }
 
