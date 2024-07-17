@@ -14,7 +14,7 @@ namespace electrifier.Controls.Vanara;
 
 // ObservableRecipient ???
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
-public sealed partial class Shell32GridView : UserControl, INotifyPropertyChanged
+public sealed partial class Shell32GridView : INotifyPropertyChanged
 {
     public object ItemsSource
     {
@@ -25,13 +25,11 @@ public sealed partial class Shell32GridView : UserControl, INotifyPropertyChange
     public Shell32GridView()
     {
         InitializeComponent();
-
-        var itmSrc = NativeGridView.ItemsSource;
     }
 
     private void NativeGridView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
     {
-        Debug.WriteLine($".NativeGridView_ContainerContentChanging()");
+        //Debug.WriteLine($".NativeGridView_ContainerContentChanging()");
     }
 
     private string GetDebuggerDisplay()

@@ -24,16 +24,46 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     internal static readonly BitmapImage DefaultLibraryImage =
         new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Library.ico"));
 
-    public ExplorerBrowserItem? CurrentFolderBrowserItem
+    /// <summary>
+    /// 
+    /// </summary>
+    public ExplorerBrowserItem CurrentFolderBrowserItem
     {
-        get;
-        set;
+        get => GetValue(CurrentFolderBrowserItemProperty) as ExplorerBrowserItem;
+        set => SetValue(CurrentFolderBrowserItemProperty, value);
+    }
+    public static readonly DependencyProperty CurrentFolderBrowserItemProperty = DependencyProperty.Register(
+        nameof(CurrentFolderBrowserItem),
+        typeof(ObservableCollection<ExplorerBrowserItem>),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(null, new PropertyChangedCallback(OnCurrentFolderBrowserItemChanged))
+    );
+    private static void OnCurrentFolderBrowserItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        //ImageWithLabelControl iwlc = d as ImageWithLabelControl; //null checks omitted
+        var s = e.NewValue; //null checks omitted
+        Debug.WriteLine($"OnCurrentFolderBrowserItemChanged(): {s}");
     }
 
-    public ObservableCollection<ExplorerBrowserItem>? CurrentFolderItems
+    /// <summary>
+    /// 
+    /// </summary>
+    public ObservableCollection<ExplorerBrowserItem> CurrentFolderItems
     {
-        get => (ObservableCollection<ExplorerBrowserItem>?)GetValue(CurrentFolderItemsProperty);
+        get => (ObservableCollection<ExplorerBrowserItem>)GetValue(CurrentFolderItemsProperty);
         set => SetValue(CurrentFolderItemsProperty, value);
+    }
+    public static readonly DependencyProperty CurrentFolderItemsProperty = DependencyProperty.Register(
+        nameof(CurrentFolderItems),
+        typeof(ObservableCollection<ExplorerBrowserItem>),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(null, new PropertyChangedCallback(OnCurrentFolderItemsChanged))
+    );
+    private static void OnCurrentFolderItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        //ImageWithLabelControl iwlc = d as ImageWithLabelControl; //null checks omitted
+        var s = e.NewValue; //null checks omitted
+        Debug.WriteLine($"OnCurrentFolderItemsChanged(): {s}");
     }
 
     private ShellIconExtractor? _iconExtractor;
@@ -45,20 +75,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             _iconExtractor?.Cancel();
             _iconExtractor = value;
         }
-    }
-
-    public static readonly DependencyProperty CurrentFolderItemsProperty = DependencyProperty.Register(
-        nameof(CurrentFolderItems),
-        typeof(ObservableCollection<ExplorerBrowserItem>),
-        typeof(ExplorerBrowser),
-        new PropertyMetadata(null, new PropertyChangedCallback(OnCurrentFolderItemsChanged))
-    );
-
-    private static void OnCurrentFolderItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        //ImageWithLabelControl iwlc = d as ImageWithLabelControl; //null checks omitted
-        var s = e.NewValue; //null checks omitted
-        Debug.WriteLine($"OnCurrentFolderItemsChanged(): {s}");
     }
 
     public ImageCache ImageCache
@@ -90,79 +106,63 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         InitializeComponent();
         DataContext = this;
+        CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
+        CurrentFolderItems = new ObservableCollection<ExplorerBrowserItem>();
+
         _ = InitializeViewModel();
-
-
         //ShellTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
     }
 
     private async Task InitializeViewModel()
     {
         ImageCache = new ImageCache();
-        CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
-        ShellTreeView.InitializeRoot(CurrentFolderBrowserItem);
-
         ShellGridView.DataContext = this;
         ShellTreeView.DataContext = this;
 
-        TryNavigate(CurrentFolderBrowserItem);
+        await ShellTreeView.InitializeRoot(CurrentFolderBrowserItem);
+        ExtractChildItems(CurrentFolderBrowserItem, null, IconExtOnComplete );
     }
 
-
-
-    public bool TryNavigate(ExplorerBrowserItem targetFolder)
+    public void ExtractChildItems(ExplorerBrowserItem targetFolder,
+        EventHandler<ShellIconExtractedEventArgs>? iconExtOnIconExtracted,
+        EventHandler? iconExtOnComplete)
     {
-        if (!targetFolder.ShellItem.IsFolder)
-        {
-            Debug.Fail($"TryNavigate: IsFolder of item {targetFolder.ShellItem} is false.");
-            throw new InvalidOperationException($"TryNavigate: IsFolder of item {targetFolder.ShellItem} is false.");
-        }
-
-        try
-        {
-            Navigate2Target(targetFolder);
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-
-        return true;
-    }
-
-    private void Navigate2Target(ExplorerBrowserItem targetFolder)
-    {
+        Debug.Print($"ExtractChildItems <{targetFolder.DisplayName}> <{iconExtOnIconExtracted}> <{iconExtOnComplete}>");
         Debug.Assert(targetFolder is not null);
-
-        var shellIconExtractor = new ShellIconExtractor(targetFolder.ShellItem.PIDL);
-        shellIconExtractor.IconExtracted += IconExtOnIconExtracted;
-        shellIconExtractor.Complete += IconExtOnComplete;
-        shellIconExtractor.Start();
-
-        // TODO: `CurrentFolderBrowserItem` shouldn't be created, but found in the tree!
-        CurrentFolderBrowserItem = new ExplorerBrowserItem(targetFolder.ShellItem);
-        IconExtractor = shellIconExtractor;
-
-        void IconExtOnIconExtracted(object? sender, ShellIconExtractedEventArgs e)
+        if (targetFolder is null)
         {
-            var shItem = new ShellItem(e.ItemID);
+            throw new ArgumentNullException(nameof(targetFolder));
+        }
+
+        Debug.Assert(targetFolder.IsFolder);
+        Debug.Assert(targetFolder.ShellItem.PIDL != null);
+        var shItemId = targetFolder.ShellItem.PIDL;
+        var shFolder = new ShellFolder(shItemId);
+        var shellIconExtractor = new ShellIconExtractor(shFolder);
+        shellIconExtractor.IconExtracted += (sender, args) =>
+        {
+            var shItem = new ShellItem(args.ItemID);
             var ebItem = new ExplorerBrowserItem(shItem);
-            CurrentFolderBrowserItem.Children.Add(ebItem);
-        }
 
-        void IconExtOnComplete(object? sender, EventArgs e)
-        {
-            var cnt = CurrentFolderBrowserItem.Children.Count;
-            Debug.Print($"Navigate2Target().IconExtOnComplete(): {cnt} items");
-
-            //CurrentFolderItems = new ObservableCollection<ExplorerBrowserItem>(CurrentFolderBrowserItem.Children);
-        }
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                CurrentFolderItems.Add(ebItem);
+            });
+        };
+        shellIconExtractor.IconExtracted += iconExtOnIconExtracted;
+        shellIconExtractor.Complete += iconExtOnComplete;
+        shellIconExtractor.Start();
     }
+
+    private void IconExtOnComplete(object? sender, EventArgs e)
+    {
+        Debug.Print($".IconExtOnComplete() {CurrentFolderItems?.Count}");
+    }
+
 
     private void RefreshButtonClick(object sender, RoutedEventArgs e)
     {
-        TryNavigate(CurrentFolderBrowserItem);
+        // TODO: TryNavigate(CurrentFolderBrowserItem);
     }
 
 

@@ -26,7 +26,7 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
     {
         get;
     }
-    public List<ExplorerBrowserItem> Children;
+    public List<ExplorerBrowserItem>? Children;
 
     public bool IsFolder
     {
@@ -37,9 +37,10 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
         get;
         private set;
     }
-    public ImageSource ImageIconSource
+    public ImageSource? ImageIconSource
     {
         get;
+        private set;
     }
 
     private bool _isExpanded;
@@ -73,19 +74,13 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
     {
         ShellItem = shItem ?? throw new ArgumentNullException(nameof(shItem));
         DisplayName = ShellItem.Name ?? throw new Exception("shItem Display Name");
-        Children = [];
         HasUnrealizedChildren = (shItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
         IsExpanded = false;
         IsFolder = shItem.IsFolder;
         IsLink = shItem.IsLink;
         IsSelected = false;
 
-
-        ImageIconSource = shItem is { IsFolder: true }
-            ? ExplorerBrowser.DefaultFolderImage
-            : ExplorerBrowser.DefaultFileImage;
-
-        Debug.WriteLine($"{GetDebuggerDisplay()} created.");
+        //Debug.WriteLine($"{GetDebuggerDisplay()} created.");
     }
 
     #region GetDebuggerDisplay()
