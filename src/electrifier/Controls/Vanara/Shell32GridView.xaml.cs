@@ -24,11 +24,11 @@ public sealed partial class Shell32GridView : UserControl, INotifyPropertyChange
         ObservableItemsCollection.CollectionChanged += ObservableItemsCollection_CollectionChanged;
     }
 
-    public void SetItems(List<ExplorerBrowserItem> itemSourceCollection)
+    public void SetItems(ExplorerBrowserItem ebItem)
     {
         try
         {
-            SetField(ref Items, itemSourceCollection);
+            SetField(ref Items, ebItem.Children);
         }
         catch (Exception e)
         {

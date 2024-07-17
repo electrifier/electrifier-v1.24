@@ -14,10 +14,7 @@ namespace electrifier.Controls.Vanara;
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
     public ExplorerBrowserItem CurrentFolderBrowserItem;
-    public List<ExplorerBrowserItem> CurrentFolderItems
-    {
-        get; private set;
-    }
+
     // TODO: Use shell32 stock icons
     internal static readonly BitmapImage DefaultFileImage =
         new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
@@ -38,7 +35,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             _iconExtractor = value;
         }
     }
-    
+
     public ImageCache ImageCache
     {
         get; set;
@@ -68,38 +65,31 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         InitializeComponent();
         DataContext = this;
-        ImageCache = new ImageCache();
+        _ = InitializeViewModel();
 
-        // Initialize root TreeView item(s)
-        CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
-        CurrentFolderItems = [];
-        ShellTreeView.InitializeRoot(CurrentFolderBrowserItem);
 
-        // wire events
-        Loading += ExplorerBrowser_Loading;
         //ShellTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
     }
 
-    private void ExplorerBrowser_Loading(FrameworkElement sender, object args)
+    private async Task InitializeViewModel()
     {
-        TryNavigate(CurrentFolderBrowserItem.ShellItem);
-
-        ShellTreeView.SelectedItem = CurrentFolderBrowserItem;
+        ImageCache = new ImageCache();
+        CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
+        ShellTreeView.InitializeRoot(CurrentFolderBrowserItem);
     }
 
-    public bool TryNavigate(ShellItem shItem)
+
+
+    public bool TryNavigate(ExplorerBrowserItem targetFolder)
     {
-        if (!shItem.IsFolder)
+        if (!targetFolder.ShellItem.IsFolder)
         {
-            Debug.Fail($"TryNavigate: IsFolder of item {shItem} is false.");
-            throw new InvalidOperationException($"TryNavigate: IsFolder of item {shItem} is false.");
+            Debug.Fail($"TryNavigate: IsFolder of item {targetFolder.ShellItem} is false.");
+            throw new InvalidOperationException($"TryNavigate: IsFolder of item {targetFolder.ShellItem} is false.");
         }
 
         try
         {
-            var targetFolder = new ShellFolder(shItem);
-            //  Navigate2Target(new ShellItem(shItem.PIDL)); => TODO: Check why a copy of ShItem won't result in expanded TreeNode
-
             Navigate2Target(targetFolder);
         }
         catch (Exception e)
@@ -111,71 +101,40 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         return true;
     }
 
-    private void Navigate2Target(ShellFolder targetFolder)
+    private void Navigate2Target(ExplorerBrowserItem targetFolder)
     {
         Debug.Assert(targetFolder is not null);
 
-        var shellIconExtractor = new ShellIconExtractor(targetFolder);
+        var shellIconExtractor = new ShellIconExtractor(targetFolder.ShellItem.PIDL);
         shellIconExtractor.IconExtracted += IconExtOnIconExtracted;
         shellIconExtractor.Complete += IconExtOnComplete;
         shellIconExtractor.Start();
 
         // TODO: `CurrentFolderBrowserItem` shouldn't be created, but found in the tree!
-        CurrentFolderBrowserItem = new ExplorerBrowserItem(targetFolder);
+        CurrentFolderBrowserItem = new ExplorerBrowserItem(targetFolder.ShellItem);
         IconExtractor = shellIconExtractor;
 
         void IconExtOnIconExtracted(object? sender, ShellIconExtractedEventArgs e)
         {
             var shItem = new ShellItem(e.ItemID);
             var ebItem = new ExplorerBrowserItem(shItem);
-            CurrentFolderItems.Add(ebItem);
+            CurrentFolderBrowserItem.Children.Add(ebItem);
         }
 
         void IconExtOnComplete(object? sender, EventArgs e)
         {
-            var cnt = CurrentFolderItems.Count;
+            var cnt = CurrentFolderBrowserItem.Children.Count;
             Debug.Print($".IconExtOnComplete(): {cnt} items");
 
-            ShellTreeView.SetItemsSource(CurrentFolderBrowserItem, CurrentFolderItems);  // TODO: using root item here, should be target folder?!?
-            if (GridViewVisibility == Microsoft.UI.Xaml.Visibility.Visible)
-            {
-                ShellGridView.SetItems(CurrentFolderItems);
-            }
+            // TODO: using root item here, should be target folder?!?
+            ShellTreeView.SetItemsSource(CurrentFolderBrowserItem);
+            ShellGridView.SetItems(CurrentFolderBrowserItem);
         }
-
-        //using var shFolder = new ShellFolder(shItem);
-        //try
-        //{
-        //    var parentItem = new ExplorerBrowserItem(shItem);
-
-        //    var childItems = parentItem.GetChildItems(shItem);
-        //    foreach (var item in childItems)
-        //    {
-        //        parentItem.Children.Add(item);
-        //    }
-
-        //    // TODO: Rebuild CurrentFolderItems.Clear(); to build complete item list
-        //    CurrentFolderItems = parentItem.Children;
-
-        //    // Update TreeView and ListView
-        //    ShellTreeView.SetItems(parentItem, CurrentFolderItems);
-
-        //    if (GridViewVisibility == Microsoft.UI.Xaml.Visibility.Visible)
-        //    {
-        //        ShellGridView.SetItems(CurrentFolderItems); // TODO: binding
-        //    }
-        //}
-        //finally
-        //{
-        //    SetField(ref CurrentFolder, shFolder);
-        //    // TODO: Raise navigated event
-        //    Debug.Write($"TryNavigate: Done {shItem}.");
-        //}
     }
 
     private void RefreshButtonClick(object sender, RoutedEventArgs e)
     {
-        TryNavigate(CurrentFolderBrowserItem.ShellItem);
+        TryNavigate(CurrentFolderBrowserItem);
     }
 
 

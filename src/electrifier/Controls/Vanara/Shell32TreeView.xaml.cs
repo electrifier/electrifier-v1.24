@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
 using System.ComponentModel;
 using System.Diagnostics;
+using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 using Visibility = Microsoft.UI.Xaml.Visibility;
 
@@ -37,12 +38,11 @@ public sealed partial class Shell32TreeView : UserControl
         DataContext = this;
 
         //NativeTreeView.ItemFromContainer() = _items;
-        NativeTreeView.ItemsSource = _items;
     }
 
     // TODO: public object ItemFromContainer => NativeTreeView.ItemFromContainer()
 
-    public void InitializeRoot(ExplorerBrowserItem rootItem)
+    public async Task InitializeRoot(ExplorerBrowserItem rootItem)
     {
         if (rootItem == null)
         {
@@ -50,15 +50,16 @@ public sealed partial class Shell32TreeView : UserControl
         }
 
         _items.Add(rootItem);
+        NativeTreeView.ItemsSource = _items;
     }
 
-    public void SetItemsSource(ExplorerBrowserItem folder, List<ExplorerBrowserItem> itemSourceCollection)
+    public void SetItemsSource(ExplorerBrowserItem folder)
     {
-        Debug.WriteLine($".SetItemsSource(): `{folder.DisplayName}` {itemSourceCollection.Count} items.");
+        Debug.WriteLine($".SetItemsSource(): `{folder.DisplayName}` {folder.Children.Count} items.");
 
         if (_items.Find(x => x.ShellItem.PIDL.Equals(folder.ShellItem.PIDL)) is { } node)
         {
-            node.Children = itemSourceCollection;
+            node.Children = folder.Children;
             node.IsExpanded = true;
         }
         else
