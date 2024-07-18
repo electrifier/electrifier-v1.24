@@ -42,11 +42,20 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         //ImageWithLabelControl iwlc = d as ImageWithLabelControl; //null checks omitted
         var s = e.NewValue; //null checks omitted
-        Debug.WriteLine($"OnCurrentFolderBrowserItemChanged(): {s}");
+        if (s is ExplorerBrowserItem ebItem)
+        {
+            Debug.WriteLine($".OnCurrentFolderBrowserItemChanged(): '{ebItem.DisplayName}'");
+        }
+        else
+        {
+            Debug.WriteLine($".OnCurrentFolderBrowserItemChanged(): `{s.ToString()}` -> ERROR:UNKNOWN TYPE! Should be <ExplorerBrowserItem>");
+        }
     }
 
     /// <summary>
-    /// 
+    /// Represents the current's folder content.
+    /// Each Item is an <see cref="ExplorerBrowserItem"/>.
+    /// It is then used as DataSource of <see cref="ShellGridView"/>.
     /// </summary>
     public ObservableCollection<ExplorerBrowserItem> CurrentFolderItems
     {
@@ -63,7 +72,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         //ImageWithLabelControl iwlc = d as ImageWithLabelControl; //null checks omitted
         var s = e.NewValue; //null checks omitted
-        Debug.WriteLine($"OnCurrentFolderItemsChanged(): {s}");
+        Debug.WriteLine($".OnCurrentFolderItemsChanged(): {s}");
     }
 
     private ShellIconExtractor? _iconExtractor;
@@ -120,14 +129,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         ShellTreeView.DataContext = this;
 
         await ShellTreeView.InitializeRoot(CurrentFolderBrowserItem);
-        ExtractChildItems(CurrentFolderBrowserItem, null, IconExtOnComplete );
+        ExtractChildItems(CurrentFolderBrowserItem, null, ShellIconExtractor_Complete );
     }
 
     public void ExtractChildItems(ExplorerBrowserItem targetFolder,
         EventHandler<ShellIconExtractedEventArgs>? iconExtOnIconExtracted,
         EventHandler? iconExtOnComplete)
     {
-        Debug.Print($"ExtractChildItems <{targetFolder.DisplayName}> <{iconExtOnIconExtracted}> <{iconExtOnComplete}>");
+        Debug.Print($"ExtractChildItems <{targetFolder.DisplayName}> Extracted=<{iconExtOnIconExtracted}> Complete=<{iconExtOnComplete}>");
         Debug.Assert(targetFolder is not null);
         if (targetFolder is null)
         {
@@ -149,14 +158,19 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 CurrentFolderItems.Add(ebItem);
             });
         };
-        shellIconExtractor.IconExtracted += iconExtOnIconExtracted;
-        shellIconExtractor.Complete += iconExtOnComplete;
+        shellIconExtractor.IconExtracted += iconExtOnIconExtracted;  // TODO: Remove this stuff, throw event instead?!?
+        shellIconExtractor.Complete += ShellIconExtractor_Complete;
+        shellIconExtractor.Complete += iconExtOnComplete;            // TODO: Remove this stuff, throw event instead?!?
         shellIconExtractor.Start();
     }
 
-    private void IconExtOnComplete(object? sender, EventArgs e)
+    private void ShellIconExtractor_Complete(object? sender, EventArgs e)
     {
-        Debug.Print($".IconExtOnComplete() {CurrentFolderItems?.Count}");
+        DispatcherQueue.TryEnqueue(() =>
+        {
+            var itmCount = CurrentFolderItems?.Count ?? 0;
+            Debug.Print($".IconExtOnComplete() = {itmCount} items - sender <{sender})>");
+        });
     }
 
 
