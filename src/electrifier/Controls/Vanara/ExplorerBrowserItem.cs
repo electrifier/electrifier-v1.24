@@ -40,7 +40,7 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
     public ImageSource? ImageIconSource
     {
         get;
-        private set;
+        internal set;
     }
 
     private bool _isExpanded;

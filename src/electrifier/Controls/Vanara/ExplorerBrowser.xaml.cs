@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Vanara.Windows.Shell;
 using System.Collections.ObjectModel;
+using Microsoft.UI.Xaml.Media;
 using Vanara.PInvoke;
 
 namespace electrifier.Controls.Vanara;
@@ -162,11 +163,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         shellIconExtractor.IconExtracted += (sender, args) =>
         {
             var shItem = new ShellItem(args.ItemID);
-            var ebItem = new ExplorerBrowserItem(shItem);
+            var browserItem = new ExplorerBrowserItem(shItem)
+            {
+                ImageIconSource = shItem.IsFolder ? DefaultFolderImage : DefaultFileImage,
+            };
 
             DispatcherQueue.TryEnqueue(() =>
             {
-                CurrentFolderItems.Add(ebItem);
+                CurrentFolderItems.Add(browserItem);
             });
         };
         shellIconExtractor.IconExtracted += iconExtOnIconExtracted;  // TODO: Remove this stuff, throw event instead?!?
@@ -180,7 +184,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         DispatcherQueue.TryEnqueue(() =>
         {
             var itmCount = CurrentFolderItems?.Count ?? 0;
-            Debug.Print($".IconExtOnComplete() = {itmCount} items - sender <{sender})>");
+            Debug.Print($".IconExtOnComplete() = {itmCount} items for sender <{sender})>");
         });
     }
 
