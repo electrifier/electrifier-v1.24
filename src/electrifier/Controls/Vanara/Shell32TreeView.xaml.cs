@@ -40,34 +40,39 @@ public sealed partial class Shell32TreeView : UserControl
 
     // TODO: public object ItemFromContainer => NativeTreeView.ItemFromContainer()
 
-    public async Task InitializeRoot(ExplorerBrowserItem rootItem)
+    public async Task InitializeRoot(List<ExplorerBrowserItem> rootItems)
     {
-        if (rootItem == null)
+        if (rootItems == null) 
         {
-            throw new ArgumentNullException(nameof(rootItem));
+            throw new ArgumentNullException(nameof(rootItems));
         }
 
-        _items.Add(rootItem);
+        if ((rootItems.Count == 0))
+        {
+            throw new ArgumentException(".InitializeRoot() ERROR: Array of RootItems is empty.");
+        }
+
+        _items.AddRange(rootItems);
         NativeTreeView.ItemsSource = _items;
-        SelectedItem = rootItem;
+        //SelectedItem = rootItems;
     }
 
-    private void NativeTreeView_OnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
-    {
-        // TODO: Add Multi-Select abilities
-        var selectedNode = NativeTreeView.SelectedNode;
+    //private void NativeTreeView_OnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
+    //{
+    //    // TODO: Add Multi-Select abilities
+    //    var selectedNode = NativeTreeView.SelectedNode;
 
-        if (selectedNode != null)
-        {
-            var nodeContent = selectedNode.Content;
+    //    if (selectedNode != null)
+    //    {
+    //        var nodeContent = selectedNode.Content;
 
-            if (nodeContent is ExplorerBrowserItem ebItem)
-            {
-                Debug.Print($".NativeTreeView_SelectionChanged: SelectedItem `{ebItem.DisplayName}`");
+    //        if (nodeContent is ExplorerBrowserItem ebItem)
+    //        {
+    //            Debug.Print($".NativeTreeView_SelectionChanged: SelectedItem `{ebItem.DisplayName}`");
 
-                SelectedItem = ebItem;
-                // TODO: Initiate Navigation. Change `CurrentFolderBrowserItem` on ExplorerBrowser
-            }
-        }
-    }
+    //            SelectedItem = ebItem;
+    //            // TODO: Initiate Navigation. Change `CurrentFolderBrowserItem` on ExplorerBrowser
+    //        }
+    //    }
+    //}
 }

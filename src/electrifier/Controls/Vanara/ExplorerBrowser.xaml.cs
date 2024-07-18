@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Vanara.Windows.Shell;
 using System.Collections.ObjectModel;
+using Vanara.PInvoke;
 
 namespace electrifier.Controls.Vanara;
 
@@ -27,7 +28,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /// <summary>
     /// 
     /// </summary>
-    public ExplorerBrowserItem CurrentFolderBrowserItem
+    public ExplorerBrowserItem? CurrentFolderBrowserItem
     {
         get => GetValue(CurrentFolderBrowserItemProperty) as ExplorerBrowserItem;
         set => SetValue(CurrentFolderBrowserItemProperty, value);
@@ -44,7 +45,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         var s = e.NewValue; //null checks omitted
         if (s is ExplorerBrowserItem ebItem)
         {
-            Debug.WriteLine($".OnCurrentFolderBrowserItemChanged(): '{ebItem.DisplayName}'");
+            Debug.WriteLine($".OnCurrentFolderBrowserItemChanged(): '{ebItem.DisplayName}' DependencyObject: '{d.ToString()}'");
         }
         else
         {
@@ -86,7 +87,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
 
-    public ImageCache ImageCache
+    public ImageCache? ImageCache
     {
         get; set;
     }
@@ -115,6 +116,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         InitializeComponent();
         DataContext = this;
+        
         CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
         CurrentFolderItems = new ObservableCollection<ExplorerBrowserItem>();
 
@@ -128,7 +130,16 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         ShellGridView.DataContext = this;
         ShellTreeView.DataContext = this;
 
-        await ShellTreeView.InitializeRoot(CurrentFolderBrowserItem);
+        var rootItems = new List<ExplorerBrowserItem?>
+        {
+            CurrentFolderBrowserItem,
+        };
+
+        var desktopItem = new ExplorerBrowserItem(new ShellItem(ShellFolder.Desktop.PIDL));
+        //var userFilesItem = new ExplorerBrowserItem(new ShellLibrary(Shell32.KNOWNFOLDERID.FOLDERID_UsersFiles));
+        rootItems.Add(desktopItem);
+
+        await ShellTreeView.InitializeRoot(rootItems);
         ExtractChildItems(CurrentFolderBrowserItem, null, ShellIconExtractor_Complete );
     }
 
@@ -136,7 +147,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         EventHandler<ShellIconExtractedEventArgs>? iconExtOnIconExtracted,
         EventHandler? iconExtOnComplete)
     {
-        Debug.Print($"ExtractChildItems <{targetFolder.DisplayName}> Extracted=<{iconExtOnIconExtracted}> Complete=<{iconExtOnComplete}>");
+        Debug.Print($".ExtractChildItems<ctor> <{targetFolder?.DisplayName}> OnExtracted=<{iconExtOnIconExtracted}> OnComplete=<{nameof(iconExtOnComplete)}>");
         Debug.Assert(targetFolder is not null);
         if (targetFolder is null)
         {
@@ -144,7 +155,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
 
         Debug.Assert(targetFolder.IsFolder);
-        Debug.Assert(targetFolder.ShellItem.PIDL != null);
+        Debug.Assert(targetFolder.ShellItem.PIDL != Shell32.PIDL.Null);
         var shItemId = targetFolder.ShellItem.PIDL;
         var shFolder = new ShellFolder(shItemId);
         var shellIconExtractor = new ShellIconExtractor(shFolder);

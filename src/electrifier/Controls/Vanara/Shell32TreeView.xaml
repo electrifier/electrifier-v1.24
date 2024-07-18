@@ -9,10 +9,7 @@
     d:DataContext="{d:DesignInstance Type=local:ExplorerBrowser}"
     mc:Ignorable="d">
     <Grid>
-        <TreeView
-            x:Name="TreeView"
-            SelectionChanged="NativeTreeView_OnSelectionChanged"
-            SelectionMode="Single">
+        <TreeView x:Name="TreeView" SelectionMode="Single">
             <TreeView.ItemTemplate>
                 <DataTemplate x:DataType="local:ExplorerBrowserItem">
                     <TreeViewItem
