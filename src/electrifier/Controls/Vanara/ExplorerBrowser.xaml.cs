@@ -9,6 +9,7 @@ using Vanara.Windows.Shell;
 using System.Collections.ObjectModel;
 using Microsoft.UI.Xaml.Media;
 using Vanara.PInvoke;
+using Microsoft.UI.Xaml.Controls.Primitives;
 
 namespace electrifier.Controls.Vanara;
 
@@ -46,11 +47,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         var s = e.NewValue; //null checks omitted
         if (s is ExplorerBrowserItem ebItem)
         {
-            Debug.WriteLine($".OnCurrentFolderBrowserItemChanged(): '{ebItem.DisplayName}' DependencyObject: '{d.ToString()}'");
-        }
+            Debug.WriteLine($".OnCurrentFolderBrowserItemChanged(<'{ebItem.DisplayName}'>) DependencyObject <'{d.ToString()}'>");
+            }
         else
         {
-            Debug.WriteLine($".OnCurrentFolderBrowserItemChanged(): `{s.ToString()}` -> ERROR:UNKNOWN TYPE! Should be <ExplorerBrowserItem>");
+            Debug.WriteLine($"[E].OnCurrentFolderBrowserItemChanged(): `{s.ToString()}` -> ERROR:UNKNOWN TYPE! Should be <ExplorerBrowserItem>");
         }
     }
 
@@ -74,7 +75,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         //ImageWithLabelControl iwlc = d as ImageWithLabelControl; //null checks omitted
         var s = e.NewValue; //null checks omitted
-        Debug.WriteLine($".OnCurrentFolderItemsChanged(): {s}");
+        Debug.Print($".OnCurrentFolderItemsChanged(): {s}");
     }
 
     private ShellIconExtractor? _iconExtractor;
@@ -121,8 +122,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         ImageCache = new ImageCache();
         CurrentFolderItems = [];
         CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
+        //var userFilesItem = new ExplorerBrowserItem(new ShellLibrary(Shell32.KNOWNFOLDERID.FOLDERID_UsersFiles));
 
         ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeViewOnSelectionChanged;
+        ShellGridView.NativeGridView.SelectionChanged += NativeGridView_SelectionChanged;
         //TODO: Should be ShellTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
 
         _ = InitializeViewModel();
@@ -139,7 +142,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         };
 
         var desktopItem = new ExplorerBrowserItem(new ShellItem(ShellFolder.Desktop.PIDL));
-        //var userFilesItem = new ExplorerBrowserItem(new ShellLibrary(Shell32.KNOWNFOLDERID.FOLDERID_UsersFiles));
         rootItems.Add(desktopItem);
 
         await ShellTreeView.InitializeRoot(rootItems);
@@ -197,11 +199,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     private void NativeTreeViewOnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
-        if (sender == null && sender != ShellTreeView)
-        {
-            throw new ArgumentOutOfRangeException($"sender is null or not my TreeView");
-        }
-
         var selectedItem = args.AddedItems.FirstOrDefault();
         if (selectedItem != null)
         {
@@ -214,8 +211,55 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             else
             {
                 Debug.Fail($"ERROR: NativeTreeViewOnSelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
+                throw new ArgumentOutOfRangeException(
+                    "$ERROR: NativeTreeViewOnSelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
             }
         }
+    }
+
+    private void NativeGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        var addedItems = e.AddedItems;
+        var newTarget = addedItems?.FirstOrDefault();
+        if (newTarget != null)
+        {
+            Debug.Print($"{newTarget}!");
+        }
+
+        Debug.Print($".NativeGridView_SelectionChanged() {sender}, {e}");
+    }
+
+    /// <summary>
+    /// Navigate <see cref="ExplorerBrowser"/> to a new target.
+    /// </summary>
+    /// <param name="newTargetItem"></param>
+    /// <returns>bool</returns>
+    public bool Navigate(ShellItem? newTargetItem)
+    {
+        if (newTargetItem == null)
+        {
+            return false;
+        }
+
+        if (newTargetItem.IsFolder)
+        {
+            try
+            {
+                //ExtractChildItems(CurrentFolderBrowserItem, null, ShellIconExtractor_Complete);
+            }
+            catch
+            {
+                Debug.Fail($"ERROR: Navigate() failed");
+                throw;
+            }
+        }
+        else
+        {
+            Debug.Write($".info Navigate(ShellItem? newTargetItem): is not a folder.");
+            // TODO: try to open or execute the 
+        }
+
+        return true;
     }
 
 

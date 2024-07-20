@@ -36,6 +36,9 @@ public sealed partial class Shell32TreeView : UserControl
     {
         InitializeComponent();
         DataContext = this;
+
+        //var this.SelectionChanged += NativeTreeView.SelectionChanged(TreeView sender,
+        //    TreeViewSelectionChangedEventArgs SelectionChangedEventArgs);
     }
 
     // TODO: public object ItemFromContainer => NativeTreeView.ItemFromContainer()

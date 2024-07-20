@@ -16,6 +16,8 @@ namespace electrifier.Controls.Vanara;
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
 public sealed partial class Shell32GridView : INotifyPropertyChanged
 {
+    public GridView NativeGridView => GridView;
+
     public object ItemsSource
     {
         get => NativeGridView.ItemsSource;
