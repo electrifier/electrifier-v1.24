@@ -117,17 +117,19 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         InitializeComponent();
         DataContext = this;
-        
+
+        ImageCache = new ImageCache();
+        CurrentFolderItems = [];
         CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
-        CurrentFolderItems = new ObservableCollection<ExplorerBrowserItem>();
+
+        ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeViewOnSelectionChanged;
+        //TODO: Should be ShellTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
 
         _ = InitializeViewModel();
-        //ShellTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
     }
 
     private async Task InitializeViewModel()
     {
-        ImageCache = new ImageCache();
         ShellGridView.DataContext = this;
         ShellTreeView.DataContext = this;
 
@@ -173,8 +175,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 CurrentFolderItems.Add(browserItem);
             });
         };
-        shellIconExtractor.IconExtracted += iconExtOnIconExtracted;  // TODO: Remove this stuff, throw event instead?!?
-        shellIconExtractor.Complete += ShellIconExtractor_Complete;
+        //shellIconExtractor.IconExtracted += iconExtOnIconExtracted;  // TODO: Remove this stuff, throw event instead?!?
         shellIconExtractor.Complete += iconExtOnComplete;            // TODO: Remove this stuff, throw event instead?!?
         shellIconExtractor.Start();
     }
@@ -192,6 +193,29 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     private void RefreshButtonClick(object sender, RoutedEventArgs e)
     {
         // TODO: TryNavigate(CurrentFolderBrowserItem);
+    }
+
+    private void NativeTreeViewOnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
+    {
+        if (sender == null && sender != ShellTreeView)
+        {
+            throw new ArgumentOutOfRangeException($"sender is null or not my TreeView");
+        }
+
+        var selectedItem = args.AddedItems.FirstOrDefault();
+        if (selectedItem != null)
+        {
+            if (selectedItem is ExplorerBrowserItem ebItem)
+            {
+                Debug.Print($".NativeTreeViewOnSelectionChanged() {ebItem.DisplayName}");
+
+                // TODO: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh()
+            }
+            else
+            {
+                Debug.Fail($"ERROR: NativeTreeViewOnSelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
+            }
+        }
     }
 
 

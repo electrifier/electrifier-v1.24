@@ -18,7 +18,7 @@ public sealed partial class Shell32TreeView : UserControl
 {
     private readonly List<ExplorerBrowserItem> _items = [];
 
-    private TreeView NativeTreeView => TreeView;
+    public TreeView NativeTreeView => TreeView;
 
     public ExplorerBrowserItem? SelectedItem
     {
