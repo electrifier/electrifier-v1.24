@@ -74,13 +74,14 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
     {
         ShellItem = shItem ?? throw new ArgumentNullException(nameof(shItem));
         DisplayName = ShellItem.Name ?? throw new Exception("shItem Display Name");
-        HasUnrealizedChildren = (shItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
+        // TODO: This call fails in case of TeeView/GridView navigation:
+        //HasUnrealizedChildren = (shItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
         IsExpanded = false;
         IsFolder = shItem.IsFolder;
         IsLink = shItem.IsLink;
         IsSelected = false;
 
-        //Debug.WriteLine($"{GetDebuggerDisplay()} created.");
+        //Debug.Print($"ExplorerBrowserItem <{GetDebuggerDisplay()}> created.");
     }
 
     #region GetDebuggerDisplay()

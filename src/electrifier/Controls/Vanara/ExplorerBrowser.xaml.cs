@@ -48,7 +48,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         if (s is ExplorerBrowserItem ebItem)
         {
             Debug.WriteLine($".OnCurrentFolderBrowserItemChanged(<'{ebItem.DisplayName}'>) DependencyObject <'{d.ToString()}'>");
-            }
+        }
         else
         {
             Debug.WriteLine($"[E].OnCurrentFolderBrowserItemChanged(): `{s.ToString()}` -> ERROR:UNKNOWN TYPE! Should be <ExplorerBrowserItem>");
@@ -159,27 +159,35 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             throw new ArgumentNullException(nameof(targetFolder));
         }
 
-        Debug.Assert(targetFolder.IsFolder);
-        Debug.Assert(targetFolder.ShellItem.PIDL != Shell32.PIDL.Null);
-        var shItemId = targetFolder.ShellItem.PIDL;
-        var shFolder = new ShellFolder(shItemId);
-        var shellIconExtractor = new ShellIconExtractor(shFolder);
-        shellIconExtractor.IconExtracted += (sender, args) =>
+        try
         {
-            var shItem = new ShellItem(args.ItemID);
-            var browserItem = new ExplorerBrowserItem(shItem)
+            Debug.Assert(targetFolder.IsFolder);
+            Debug.Assert(targetFolder.ShellItem.PIDL != Shell32.PIDL.Null);
+            var shItemId = targetFolder.ShellItem.PIDL;
+            var shFolder = new ShellFolder(shItemId);
+            var shellIconExtractor = new ShellIconExtractor(shFolder);
+            shellIconExtractor.IconExtracted += (sender, args) =>
             {
-                ImageIconSource = shItem.IsFolder ? DefaultFolderImage : DefaultFileImage,
-            };
+                var shItem = new ShellItem(args.ItemID);
+                var browserItem = new ExplorerBrowserItem(shItem)
+                {
+                    ImageIconSource = shItem.IsFolder ? DefaultFolderImage : DefaultFileImage,
+                };
 
-            DispatcherQueue.TryEnqueue(() =>
-            {
-                CurrentFolderItems.Add(browserItem);
-            });
-        };
-        //shellIconExtractor.IconExtracted += iconExtOnIconExtracted;  // TODO: Remove this stuff, throw event instead?!?
-        shellIconExtractor.Complete += iconExtOnComplete;            // TODO: Remove this stuff, throw event instead?!?
-        shellIconExtractor.Start();
+                DispatcherQueue.TryEnqueue(() =>
+                {
+                    CurrentFolderItems.Add(browserItem);
+                });
+            };
+            //shellIconExtractor.IconExtracted += iconExtOnIconExtracted;  // TODO: Remove this stuff, throw event instead?!?
+            shellIconExtractor.Complete += iconExtOnComplete;            // TODO: Remove this stuff, throw event instead?!?
+            shellIconExtractor.Start();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     private void ShellIconExtractor_Complete(object? sender, EventArgs e)
@@ -206,6 +214,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             {
                 Debug.Print($".NativeTreeViewOnSelectionChanged() {ebItem.DisplayName}");
 
+                Navigate(ebItem);
+
                 // TODO: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh()
             }
             else
@@ -221,30 +231,48 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         var addedItems = e.AddedItems;
         var newTarget = addedItems?.FirstOrDefault();
-        if (newTarget != null)
+        if (newTarget == null)
         {
-            Debug.Print($"{newTarget}!");
+            Debug.Print($".NativeGridView_SelectionChanged(`<newTarget==null>`");
+            return;
         }
+        else
+        {
+            if (newTarget is ExplorerBrowserItem ebItem)
+            {
+                Debug.Print($".NativeGridView_SelectionChanged(`{ebItem.DisplayName}`)");
 
-        Debug.Print($".NativeGridView_SelectionChanged() {sender}, {e}");
+                Navigate(ebItem);
+
+                // TODO: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh()
+            }
+            else
+            {
+                Debug.Fail(
+                    $"ERROR: NativeGridView_SelectionChanged() addedItem {newTarget.ToString()} is NOT of type <ExplorerBrowserItem>!");
+                throw new ArgumentOutOfRangeException(
+                    "$ERROR: NativeGridView_SelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
+            }
+
+            Debug.Print($".NativeGridView_SelectionChanged({newTarget})");
+        }
     }
 
-    /// <summary>
-    /// Navigate <see cref="ExplorerBrowser"/> to a new target.
-    /// </summary>
-    /// <param name="newTargetItem"></param>
-    /// <returns>bool</returns>
-    public bool Navigate(ShellItem? newTargetItem)
+    public void Navigate(ExplorerBrowserItem ebItem)
     {
-        if (newTargetItem == null)
-        {
-            return false;
-        }
+        var isFolder = ebItem.IsFolder;
 
-        if (newTargetItem.IsFolder)
+        if (isFolder)
         {
             try
             {
+                Debug.Print($".Navigate(`{ebItem.DisplayName}`)");
+                CurrentFolderBrowserItem = ebItem;
+                CurrentFolderItems.Clear();
+                ExtractChildItems(ebItem, null, ShellIconExtractor_Complete );
+
+                //ExtractChildItems(newTargetItem, null, ShellIconExtractor_Complete );
+
                 //ExtractChildItems(CurrentFolderBrowserItem, null, ShellIconExtractor_Complete);
             }
             catch
@@ -256,10 +284,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         else
         {
             Debug.Write($".info Navigate(ShellItem? newTargetItem): is not a folder.");
-            // TODO: try to open or execute the 
+            // TODO: try to open or execute the item
         }
-
-        return true;
     }
 
 
