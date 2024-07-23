@@ -145,7 +145,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         rootItems.Add(desktopItem);
 
         await ShellTreeView.InitializeRoot(rootItems);
-        ExtractChildItems(CurrentFolderBrowserItem, null, ShellIconExtractor_Complete );
+        ExtractChildItems(CurrentFolderBrowserItem, null, NavigateOnIconExtractorComplete );
     }
 
     public void ExtractChildItems(ExplorerBrowserItem targetFolder,
@@ -166,21 +166,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             var shItemId = targetFolder.ShellItem.PIDL;
             var shFolder = new ShellFolder(shItemId);
             var shellIconExtractor = new ShellIconExtractor(shFolder);
-            shellIconExtractor.IconExtracted += (sender, args) =>
-            {
-                var shItem = new ShellItem(args.ItemID);
-                var browserItem = new ExplorerBrowserItem(shItem)
-                {
-                    ImageIconSource = shItem.IsFolder ? DefaultFolderImage : DefaultFileImage,
-                };
-
-                DispatcherQueue.TryEnqueue(() =>
-                {
-                    CurrentFolderItems.Add(browserItem);
-                });
-            };
-            //shellIconExtractor.IconExtracted += iconExtOnIconExtracted;  // TODO: Remove this stuff, throw event instead?!?
-            shellIconExtractor.Complete += iconExtOnComplete;            // TODO: Remove this stuff, throw event instead?!?
+            shellIconExtractor.IconExtracted += iconExtOnIconExtracted;
+            shellIconExtractor.Complete += iconExtOnComplete;
             shellIconExtractor.Start();
         }
         catch (Exception e)
@@ -189,16 +176,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             throw;
         }
     }
-
-    private void ShellIconExtractor_Complete(object? sender, EventArgs e)
-    {
-        DispatcherQueue.TryEnqueue(() =>
-        {
-            var itmCount = CurrentFolderItems?.Count ?? 0;
-            Debug.Print($".IconExtOnComplete() = {itmCount} items for sender <{sender})>");
-        });
-    }
-
 
     private void RefreshButtonClick(object sender, RoutedEventArgs e)
     {
@@ -218,12 +195,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
                 // TODO: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh()
             }
-            else
-            {
-                Debug.Fail($"ERROR: NativeTreeViewOnSelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
-                throw new ArgumentOutOfRangeException(
-                    "$ERROR: NativeTreeViewOnSelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
-            }
+            // TODO: else
+            //{
+            //    Debug.Fail($"ERROR: NativeTreeViewOnSelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
+            //    throw new ArgumentOutOfRangeException(
+            //        "$ERROR: NativeTreeViewOnSelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
+            //}
         }
     }
 
@@ -246,13 +223,13 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
                 // TODO: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh()
             }
-            else
-            {
-                Debug.Fail(
-                    $"ERROR: NativeGridView_SelectionChanged() addedItem {newTarget.ToString()} is NOT of type <ExplorerBrowserItem>!");
-                throw new ArgumentOutOfRangeException(
-                    "$ERROR: NativeGridView_SelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
-            }
+            // TODO: else 
+            //{
+            //    Debug.Fail(
+            //        $"ERROR: NativeGridView_SelectionChanged() addedItem {newTarget.ToString()} is NOT of type <ExplorerBrowserItem>!");
+            //    throw new ArgumentOutOfRangeException(
+            //        "$ERROR: NativeGridView_SelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
+            //}
 
             Debug.Print($".NativeGridView_SelectionChanged({newTarget})");
         }
@@ -269,11 +246,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 Debug.Print($".Navigate(`{ebItem.DisplayName}`)");
                 CurrentFolderBrowserItem = ebItem;
                 CurrentFolderItems.Clear();
-                ExtractChildItems(ebItem, null, ShellIconExtractor_Complete );
+                ExtractChildItems(ebItem, NavigateOnIconExtracted, NavigateOnIconExtractorComplete );
 
-                //ExtractChildItems(newTargetItem, null, ShellIconExtractor_Complete );
+                //ExtractChildItems(newTargetItem, null, NavigateOnIconExtractorComplete );
 
-                //ExtractChildItems(CurrentFolderBrowserItem, null, ShellIconExtractor_Complete);
+                //ExtractChildItems(CurrentFolderBrowserItem, null, NavigateOnIconExtractorComplete);
             }
             catch
             {
@@ -288,6 +265,32 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
 
+    private void NavigateOnIconExtracted(object? sender, ShellIconExtractedEventArgs e)
+    {
+        var shItemId = e.ItemID;
+        var imgIndex = e.ImageListIndex;
+
+        var shItem = new ShellItem(shItemId);
+        var browserItem = new ExplorerBrowserItem(shItem)
+        {
+            //ImageIconSource = DefaultFileImage
+        };
+
+        DispatcherQueue.TryEnqueue(() =>
+        {
+            CurrentFolderItems.Add(browserItem);
+        });
+    }
+
+    private void NavigateOnIconExtractorComplete(object? sender, EventArgs e)
+    {
+        DispatcherQueue.TryEnqueue(() =>
+        {
+            var icnExtractor = sender as ShellIconExtractor;
+            var itmCount = icnExtractor?.ImageList.Count;
+            Debug.Print($".IconExtOnComplete() = {itmCount} items for sender <{sender})>");
+        });
+    }
 
     #region Property stuff
 

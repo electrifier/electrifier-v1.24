@@ -15,7 +15,7 @@ namespace electrifier.Controls.Vanara;
 /// </summary>
 
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
-public class ExplorerBrowserItem : INotifyPropertyChanged
+public class ExplorerBrowserItem /* : INotifyPropertyChanged */
 {
     // primary properties
     public string DisplayName
@@ -28,10 +28,8 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
     }
     public List<ExplorerBrowserItem>? Children;
 
-    public bool IsFolder
-    {
-        get;
-    }
+    public bool IsFolder => ShellItem.IsFolder;
+
     public bool HasUnrealizedChildren
     {
         get;
@@ -52,7 +50,7 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
             if (_isExpanded != value)
             {
                 _isExpanded = value;
-                OnPropertyChanged();
+                //OnPropertyChanged();
             }
         }
     }
@@ -72,13 +70,12 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
     // TODO: ExplorerBrowserItem.TreeNodeSelected = bool; => Initiate selection of this node
     public ExplorerBrowserItem(ShellItem shItem)
     {
-        ShellItem = shItem ?? throw new ArgumentNullException(nameof(shItem));
-        DisplayName = ShellItem.Name ?? throw new Exception("shItem Display Name is null");
+        ShellItem = shItem;
+        DisplayName = ShellItem.Name ?? "[xXx]";
         // TODO: This call fails in case of TeeView/GridView navigation:
-        HasUnrealizedChildren = (ShellItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
-        IsExpanded = false;
-        IsFolder = ShellItem.IsFolder;
-        IsLink = ShellItem.IsLink;
+        //HasUnrealizedChildren = (ShellItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
+        _isExpanded = false;
+        //IsLink = ShellItem.IsLink;
         IsSelected = false;
 
         //Debug.Print($"ExplorerBrowserItem <{GetDebuggerDisplay()}> created.");
