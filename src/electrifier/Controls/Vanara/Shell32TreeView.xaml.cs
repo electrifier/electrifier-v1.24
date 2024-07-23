@@ -16,9 +16,13 @@ namespace electrifier.Controls.Vanara;
 
 public sealed partial class Shell32TreeView : UserControl
 {
-    private readonly List<ExplorerBrowserItem> _items = [];
-
     public TreeView NativeTreeView => TreeView;
+
+    public object ItemsSource
+    {
+        get => NativeTreeView.ItemsSource;
+        set => NativeTreeView.ItemsSource = value;
+    }
 
     public ExplorerBrowserItem? SelectedItem
     {
@@ -42,40 +46,4 @@ public sealed partial class Shell32TreeView : UserControl
     }
 
     // TODO: public object ItemFromContainer => NativeTreeView.ItemFromContainer()
-
-    public async Task InitializeRoot(List<ExplorerBrowserItem> rootItems)
-    {
-        if (rootItems == null) 
-        {
-            throw new ArgumentNullException(nameof(rootItems));
-        }
-
-        if ((rootItems.Count == 0))
-        {
-            throw new ArgumentException(".InitializeRoot() ERROR: Array of RootItems is empty.");
-        }
-
-        _items.AddRange(rootItems);
-        NativeTreeView.ItemsSource = _items;
-        //SelectedItem = rootItems;
-    }
-
-    //private void NativeTreeView_OnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
-    //{
-    //    // TODO: Add Multi-Select abilities
-    //    var selectedNode = NativeTreeView.SelectedNode;
-
-    //    if (selectedNode != null)
-    //    {
-    //        var nodeContent = selectedNode.Content;
-
-    //        if (nodeContent is ExplorerBrowserItem ebItem)
-    //        {
-    //            Debug.Print($".NativeTreeView_SelectionChanged: SelectedItem `{ebItem.DisplayName}`");
-
-    //            SelectedItem = ebItem;
-    //            // TODO: Initiate Navigation. Change `CurrentFolderBrowserItem` on ExplorerBrowser
-    //        }
-    //    }
-    //}
 }

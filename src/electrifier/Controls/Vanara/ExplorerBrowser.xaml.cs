@@ -136,16 +136,15 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         ShellGridView.DataContext = this;
         ShellTreeView.DataContext = this;
 
-        var rootItems = new List<ExplorerBrowserItem?>
+        CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
+        var rootItems = new List<ExplorerBrowserItem>
         {
             CurrentFolderBrowserItem,
         };
 
-        var desktopItem = new ExplorerBrowserItem(new ShellItem(ShellFolder.Desktop.PIDL));
-        rootItems.Add(desktopItem);
-
-        await ShellTreeView.InitializeRoot(rootItems);
-        ExtractChildItems(CurrentFolderBrowserItem, null, NavigateOnIconExtractorComplete );
+        ShellTreeView.ItemsSource = rootItems;
+        Navigate(CurrentFolderBrowserItem);
+        //ExtractChildItems(CurrentFolderBrowserItem, null, NavigateOnIconExtractorComplete );
     }
 
     public void ExtractChildItems(ExplorerBrowserItem targetFolder,
@@ -288,6 +287,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         {
             var icnExtractor = sender as ShellIconExtractor;
             var itmCount = icnExtractor?.ImageList.Count;
+            CurrentFolderBrowserItem.Children = new List<ExplorerBrowserItem>(CurrentFolderItems);
             Debug.Print($".IconExtOnComplete() = {itmCount} items for sender <{sender})>");
         });
     }
