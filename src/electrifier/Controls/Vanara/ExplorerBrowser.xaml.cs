@@ -142,6 +142,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             CurrentFolderBrowserItem,
         };
 
+        var galleryFolder = new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_PicturesLibrary);
+        rootItems.Add(new ExplorerBrowserItem(galleryFolder));
+
         ShellTreeView.ItemsSource = rootItems;
         Navigate(CurrentFolderBrowserItem);
         //ExtractChildItems(CurrentFolderBrowserItem, null, NavigateOnIconExtractorComplete );
