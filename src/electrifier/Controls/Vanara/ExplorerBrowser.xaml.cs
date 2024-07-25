@@ -181,6 +181,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 {
                     var ebItem = new ExplorerBrowserItem(child);
                     targetFolder.Children.Add(ebItem);
+
+                    ebItem.ImageIconSource = ebItem.IsFolder ? DefaultFolderImage : DefaultFileImage;
                 }
             }
         }

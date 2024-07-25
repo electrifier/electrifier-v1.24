@@ -29,7 +29,7 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
     public List<ExplorerBrowserItem>? Children;
 
     public bool IsFolder => ShellItem.IsFolder;
-
+    public bool IsLink => ShellItem.IsLink;
     public bool HasUnrealizedChildren
     {
         get;
@@ -55,10 +55,6 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
         }
     }
 
-    public bool IsLink
-    {
-        get;
-    }
     public bool IsSelected
     {
         get; set;
