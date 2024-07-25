@@ -14,6 +14,8 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 
 namespace electrifier.Controls.Vanara;
 
+// TODO: INFO: See also https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.image.source?view=windows-app-sdk-1.5#microsoft-ui-xaml-controls-image-source
+
 // https://github.com/dahall/Vanara/blob/master/Windows.Forms/Controls/ExplorerBrowser.cs
 // TODO: See also https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
@@ -114,7 +116,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         get; set;
     }
-    
+
     public ExplorerBrowser()
     {
         InitializeComponent();
@@ -168,27 +170,19 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             var shItemId = targetFolder.ShellItem.PIDL;
 
             using var shFolder = new ShellFolder(shItemId);
-            var children = shFolder.EnumerateChildren(FolderItemFilter.NonFolders | FolderItemFilter.Folders);
+            var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
             var shellItems = children as ShellItem[] ?? children.ToArray();
-            itemCount = shellItems.Count();
+            itemCount = shellItems.Length;
+            targetFolder.Children = new List<ExplorerBrowserItem>();
 
-            _ = DispatcherQueue.TryEnqueue(() =>
+            if (shellItems.Length > 0)
             {
                 foreach (var child in shellItems)
                 {
-                    try
-                    {
-                        var ebItem = new ExplorerBrowserItem(child);
-                        targetFolder.Children?.Add(ebItem);
-                        CurrentFolderItems.Add(ebItem);
-                    }
-                    catch (COMException e)
-                    {
-                        Console.WriteLine($"..ExtractChildItems.Exception: {e}");
-                        throw;
-                    }
+                    var ebItem = new ExplorerBrowserItem(child);
+                    targetFolder.Children.Add(ebItem);
                 }
-            });
+            }
         }
         catch (Exception e)
         {
@@ -270,9 +264,15 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 CurrentFolderItems.Clear();
                 ExtractChildItems(ebItem);
 
-                //ExtractChildItems(newTargetItem, null, NavigateOnIconExtractorComplete );
+                if (!(ebItem.Children?.Count > 0))
+                {
+                    return;
+                }
 
-                //ExtractChildItems(CurrentFolderBrowserItem, null, NavigateOnIconExtractorComplete);
+                foreach(var childItem in ebItem.Children)
+                {
+                    CurrentFolderItems.Add(childItem);
+                }
             }
             catch
             {
@@ -282,7 +282,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
         else
         {
-            Debug.Write($".info Navigate(ShellItem? newTargetItem): is not a folder.");
+            Debug.Write($"[i] Navigate(ShellItem? newTargetItem): is not a folder.");
             // TODO: try to open or execute the item
         }
     }

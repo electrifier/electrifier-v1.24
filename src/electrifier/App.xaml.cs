@@ -140,6 +140,7 @@ public partial class App : Application
         Debug.Print("Software Failure. Press left mouse button to continue.");
         Debug.Print($"*** Guru Meditation caused by {sender} ***");
         Debug.Print(e.Message);
+        Debug.Unindent();
         Debug.Flush();
 
         e.Handled = true;
