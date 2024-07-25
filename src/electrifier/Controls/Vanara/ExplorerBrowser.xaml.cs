@@ -148,9 +148,25 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         var galleryFolder = new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_PicturesLibrary);
         rootItems.Add(new ExplorerBrowserItem(galleryFolder));
 
+        InitializeStockIcons();
+
         ShellTreeView.ItemsSource = rootItems;
         Navigate(CurrentFolderBrowserItem);
         //ExtractChildItems(CurrentFolderBrowserItem, null, NavigateOnIconExtractorComplete );
+    }
+
+    public void InitializeStockIcons()
+    {
+        var siFolder = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDER);
+
+        ImageIconSource iis = new ImageIconSource();
+        var icnElement = iis.CreateIconElement();
+
+        ImageIcon ii = new ImageIcon();
+        
+
+        var siVar = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCASSOC);
+
     }
 
     public void ExtractChildItems(ExplorerBrowserItem targetFolder)
