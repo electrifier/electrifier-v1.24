@@ -6,16 +6,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vanara="using:electrifier.Controls.Vanara"
-    xmlns:viewmodel="using:electrifier.ViewModels"
+    xmlns:viewmodels="using:electrifier.ViewModels"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
-    d:DataContext="{d:DesignInstance Type=viewmodel:FileManagerViewModel}"
+    d:DataContext="{d:DesignInstance Type=viewmodels:FileManagerViewModel}"
     mc:Ignorable="d">
     <Grid x:Name="ContentArea">
         <Border x:Name="ExplorerBrowserBorder">
             <vanara:ExplorerBrowser
                 x:Name="ExplorerBrowserControl"
                 BottomAppBarVisibility="Visible"
-                BottomCommandBarVisibility="Collapsed"
+                BottomCommandBarVisibility="Visible"
                 GridViewVisibility="Visible"
                 TopCommandBarVisibility="Visible" />
         </Border>

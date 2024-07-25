@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.UI.Xaml.Media;
@@ -7,19 +10,13 @@ using Vanara.Windows.Shell;
 
 namespace electrifier.Controls.Vanara;
 
+/// <summary>
+/// A ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32GridView"/> Items.
+/// </summary>
+
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
-public class ExplorerBrowserItem
+public class ExplorerBrowserItem /* : INotifyPropertyChanged */
 {
-    // TODO: Use shell32 stock icons
-    private static readonly BitmapImage DefaultFileImage =
-        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
-
-    private static readonly BitmapImage DefaultFolderImage =
-        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico"));
-
-    private static readonly BitmapImage DefaultLibraryImage =
-        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Library.ico"));
-
     // primary properties
     public string DisplayName
     {
@@ -29,108 +26,85 @@ public class ExplorerBrowserItem
     {
         get;
     }
-    public List<ExplorerBrowserItem> Children;
+    public List<ExplorerBrowserItem>? Children;
 
-    // secondary properties
-    public bool IsFolder
-    {
-        get;
-    }
+    public bool IsFolder => ShellItem.IsFolder;
+
     public bool HasUnrealizedChildren
     {
         get;
         private set;
     }
-    public ImageSource ImageIconSource
+    public ImageSource? ImageIconSource
+    {
+        get;
+        internal set;
+    }
+
+    private bool _isExpanded;
+    public bool IsExpanded
+    {
+        get => _isExpanded;
+        set
+        {
+            if (_isExpanded != value)
+            {
+                _isExpanded = value;
+                //OnPropertyChanged();
+            }
+        }
+    }
+
+    public bool IsLink
     {
         get;
     }
-    private bool IsEnumerated
-    {
-        get; set;
-    }
-
-    public bool IsExpanded
-    {
-        get; set;
-    }
-
     public bool IsSelected
     {
         get; set;
     }
 
+
     // TODO: TreeViewNode - Property
     // TODO: GridViewItem - Property
     // TODO: ExplorerBrowserItem.TreeNodeSelected = bool; => Initiate selection of this node
-    public ExplorerBrowserItem(ShellItem shItem, string? overrideDisplayName = default)
+    public ExplorerBrowserItem(ShellItem shItem)
     {
-        ShellItem = shItem ?? throw new ArgumentNullException(nameof(shItem));
-        DisplayName = overrideDisplayName ?? (ShellItem.Name ?? throw new Exception("shItem Display Name"));
-        Children = [];
-        
-        // secondary properties
-        HasUnrealizedChildren = shItem.IsFolder;
-        IsFolder = shItem.IsFolder;
-        ImageIconSource = shItem is { IsFolder: true } ? DefaultFolderImage : DefaultFileImage;
-        IsExpanded = true;
-    }
+        ShellItem = shItem;
+        DisplayName = ShellItem.Name ?? "[xXx]";
+        // TODO: This call fails in case of TeeView/GridView navigation:
+        //HasUnrealizedChildren = (ShellItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
+        _isExpanded = false;
+        //IsLink = ShellItem.IsLink;
+        IsSelected = false;
 
-    // TODO: async
-    internal static IEnumerable<ShellItem> EnumerateChildren(ShellItem enumerationShellItem, FolderItemFilter filter)
-    {
-        return enumerationShellItem is not ShellFolder folder ? [] : folder.EnumerateChildren(filter);
-    }
-
-    // TODO: async
-    public List<ExplorerBrowserItem> GetChildItems(ShellItem enumerationShellItem)
-    {
-        try
-        {
-            if ((enumerationShellItem.Attributes & ShellItemAttribute.Removable) != 0)
-            {
-                Debug.WriteLine($"`{GetDebuggerDisplay}` is <ShellItemAttribute.Removable>: Skipping Enumeration");
-                return [];
-            }
-
-            // TODO: This takes ages on folder: @"C:\Users\tajbe\OneDrive\Desktop\aktuelle.projekte\Alte Desktop-Icons"
-            var children = EnumerateChildren(enumerationShellItem, filter: FolderItemFilter.Storage);
-            var childItems = new List<ExplorerBrowserItem>();
-
-            foreach (var child in children)
-            {
-                var childItem = child as ShellItem;
-                var ebItem = new ExplorerBrowserItem(childItem);
-
-                childItems.Add(ebItem);
-            }
-
-            IsEnumerated = true; // TODO: SetProperty
-            HasUnrealizedChildren = false; // TODO: SetProperty
-
-            return childItems;
-        }
-        catch (COMException comException)
-        {
-            Debug.WriteLine($"ExplorerBrowserItem: GetChildItems() failed: {comException.Message}");
-            throw;
-        }
-        catch (Exception e)
-        {
-            Debug.WriteLine(e.Message);
-            throw;
-        }
+        //Debug.Print($"ExplorerBrowserItem <{GetDebuggerDisplay()}> created.");
     }
 
     #region GetDebuggerDisplay()
     private string GetDebuggerDisplay()
     {
         var sb = new StringBuilder();
-        sb.Append($"`{DisplayName}` - <{nameof(ExplorerBrowserItem)}>");
+        sb.Append($"<{nameof(ExplorerBrowserItem)}> `{DisplayName}`");
 
         if (IsFolder) { sb.Append(", [folder]"); }
 
         return sb.ToString();
     }
     #endregion
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
 }

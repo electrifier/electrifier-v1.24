@@ -137,8 +137,12 @@ public partial class App : Application
     {
         // TODO: Handle all exceptions. Use Shell32-Vanara Dialog to Display
         Debug.Indent();
-        Debug.Fail("Software Failure. Press left mouse button to continue.");
-        Debug.WriteLine($"*** Guru Meditation #{sender}.{e.Message}");
+        Debug.Print("Software Failure. Press left mouse button to continue.");
+        Debug.Print($"*** Guru Meditation caused by {sender} ***");
+        Debug.Print(e.Message);
+        Debug.Unindent();
         Debug.Flush();
+
+        e.Handled = true;
     }
 }

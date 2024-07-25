@@ -4,22 +4,95 @@ using Microsoft.UI.Xaml.Controls;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Vanara.Windows.Shell;
+using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
+using Microsoft.UI.Xaml.Media;
+using Vanara.PInvoke;
+using Microsoft.UI.Xaml.Controls.Primitives;
 
 namespace electrifier.Controls.Vanara;
+
+// TODO: INFO: See also https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.image.source?view=windows-app-sdk-1.5#microsoft-ui-xaml-controls-image-source
 
 // https://github.com/dahall/Vanara/blob/master/Windows.Forms/Controls/ExplorerBrowser.cs
 // TODO: See also https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
-    public List<ExplorerBrowserItem> CurrentFolderItems
+    // TODO: Use shell32 stock icons
+    internal static readonly BitmapImage DefaultFileImage =
+        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
+
+    internal static readonly BitmapImage DefaultFolderImage =
+        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico"));
+
+    internal static readonly BitmapImage DefaultLibraryImage =
+        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Library.ico"));
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public ExplorerBrowserItem? CurrentFolderBrowserItem
     {
-        get; private set;
+        get => GetValue(CurrentFolderBrowserItemProperty) as ExplorerBrowserItem;
+        set => SetValue(CurrentFolderBrowserItemProperty, value);
+    }
+    public static readonly DependencyProperty CurrentFolderBrowserItemProperty = DependencyProperty.Register(
+        nameof(CurrentFolderBrowserItem),
+        typeof(ObservableCollection<ExplorerBrowserItem>),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(null, new PropertyChangedCallback(OnCurrentFolderBrowserItemChanged))
+    );
+    private static void OnCurrentFolderBrowserItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        //ImageWithLabelControl iwlc = d as ImageWithLabelControl; //null checks omitted
+        var s = e.NewValue; //null checks omitted
+        if (s is ExplorerBrowserItem ebItem)
+        {
+            Debug.WriteLine($".OnCurrentFolderBrowserItemChanged(<'{ebItem.DisplayName}'>) DependencyObject <'{d.ToString()}'>");
+        }
+        else
+        {
+            Debug.WriteLine($"[E].OnCurrentFolderBrowserItemChanged(): `{s.ToString()}` -> ERROR:UNKNOWN TYPE! Should be <ExplorerBrowserItem>");
+        }
     }
 
-    public ShellItem CurrentFolder;
+    /// <summary>
+    /// Represents the current's folder content.
+    /// Each Item is an <see cref="ExplorerBrowserItem"/>.
+    /// It is then used as DataSource of <see cref="ShellGridView"/>.
+    /// </summary>
+    public ObservableCollection<ExplorerBrowserItem> CurrentFolderItems
+    {
+        get => (ObservableCollection<ExplorerBrowserItem>)GetValue(CurrentFolderItemsProperty);
+        set => SetValue(CurrentFolderItemsProperty, value);
+    }
+    public static readonly DependencyProperty CurrentFolderItemsProperty = DependencyProperty.Register(
+        nameof(CurrentFolderItems),
+        typeof(ObservableCollection<ExplorerBrowserItem>),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(null, new PropertyChangedCallback(OnCurrentFolderItemsChanged))
+    );
+    private static void OnCurrentFolderItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        //ImageWithLabelControl iwlc = d as ImageWithLabelControl; //null checks omitted
+        var s = e.NewValue; //null checks omitted
+        Debug.Print($".OnCurrentFolderItemsChanged(): {s}");
+    }
 
-    public ImageCache ImageCache
+    private ShellIconExtractor? _iconExtractor;
+    public ShellIconExtractor? IconExtractor
+    {
+        get => _iconExtractor;
+        private set
+        {
+            _iconExtractor?.Cancel();
+            _iconExtractor = value;
+        }
+    }
+
+    public ImageCache? ImageCache
     {
         get; set;
     }
@@ -48,92 +121,169 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         InitializeComponent();
         DataContext = this;
+
         ImageCache = new ImageCache();
-
-        // Initialize root TreeView item(s)
-        CurrentFolder = ShellFolder.Desktop;
         CurrentFolderItems = [];
-        var ebCurrentFolderItem = new ExplorerBrowserItem(CurrentFolder);
-        ShellTreeView.InitializeRoot(ebCurrentFolderItem);
-        ShellTreeView.NativeTreeView.SelectedItem = ebCurrentFolderItem;
+        CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
+        //var userFilesItem = new ExplorerBrowserItem(new ShellLibrary(Shell32.KNOWNFOLDERID.FOLDERID_UsersFiles));
 
-        // Wire Events
-        Loading += ExplorerBrowser_Loading;
-        ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
+        ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeViewOnSelectionChanged;
+        ShellGridView.NativeGridView.SelectionChanged += NativeGridView_SelectionChanged;
+        //TODO: Should be ShellTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
+
+        _ = InitializeViewModel();
     }
 
-    private void ExplorerBrowser_Loading(FrameworkElement sender, object args)
+    private async Task InitializeViewModel()
     {
-        TryNavigate(CurrentFolder);
-    }
+        ShellGridView.DataContext = this;
+        ShellTreeView.DataContext = this;
 
-    public void TryNavigate(ShellItem shItem)
-    {
-        if (!shItem.IsFileSystem)
+        CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
+        var rootItems = new List<ExplorerBrowserItem>
         {
-            Debug.Fail($"TryNavigate: IsFileSystem of item {shItem} is false.");
-            return;
-        }
-        if (!shItem.IsFolder)
-        {
-            Debug.Write($"TryNavigate: IsFolder of item {shItem} is false.");
-            return;
-        }
+            CurrentFolderBrowserItem,
+        };
 
-        //  Navigate2Target(new ShellItem(shItem.PIDL)); => TODO: Check why a copy of ShItem won't result in expanded TreeNode
-        Navigate2Target(shItem);
+        var galleryFolder = new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_PicturesLibrary);
+        rootItems.Add(new ExplorerBrowserItem(galleryFolder));
+
+        ShellTreeView.ItemsSource = rootItems;
+        Navigate(CurrentFolderBrowserItem);
+        //ExtractChildItems(CurrentFolderBrowserItem, null, NavigateOnIconExtractorComplete );
     }
 
-    private void Navigate2Target(ShellItem shItem)
+    public void ExtractChildItems(ExplorerBrowserItem targetFolder)
     {
-        using var shFolder = new ShellFolder(shItem);
+        var itemCount = 0;
+        Debug.Print($".ExtractChildItems <{targetFolder?.DisplayName}> extracting...");
+        Debug.Assert(targetFolder is not null);
+        if (targetFolder is null)
+        {
+            throw new ArgumentNullException(nameof(targetFolder));
+        }
+
         try
         {
-            var parentItem = new ExplorerBrowserItem(shItem);
+            Debug.Assert(targetFolder.IsFolder);
+            Debug.Assert(targetFolder.ShellItem.PIDL != Shell32.PIDL.Null);
+            var shItemId = targetFolder.ShellItem.PIDL;
 
-            var childItems = parentItem.GetChildItems(shItem);
-            foreach (var item in childItems)
+            using var shFolder = new ShellFolder(shItemId);
+            var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
+            var shellItems = children as ShellItem[] ?? children.ToArray();
+            itemCount = shellItems.Length;
+            targetFolder.Children = new List<ExplorerBrowserItem>();
+
+            if (shellItems.Length > 0)
             {
-                parentItem.Children.Add(item);
-            }
-
-            // TODO: Rebuild CurrentFolderItems.Clear(); to build complete item list
-            CurrentFolderItems = parentItem.Children;
-
-            // Update TreeView and ListView
-            ShellTreeView.SetItemsSource(parentItem, CurrentFolderItems);
-
-            if (GridViewVisibility == Microsoft.UI.Xaml.Visibility.Visible)
-            {
-                ShellGridView.SetItemsSource(CurrentFolderItems); // TODO: binding
+                foreach (var child in shellItems)
+                {
+                    var ebItem = new ExplorerBrowserItem(child);
+                    targetFolder.Children.Add(ebItem);
+                }
             }
         }
-        finally
+        catch (Exception e)
         {
-            SetField(ref CurrentFolder, shFolder);
-            // TODO: Raise navigated event
-            Debug.Write($"TryNavigate: Done {shItem}.");
+            Console.WriteLine(e);
+            throw;
+        }
+
+        Debug.Print($".ExtractChildItems <{targetFolder?.DisplayName}> extracted: {itemCount} items.");
+    }
+
+    private void RefreshButtonClick(object sender, RoutedEventArgs e)
+    {
+        // TODO: TryNavigate(CurrentFolderBrowserItem);
+    }
+
+    private void NativeTreeViewOnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
+    {
+        var selectedItem = args.AddedItems.FirstOrDefault();
+        if (selectedItem != null)
+        {
+            if (selectedItem is ExplorerBrowserItem ebItem)
+            {
+                Debug.Print($".NativeTreeViewOnSelectionChanged() {ebItem.DisplayName}");
+
+                Navigate(ebItem);
+
+                // TODO: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh()
+            }
+            // TODO: else
+            //{
+            //    Debug.Fail($"ERROR: NativeTreeViewOnSelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
+            //    throw new ArgumentOutOfRangeException(
+            //        "$ERROR: NativeTreeViewOnSelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
+            //}
         }
     }
 
-    private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
+    private void NativeGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
-        var selectedNode = ShellTreeView.NativeTreeView.SelectedNode;
-        var selectedItem = ShellTreeView.NativeTreeView.SelectedItem;
-        var addedItems = args.AddedItems;
-        var removedItems = args.RemovedItems;
-
-        Debug.Print($"ShellTreeView_SelectionChanged SelectedItem: {selectedItem} ");
-
-        if (selectedNode != null)
+        var addedItems = e.AddedItems;
+        var newTarget = addedItems?.FirstOrDefault();
+        if (newTarget == null)
         {
-            var nodeContent = selectedNode.Content;
-
-            if (nodeContent is ExplorerBrowserItem ebItem)
+            Debug.Print($".NativeGridView_SelectionChanged(`<newTarget==null>`");
+            return;
+        }
+        else
+        {
+            if (newTarget is ExplorerBrowserItem ebItem)
             {
-                Debug.Print($"nameof({ShellTreeView_SelectionChanged}) - {ebItem}");
-                TryNavigate(ebItem.ShellItem);
+                Debug.Print($".NativeGridView_SelectionChanged(`{ebItem.DisplayName}`)");
+
+                Navigate(ebItem);
+
+                // TODO: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh()
             }
+            // TODO: else 
+            //{
+            //    Debug.Fail(
+            //        $"ERROR: NativeGridView_SelectionChanged() addedItem {newTarget.ToString()} is NOT of type <ExplorerBrowserItem>!");
+            //    throw new ArgumentOutOfRangeException(
+            //        "$ERROR: NativeGridView_SelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
+            //}
+
+            Debug.Print($".NativeGridView_SelectionChanged({newTarget})");
+        }
+    }
+
+    public void Navigate(ExplorerBrowserItem ebItem)
+    {
+        var isFolder = ebItem.IsFolder;
+
+        if (isFolder)
+        {
+            try
+            {
+                Debug.Print($".Navigate(`{ebItem.DisplayName}`)");
+                CurrentFolderBrowserItem = ebItem;
+                CurrentFolderItems.Clear();
+                ExtractChildItems(ebItem);
+
+                if (!(ebItem.Children?.Count > 0))
+                {
+                    return;
+                }
+
+                foreach(var childItem in ebItem.Children)
+                {
+                    CurrentFolderItems.Add(childItem);
+                }
+            }
+            catch
+            {
+                Debug.Fail($"ERROR: Navigate() failed");
+                throw;
+            }
+        }
+        else
+        {
+            Debug.Write($"[i] Navigate(ShellItem? newTargetItem): is not a folder.");
+            // TODO: try to open or execute the item
         }
     }
 

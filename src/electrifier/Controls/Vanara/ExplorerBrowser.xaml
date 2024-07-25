@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:electrifier.Controls.Vanara"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=local:ExplorerBrowser}"
     mc:Ignorable="d">
     <!--  TODO: Fix TeachingTip  -->
     <Grid>
@@ -24,8 +25,22 @@
             DefaultLabelPosition="Collapsed"
             IsOpen="False"
             Visibility="{x:Bind TopCommandBarVisibility}">
-            <AppBarButton Icon="Up" Label="Parent" />
-            <AppBarSeparator />
+            <AppBarButton
+                Icon="Back"
+                IsEnabled="False"
+                Label="Left" />
+            <AppBarButton
+                Icon="Forward"
+                IsEnabled="False"
+                Label="Right" />
+            <AppBarButton
+                Icon="Up"
+                IsEnabled="False"
+                Label="Up" />
+            <AppBarButton
+                Click="RefreshButtonClick"
+                Icon="Refresh"
+                Label="Refresh" />
             <AppBarElementContainer>
                 <SplitButton
                     x:Name="NewItemSplitButton"
@@ -162,6 +177,7 @@
                 <AppBarSeparator />
                 <AppBarButton Icon="Undo" Label="Properties" />
                 <AppBarButton Icon="Setting" Label="Options" />
+                <AppBarButton Icon="Orientation" Label="Orientation" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
         <Grid x:Name="ArenaGrid" Grid.Row="1">
@@ -185,8 +201,12 @@
                     <TranslateTransform X="-6" />
                 </controls:GridSplitter.RenderTransform>
             </controls:GridSplitter>
-            <Border x:Name="GridViewBorder" Grid.Column="2">
-                <local:Shell32GridView x:Name="ShellGridView" Visibility="{x:Bind GridViewVisibility}" />
+            <Border x:Name="ShellGridViewBorder" Grid.Column="2">
+                <local:Shell32GridView
+                    x:Name="ShellGridView"
+                    BorderThickness="3"
+                    ItemsSource="{x:Bind CurrentFolderItems}"
+                    Visibility="{x:Bind GridViewVisibility}" />
             </Border>
         </Grid>
         <AppBar
@@ -214,36 +234,5 @@
                 </AppBarButton>
             </StackPanel>
         </AppBar>
-        <CommandBar
-            x:Name="BottomCommandBar"
-            Grid.Row="3"
-            HorizontalAlignment="Left"
-            Visibility="{x:Bind BottomCommandBarVisibility}">
-            <CommandBar.PrimaryCommands>
-                <AppBarButton
-                    Icon="Back"
-                    Label="Back"
-                    ToolTipService.ToolTip="Navigate Back" />
-                <AppBarButton
-                    Icon="Forward"
-                    Label="Forward"
-                    ToolTipService.ToolTip="Navigate Forward" />
-                <AppBarSeparator />
-                <AppBarSeparator />
-                <AppBarButton Icon="Setting" Label="Settings">
-                    <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="I" Modifiers="Control" />
-                    </AppBarButton.KeyboardAccelerators>
-                </AppBarButton>
-            </CommandBar.PrimaryCommands>
-            <CommandBar.SecondaryCommands>
-                <AppBarButton Icon="AttachCamera" Label="Attach Camera" />
-                <AppBarSeparator />
-                <AppBarButton Icon="Like" Label="Like" />
-                <AppBarButton Icon="Dislike" Label="Dislike" />
-                <AppBarSeparator />
-                <AppBarButton Icon="Orientation" Label="Orientation" />
-            </CommandBar.SecondaryCommands>
-        </CommandBar>
     </Grid>
 </UserControl>

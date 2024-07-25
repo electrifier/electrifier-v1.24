@@ -6,6 +6,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:electrifier.Controls.Vanara"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=local:ExplorerBrowser}"
     mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
@@ -28,23 +29,18 @@
                     </StackPanel>
                 </Grid>
             </DataTemplate>
+            <Style x:Key="NativeGridView_ItemContainerStyle" TargetType="GridViewItem">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Margin" Value="8" />
+                <Setter Property="BorderThickness" Value="3" />
+            </Style>
         </Grid.Resources>
         <GridView
             x:Name="GridView"
+            ContainerContentChanging="NativeGridView_ContainerContentChanging"
             IsItemClickEnabled="True"
-            ItemClick="GridView_OnItemClick"
+            ItemContainerStyle="{StaticResource NativeGridView_ItemContainerStyle}"
             ItemTemplate="{StaticResource ExplorerBrowserItemTemplate}"
-            SelectionMode="Single">
-            <!-- An extra property also needs to be added to the GridView's ItemsWrapGrid.
-                 The following sets the maximum # of items to show before wrapping.
-            //<GridView.ItemsPanel>
-            //    <ItemsPanelTemplate>
-            //        <ItemsWrapGrid x:Name="MaxItemsWrapGrid"
-            //                       MaximumRowsOrColumns="3"
-            //                       Orientation="Horizontal" />
-            //    </ItemsPanelTemplate>
-            </GridView.ItemsPanel>
-            -->
-        </GridView>
+            SelectionMode="Extended" />
     </Grid>
 </UserControl>
