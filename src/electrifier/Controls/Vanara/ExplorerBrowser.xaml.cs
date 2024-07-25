@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Vanara.Windows.Shell;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using Microsoft.UI.Xaml.Media;
 using Vanara.PInvoke;
 using Microsoft.UI.Xaml.Controls.Primitives;
@@ -113,7 +114,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         get; set;
     }
-
+    
     public ExplorerBrowser()
     {
         InitializeComponent();
@@ -150,11 +151,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         //ExtractChildItems(CurrentFolderBrowserItem, null, NavigateOnIconExtractorComplete );
     }
 
-    public void ExtractChildItems(ExplorerBrowserItem targetFolder,
-        EventHandler<ShellIconExtractedEventArgs>? iconExtOnIconExtracted,
-        EventHandler? iconExtOnComplete)
+    public void ExtractChildItems(ExplorerBrowserItem targetFolder)
     {
-        Debug.Print($".ExtractChildItems<ctor> <{targetFolder?.DisplayName}> OnExtracted=<{iconExtOnIconExtracted}> OnComplete=<{nameof(iconExtOnComplete)}>");
+        var itemCount = 0;
+        Debug.Print($".ExtractChildItems <{targetFolder?.DisplayName}> extracting...");
         Debug.Assert(targetFolder is not null);
         if (targetFolder is null)
         {
@@ -166,17 +166,37 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             Debug.Assert(targetFolder.IsFolder);
             Debug.Assert(targetFolder.ShellItem.PIDL != Shell32.PIDL.Null);
             var shItemId = targetFolder.ShellItem.PIDL;
-            var shFolder = new ShellFolder(shItemId);
-            var shellIconExtractor = new ShellIconExtractor(shFolder);
-            shellIconExtractor.IconExtracted += iconExtOnIconExtracted;
-            shellIconExtractor.Complete += iconExtOnComplete;
-            shellIconExtractor.Start();
+
+            using var shFolder = new ShellFolder(shItemId);
+            var children = shFolder.EnumerateChildren(FolderItemFilter.NonFolders | FolderItemFilter.Folders);
+            var shellItems = children as ShellItem[] ?? children.ToArray();
+            itemCount = shellItems.Count();
+
+            _ = DispatcherQueue.TryEnqueue(() =>
+            {
+                foreach (var child in shellItems)
+                {
+                    try
+                    {
+                        var ebItem = new ExplorerBrowserItem(child);
+                        targetFolder.Children?.Add(ebItem);
+                        CurrentFolderItems.Add(ebItem);
+                    }
+                    catch (COMException e)
+                    {
+                        Console.WriteLine($"..ExtractChildItems.Exception: {e}");
+                        throw;
+                    }
+                }
+            });
         }
         catch (Exception e)
         {
             Console.WriteLine(e);
             throw;
         }
+
+        Debug.Print($".ExtractChildItems <{targetFolder?.DisplayName}> extracted: {itemCount} items.");
     }
 
     private void RefreshButtonClick(object sender, RoutedEventArgs e)
@@ -248,7 +268,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 Debug.Print($".Navigate(`{ebItem.DisplayName}`)");
                 CurrentFolderBrowserItem = ebItem;
                 CurrentFolderItems.Clear();
-                ExtractChildItems(ebItem, NavigateOnIconExtracted, NavigateOnIconExtractorComplete );
+                ExtractChildItems(ebItem);
 
                 //ExtractChildItems(newTargetItem, null, NavigateOnIconExtractorComplete );
 
@@ -265,34 +285,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             Debug.Write($".info Navigate(ShellItem? newTargetItem): is not a folder.");
             // TODO: try to open or execute the item
         }
-    }
-
-    private void NavigateOnIconExtracted(object? sender, ShellIconExtractedEventArgs e)
-    {
-        var shItemId = e.ItemID;
-        var imgIndex = e.ImageListIndex;
-
-        var shItem = new ShellItem(shItemId);
-        var browserItem = new ExplorerBrowserItem(shItem)
-        {
-            //ImageIconSource = DefaultFileImage
-        };
-
-        DispatcherQueue.TryEnqueue(() =>
-        {
-            CurrentFolderItems.Add(browserItem);
-        });
-    }
-
-    private void NavigateOnIconExtractorComplete(object? sender, EventArgs e)
-    {
-        DispatcherQueue.TryEnqueue(() =>
-        {
-            var icnExtractor = sender as ShellIconExtractor;
-            var itmCount = icnExtractor?.ImageList.Count;
-            CurrentFolderBrowserItem.Children = new List<ExplorerBrowserItem>(CurrentFolderItems);
-            Debug.Print($".IconExtOnComplete() = {itmCount} items for sender <{sender})>");
-        });
     }
 
     #region Property stuff
