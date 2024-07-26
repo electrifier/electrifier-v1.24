@@ -12,8 +12,6 @@ public class ThemeSelectorService(ILocalSettingsService localSettingsService) : 
 
     public ElementTheme Theme { get; set; } = ElementTheme.Default;
 
-    private readonly ILocalSettingsService _localSettingsService = localSettingsService;
-
     public async Task InitializeAsync()
     {
         Theme = await LoadThemeFromSettingsAsync();
@@ -30,7 +28,7 @@ public class ThemeSelectorService(ILocalSettingsService localSettingsService) : 
 
     private async Task<ElementTheme> LoadThemeFromSettingsAsync()
     {
-        var themeName = await _localSettingsService.ReadSettingAsync<string>(SettingsKey);
+        var themeName = await localSettingsService.ReadSettingAsync<string>(SettingsKey);
 
         if (Enum.TryParse(themeName, out ElementTheme cacheTheme))
         {
@@ -54,7 +52,7 @@ public class ThemeSelectorService(ILocalSettingsService localSettingsService) : 
 
     private async Task SaveThemeInSettingsAsync(ElementTheme theme)
     {
-        await _localSettingsService.SaveSettingAsync(SettingsKey, theme.ToString());
+        await localSettingsService.SaveSettingAsync(SettingsKey, theme.ToString());
     }
 
 #pragma warning disable CS8603 // Possible null reference return.

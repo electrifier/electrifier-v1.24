@@ -26,7 +26,7 @@ public partial class ShellViewModel : ObservableRecipient
     //[ObservableProperty]
     //public string m_versionDescription = "Insert Description";
     [ObservableProperty]
-    public object? MBuildVersionDescription = "v1.24.704 Julius Forus";
+    public object? m_BuildVersionDescription = "v1.24.726 Julius Forus";
 
     public INavigationService NavigationService
     {

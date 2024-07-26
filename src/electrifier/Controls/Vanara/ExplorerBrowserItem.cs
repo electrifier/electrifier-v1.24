@@ -11,9 +11,8 @@ using Vanara.Windows.Shell;
 namespace electrifier.Controls.Vanara;
 
 /// <summary>
-/// A ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32GridView"/> Items.
+/// A ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32TreeView"/> Items.
 /// </summary>
-
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
 public class ExplorerBrowserItem /* : INotifyPropertyChanged */
 {
