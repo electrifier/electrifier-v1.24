@@ -182,21 +182,21 @@
         </CommandBar>
         <Grid x:Name="ArenaGrid" Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" MinWidth="76" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" MinWidth="76" />
             </Grid.ColumnDefinitions>
-            <Border x:Name="TreeViewBorder">
-                <local:Shell32TreeView x:Name="ShellTreeView" Visibility="{x:Bind TreeViewVisibility}" />
+            <Border x:Name="TreeViewBorder" Visibility="{x:Bind TreeViewVisibility}">
+                <local:Shell32TreeView x:Name="ShellTreeView" />
             </Border>
             <controls:GridSplitter
-                x:Name="GridSplitter"
+                x:Name="ArenaGridSplitter"
                 Grid.Column="1"
                 Width="12"
                 HorizontalAlignment="Left"
                 ResizeBehavior="BasedOnAlignment"
                 ResizeDirection="Columns"
-                Visibility="{x:Bind GridViewVisibility}">
+                Visibility="{x:Bind ArenaGridSplitterVisibility}">
                 <controls:GridSplitter.RenderTransform>
                     <TranslateTransform X="-6" />
                 </controls:GridSplitter.RenderTransform>

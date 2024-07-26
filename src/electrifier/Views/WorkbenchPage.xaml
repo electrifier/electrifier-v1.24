@@ -73,7 +73,11 @@
                         </InfoBar.Content>
                     </InfoBar>
                     <Border>
-                        <vanara:ExplorerBrowser TopCommandBarVisibility="Collapsed" TreeViewVisibility="Collapsed" />
+                        <vanara:ExplorerBrowser
+                            BottomAppBarVisibility="Collapsed"
+                            BottomCommandBarVisibility="Collapsed"
+                            TopCommandBarVisibility="Collapsed"
+                            TreeViewVisibility="Collapsed" />
                     </Border>
                 </StackPanel>
             </Grid>

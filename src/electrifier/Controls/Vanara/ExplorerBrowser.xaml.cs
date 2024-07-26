@@ -121,6 +121,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         get; set;
     }
 
+    public Visibility ArenaGridSplitterVisibility =>
+        ((TreeViewVisibility == Visibility.Visible) && (GridViewVisibility == Visibility.Visible))
+            ? Visibility.Visible
+            : Visibility.Collapsed;
+
     public ExplorerBrowser()
     {
         InitializeComponent();
