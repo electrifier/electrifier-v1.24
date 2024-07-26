@@ -6,18 +6,13 @@ using Microsoft.UI.Xaml;
 namespace electrifier.Services;
 
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
-public class ThemeSelectorService : IThemeSelectorService
+public class ThemeSelectorService(ILocalSettingsService localSettingsService) : IThemeSelectorService
 {
     private const string SettingsKey = "AppBackgroundRequestedTheme";
 
     public ElementTheme Theme { get; set; } = ElementTheme.Default;
 
-    private readonly ILocalSettingsService _localSettingsService;
-
-    public ThemeSelectorService(ILocalSettingsService localSettingsService)
-    {
-        _localSettingsService = localSettingsService;
-    }
+    private readonly ILocalSettingsService _localSettingsService = localSettingsService;
 
     public async Task InitializeAsync()
     {
