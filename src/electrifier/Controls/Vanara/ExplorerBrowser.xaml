@@ -187,7 +187,7 @@
                 <ColumnDefinition Width="*" MinWidth="76" />
             </Grid.ColumnDefinitions>
             <Border x:Name="TreeViewBorder">
-                <local:Shell32TreeView x:Name="ShellTreeView" />
+                <local:Shell32TreeView x:Name="ShellTreeView" Visibility="{x:Bind TreeViewVisibility}" />
             </Border>
             <controls:GridSplitter
                 x:Name="GridSplitter"

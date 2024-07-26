@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using Microsoft.UI.Xaml.Media;
 using Vanara.PInvoke;
 using Microsoft.UI.Xaml.Controls.Primitives;
+using Visibility = Microsoft.UI.Xaml.Visibility;
 
 namespace electrifier.Controls.Vanara;
 
@@ -68,12 +69,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         get => (ObservableCollection<ExplorerBrowserItem>)GetValue(CurrentFolderItemsProperty);
         set => SetValue(CurrentFolderItemsProperty, value);
     }
-    public static readonly DependencyProperty CurrentFolderItemsProperty = DependencyProperty.Register(
-        nameof(CurrentFolderItems),
-        typeof(ObservableCollection<ExplorerBrowserItem>),
-        typeof(ExplorerBrowser),
-        new PropertyMetadata(null, new PropertyChangedCallback(OnCurrentFolderItemsChanged))
-    );
     private static void OnCurrentFolderItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         //ImageWithLabelControl iwlc = d as ImageWithLabelControl; //null checks omitted
@@ -82,6 +77,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     }
 
     private ShellIconExtractor? _iconExtractor;
+    public static readonly DependencyProperty CurrentFolderItemsProperty = DependencyProperty.Register(nameof(CurrentFolderItems), typeof(ObservableCollection<ExplorerBrowserItem>), typeof(ExplorerBrowser), new PropertyMetadata(null, new PropertyChangedCallback(OnCurrentFolderItemsChanged)));
+    public static readonly DependencyProperty TreeViewVisibilityProperty = DependencyProperty.Register(nameof(TreeViewVisibility), typeof(Visibility), typeof(ExplorerBrowser), new PropertyMetadata(default(object)));
+
     public ShellIconExtractor? IconExtractor
     {
         get => _iconExtractor;
@@ -97,22 +95,28 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         get; set;
     }
 
-    public Microsoft.UI.Xaml.Visibility GridViewVisibility
+    public Visibility GridViewVisibility
     {
         get; set;
     }
 
-    public Microsoft.UI.Xaml.Visibility TopCommandBarVisibility
+    public Visibility TreeViewVisibility
+    {
+        get => (Visibility)GetValue(TreeViewVisibilityProperty);
+        set => SetValue(TreeViewVisibilityProperty, value);
+    }
+
+    public Visibility TopCommandBarVisibility
     {
         get; set;
     }
 
-    public Microsoft.UI.Xaml.Visibility BottomAppBarVisibility
+    public Visibility BottomAppBarVisibility
     {
         get; set;
     }
 
-    public Microsoft.UI.Xaml.Visibility BottomCommandBarVisibility
+    public Visibility BottomCommandBarVisibility
     {
         get; set;
     }
@@ -125,7 +129,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         ImageCache = new ImageCache();
         CurrentFolderItems = [];
         CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
-        //var userFilesItem = new ExplorerBrowserItem(new ShellLibrary(Shell32.KNOWNFOLDERID.FOLDERID_UsersFiles));
 
         ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeViewOnSelectionChanged;
         ShellGridView.NativeGridView.SelectionChanged += NativeGridView_SelectionChanged;
