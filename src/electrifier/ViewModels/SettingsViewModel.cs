@@ -71,7 +71,7 @@ public partial class SettingsViewModel : ObservableRecipient
     {
         Version version;
 
-        if (RuntimeHelper.IsMSIX)
+        if (RuntimeHelper.IsMsix)
         {
             var packageVersion = Package.Current.Id.Version;
 
