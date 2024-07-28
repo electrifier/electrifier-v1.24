@@ -11,6 +11,10 @@ using Windows.ApplicationModel;
 
 namespace electrifier.ViewModels;
 
+
+/// <summary>
+/// <a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.debuggerdisplayattribute?view=net-6.0">Docs for DebuggerDisplay</a>
+/// </summary>
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
 public partial class SettingsViewModel : ObservableRecipient
 {
@@ -53,25 +57,11 @@ public partial class SettingsViewModel : ObservableRecipient
             });
     }
 
-    /// <summary>
-    /// documentation: https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.debuggerdisplayattribute?view=net-6.0
-    /// </summary>
-    /// <returns><see cref="string"/></returns>
-    private string GetDebuggerDisplay()
-    {
-        return new StringBuilder().Append(nameof(SettingsViewModel))
-        //.Append($" Appearance={Appearance}")
-        .Append($" ElementTheme={ElementTheme}")
-        .Append($" VersionDescription={VersionDescription}")
-        .ToString();
-    }
-
-
     private static string GetVersionDescription()
     {
         Version version;
 
-        if (RuntimeHelper.IsMSIX)
+        if (RuntimeHelper.IsMsix)
         {
             var packageVersion = Package.Current.Id.Version;
 
@@ -83,5 +73,18 @@ public partial class SettingsViewModel : ObservableRecipient
         }
 
         return $"electrifier - {version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
+    }
+
+    /// <summary>
+    /// <a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.debuggerdisplayattribute?view=net-6.0">Documentation for DebuggerDisplay</a>
+    /// </summary>
+    /// <returns><see cref="string"/></returns>
+    private string GetDebuggerDisplay()
+    {
+        return new StringBuilder().Append(nameof(SettingsViewModel))
+        //.Append($" Appearance={Appearance}")
+        .Append($" ElementTheme={ElementTheme}")
+        .Append($" VersionDescription={VersionDescription}")
+        .ToString();
     }
 }

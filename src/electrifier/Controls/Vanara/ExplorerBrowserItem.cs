@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Vanara.Windows.Shell;
@@ -11,67 +12,57 @@ using Vanara.Windows.Shell;
 namespace electrifier.Controls.Vanara;
 
 /// <summary>
-/// A ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32GridView"/> Items.
+/// A ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32TreeView"/> Items.
 /// </summary>
-
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
 public class ExplorerBrowserItem /* : INotifyPropertyChanged */
 {
-    // primary properties
+    public List<ExplorerBrowserItem>? Children;
     public string DisplayName
     {
         get;
     }
-    public ShellItem ShellItem
-    {
-        get;
-    }
-    public List<ExplorerBrowserItem>? Children;
-
-    public bool IsFolder => ShellItem.IsFolder;
-    public bool IsLink => ShellItem.IsLink;
     public bool HasUnrealizedChildren
     {
         get;
         private set;
     }
-    public ImageSource? ImageIconSource
+    public ImageEx? ImageIconSource
     {
         get;
         internal set;
     }
-
-    private bool _isExpanded;
     public bool IsExpanded
     {
-        get => _isExpanded;
-        set
-        {
-            if (_isExpanded != value)
-            {
-                _isExpanded = value;
-                //OnPropertyChanged();
-            }
-        }
+        get; set;
     }
-
+    public bool IsFolder => ShellItem.IsFolder;
+    public bool IsLink => ShellItem.IsLink;
     public bool IsSelected
     {
         get; set;
+    }
+    public ShellItem ShellItem
+    {
+        get;
     }
 
 
     // TODO: TreeViewNode - Property
     // TODO: GridViewItem - Property
-    // TODO: ExplorerBrowserItem.TreeNodeSelected = bool; => Initiate selection of this node
     public ExplorerBrowserItem(ShellItem shItem)
     {
-        ShellItem = shItem;
-        DisplayName = ShellItem.Name ?? "[xXx]";
-        // TODO: This call fails in case of TeeView/GridView navigation:
-        //HasUnrealizedChildren = (ShellItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
-        _isExpanded = false;
-        //IsLink = ShellItem.IsLink;
+        ShellItem = new(shItem.PIDL);
+        DisplayName = ShellItem.Name ?? ":error: <DisplayName.get()>";
+
+        if (ShellItem.IsFolder)
+        {
+            // TODO: Check, since this call has failed in case of TeeView/GridView navigation:
+            HasUnrealizedChildren = (ShellItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
+        }
+
+        IsExpanded = false;
+        // TODO: If IsSelected, add overlay of opened folder icon to TreeView
         IsSelected = false;
 
         //Debug.Print($"ExplorerBrowserItem <{GetDebuggerDisplay()}> created.");

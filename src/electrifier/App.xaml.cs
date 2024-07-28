@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using electrifier.Activation;
+﻿using electrifier.Activation;
 using electrifier.Contracts.Services;
 using electrifier.Helpers;
 using electrifier.Models;
@@ -10,6 +9,8 @@ using electrifier.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
+using System.Diagnostics;
+using static Microsoft.Extensions.Hosting.Host;
 using UnhandledExceptionEventArgs = Microsoft.UI.Xaml.UnhandledExceptionEventArgs;
 
 namespace electrifier;
@@ -39,77 +40,57 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
+        UnhandledException += App_UnhandledException;
 
-        Host = Microsoft.Extensions.Hosting.Host.
-        CreateDefaultBuilder().
-        UseContentRoot(AppContext.BaseDirectory).
-        ConfigureServices((context, services) =>
-        {
-            // Default Activation Handler
-            services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
+        Host = CreateDefaultBuilder().UseContentRoot(AppContext.BaseDirectory)
+            .ConfigureServices((context, services) =>
+            {
+                // Default Activation Handler
+                services.AddTransient<ActivationHandler<LaunchActivatedEventArgs>, DefaultActivationHandler>();
 
-            // Other Activation Handlers
-            services.AddTransient<IActivationHandler, AppNotificationActivationHandler>();
+                // Other Activation Handlers
+                services.AddTransient<IActivationHandler, AppNotificationActivationHandler>();
 
-            // Services
-            services.AddSingleton<IAppNotificationService, AppNotificationService>();
-            services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
-            services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
-            services.AddTransient<IWebViewService, WebViewService>();
-            services.AddTransient<INavigationViewService, NavigationViewService>();
+                // Services
+                services.AddSingleton<IAppNotificationService, AppNotificationService>();
+                services.AddSingleton<ILocalSettingsService, LocalSettingsService>();
+                services.AddSingleton<IThemeSelectorService, ThemeSelectorService>();
+                services.AddTransient<IWebViewService, WebViewService>();
+                services.AddTransient<INavigationViewService, NavigationViewService>();
 
-            services.AddSingleton<IActivationService, ActivationService>();
-            services.AddSingleton<IPageService, PageService>();
-            services.AddSingleton<INavigationService, NavigationService>();
+                services.AddSingleton<IActivationService, ActivationService>();
+                services.AddSingleton<IPageService, PageService>();
+                services.AddSingleton<INavigationService, NavigationService>();
 
-            // Core Services
-            services.AddSingleton<IFileService, FileService>();
+                // Core Services
+                services.AddSingleton<IFileService, FileService>();
 
-            // Views and ViewModels
-            services.AddTransient<Microsoft365ViewModel>();
-            services.AddTransient<Microsoft365Page>();
-            services.AddTransient<KanbanBoardDetailViewModel>();
-            services.AddTransient<KanbanBoardDetailPage>();
-            services.AddTransient<KanbanBoardViewModel>();
-            services.AddTransient<KanbanBoardPage>();
-            services.AddTransient<TextEditorViewModel>();
-            services.AddTransient<TextEditorPage>();
-            services.AddTransient<FileManagerViewModel>();
-            services.AddTransient<FileManagerPage>();
-            services.AddTransient<SettingsViewModel>();
-            services.AddTransient<SettingsPage>();
-            services.AddTransient<WebViewViewModel>();
-            services.AddTransient<WebViewPage>();
-            services.AddTransient<WorkbenchViewModel>();
-            services.AddTransient<WorkbenchPage>();
-            services.AddTransient<ShellPage>();
-            services.AddTransient<ShellViewModel>();
+                // Views and ViewModels
+                services.AddTransient<Microsoft365ViewModel>();
+                services.AddTransient<Microsoft365Page>();
+                services.AddTransient<KanbanBoardDetailViewModel>();
+                services.AddTransient<KanbanBoardDetailPage>();
+                services.AddTransient<KanbanBoardViewModel>();
+                services.AddTransient<KanbanBoardPage>();
+                services.AddTransient<TextEditorViewModel>();
+                services.AddTransient<TextEditorPage>();
+                services.AddTransient<FileManagerViewModel>();
+                services.AddTransient<FileManagerPage>();
+                services.AddTransient<SettingsViewModel>();
+                services.AddTransient<SettingsPage>();
+                services.AddTransient<WebViewViewModel>();
+                services.AddTransient<WebViewPage>();
+                services.AddTransient<WorkbenchViewModel>();
+                services.AddTransient<WorkbenchPage>();
+                services.AddTransient<ShellPage>();
+                services.AddTransient<ShellViewModel>();
 
-            // Configuration
-            services.Configure<LocalSettingsOptions>(context.Configuration.GetSection(nameof(LocalSettingsOptions)));
-        }).
-        Build();
+                // Configuration
+                services.Configure<LocalSettingsOptions>(
+                    context.Configuration.GetSection(nameof(LocalSettingsOptions)));
+            }).Build();
 
         GetService<IAppNotificationService>().Initialize();
-
-        UnhandledException += App_UnhandledException;
-    }
-
-    /// <summary>
-    /// GetService
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
-    /// <returns></returns>
-    /// <exception cref="ArgumentException"></exception>
-    public static T GetService<T>()
-        where T : class
-    {
-        if ((Current as App)!.Host.Services.GetService(typeof(T)) is not T service)
-        {
-            throw new ArgumentException($"{typeof(T)} needs to be registered in ConfigureServices within App.xaml.cs.");
-        }
-
-        return service;
     }
 
     /// <summary>
@@ -120,7 +101,8 @@ public partial class App : Application
     {
         base.OnLaunched(args);
 
-        GetService<IAppNotificationService>().Show(string.Format("AppNotificationSamplePayload".GetLocalized(), AppContext.BaseDirectory));
+        GetService<IAppNotificationService>()
+            .Show(string.Format("AppNotificationSamplePayload".GetLocalized(), AppContext.BaseDirectory));
 
         await GetService<IActivationService>().ActivateAsync(args);
     }
@@ -144,5 +126,22 @@ public partial class App : Application
         Debug.Flush();
 
         e.Handled = true;
+    }
+
+    /// <summary>
+    /// GetService
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public static T GetService<T>()
+        where T : class
+    {
+        if ((Current as App)!.Host.Services.GetService(typeof(T)) is not T service)
+        {
+            throw new ArgumentException($"{typeof(T)} needs to be registered in ConfigureServices within App.xaml.cs.");
+        }
+
+        return service;
     }
 }
