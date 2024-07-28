@@ -17,19 +17,11 @@ namespace electrifier.Controls.Vanara;
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
 public class ExplorerBrowserItem /* : INotifyPropertyChanged */
 {
-    // primary properties
+    public List<ExplorerBrowserItem>? Children;
     public string DisplayName
     {
         get;
     }
-    public ShellItem ShellItem
-    {
-        get;
-    }
-    public List<ExplorerBrowserItem>? Children;
-
-    public bool IsFolder => ShellItem.IsFolder;
-    public bool IsLink => ShellItem.IsLink;
     public bool HasUnrealizedChildren
     {
         get;
@@ -40,38 +32,37 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
         get;
         internal set;
     }
-
-    private bool _isExpanded;
     public bool IsExpanded
     {
-        get => _isExpanded;
-        set
-        {
-            if (_isExpanded != value)
-            {
-                _isExpanded = value;
-                //OnPropertyChanged();
-            }
-        }
+        get; set;
     }
-
+    public bool IsFolder => ShellItem.IsFolder;
+    public bool IsLink => ShellItem.IsLink;
     public bool IsSelected
     {
         get; set;
+    }
+    public ShellItem ShellItem
+    {
+        get;
     }
 
 
     // TODO: TreeViewNode - Property
     // TODO: GridViewItem - Property
-    // TODO: ExplorerBrowserItem.TreeNodeSelected = bool; => Initiate selection of this node
     public ExplorerBrowserItem(ShellItem shItem)
     {
-        ShellItem = new (shItem.PIDL);
+        ShellItem = new(shItem.PIDL);
         DisplayName = ShellItem.Name ?? ":error: <DisplayName.get()>";
-        // TODO: This call fails in case of TeeView/GridView navigation:
-        HasUnrealizedChildren = (ShellItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
-        _isExpanded = false;
-        //IsLink = ShellItem.IsLink;
+
+        if (ShellItem.IsFolder)
+        {
+            // TODO: Check, since this call has failed in case of TeeView/GridView navigation:
+            HasUnrealizedChildren = (ShellItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
+        }
+
+        IsExpanded = false;
+        // TODO: If IsSelected, add overlay of opened folder icon to TreeView
         IsSelected = false;
 
         //Debug.Print($"ExplorerBrowserItem <{GetDebuggerDisplay()}> created.");
