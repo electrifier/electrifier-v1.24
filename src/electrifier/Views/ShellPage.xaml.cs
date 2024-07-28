@@ -31,7 +31,7 @@ public sealed partial class ShellPage : Page
         App.MainWindow.Activated += MainWindow_Activated;
     }
 
-    private void OnLoaded(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    private void OnLoaded(object sender, RoutedEventArgs e)
     {
         TitleBarHelper.UpdateTitleBar(RequestedTheme);
 
