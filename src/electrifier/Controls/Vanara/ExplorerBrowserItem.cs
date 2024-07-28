@@ -66,7 +66,7 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
     // TODO: ExplorerBrowserItem.TreeNodeSelected = bool; => Initiate selection of this node
     public ExplorerBrowserItem(ShellItem shItem)
     {
-        ShellItem = shItem;
+        ShellItem = new (shItem.PIDL);
         DisplayName = ShellItem.Name ?? ":error: <DisplayName.get()>";
         // TODO: This call fails in case of TeeView/GridView navigation:
         HasUnrealizedChildren = (ShellItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
