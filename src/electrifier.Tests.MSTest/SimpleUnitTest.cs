@@ -37,7 +37,7 @@ public class SimpleUnitTest
     }
 
     [UITestMethod]
-    public void UITestMethod()
+    public void UiTestMethod()
     {
         Assert.AreEqual(0, new Grid().ActualWidth);
     }

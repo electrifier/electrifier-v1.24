@@ -43,7 +43,7 @@ public class TestClass
     }
 
     [UITestMethod]
-    public void UITestMethod()
+    public void UiTestMethod()
     {
         Assert.AreEqual(0, new Grid().ActualWidth);
     }

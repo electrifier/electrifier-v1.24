@@ -25,6 +25,7 @@
     <PackageProjectUrl>https://www.electrifier.org</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/electrifier</RepositoryUrl>
+    <UserSecretsId>8a2a75f7-cf60-45ba-b4cc-68e3ff9a8e22</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -49,6 +50,7 @@
     <PackageReference Include="System.Text.Json" Version="8.0.4" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="Vanara.Windows.Shell" Version="4.0.2" />
+    <PackageReference Include="Vanara.Windows.Shell.Common" Version="4.0.2" />
     <PackageReference Include="WinUIEdit" Version="0.0.3-prerelease" />
     <PackageReference Include="WinUIEx" Version="2.3.4" />
   </ItemGroup>
