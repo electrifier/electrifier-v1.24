@@ -149,13 +149,17 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         ShellTreeView.DataContext = this;
 
         CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
+        CurrentFolderBrowserItem.ImageIconSource = CurrentFolderBrowserItem.IsFolder ? DefaultFolderImage : DefaultFileImage;
         var rootItems = new List<ExplorerBrowserItem>
         {
             CurrentFolderBrowserItem,
         };
 
+        // add second root folder as dummy
         var galleryFolder = new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_PicturesLibrary);
-        rootItems.Add(new ExplorerBrowserItem(galleryFolder));
+        var galleryEbItem = new ExplorerBrowserItem(galleryFolder);
+        galleryEbItem.ImageIconSource = galleryEbItem.IsFolder ? DefaultFolderImage : DefaultFileImage;
+        rootItems.Add(galleryEbItem);
 
         InitializeStockIcons();
 
@@ -164,29 +168,45 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         //ebItem.IsSelected = true;       // TODO: Move this to the caller(s).
 
         Navigate(CurrentFolderBrowserItem, selectTreeViewNode: true);
+        CurrentFolderBrowserItem.IsExpanded = true;
         //ExtractChildItems(CurrentFolderBrowserItem, null, NavigateOnIconExtractorComplete );
     }
 
     private SoftwareBitmapSource _defaultFolderImageBitmapSource;
 
+    /// <summary>
+    /// DUMMY: TODO: InitializeStockIcons()
+    ///
+    /// Added code:
+    /// <see cref="GetWinUI3BitmapSourceFromIcon"/>
+    /// <see cref="GetWinUI3BitmapSourceFromGdiBitmap"/>
+    /// </summary>
     public void InitializeStockIcons()
     {
-        var siFolder = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDER);
-        var siFolderOpen = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);
-        // TODO: Opened Folder Icon, use for selected TreeViewItems
-        var siVar = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCASSOC);
-
-        var icnHandle = siFolder.IconHandle.ToIcon();
-        HICON handle = siFolder.IconHandle;
-        var icon = siFolder.IconHandle.ToIcon();
-        //if (icnHandle != null)
+        try
         {
-            //var icon = Icon.FromHandle((nint)icnHandle);
-            var bmpSource = GetWinUI3BitmapSourceFromIcon(icon);
-            //_defaultFolderImageBitmapSource = bmpSource;
-        }
+            using var siFolder = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDER);
+            //using var siFolderOpen = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);
+            // TODO: Opened Folder Icon, use for selected TreeViewItems
+            //using var siVar = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCASSOC);
 
-        //System.Drawing.Icon icn = Icon.FromHandle((IntPtr)siFolder.IconHandle);
+            var icnHandle = siFolder.IconHandle.ToIcon();
+            HICON handle = siFolder.IconHandle;
+            var icon = siFolder.IconHandle.ToIcon();
+            //if (icnHandle != null)
+            {
+                //var icon = Icon.FromHandle((nint)icnHandle);
+                var bmpSource = GetWinUI3BitmapSourceFromIcon(icon);
+                //_defaultFolderImageBitmapSource = bmpSource;
+            }
+
+            //System.Drawing.Icon icn = Icon.FromHandle((IntPtr)siFolder.IconHandle);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 
     public void ExtractChildItems(ExplorerBrowserItem targetFolder)
@@ -216,9 +236,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 foreach (var child in shellItems)
                 {
                     var ebItem = new ExplorerBrowserItem(child);
-                    targetFolder.Children.Add(ebItem);
-
                     ebItem.ImageIconSource = ebItem.IsFolder ? DefaultFolderImage : DefaultFileImage;
+                    targetFolder.Children.Add(ebItem);
                 }
             }
         }
