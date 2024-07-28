@@ -20,6 +20,14 @@ namespace electrifier.Controls.Vanara;
 
 // https://github.com/dahall/Vanara/blob/master/Windows.Forms/Controls/ExplorerBrowser.cs
 // TODO: See also https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs
+
+/* TODO: Research this regarding Visual States
+   [Microsoft.UI.Xaml.TemplatePart(Name="Image", Type=typeof(System.Object))]
+   [Microsoft.UI.Xaml.TemplateVisualState(GroupName="CommonStates", Name="Loading")]
+   [Microsoft.UI.Xaml.TemplateVisualState(GroupName="CommonStates", Name="Loaded")]
+   [Microsoft.UI.Xaml.TemplateVisualState(GroupName="CommonStates", Name="Unloaded")]
+   [Microsoft.UI.Xaml.TemplateVisualState(GroupName="CommonStates", Name="Failed")]
+ */
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
     // TODO: Use shell32 stock icons
@@ -149,7 +157,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         ShellTreeView.DataContext = this;
 
         CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
-        CurrentFolderBrowserItem.ImageIconSource = CurrentFolderBrowserItem.IsFolder ? DefaultFolderImage : DefaultFileImage;
         var rootItems = new List<ExplorerBrowserItem>
         {
             CurrentFolderBrowserItem,
@@ -158,18 +165,13 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         // add second root folder as dummy
         var galleryFolder = new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_PicturesLibrary);
         var galleryEbItem = new ExplorerBrowserItem(galleryFolder);
-        galleryEbItem.ImageIconSource = galleryEbItem.IsFolder ? DefaultFolderImage : DefaultFileImage;
         rootItems.Add(galleryEbItem);
 
         InitializeStockIcons();
 
         ShellTreeView.ItemsSource = rootItems;
-
-        //ebItem.IsSelected = true;       // TODO: Move this to the caller(s).
-
-        Navigate(CurrentFolderBrowserItem, selectTreeViewNode: true);
         CurrentFolderBrowserItem.IsExpanded = true;
-        //ExtractChildItems(CurrentFolderBrowserItem, null, NavigateOnIconExtractorComplete );
+        CurrentFolderBrowserItem.IsSelected = true;
     }
 
     private SoftwareBitmapSource _defaultFolderImageBitmapSource;
@@ -236,7 +238,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 foreach (var child in shellItems)
                 {
                     var ebItem = new ExplorerBrowserItem(child);
-                    ebItem.ImageIconSource = ebItem.IsFolder ? DefaultFolderImage : DefaultFileImage;
                     targetFolder.Children.Add(ebItem);
                 }
             }

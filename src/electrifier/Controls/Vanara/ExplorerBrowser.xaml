@@ -181,6 +181,7 @@
         </CommandBar>
         <Grid x:Name="ArenaGrid" Grid.Row="1">
             <Grid.ColumnDefinitions>
+                <!--  controls:DockPanel.Dock="Left"  -->
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" MinWidth="76" />

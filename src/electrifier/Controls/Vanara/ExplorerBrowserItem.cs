@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
+using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Vanara.Windows.Shell;
@@ -34,7 +35,7 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
         get;
         private set;
     }
-    public ImageSource? ImageIconSource
+    public ImageEx? ImageIconSource
     {
         get;
         internal set;
@@ -66,9 +67,9 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
     public ExplorerBrowserItem(ShellItem shItem)
     {
         ShellItem = shItem;
-        DisplayName = ShellItem.Name ?? "[xXx]";
+        DisplayName = ShellItem.Name ?? ":error: <DisplayName.get()>";
         // TODO: This call fails in case of TeeView/GridView navigation:
-        //HasUnrealizedChildren = (ShellItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
+        HasUnrealizedChildren = (ShellItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
         _isExpanded = false;
         //IsLink = ShellItem.IsLink;
         IsSelected = false;
