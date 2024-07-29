@@ -182,13 +182,14 @@
         <Grid x:Name="ArenaGrid" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <!--  controls:DockPanel.Dock="Left"  -->
-                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="256" MinWidth="76" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" MinWidth="76" />
             </Grid.ColumnDefinitions>
             <Border x:Name="TreeViewBorder" Visibility="{x:Bind TreeViewVisibility}">
                 <local:Shell32TreeView x:Name="ShellTreeView" />
             </Border>
+            <!--  TODO: GridSplitter is not Working since TreeView Visibility changes  -->
             <controls:GridSplitter
                 x:Name="ArenaGridSplitter"
                 Grid.Column="1"

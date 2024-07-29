@@ -77,7 +77,7 @@
                             BottomAppBarVisibility="Collapsed"
                             BottomCommandBarVisibility="Collapsed"
                             TopCommandBarVisibility="Collapsed"
-                            TreeViewVisibility="Collapsed" />
+                            TreeViewVisibility="Visible" />
                     </Border>
                 </StackPanel>
             </Grid>

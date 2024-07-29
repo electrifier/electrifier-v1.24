@@ -18,6 +18,8 @@ namespace electrifier.Controls.Vanara;
 
 // TODO: INFO: See also https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.image.source?view=windows-app-sdk-1.5#microsoft-ui-xaml-controls-image-source
 
+// TODO: WARN: ExplorerBrowser doesn't show anything when hiding Shell32TreeView, cause of missing navigation
+
 // https://github.com/dahall/Vanara/blob/master/Windows.Forms/Controls/ExplorerBrowser.cs
 // TODO: See also https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs
 
@@ -214,7 +216,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     public void ExtractChildItems(ExplorerBrowserItem targetFolder)
     {
         var itemCount = 0;
-        Debug.Print($".ExtractChildItems <{targetFolder?.DisplayName}> extracting...");
+        Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracting...");
         Debug.Assert(targetFolder is not null);
         if (targetFolder is null)
         {
@@ -226,8 +228,18 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             Debug.Assert(targetFolder.IsFolder);
             Debug.Assert(targetFolder.ShellItem.PIDL != Shell32.PIDL.Null);
             var shItemId = targetFolder.ShellItem.PIDL;
-
             using var shFolder = new ShellFolder(shItemId);
+
+            if ((shFolder.Attributes & ShellItemAttribute.Removable) != 0)
+            {
+                // TODO: Check for Disc in Drive, fail only if device not present
+                // TODO: Add `Eject-Buttons` to TreeView (right side, instead of Pin header) and GridView
+                Debug.WriteLine($"GetChildItems: IsRemovable = true");
+                var eventArgs = new NavigationFailedEventArgs();
+                // TODO: Switch PresentationView to `Error`
+                return;
+            }
+
             var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
             var shellItems = children as ShellItem[] ?? children.ToArray();
             itemCount = shellItems.Length;
@@ -248,7 +260,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             throw;
         }
 
-        Debug.Print($".ExtractChildItems <{targetFolder?.DisplayName}> extracted: {itemCount} items.");
+        Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracted: {itemCount} items.");
     }
 
     private void RefreshButtonClick(object sender, RoutedEventArgs e)
