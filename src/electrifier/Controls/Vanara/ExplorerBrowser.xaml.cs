@@ -343,9 +343,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 CurrentFolderItems.Add(childItem);
             }
         }
-        catch
+        catch(Exception ex)
         {
-            Debug.Fail($"ERROR: Navigate() failed");
+            Debug.Fail($"ERROR: Navigate() failed: {ex.Message}");
             throw;
         }
     }
