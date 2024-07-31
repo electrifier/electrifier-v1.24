@@ -356,7 +356,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
         else
         {
-            Debug.Write($"[i] Navigate(ShellItem? newTargetItem): is not a folder.");
+            Debug.Print($"[i] Navigate(ShellItem? newTargetItem): is not a folder.");
             // TODO: try to open or execute the item
         }
     }
