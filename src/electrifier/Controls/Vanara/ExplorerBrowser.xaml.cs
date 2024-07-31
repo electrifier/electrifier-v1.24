@@ -225,7 +225,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         try
         {
-            Debug.Assert(targetFolder.IsFolder);
             Debug.Assert(targetFolder.ShellItem.PIDL != Shell32.PIDL.Null);
             var shItemId = targetFolder.ShellItem.PIDL;
             using var shFolder = new ShellFolder(shItemId);
@@ -323,41 +322,31 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     public void Navigate(ExplorerBrowserItem ebItem, bool selectTreeViewNode = false)
     {
-        var isFolder = ebItem.IsFolder;
-
-        if (isFolder)
+        try
         {
-            try
+            Debug.Print($".Navigate(`{ebItem.DisplayName}`)");
+            CurrentFolderBrowserItem = ebItem;
+            if (selectTreeViewNode)
             {
-                Debug.Print($".Navigate(`{ebItem.DisplayName}`)");
-                CurrentFolderBrowserItem = ebItem;
-                if (selectTreeViewNode)
-                {
-                    ebItem.IsSelected = true;
-                }
-                CurrentFolderItems.Clear();
-                ExtractChildItems(ebItem);
-
-                if (!(ebItem.Children?.Count > 0))
-                {
-                    return;
-                }
-
-                foreach(var childItem in ebItem.Children)
-                {
-                    CurrentFolderItems.Add(childItem);
-                }
+                ebItem.IsSelected = true;
             }
-            catch
+            CurrentFolderItems.Clear();
+            ExtractChildItems(ebItem);
+
+            if (!(ebItem.Children?.Count > 0))
             {
-                Debug.Fail($"ERROR: Navigate() failed");
-                throw;
+                return;
+            }
+
+            foreach (var childItem in ebItem.Children)
+            {
+                CurrentFolderItems.Add(childItem);
             }
         }
-        else
+        catch
         {
-            Debug.Print($"[i] Navigate(ShellItem? newTargetItem): is not a folder.");
-            // TODO: try to open or execute the item
+            Debug.Fail($"ERROR: Navigate() failed");
+            throw;
         }
     }
 
