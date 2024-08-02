@@ -13,6 +13,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
@@ -179,7 +180,16 @@
                 <AppBarButton Icon="Orientation" Label="Orientation" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
-        <Grid x:Name="ArenaGrid" Grid.Row="1">
+        <controls:SwitchPresenter Grid.Row="1" Value="{Binding SelectedItem, ElementName=Lookup}">
+            <controls:Case Value="true">
+                <StackPanel>
+                    <TextBlock Text="" />
+                </StackPanel>
+            </controls:Case>
+
+        </controls:SwitchPresenter>
+
+        <Grid x:Name="ArenaGrid" Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <!--  controls:DockPanel.Dock="Left"  -->
                 <ColumnDefinition Width="256" MinWidth="76" />
@@ -212,7 +222,7 @@
         </Grid>
         <AppBar
             x:Name="BottomAppBar"
-            Grid.Row="2"
+            Grid.Row="3"
             HorizontalAlignment="Stretch"
             Background="Transparent"
             Visibility="{x:Bind BottomAppBarVisibility}">
