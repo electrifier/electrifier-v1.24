@@ -16,13 +16,13 @@
   <Identity
     Name="110d64de-2f36-46a7-816c-1f138a578b9d"
     Publisher="CN=electrifier.org"
-    Version="1.24.704.0" />
+    Version="1.24.802.0" />
     
   <mp:PhoneIdentity PhoneProductId="110d64de-2f36-46a7-816c-1f138a578b9d" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
     
   <Properties>
-    <DisplayName>electrifier</DisplayName>
-    <PublisherDisplayName>tajbender</PublisherDisplayName>
+    <DisplayName>electrifier.org Package</DisplayName>
+    <PublisherDisplayName>tajbender, electrifier.org</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -41,7 +41,7 @@
       EntryPoint="$targetentrypoint$">
       <uap:VisualElements
         DisplayName="electrifier alpha"
-        Description="electrifier julius4us x64 build v1.24.704"
+        Description="electrifier build v1.24.802 Octavian"
         BackgroundColor="transparent"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">
