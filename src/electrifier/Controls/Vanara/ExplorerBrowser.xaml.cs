@@ -13,6 +13,8 @@ using Microsoft.UI.Xaml.Media;
 using Vanara.PInvoke;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Visibility = Microsoft.UI.Xaml.Visibility;
+using System.Windows.Input;
+using CommunityToolkit.Mvvm.Input;
 
 namespace electrifier.Controls.Vanara;
 
@@ -70,6 +72,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
 
+    public static readonly DependencyProperty CurrentFolderItemsProperty = DependencyProperty.Register(
+        nameof(CurrentFolderItems),
+        typeof(ObservableCollection<ExplorerBrowserItem>),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(null,
+            new PropertyChangedCallback(OnCurrentFolderItemsChanged)));
     /// <summary>
     /// Represents the current's folder content.
     /// Each Item is an <see cref="ExplorerBrowserItem"/>.
@@ -87,10 +95,29 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         Debug.Print($".OnCurrentFolderItemsChanged(): {s}");
     }
 
-    private ShellIconExtractor? _iconExtractor;
-    public static readonly DependencyProperty CurrentFolderItemsProperty = DependencyProperty.Register(nameof(CurrentFolderItems), typeof(ObservableCollection<ExplorerBrowserItem>), typeof(ExplorerBrowser), new PropertyMetadata(null, new PropertyChangedCallback(OnCurrentFolderItemsChanged)));
-    public static readonly DependencyProperty TreeViewVisibilityProperty = DependencyProperty.Register(nameof(TreeViewVisibility), typeof(Visibility), typeof(ExplorerBrowser), new PropertyMetadata(default(object)));
+    public static readonly DependencyProperty HasNavigationFailureProperty = DependencyProperty.Register(
+        nameof(HasNavigationFailure),
+        typeof(bool),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(false));
+    public bool HasNavigationFailure
+    {
+        get => (bool)GetValue(HasNavigationFailureProperty);
+        set => SetValue(HasNavigationFailureProperty, value);
+    }
 
+    public static readonly DependencyProperty NavigationFailureProperty = DependencyProperty.Register(
+        nameof(NavigationFailure),
+        typeof(string),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(string.Empty));
+    public string NavigationFailure
+    {
+        get => (string)GetValue(NavigationFailureProperty);
+        set => SetValue(NavigationFailureProperty, value);
+    }
+
+    private ShellIconExtractor? _iconExtractor;
     public ShellIconExtractor? IconExtractor
     {
         get => _iconExtractor;
@@ -111,6 +138,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         get; set;
     }
 
+    public static readonly DependencyProperty TreeViewVisibilityProperty = DependencyProperty.Register(
+        nameof(TreeViewVisibility),
+        typeof(Visibility),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(default(object)));
     public Visibility TreeViewVisibility
     {
         get => (Visibility)GetValue(TreeViewVisibilityProperty);
@@ -137,6 +169,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             ? Visibility.Visible
             : Visibility.Collapsed;
 
+    public ICommand RefreshViewCommand
+    {
+        get;
+    }
+
     public ExplorerBrowser()
     {
         InitializeComponent();
@@ -145,6 +182,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         ImageCache = new ImageCache();
         CurrentFolderItems = [];
         CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
+        RefreshViewCommand = new RelayCommand(() => OnRefreshViewCommand(this, new RoutedEventArgs()));
 
         ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeViewOnSelectionChanged;
         ShellGridView.NativeGridView.SelectionChanged += NativeGridView_SelectionChanged;
@@ -262,11 +300,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracted: {itemCount} items.");
     }
 
-    private void RefreshButtonClick(object sender, RoutedEventArgs e)
-    {
-        // TODO: TryNavigate(CurrentFolderBrowserItem);
-    }
-
     private void NativeTreeViewOnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
         var selectedItem = args.AddedItems.FirstOrDefault();
@@ -343,9 +376,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 CurrentFolderItems.Add(childItem);
             }
         }
-        catch(Exception ex)
+        catch (Exception ex)
         {
             Debug.Fail($"ERROR: Navigate() failed: {ex.Message}");
+            HasNavigationFailure = true;
             throw;
         }
     }
@@ -393,6 +427,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         var source = new SoftwareBitmapSource();
         await source.SetBitmapAsync(softwareBitmap);
         return source;
+    }
+
+    public void OnRefreshViewCommand(object sender, RoutedEventArgs e)
+    {
+        Debug.WriteLine($".OnRefreshViewCommand(sender <{sender}>, RoutedEventArgs <{e.ToString()}>)");
+        /* // TODO: TryNavigate(CurrentFolderBrowserItem); */
     }
 
     #region Property stuff

@@ -72,13 +72,6 @@
                             </ItemsStackPanel>
                         </InfoBar.Content>
                     </InfoBar>
-                    <Border>
-                        <vanara:ExplorerBrowser
-                            BottomAppBarVisibility="Collapsed"
-                            BottomCommandBarVisibility="Collapsed"
-                            TopCommandBarVisibility="Collapsed"
-                            TreeViewVisibility="Visible" />
-                    </Border>
                 </StackPanel>
             </Grid>
         </Border>

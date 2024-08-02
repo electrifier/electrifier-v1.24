@@ -38,7 +38,7 @@
                 IsEnabled="False"
                 Label="Up" />
             <AppBarButton
-                Click="RefreshButtonClick"
+                Click="OnRefreshViewCommand"
                 Icon="Refresh"
                 Label="Refresh" />
             <AppBarElementContainer>
@@ -180,15 +180,51 @@
                 <AppBarButton Icon="Orientation" Label="Orientation" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
-        <controls:SwitchPresenter Grid.Row="1" Value="{Binding SelectedItem, ElementName=Lookup}">
-            <controls:Case Value="true">
-                <StackPanel>
-                    <TextBlock Text="" />
-                </StackPanel>
-            </controls:Case>
-
-        </controls:SwitchPresenter>
-
+        <!--<controls:SwitchPresenter Grid.Row="1" Value="{x:Bind HasNavigationFailure}">
+            <controls:Case Value="true">-->
+        <Border Grid.Row="1">
+            <InfoBar
+                x:Name="NavigationFailedInfoBar"
+                Title="Navigation failed"
+                BorderBrush="DarkRed"
+                BorderThickness="8"
+                IsClosable="False"
+                IsOpen="{x:Bind HasNavigationFailure}"
+                Message="Navigation to destination folder failed."
+                Severity="Error">
+                <InfoBar.Content>
+                    <ItemsStackPanel
+                        Height="Auto"
+                        HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                        <Button>
+                            Reload folder.
+                        </Button>
+                    </ItemsStackPanel>
+                </InfoBar.Content>
+            </InfoBar>
+        </Border>
+        <!--<StackPanel
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        x:Uid="NavigationFailureTextBlock"
+                        HorizontalAlignment="Center"
+                        Text="Navigation has failed."
+                        TextWrapping="WrapWholeWords" />
+                    <TextBlock
+                        x:Uid="NavigationFailureTextBlock"
+                        HorizontalAlignment="Center"
+                        Text="Navigation has failed."
+                        TextWrapping="WrapWholeWords" />
+                    <HyperlinkButton
+                        x:Uid="NavigationFailureRefreshViewButton"
+                        HorizontalAlignment="Center"
+                        Command="{x:Bind RefreshViewCommand}" />
+                </StackPanel>-->
+        <!--</controls:Case>
+        </controls:SwitchPresenter>-->
         <Grid x:Name="ArenaGrid" Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <!--  controls:DockPanel.Dock="Left"  -->
