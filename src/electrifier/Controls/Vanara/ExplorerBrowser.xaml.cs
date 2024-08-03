@@ -519,17 +519,22 @@ public class ExtNavigationFailedEventArgs : NavigationFailedEventArgs
     }
 }
 
-
-#region The following is original copy & paste from Vanara
 /// <summary>Event argument for The Navigated event</summary>
-public class NavigatedEventArgs : EventArgs
+public class ExtNavigatedEventArgs : NavigatedEventArgs
 {
-    /// <summary>The new location of the explorer browser</summary>
-    public ShellItem? NewLocation
+    public int ItemCount { get; set; } = 0;
+    public int FolderCount { get; set; } = 0;
+    public int FileCount { get; set; } = 0;
+
+    /// <summary>Initializes a new instance of the <see cref="T:Vanara.Windows.Shell.NavigatedEventArgs" /> class.</summary>
+    /// <param name="folder">The folder.</param>
+    public ExtNavigatedEventArgs(ShellFolder folder) : base(folder)
     {
-        get; set;
+        //NewLocation = folder;   // TODO: ?!?
     }
 }
+
+#region The following is original copy & paste from Vanara
 
 /// <summary>Event argument for The Navigating event</summary>
 public class NavigatingEventArgs : EventArgs
