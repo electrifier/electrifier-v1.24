@@ -26,7 +26,12 @@
     <RepositoryUrl>https://github.com/electrifier</RepositoryUrl>
     <UserSecretsId>8a2a75f7-cf60-45ba-b4cc-68e3ff9a8e22</UserSecretsId>
     <PackageIcon>Square44x44Logo.scale-200.png</PackageIcon>
+    <PackageCertificateThumbprint>412DFB2FB1169368A38C65F3586FFEFECA0AB03B</PackageCertificateThumbprint>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Assets\StoreLogo.scale-150.png" />
+  </ItemGroup>
 
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
