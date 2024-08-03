@@ -58,6 +58,7 @@ jobs:
     env:
       Solution_Name:         "src/electrifier/electrifier.sln"
       Test_Project_Path:     "src/electrifier.Tests.MSTest/electrifier.Tests.MSTest.csproj"
+      Wap_Project_Directory:  "bin/AppPackages"
 
     steps:
     - name: Checkout
