@@ -1,12 +1,12 @@
-﻿using System.Collections.ObjectModel;
+﻿using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml.Media;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Text;
-using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
 using Vanara.Windows.Shell;
 
 namespace electrifier.Controls.Vanara;

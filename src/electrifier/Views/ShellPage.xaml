@@ -45,7 +45,7 @@
                     IsEnabled="False"
                     Visibility="Collapsed">
                     <Image
-                        x:Name="AppTitleBar_ForwardButtonImage"
+                        x:Name="AppTitleBarForwardButtonImage"
                         MaxHeight="24"
                         Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png" />
                 </DropDownButton>

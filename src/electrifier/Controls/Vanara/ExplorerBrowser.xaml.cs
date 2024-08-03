@@ -1,20 +1,18 @@
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI.UI;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using Microsoft.UI.Xaml.Media.Imaging;
-using Vanara.Windows.Shell;
-using System.Collections.ObjectModel;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Microsoft.UI.Xaml.Media;
-using Vanara.PInvoke;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Visibility = Microsoft.UI.Xaml.Visibility;
+using System.Runtime.InteropServices;
 using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
+using Vanara.PInvoke;
+using Vanara.Windows.Shell;
+using Visibility = Microsoft.UI.Xaml.Visibility;
 
 namespace electrifier.Controls.Vanara;
 
@@ -72,12 +70,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
 
-    public static readonly DependencyProperty CurrentFolderItemsProperty = DependencyProperty.Register(
-        nameof(CurrentFolderItems),
-        typeof(ObservableCollection<ExplorerBrowserItem>),
-        typeof(ExplorerBrowser),
-        new PropertyMetadata(null,
-            new PropertyChangedCallback(OnCurrentFolderItemsChanged)));
     /// <summary>
     /// Represents the current's folder content.
     /// Each Item is an <see cref="ExplorerBrowserItem"/>.
@@ -88,6 +80,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         get => (ObservableCollection<ExplorerBrowserItem>)GetValue(CurrentFolderItemsProperty);
         set => SetValue(CurrentFolderItemsProperty, value);
     }
+    public static readonly DependencyProperty CurrentFolderItemsProperty = DependencyProperty.Register(
+        nameof(CurrentFolderItems),
+        typeof(ObservableCollection<ExplorerBrowserItem>),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(null,
+            new PropertyChangedCallback(OnCurrentFolderItemsChanged)));
     private static void OnCurrentFolderItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         //ImageWithLabelControl iwlc = d as ImageWithLabelControl; //null checks omitted
@@ -95,27 +93,27 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         Debug.Print($".OnCurrentFolderItemsChanged(): {s}");
     }
 
-    public static readonly DependencyProperty HasNavigationFailureProperty = DependencyProperty.Register(
-        nameof(HasNavigationFailure),
-        typeof(bool),
-        typeof(ExplorerBrowser),
-        new PropertyMetadata(false));
     public bool HasNavigationFailure
     {
         get => (bool)GetValue(HasNavigationFailureProperty);
         set => SetValue(HasNavigationFailureProperty, value);
     }
-
-    public static readonly DependencyProperty NavigationFailureProperty = DependencyProperty.Register(
-        nameof(NavigationFailure),
-        typeof(string),
+    public static readonly DependencyProperty HasNavigationFailureProperty = DependencyProperty.Register(
+        nameof(HasNavigationFailure),
+        typeof(bool),
         typeof(ExplorerBrowser),
-        new PropertyMetadata(string.Empty));
+        new PropertyMetadata(false));
+
     public string NavigationFailure
     {
         get => (string)GetValue(NavigationFailureProperty);
         set => SetValue(NavigationFailureProperty, value);
     }
+    public static readonly DependencyProperty NavigationFailureProperty = DependencyProperty.Register(
+        nameof(NavigationFailure),
+        typeof(string),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(string.Empty));
 
     private ShellIconExtractor? _iconExtractor;
     public ShellIconExtractor? IconExtractor
@@ -138,16 +136,16 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         get; set;
     }
 
-    public static readonly DependencyProperty TreeViewVisibilityProperty = DependencyProperty.Register(
-        nameof(TreeViewVisibility),
-        typeof(Visibility),
-        typeof(ExplorerBrowser),
-        new PropertyMetadata(default(object)));
     public Visibility TreeViewVisibility
     {
         get => (Visibility)GetValue(TreeViewVisibilityProperty);
         set => SetValue(TreeViewVisibilityProperty, value);
     }
+    public static readonly DependencyProperty TreeViewVisibilityProperty = DependencyProperty.Register(
+        nameof(TreeViewVisibility),
+        typeof(Visibility),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(default(object)));
 
     public Visibility TopCommandBarVisibility
     {

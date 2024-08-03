@@ -55,19 +55,19 @@
                         </InfoBar.Content>
                     </InfoBar>
                     <InfoBar
-                        x:Name="QuickLaunchInfoBar"
-                        Title="Quick launch to your last used tabs"
+                        x:Name="SettingsRestoreLastUsedPages"
+                        Title="Quick launch to your last used Pages"
                         BorderThickness="8"
                         IsClosable="True"
                         IsOpen="True"
-                        Message="Quick launch last used tabs">
+                        Message="Quick launch last used Pages">
                         <InfoBar.Content>
                             <ItemsStackPanel
                                 Height="Auto"
                                 HorizontalAlignment="Right"
                                 Orientation="Horizontal">
-                                <CheckBox x:Name="NewInfoBa___Allowed">
-                                    Enable automatic backups and don't show again
+                                <CheckBox x:Name="SettingsRestoreLastUsedPagesCheckBox">
+                                    On Launch, restore last used Pages
                                 </CheckBox>
                             </ItemsStackPanel>
                         </InfoBar.Content>

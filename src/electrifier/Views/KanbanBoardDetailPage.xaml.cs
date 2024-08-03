@@ -21,7 +21,7 @@ public sealed partial class KanbanBoardDetailPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        this.RegisterElementForConnectedAnimation("animationKeyContentGrid", itemHero);
+        this.RegisterElementForConnectedAnimation("animationKeyContentGrid", ItemHero);
     }
 
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)

@@ -10,11 +10,11 @@
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     d:DataContext="{d:DesignInstance Type=viewmodels:FileManagerViewModel}"
     mc:Ignorable="d">
-    <Grid x:Name="ContentArea">
+    <Grid x:Name="ArenaGrid">
         <Border x:Name="ExplorerBrowserBorder">
             <vanara:ExplorerBrowser
                 x:Name="ExplorerBrowserControl"
-                BottomAppBarVisibility="Visible"
+                BottomAppBarVisibility="Collapsed"
                 BottomCommandBarVisibility="Visible"
                 GridViewVisibility="Visible"
                 TopCommandBarVisibility="Visible" />
