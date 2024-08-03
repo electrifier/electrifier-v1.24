@@ -16,6 +16,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <CommandBar
             x:Name="TopCommandBar"
@@ -281,5 +282,38 @@
                 </AppBarButton>
             </StackPanel>
         </AppBar>
+        <CommandBar
+            Grid.Row="4"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Center"
+            HorizontalContentAlignment="Left"
+            VerticalContentAlignment="Center"
+            Background="Transparent"
+            DefaultLabelPosition="Collapsed">
+            <AppBarButton
+                Content="xxx Items"
+                IsCompact="True"
+                IsEnabled="False" />
+            <AppBarSeparator />
+            <AppBarToggleButton
+                Content="xxx folders"
+                IsChecked="True"
+                IsCompact="True" />
+            <AppBarSeparator />
+            <AppBarToggleButton
+                Content="xxx files"
+                IsChecked="True"
+                IsCompact="True" />
+            <AppBarSeparator />
+            <AppBarToggleButton
+                Content="xxx hidden (0 / 0)"
+                IsChecked="True"
+                IsCompact="True" />
+            <AppBarSeparator />
+            <AppBarButton
+                Content="Size: bytes"
+                IsCompact="True"
+                IsEnabled="False" />
+        </CommandBar>
     </Grid>
 </UserControl>
