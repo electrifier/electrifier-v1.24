@@ -16,6 +16,7 @@ using Visibility = Microsoft.UI.Xaml.Visibility;
 
 namespace electrifier.Controls.Vanara;
 
+// INFO: Care for this: // Remember! We're not the owner of the given PIDL, so we have to make our own copy for our own heap! See Issue #158
 // TODO: INFO: See also https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.image.source?view=windows-app-sdk-1.5#microsoft-ui-xaml-controls-image-source
 
 // TODO: WARN: ExplorerBrowser doesn't show anything when hiding Shell32TreeView, cause of missing navigation
@@ -93,17 +94,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         Debug.Print($".OnCurrentFolderItemsChanged(): {s}");
     }
 
-    public bool HasNavigationFailure
-    {
-        get => (bool)GetValue(HasNavigationFailureProperty);
-        set => SetValue(HasNavigationFailureProperty, value);
-    }
-    public static readonly DependencyProperty HasNavigationFailureProperty = DependencyProperty.Register(
-        nameof(HasNavigationFailure),
-        typeof(bool),
-        typeof(ExplorerBrowser),
-        new PropertyMetadata(false));
-
     public string NavigationFailure
     {
         get => (string)GetValue(NavigationFailureProperty);
@@ -114,6 +104,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         typeof(string),
         typeof(ExplorerBrowser),
         new PropertyMetadata(string.Empty));
+
+    /// <summary>
+    /// HResult code for <code><see cref="System.Runtime.InteropServices.COMException"/> 0x80070490</code>
+    /// <remarks>Fired when `Element not found`</remarks>
+    /// </summary>
+    public HRESULT HResult_ElementNotFound = 0x80070490;
 
     private ShellIconExtractor? _iconExtractor;
     public ShellIconExtractor? IconExtractor
@@ -172,6 +168,23 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         get;
     }
 
+    /// <summary>Raises the <see cref="NavigationFailed"/> event.</summary>
+    internal void OnNavigationFailed(ExtNavigationFailedEventArgs nfevent)
+    {
+        if (nfevent?.FailedLocation is null)
+        {
+            return;
+        }
+
+        NavigationFailed?.Invoke(this, nfevent);
+    }
+
+    /// <summary>
+    /// Fires when either a Navigating listener cancels the navigation, or if the operating system determines that navigation is not possible.
+    /// </summary>
+    [Category("Action"), Description("Navigation failed.")]
+    public event EventHandler<ExtNavigationFailedEventArgs>? NavigationFailed;
+
     public ExplorerBrowser()
     {
         InitializeComponent();
@@ -182,6 +195,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
         RefreshViewCommand = new RelayCommand(() => OnRefreshViewCommand(this, new RoutedEventArgs()));
 
+        NavigationFailed += ExplorerBrowser_NavigationFailed;
+
         ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeViewOnSelectionChanged;
         ShellGridView.NativeGridView.SelectionChanged += NativeGridView_SelectionChanged;
         //TODO: Should be ShellTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
@@ -191,8 +206,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     private async Task InitializeViewModel()
     {
-        ShellGridView.DataContext = this;
-        ShellTreeView.DataContext = this;
+        //ShellGridView.DataContext = this;
+        //ShellTreeView.DataContext = this;
 
         CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
         var rootItems = new List<ExplorerBrowserItem>
@@ -247,6 +262,15 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             Console.WriteLine(e);
             throw;
         }
+    }
+
+    private void ExplorerBrowser_NavigationFailed(object? sender, ExtNavigationFailedEventArgs e)
+    {
+        var location = e.FailedLocation;
+
+        NavigationFailure = $"Navigation failed: '{location}' cannot be navigated to.";
+        NavigationFailedInfoBar.IsOpen = true;
+        e.IsHandled = true;
     }
 
     public void ExtractChildItems(ExplorerBrowserItem targetFolder)
@@ -374,10 +398,34 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 CurrentFolderItems.Add(childItem);
             }
         }
+
+        catch (COMException comEx)
+        {
+            var navFailedEventArgs = new ExtNavigationFailedEventArgs();
+            navFailedEventArgs.HRESULT = comEx.HResult;
+            navFailedEventArgs.FailedLocation = ebItem.ShellItem;
+
+            if (comEx.HResult == HResult_ElementNotFound)
+            {
+                Debug.WriteLine($"[Error] {comEx.HResult}: {navFailedEventArgs}");
+                //NavigationFailure = msg;
+                //HasNavigationFailure = true;
+                navFailedEventArgs.IsHandled = false;
+
+                OnNavigationFailed(navFailedEventArgs);
+
+                if (navFailedEventArgs.IsHandled)
+                {
+                    return;
+                }
+            }
+
+            Debug.Fail($"[Error] Navigate(<{ebItem}>) failed. COMException: {comEx.Message}");
+            throw;
+        }
         catch (Exception ex)
         {
-            Debug.Fail($"ERROR: Navigate() failed: {ex.Message}");
-            HasNavigationFailure = true;
+            Debug.Fail($"[Error] Navigate(<{ebItem}>) failed. Exception: {ex.Message}");
             throw;
         }
     }
@@ -457,6 +505,21 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     #endregion Property stuff
 }
 
+/// <summary>Extended Event argument for the <see cref="NavigationFailedEventArgs"/> event</summary>
+public class ExtNavigationFailedEventArgs : NavigationFailedEventArgs
+{
+    public bool IsHandled
+    {
+        get; set;
+    }
+    public HRESULT? HRESULT
+    {
+        get;
+        set;
+    }
+}
+
+
 #region The following is original copy & paste from Vanara
 /// <summary>Event argument for The Navigated event</summary>
 public class NavigatedEventArgs : EventArgs
@@ -484,13 +547,4 @@ public class NavigatingEventArgs : EventArgs
     }
 }
 
-/// <summary>Event argument for the NavigatinoFailed event</summary>
-public class NavigationFailedEventArgs : EventArgs
-{
-    /// <summary>The location the browser would have navigated to.</summary>
-    public ShellItem? FailedLocation
-    {
-        get; set;
-    }
-}
 #endregion

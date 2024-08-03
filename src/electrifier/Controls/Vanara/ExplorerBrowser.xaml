@@ -189,9 +189,9 @@
                 Title="Navigation failed"
                 BorderBrush="DarkRed"
                 BorderThickness="8"
-                IsClosable="False"
-                IsOpen="{x:Bind HasNavigationFailure}"
-                Message="Navigation to destination folder failed."
+                IsClosable="True"
+                IsOpen="True"
+                Message="{x:Bind NavigationFailure}"
                 Severity="Error">
                 <InfoBar.Content>
                     <ItemsStackPanel
