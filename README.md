@@ -1,8 +1,15 @@
 # electrifier.v1.24
 Refactoring of electrifier beginning February, 2024
 
-## This is the successor of native, legacy Win32 electrifier
+## This is the successor of native, legacy and _unfinished_ electrifier for Win32
 - https://github.com/electrifier/winforms.electrifier.org
 
-## 3rd Packages
-- Vanara [Logo]
+## Contributions and 3rd Party Packages
+- ☮️ to David Hall for endless Support, Help and Inspiration when using [Vanara](https://github.com/dahall/Vanara)
+- ![Vanara](https://raw.githubusercontent.com/dahall/Vanara/master/docs/icons/Vanara64x64.png)
+
+- ☮️ to the JetBrains for providing an Open Source License of your Tools.
+- ![ReSharper logo](https://resources.jetbrains.com/storage/products/company/brand/logos/ReSharper.png)
+- Copyright © 2000-2024 JetBrains s.r.o. JetBrains and the JetBrains logo are registered trademarks of JetBrains s.r.o.
+- https://www.jetbrains.com/
+
