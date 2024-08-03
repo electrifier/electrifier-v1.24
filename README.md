@@ -10,5 +10,6 @@ Refactoring of electrifier beginning February, 2024
 
 - ☮️ to the JetBrains for providing an Open Source License of your Tools.
 - ![ReSharper logo](https://resources.jetbrains.com/storage/products/company/brand/logos/ReSharper.png)
+- Copyright © 2000-2024 JetBrains s.r.o. JetBrains and the JetBrains logo are registered trademarks of JetBrains s.r.o.
 - https://www.jetbrains.com/
 
