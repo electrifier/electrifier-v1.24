@@ -11,12 +11,12 @@ namespace electrifier;
 
 public sealed partial class MainWindow : WindowEx
 {
-    private readonly AppWindow m_AppWindow;
-    private readonly AppWindowTitleBar m_AppTitleBar;
+    private readonly AppWindow _mAppWindow;
+    private readonly AppWindowTitleBar _mAppTitleBar;
 
-    private readonly DispatcherQueue m_DispatcherQueue;
+    private readonly DispatcherQueue _mDispatcherQueue;
 
-    private readonly UISettings m_Settings;
+    private readonly UISettings _mSettings;
 
     /// <summary>
     /// doc: https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.windowing.appwindow
@@ -30,22 +30,22 @@ public sealed partial class MainWindow : WindowEx
     {
         InitializeComponent();
 
-        m_AppWindow = GetAppWindowForCurrentWindow();
-        m_AppTitleBar = m_AppWindow.TitleBar;
+        _mAppWindow = GetAppWindowForCurrentWindow();
+        _mAppTitleBar = _mAppWindow.TitleBar;
         // Hide system title bar.
-        m_AppTitleBar.ExtendsContentIntoTitleBar = true;
+        _mAppTitleBar.ExtendsContentIntoTitleBar = true;
 
         AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/WindowIcon.ico"));
         Content = null;
         Title = "electrifier";
 
-        m_AppWindow.Changed += AppWindow_Changed;
+        _mAppWindow.Changed += AppWindow_Changed;
 
         // Theme change code picked from https://github.com/microsoft/WinUI-Gallery/pull/1239
-        m_DispatcherQueue = DispatcherQueue.GetForCurrentThread();
-        m_Settings = new UISettings();
+        _mDispatcherQueue = DispatcherQueue.GetForCurrentThread();
+        _mSettings = new UISettings();
         // cannot use FrameworkElement.ActualThemeChanged event
-        m_Settings.ColorValuesChanged += Settings_ColorValuesChanged;
+        _mSettings.ColorValuesChanged += Settings_ColorValuesChanged;
     }
 
     private AppWindow GetAppWindowForCurrentWindow()
@@ -96,7 +96,7 @@ public sealed partial class MainWindow : WindowEx
     private void Settings_ColorValuesChanged(UISettings sender, object args)
     {
         // This calls comes off-thread, hence we will need to dispatch it to current app's thread
-        m_DispatcherQueue.TryEnqueue(() =>
+        _mDispatcherQueue.TryEnqueue(() =>
         {
             TitleBarHelper.ApplySystemThemeToCaptionButtons();
         });

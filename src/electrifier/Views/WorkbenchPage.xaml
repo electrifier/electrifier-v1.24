@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:ui="using:CommunityToolkit.WinUI"
+    xmlns:vanara="using:electrifier.Controls.Vanara"
     xmlns:viewmodels="using:electrifier.ViewModels"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
     mc:Ignorable="d">
@@ -18,6 +19,7 @@
     <Grid x:Name="WorkbenchGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
+            <ColumnDefinition />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         <Border
@@ -52,7 +54,6 @@
                             </ItemsStackPanel>
                         </InfoBar.Content>
                     </InfoBar>
-
                     <InfoBar
                         x:Name="QuickLaunchInfoBar"
                         Title="Quick launch to your last used tabs"
@@ -71,7 +72,13 @@
                             </ItemsStackPanel>
                         </InfoBar.Content>
                     </InfoBar>
-
+                    <Border>
+                        <vanara:ExplorerBrowser
+                            BottomAppBarVisibility="Collapsed"
+                            BottomCommandBarVisibility="Collapsed"
+                            TopCommandBarVisibility="Collapsed"
+                            TreeViewVisibility="Collapsed" />
+                    </Border>
                 </StackPanel>
             </Grid>
         </Border>
