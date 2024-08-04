@@ -20,22 +20,20 @@
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <!-- <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />-->
-            <SplitButton x:Name="BackSplitButton">
+            <Button x:Uid="BackButton">
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE652;" />
-                <!-- <IconSourceElement Resources="{"\Assets\Themes\Aero Blackcomb\Back Button 48px.png"}"></IconSourceElement> -->
-                <SplitButton.Flyout>
-                    <Flyout Placement="Bottom">
-                        <!--  flyout content  -->
-                        <Button>WebBrowser</Button>
-                    </Flyout>
-                </SplitButton.Flyout>
-            </SplitButton>
-            <SplitButton x:Name="ForwardSplitButton">
+            </Button>
+            <SplitButton x:Name="ForwardSplitButton" Height="32">
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE651;" />
                 <SplitButton.Flyout>
-                    <Flyout Placement="Bottom">
+                    <Flyout x:Name="Flyout" Placement="Bottom">
+                        <!--  TODO: Check                       <TreeViewList></TreeViewList> -->
+                        <ItemsStackPanel>
+                            <Button>Workbench</Button>
+                            <Button>Workbench</Button>
+                            <Button>Workbench</Button>
+                        </ItemsStackPanel>
                         <!--  flyout content  -->
-                        <Button>FileManager</Button>
                     </Flyout>
                 </SplitButton.Flyout>
             </SplitButton>
@@ -45,7 +43,7 @@
             <ProgressRing
                 x:Name="NavigationBarProgressRing"
                 BorderThickness="1"
-                IsActive="True"
+                IsActive="{x:Bind IsLoading, Mode=OneWay}"
                 Visibility="Visible" />
             <Button x:Uid="ReloadButton">
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72C;" />
@@ -253,22 +251,43 @@
                 <ColumnDefinition Width="256" MinWidth="76" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" MinWidth="76" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" MinWidth="76" />
             </Grid.ColumnDefinitions>
-            <Expander
-                Padding="8"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Top"
-                IsEnabled="True"
-                IsExpanded="True">
-                <Expander.Header>
-                    <TextBlock>Folders</TextBlock>
-                </Expander.Header>
-                <Expander.Content>
-                    <local:Shell32TreeView x:Name="ShellTreeView" />
-                </Expander.Content>
-            </Expander>
+            <Border x:Name="NavigationAreaBorder">
+                <StackPanel VerticalAlignment="Top">
+                    <Expander
+                        Grid.Column="0"
+                        Padding="8"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Top"
+                        IsEnabled="True"
+                        IsExpanded="True">
+                        <Expander.Header>
+                            <TextBlock>Desktop</TextBlock>
+                        </Expander.Header>
+                        <Expander.Content>
+                            <local:Shell32TreeView x:Name="ShellTreeView" VerticalAlignment="Top" />
+                        </Expander.Content>
+                    </Expander>
+                    <Expander
+                        Grid.Column="0"
+                        Padding="8"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Top"
+                        IsEnabled="True"
+                        IsExpanded="True">
+                        <Expander.Header>
+                            <TextBlock>History</TextBlock>
+                        </Expander.Header>
+                        <Expander.Content>
+                            <Border />
+                        </Expander.Content>
+                    </Expander>
+                </StackPanel>
+            </Border>
             <!--  TODO: GridSplitter is not Working when TreeView Visibility changes to Collapsed  -->
             <controls:GridSplitter
                 x:Name="ArenaGridSplitter"
@@ -316,6 +335,7 @@
                     </AppBar>
                 </StackPanel>
             </Border>
+            <!-- add `ShellGridViewEast`:
             <controls:GridSplitter
                 x:Name="MidArenaGridSplitter"
                 Grid.Column="3"
@@ -334,7 +354,7 @@
                     BorderThickness="3"
                     ItemsSource="{x:Bind CurrentFolderItems}"
                     Visibility="{x:Bind GridViewVisibility}" />
-            </Border>
+            </Border>-->
         </Grid>
         <CommandBar
             Grid.Row="4"

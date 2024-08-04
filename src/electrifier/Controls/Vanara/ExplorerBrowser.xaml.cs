@@ -127,6 +127,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         get; set;
     }
 
+    public bool IsLoading
+    {
+        get; set;
+    }
+
     public Visibility GridViewVisibility
     {
         get; set;
@@ -273,7 +278,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         NavigationFailedInfoBar.Message = NavigationFailure;
         var childElement = new TextBox();
         NavigationFailedInfoBar.Content = childElement;
-
+        IsLoading = false;
         e.IsHandled = true;
     }
 
@@ -390,6 +395,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 ebItem.IsSelected = true;
             }
             CurrentFolderItems.Clear();
+            IsLoading = true;
             ExtractChildItems(ebItem);
 
             if (!(ebItem.Children?.Count > 0))
