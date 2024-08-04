@@ -24,26 +24,30 @@
                 x:Name="NavigationBarProgressRing"
                 BorderThickness="1"
                 IsActive="False" />
-            <Button x:Uid="BackButton">
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE652;" />
-            </Button>
-            <Button x:Uid="ForwardButton">
+            <SplitButton x:Name="BackSplitButton">
+                <!-- <IconSourceElement Resources="{"\Assets\Themes\Aero Blackcomb\Back Button 48px.png"}"></IconSourceElement> -->
+                <SplitButton.Flyout>
+                    <Flyout Placement="Bottom">
+                        <!--  flyout content  -->
+                        <Button>WebBrowser</Button>
+                    </Flyout>
+                </SplitButton.Flyout>
+            </SplitButton>
+            <SplitButton x:Name="ForwardSplitButton">
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE651;" />
-            </Button>
+                <SplitButton.Flyout>
+                    <Flyout Placement="Bottom">
+                        <!--  flyout content  -->
+                        <Button>FileManager</Button>
+                    </Flyout>
+                </SplitButton.Flyout>
+            </SplitButton>
             <Button x:Uid="UpOneFolderButton">
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE845;" />
             </Button>
             <Button x:Uid="ReloadButton">
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72C;" />
             </Button>
-            <SplitButton x:Name="FavoritesSplitButton">
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE728;" />
-                <SplitButton.Flyout>
-                    <Flyout Placement="Bottom">
-                        <!--  flyout content  -->
-                    </Flyout>
-                </SplitButton.Flyout>
-            </SplitButton>
             <controls:GridSplitter />
             <CommandBar
                 x:Name="TopCommandBar"
@@ -249,10 +253,20 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" MinWidth="76" />
             </Grid.ColumnDefinitions>
-            <Border x:Name="TreeViewBorder" Visibility="{x:Bind TreeViewVisibility}">
-                <local:Shell32TreeView x:Name="ShellTreeView" />
-            </Border>
-            <!--  TODO: GridSplitter is not Working since TreeView Visibility changes  -->
+            <Expander
+                Padding="8"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                IsEnabled="True"
+                IsExpanded="True">
+                <Expander.Header>
+                    <TextBlock>Folders</TextBlock>
+                </Expander.Header>
+                <Expander.Content>
+                    <local:Shell32TreeView x:Name="ShellTreeView" />
+                </Expander.Content>
+            </Expander>
+            <!--  TODO: GridSplitter is not Working when TreeView Visibility changes to Collapsed  -->
             <controls:GridSplitter
                 x:Name="ArenaGridSplitter"
                 Grid.Column="1"
@@ -266,38 +280,40 @@
                 </controls:GridSplitter.RenderTransform>
             </controls:GridSplitter>
             <Border x:Name="ShellGridViewBorder" Grid.Column="2">
-                <local:Shell32GridView
-                    x:Name="ShellGridView"
-                    BorderThickness="3"
-                    ItemsSource="{x:Bind CurrentFolderItems}"
-                    Visibility="{x:Bind GridViewVisibility}" />
+                <StackPanel Orientation="Vertical">
+                    <local:Shell32GridView
+                        x:Name="ShellGridView"
+                        BorderThickness="3"
+                        ItemsSource="{x:Bind CurrentFolderItems}"
+                        Visibility="{x:Bind GridViewVisibility}" />
+                    <AppBar
+                        x:Name="BottomAppBar"
+                        Grid.Row="3"
+                        HorizontalAlignment="Stretch"
+                        Background="Transparent"
+                        Visibility="{x:Bind BottomAppBarVisibility}">
+                        <StackPanel>
+                            <TextBlock Text="no binding :(" />
+                            <AppBarButton
+                                Icon="Folder"
+                                Label="folder"
+                                ToolTipService.ToolTip="Number of Folders" />
+                            <AppBarSeparator />
+                            <AppBarButton
+                                Icon="OpenFile"
+                                Label="open-file"
+                                ToolTipService.ToolTip="Number of Files" />
+                            <AppBarSeparator />
+                            <AppBarButton Icon="Setting" Label="Settings">
+                                <AppBarButton.KeyboardAccelerators>
+                                    <KeyboardAccelerator Key="I" Modifiers="Control" />
+                                </AppBarButton.KeyboardAccelerators>
+                            </AppBarButton>
+                        </StackPanel>
+                    </AppBar>
+                </StackPanel>
             </Border>
         </Grid>
-        <AppBar
-            x:Name="BottomAppBar"
-            Grid.Row="3"
-            HorizontalAlignment="Stretch"
-            Background="Transparent"
-            Visibility="{x:Bind BottomAppBarVisibility}">
-            <StackPanel>
-                <TextBlock Text="no binding :(" />
-                <AppBarButton
-                    Icon="Folder"
-                    Label="folder"
-                    ToolTipService.ToolTip="Number of Folders" />
-                <AppBarSeparator />
-                <AppBarButton
-                    Icon="OpenFile"
-                    Label="open-file"
-                    ToolTipService.ToolTip="Number of Files" />
-                <AppBarSeparator />
-                <AppBarButton Icon="Setting" Label="Settings">
-                    <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="I" Modifiers="Control" />
-                    </AppBarButton.KeyboardAccelerators>
-                </AppBarButton>
-            </StackPanel>
-        </AppBar>
         <CommandBar
             Grid.Row="4"
             HorizontalAlignment="Left"
