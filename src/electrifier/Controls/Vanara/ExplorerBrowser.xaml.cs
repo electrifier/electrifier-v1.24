@@ -109,7 +109,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /// HResult code for <code><see cref="System.Runtime.InteropServices.COMException"/> 0x80070490</code>
     /// <remarks>Fired when `Element not found`</remarks>
     /// </summary>
-    public HRESULT HResult_ElementNotFound = 0x80070490;
+    public HRESULT HResultElementNotFound = 0x80070490;
 
     private ShellIconExtractor? _iconExtractor;
     public ShellIconExtractor? IconExtractor
@@ -238,8 +238,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /// DUMMY: TODO: InitializeStockIcons()
     ///
     /// Added code:
-    /// <see cref="GetWinUI3BitmapSourceFromIcon"/>
-    /// <see cref="GetWinUI3BitmapSourceFromGdiBitmap"/>
+    /// <see cref="GetWinUi3BitmapSourceFromIcon"/>
+    /// <see cref="GetWinUi3BitmapSourceFromGdiBitmap"/>
     /// </summary>
     public void InitializeStockIcons()
     {
@@ -256,7 +256,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             //if (icnHandle != null)
             {
                 //var icon = Icon.FromHandle((nint)icnHandle);
-                var bmpSource = GetWinUI3BitmapSourceFromIcon(icon);
+                var bmpSource = GetWinUi3BitmapSourceFromIcon(icon);
                 //_defaultFolderImageBitmapSource = bmpSource;
             }
 
@@ -412,10 +412,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         catch (COMException comEx)
         {
             var navFailedEventArgs = new ExtNavigationFailedEventArgs();
-            navFailedEventArgs.HRESULT = comEx.HResult;
+            navFailedEventArgs.Hresult = comEx.HResult;
             navFailedEventArgs.FailedLocation = ebItem.ShellItem;
 
-            if (comEx.HResult == HResult_ElementNotFound)
+            if (comEx.HResult == HResultElementNotFound)
             {
                 Debug.WriteLine($"[Error] {comEx.HResult}: {navFailedEventArgs}");
                 //NavigationFailure = msg;
@@ -445,14 +445,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /// </summary>
     /// <param name="icon"></param>
     /// <returns></returns>
-    public static async Task<SoftwareBitmapSource> GetWinUI3BitmapSourceFromIcon(System.Drawing.Icon icon)
+    public static async Task<SoftwareBitmapSource> GetWinUi3BitmapSourceFromIcon(System.Drawing.Icon icon)
     {
         if (icon == null)
             return null;
 
         // convert to bitmap
         using var bmp = icon.ToBitmap();
-        return await GetWinUI3BitmapSourceFromGdiBitmap(bmp);
+        return await GetWinUi3BitmapSourceFromGdiBitmap(bmp);
     }
 
     /// <summary>
@@ -460,7 +460,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /// </summary>
     /// <param name="icon"></param>
     /// <returns></returns>
-    public static async Task<SoftwareBitmapSource> GetWinUI3BitmapSourceFromGdiBitmap(System.Drawing.Bitmap bmp)
+    public static async Task<SoftwareBitmapSource> GetWinUi3BitmapSourceFromGdiBitmap(System.Drawing.Bitmap bmp)
     {
         if (bmp == null)
             return null;
@@ -522,7 +522,7 @@ public class ExtNavigationFailedEventArgs : NavigationFailedEventArgs
     {
         get; set;
     }
-    public HRESULT? HRESULT
+    public HRESULT? Hresult
     {
         get;
         set;
