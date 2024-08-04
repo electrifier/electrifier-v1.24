@@ -18,13 +18,10 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel Orientation="Horizontal">
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
             <!-- <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />-->
-            <ProgressRing
-                x:Name="NavigationBarProgressRing"
-                BorderThickness="1"
-                IsActive="False" />
             <SplitButton x:Name="BackSplitButton">
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE652;" />
                 <!-- <IconSourceElement Resources="{"\Assets\Themes\Aero Blackcomb\Back Button 48px.png"}"></IconSourceElement> -->
                 <SplitButton.Flyout>
                     <Flyout Placement="Bottom">
@@ -43,8 +40,13 @@
                 </SplitButton.Flyout>
             </SplitButton>
             <Button x:Uid="UpOneFolderButton">
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE845;" />
+                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE650;" />
             </Button>
+            <ProgressRing
+                x:Name="NavigationBarProgressRing"
+                BorderThickness="1"
+                IsActive="True"
+                Visibility="Visible" />
             <Button x:Uid="ReloadButton">
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72C;" />
             </Button>
@@ -202,7 +204,6 @@
             <!--<controls:SwitchPresenter Grid.Row="1" Value="{x:Bind HasNavigationFailure}">
             <controls:Case Value="true">-->
         </StackPanel>
-
         <Border Grid.Row="1">
             <InfoBar
                 x:Name="NavigationFailedInfoBar"
@@ -246,10 +247,12 @@
                 </StackPanel>-->
         <!--</controls:Case>
         </controls:SwitchPresenter>-->
-        <Grid x:Name="ArenaGrid" Grid.Row="2">
+        <Grid x:Name="ArenaGrid" Grid.Row="3">
             <Grid.ColumnDefinitions>
                 <!--  controls:DockPanel.Dock="Left"  -->
                 <ColumnDefinition Width="256" MinWidth="76" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" MinWidth="76" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" MinWidth="76" />
             </Grid.ColumnDefinitions>
@@ -312,6 +315,25 @@
                         </StackPanel>
                     </AppBar>
                 </StackPanel>
+            </Border>
+            <controls:GridSplitter
+                x:Name="MidArenaGridSplitter"
+                Grid.Column="3"
+                Width="12"
+                HorizontalAlignment="Left"
+                ResizeBehavior="BasedOnAlignment"
+                ResizeDirection="Columns"
+                Visibility="{x:Bind ArenaGridSplitterVisibility}">
+                <controls:GridSplitter.RenderTransform>
+                    <TranslateTransform X="-6" />
+                </controls:GridSplitter.RenderTransform>
+            </controls:GridSplitter>
+            <Border Grid.Column="4">
+                <local:Shell32GridView
+                    x:Name="ShellGridViewEast"
+                    BorderThickness="3"
+                    ItemsSource="{x:Bind CurrentFolderItems}"
+                    Visibility="{x:Bind GridViewVisibility}" />
             </Border>
         </Grid>
         <CommandBar

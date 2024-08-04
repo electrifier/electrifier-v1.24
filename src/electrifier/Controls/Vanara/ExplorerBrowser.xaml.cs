@@ -268,8 +268,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         var location = e.FailedLocation;
 
-        NavigationFailure = $"Navigation failed: '{location}' cannot be navigated to.";
+        NavigationFailure = $"Navigation failed: '{location}' cannot be navigated to. <Show More Info> <Report a Bug>";
         NavigationFailedInfoBar.IsOpen = true;
+        NavigationFailedInfoBar.Message = NavigationFailure;
+        var childElement = new TextBox();
+        NavigationFailedInfoBar.Content = childElement;
+
         e.IsHandled = true;
     }
 
