@@ -8,13 +8,18 @@ using Windows.System;
 
 namespace electrifier.Views;
 
-public sealed partial class ShellPage : Page
+public sealed partial class ShellPage
 {
     public ShellViewModel ViewModel
     {
         get;
     }
 
+    /// <summary>
+    /// Create a new instance of ShellPage using default values.
+    /// </summary>
+    /// <param name="viewModel"><see cref="ShellViewModel"/></param>
+    /// <exception cref="ArgumentNullException"></exception>
     public ShellPage(ShellViewModel viewModel)
     {
         ViewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));

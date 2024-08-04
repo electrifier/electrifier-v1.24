@@ -21,7 +21,7 @@ public partial class ShellViewModel : ObservableRecipient
     /// Build version description.
     /// </summary>
     //[ObservableProperty]
-    private const string buildVersionDescription = "v1.24.803 octavian";
+    public readonly string BuildVersionDescription = "v1.24.803 octavian";
 
     public INavigationService NavigationService
     {
