@@ -14,34 +14,25 @@ using Microsoft.UI.Xaml.Navigation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using electrifier.Controls.Vanara;
+using Vanara.PInvoke;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace electrifier.Controls.Vanara;
-public sealed partial class Shell32BreadcrumbControl : UserControl
+public sealed partial class Shell32BreadcrumbBar : UserControl
 {
-    public Shell32BreadcrumbControl()
+    public Shell32BreadcrumbBar()
     {
         this.InitializeComponent();
+
+        NativeBreadcrumbBar.ItemsSource = new ObservableCollection<Shell32.Folder> { };
+        NativeBreadcrumbBar.ItemClicked += NativeBreadcrumbBar_ItemClicked;
     }
 
-    public class Folder
+    private void NativeBreadcrumbBar_ItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
     {
-        public string Name { get; set; }
-    }
-
-    //BreadcrumbBar2.ItemsSource = new ObservableCollection<Folder>{
-    //    new Folder { Name = "Home"},
-    //    new Folder { Name = "Folder1" },
-    //    new Folder { Name = "Folder2" },
-    //    new Folder { Name = "Folder3" },
-    //};
-    //BreadcrumbBar2.ItemClicked += BreadcrumbBar2_ItemClicked;
-
-    private void BreadcrumbBar2_ItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
-    {
-        var items = BreadcrumbBar2.ItemsSource as ObservableCollection<Folder>;
+        var items = NativeBreadcrumbBar.ItemsSource as ObservableCollection<Shell32.Folder>;
         for (int i = items.Count - 1; i >= args.Index + 1; i--)
         {
             items.RemoveAt(i);

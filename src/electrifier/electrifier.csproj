@@ -31,7 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Remove="Assets\StoreLogo.scale-150.png" />
-    <None Remove="Controls\Vanara\Shell32BreadcrumbControl.xaml" />
+    <None Remove="Controls\Vanara\Shell32BreadcrumbBar.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -64,7 +64,7 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <Page Update="Controls\Vanara\Shell32BreadcrumbControl.xaml">
+    <Page Update="Controls\Vanara\Shell32BreadcrumbBar.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <None Update="README.md">
