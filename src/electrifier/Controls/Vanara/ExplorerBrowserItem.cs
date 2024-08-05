@@ -72,7 +72,7 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
     // TODO: GridViewItem - Property
     public ExplorerBrowserItem(ShellItem shItem)
     {
-        ShellItem = new(shItem.PIDL);
+        ShellItem = new ShellItem(shItem.PIDL);
         DisplayName = ShellItem.Name ?? ":error: <DisplayName.get()>";
         IsExpanded = false;
         // TODO: If IsSelected, add overlay of opened folder icon to TreeView
@@ -102,7 +102,11 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
 
     protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        if (EqualityComparer<T>.Default.Equals(field, value))
+        {
+            return false;
+        }
+
         field = value;
         OnPropertyChanged(propertyName);
         return true;
