@@ -311,14 +311,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
             var shellItems = children as ShellItem[] ?? children.ToArray();
             itemCount = shellItems.Length;
-            targetFolder.Children = new List<ExplorerBrowserItem>();
+            targetFolder.Children = null; // = new ReadOnlyDictionary<ExplorerBrowserItem, int>();
 
             if (shellItems.Length > 0)
             {
                 foreach (var child in shellItems)
                 {
                     var ebItem = new ExplorerBrowserItem(child);
-                    targetFolder.Children.Add(ebItem);
+                    //targetFolder.Children?.Add(ebItem);
                 }
             }
         }
@@ -403,10 +403,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 return;
             }
 
-            foreach (var childItem in ebItem.Children)
-            {
-                CurrentFolderItems.Add(childItem);
-            }
+            //foreach (var childItem in ebItem.Children)
+            //{
+            //    CurrentFolderItems.Add(childItem);
+            //}
         }
 
         catch (COMException comEx)

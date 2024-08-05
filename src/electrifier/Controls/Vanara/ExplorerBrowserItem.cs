@@ -1,15 +1,14 @@
-﻿using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.UI.Xaml.Media.Imaging;
-using Microsoft.UI.Xaml.Media;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+﻿using Vanara.Windows.Shell;
 using System.Text;
-using Vanara.Windows.Shell;
+using System.Runtime.CompilerServices;
+using System.Diagnostics;
+using System.ComponentModel;
+using CommunityToolkit.WinUI.UI.Controls;
 
 namespace electrifier.Controls.Vanara;
+
+// TODO: TreeViewNode - Property
+// TODO: GridViewItem - Property
 
 /// <summary>
 /// A ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32TreeView"/> Items.
@@ -17,7 +16,10 @@ namespace electrifier.Controls.Vanara;
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
 public class ExplorerBrowserItem /* : INotifyPropertyChanged */
 {
+    /// <summary>Gets the set of Children as an <seealso cref="List{T}"/>.</summary>
     public List<ExplorerBrowserItem>? Children;
+
+    /// <summary>Gets the DisplayName.</summary>
     public string DisplayName
     {
         get;
@@ -68,8 +70,6 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
     }
 
 
-    // TODO: TreeViewNode - Property
-    // TODO: GridViewItem - Property
     public ExplorerBrowserItem(ShellItem shItem)
     {
         ShellItem = new ShellItem(shItem.PIDL);

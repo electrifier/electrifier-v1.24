@@ -1,12 +1,5 @@
-using Visibility = Microsoft.UI.Xaml.Visibility;
-using Vanara.Windows.Shell;
-using Vanara.PInvoke;
-using System.Diagnostics;
-using System.ComponentModel;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using CommunityToolkit.WinUI;
-using CommunityToolkit.WinUI.Collections;
 
 // TODO: For EnumerateChildren-Calls, add HWND handle
 // TODO: See ShellItemCollection, perhaps use this instead of ObservableCollection

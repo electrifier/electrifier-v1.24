@@ -1,14 +1,7 @@
-using CommunityToolkit.WinUI.Collections;
-using Microsoft.UI.Dispatching;
 using Microsoft.UI.Xaml.Controls;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System;
-using Vanara.Windows.Shell;
-using Visibility = Microsoft.UI.Xaml.Visibility;
 
 namespace electrifier.Controls.Vanara;
 
