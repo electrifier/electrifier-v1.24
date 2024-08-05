@@ -48,5 +48,13 @@
             ItemContainerStyle="{StaticResource NativeGridViewItemContainerStyle}"
             ItemTemplate="{StaticResource ExplorerBrowserItemTemplate}"
             SelectionMode="Extended" />
+
+        <!--<ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+                <Setter Property="HorizontalContentAlignment"
+                        Value="Stretch" />
+            </Style>
+        </ListView.ItemContainerStyle>-->
+
     </Grid>
 </UserControl>
