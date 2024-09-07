@@ -10,13 +10,10 @@
     xmlns:vanara="using:electrifier.Controls.Vanara"
     xmlns:viewmodels="using:electrifier.ViewModels"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+    d:DataContext="{d:DesignInstance Type=viewmodels:WorkbenchViewModel}"
     mc:Ignorable="d">
     <!--  TODO: ui:UIElementExtensions.ClipToBounds="{x:Bind IsClipped, Mode=OneWay}"  -->
     <!--  TODO: removed Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"  -->
-    <d:Page.DataContext>
-        <d:DesignInstance Type="viewmodels:WorkbenchViewModel" />
-        electrifier.Views.WorkbenchPage
-    </d:Page.DataContext>
     <Grid x:Name="WorkbenchGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
