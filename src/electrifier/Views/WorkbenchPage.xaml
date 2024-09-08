@@ -10,12 +10,10 @@
     xmlns:vanara="using:electrifier.Controls.Vanara"
     xmlns:viewmodels="using:electrifier.ViewModels"
     behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+    d:DataContext="{d:DesignInstance Type=viewmodels:WorkbenchViewModel}"
     mc:Ignorable="d">
     <!--  TODO: ui:UIElementExtensions.ClipToBounds="{x:Bind IsClipped, Mode=OneWay}"  -->
     <!--  TODO: removed Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"  -->
-    <d:Page.DataContext>
-        <d:DesignInstance Type="viewmodels:WorkbenchViewModel" />
-    </d:Page.DataContext>
     <Grid x:Name="WorkbenchGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
@@ -26,9 +24,9 @@
             x:Name="MainContentBorder"
             Grid.Column="0"
             AllowDrop="True"
-            BorderThickness="3">
+            BorderThickness="6">
             <Grid>
-                <StackPanel>
+                <StackPanel x:Name="StackPanel">
                     <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Workbench" />
                     <InfoBar
                         Title="Your Workbench"
@@ -55,31 +53,25 @@
                         </InfoBar.Content>
                     </InfoBar>
                     <InfoBar
-                        x:Name="QuickLaunchInfoBar"
-                        Title="Quick launch to your last used tabs"
+                        x:Name="SettingsRestoreLastUsedPages"
+                        Title="Quick launch to your last used Pages"
                         BorderThickness="8"
                         IsClosable="True"
                         IsOpen="True"
-                        Message="Quick launch last used tabs">
+                        Message="Quick launch last used Pages">
                         <InfoBar.Content>
                             <ItemsStackPanel
                                 Height="Auto"
                                 HorizontalAlignment="Right"
                                 Orientation="Horizontal">
-                                <CheckBox x:Name="NewInfoBa___Allowed">
-                                    Enable automatic backups and don't show again
+                                <CheckBox x:Name="SettingsRestoreLastUsedPagesCheckBox">
+                                    On Launch, restore last used Pages
                                 </CheckBox>
                             </ItemsStackPanel>
                         </InfoBar.Content>
                     </InfoBar>
-                    <Border>
-                        <vanara:ExplorerBrowser
-                            BottomAppBarVisibility="Collapsed"
-                            BottomCommandBarVisibility="Collapsed"
-                            TopCommandBarVisibility="Collapsed"
-                            TreeViewVisibility="Collapsed" />
-                    </Border>
                 </StackPanel>
+                <ItemsStackPanel />
             </Grid>
         </Border>
         <controls:GridSplitter
@@ -107,7 +99,9 @@
                 BorderThickness="8"
                 IsClosable="True"
                 IsOpen="True"
-                Message="Shortcuts" />
+                Message="Shortcuts">
+                neue message
+            </InfoBar>
             <!--  TODO: Bind to App Notifications  -->
         </StackPanel>
     </Grid>

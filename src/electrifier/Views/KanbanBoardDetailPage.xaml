@@ -10,10 +10,10 @@
     mc:Ignorable="d">
     <Grid x:Name="ContentArea">
         <ScrollViewer IsTabStop="True">
-            <StackPanel x:Name="contentPanel">
+            <StackPanel x:Name="ContentPanel">
                 <RelativePanel>
                     <Grid
-                        x:Name="itemHero"
+                        x:Name="ItemHero"
                         Width="200"
                         Height="200"
                         Margin="{StaticResource SmallRightMargin}"
@@ -33,35 +33,35 @@
                         </FontIcon>
                     </Grid>
                     <TextBlock
-                        x:Name="title"
-                        Margin="{StaticResource XXSmallTopMargin}"
+                        x:Name="Title"
+                        Margin="{StaticResource XxSmallTopMargin}"
                         RelativePanel.AlignTopWithPanel="True"
-                        RelativePanel.RightOf="itemHero"
+                        RelativePanel.RightOf="ItemHero"
                         Style="{ThemeResource TitleTextBlockStyle}">
                         <!--  Text="{x:Bind ViewModel.Item.Company, Mode=OneWay}"  -->
                     </TextBlock>
-                    <StackPanel x:Name="propertiesGroup1" RelativePanel.Below="itemHero">
-                        <StackPanel x:Name="statusGroup" Margin="{StaticResource SmallTopMargin}">
+                    <StackPanel x:Name="PropertiesGroup1" RelativePanel.Below="ItemHero">
+                        <StackPanel x:Name="StatusGroup" Margin="{StaticResource SmallTopMargin}">
                             <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Status" />
                             <TextBlock Style="{ThemeResource BodyTextBlockStyle}">
                                 <!--  Text="{x:Bind ViewModel.Item.Status}"  -->
                             </TextBlock>
                         </StackPanel>
-                        <StackPanel x:Name="orderDateGroup" Margin="{StaticResource SmallTopMargin}">
+                        <StackPanel x:Name="OrderDateGroup" Margin="{StaticResource SmallTopMargin}">
                             <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Order date" />
                             <TextBlock Style="{ThemeResource BodyTextBlockStyle}">
                                 <!--  Text="{x:Bind ViewModel.Item.OrderDate}"  -->
                             </TextBlock>
                         </StackPanel>
                     </StackPanel>
-                    <StackPanel x:Name="propertiesGroup2" RelativePanel.Below="propertiesGroup1">
-                        <StackPanel x:Name="shipToGroup" Margin="{StaticResource SmallTopMargin}">
+                    <StackPanel x:Name="PropertiesGroup2" RelativePanel.Below="PropertiesGroup1">
+                        <StackPanel x:Name="ShipToGroup" Margin="{StaticResource SmallTopMargin}">
                             <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Ship to" />
                             <TextBlock Style="{ThemeResource BodyTextBlockStyle}">
                                 <!--  Text="{x:Bind ViewModel.Item.ShipTo}"  -->
                             </TextBlock>
                         </StackPanel>
-                        <StackPanel x:Name="orderTotalGroup" Margin="{StaticResource SmallTopMargin}">
+                        <StackPanel x:Name="OrderTotalGroup" Margin="{StaticResource SmallTopMargin}">
                             <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="Order total" />
                             <TextBlock Style="{ThemeResource BodyTextBlockStyle}">
                                 <!--  Text="{x:Bind ViewModel.Item.OrderTotal}"  -->

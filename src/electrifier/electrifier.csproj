@@ -14,8 +14,7 @@
 	<Nullable>enable</Nullable>
 	<UseWinUI>true</UseWinUI>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <AssemblyVersion>1.24.421</AssemblyVersion>
-    <FileVersion>1.24.421</FileVersion>
+    <AssemblyVersion>1.24.802</AssemblyVersion>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
@@ -26,7 +25,14 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/electrifier</RepositoryUrl>
     <UserSecretsId>8a2a75f7-cf60-45ba-b4cc-68e3ff9a8e22</UserSecretsId>
+    <PackageIcon>Square44x44Logo.scale-200.png</PackageIcon>
+    <PackageCertificateThumbprint>412DFB2FB1169368A38C65F3586FFEFECA0AB03B</PackageCertificateThumbprint>
+    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Assets\StoreLogo.scale-150.png" />
+    <None Remove="Controls\Vanara\Shell32BreadcrumbBar.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
@@ -49,8 +55,8 @@
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
     <PackageReference Include="System.Text.Json" Version="8.0.4" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
-    <PackageReference Include="Vanara.Windows.Shell" Version="4.0.2" />
-    <PackageReference Include="Vanara.Windows.Shell.Common" Version="4.0.2" />
+    <PackageReference Include="Vanara.Windows.Shell" Version="4.0.4" />
+    <PackageReference Include="Vanara.Windows.Shell.Common" Version="4.0.4" />
     <PackageReference Include="WinUIEdit" Version="0.0.3-prerelease" />
     <PackageReference Include="WinUIEx" Version="2.3.4" />
   </ItemGroup>
@@ -58,6 +64,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Controls\Vanara\Shell32BreadcrumbBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <None Update="README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
@@ -73,12 +82,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Assets\Square44x44Logo.scale-200.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="..\..\LICENSE">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
-  
+
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>

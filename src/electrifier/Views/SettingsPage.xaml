@@ -13,17 +13,17 @@
     mc:Ignorable="d">
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
-        <x:String x:Key="PrivacyTermsLink_Uri">
+        <x:String x:Key="PrivacyTermsLinkUri">
             https://github.com/electrifier/electrifier/blob/main/PRIVACY.md
         </x:String>
-        <x:String x:Key="LicenseTermsLink_Uri">
+        <x:String x:Key="LicenseTermsLinkUri">
             https://github.com/electrifier/electrifier/blob/main/LICENSE
         </x:String>
     </Page.Resources>
     <Grid>
         <StackPanel x:Name="ContentArea">
             <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
-            <StackPanel x:Name="Settings_Appearance" Margin="{StaticResource SmallTopBottomMargin}">
+            <StackPanel x:Name="SettingsAppearance" Margin="{StaticResource SmallTopBottomMargin}">
                 <TextBlock x:Uid="Settings_AppearanceTextBlock">Appearance</TextBlock>
                 <StackPanel Margin="{StaticResource XSmallTopMargin}">
                     <DropDownButton Content="Monochrome">
@@ -46,7 +46,7 @@
                 </StackPanel>
             </StackPanel>
 
-            <StackPanel x:Name="Settings_Theme" Margin="{StaticResource SmallTopBottomMargin}">
+            <StackPanel x:Name="SettingsTheme" Margin="{StaticResource SmallTopBottomMargin}">
                 <TextBlock x:Uid="Settings_Theme" />
                 <StackPanel Margin="{StaticResource XSmallTopMargin}">
                     <RadioButton
@@ -91,13 +91,13 @@
                 <HyperlinkButton
                     x:Uid="SettingsPage_PrivacyTermsLink"
                     Margin="{StaticResource SettingsPageHyperlinkButtonMargin}"
-                    NavigateUri="{StaticResource PrivacyTermsLink_Uri}"
-                    ToolTipService.ToolTip="{StaticResource PrivacyTermsLink_Uri}" />
+                    NavigateUri="{StaticResource LicenseTermsLinkUri}"
+                    ToolTipService.ToolTip="{StaticResource PrivacyTermsLinkUri}" />
                 <HyperlinkButton
                     x:Uid="SettingsPage_LicenseTermsLink"
                     Margin="{StaticResource SettingsPageHyperlinkButtonMargin}"
-                    NavigateUri="{StaticResource LicenseTermsLink_Uri}"
-                    ToolTipService.ToolTip="{StaticResource LicenseTermsLink_Uri}" />
+                    NavigateUri="{StaticResource LicenseTermsLinkUri}"
+                    ToolTipService.ToolTip="{StaticResource LicenseTermsLinkUri}" />
             </StackPanel>
         </StackPanel>
     </Grid>

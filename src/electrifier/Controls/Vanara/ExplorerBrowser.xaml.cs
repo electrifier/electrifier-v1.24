@@ -1,22 +1,25 @@
+using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI.UI;
-using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using Microsoft.UI.Xaml.Media.Imaging;
-using Vanara.Windows.Shell;
-using System.Collections.ObjectModel;
-using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
-using Microsoft.UI.Xaml.Media;
+using System.Runtime.InteropServices;
+using System.Windows.Input;
 using Vanara.PInvoke;
-using Microsoft.UI.Xaml.Controls.Primitives;
+using Vanara.Windows.Shell;
 using Visibility = Microsoft.UI.Xaml.Visibility;
 
 namespace electrifier.Controls.Vanara;
 
+// INFO: Care for this: // Remember! We're not the owner of the given PIDL, so we have to make our own copy for our own heap! See Issue #158
 // TODO: INFO: See also https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.image.source?view=windows-app-sdk-1.5#microsoft-ui-xaml-controls-image-source
+
+// TODO: WARN: ExplorerBrowser doesn't show anything when hiding Shell32TreeView, cause of missing navigation
 
 // https://github.com/dahall/Vanara/blob/master/Windows.Forms/Controls/ExplorerBrowser.cs
 // TODO: See also https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs
@@ -78,6 +81,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         get => (ObservableCollection<ExplorerBrowserItem>)GetValue(CurrentFolderItemsProperty);
         set => SetValue(CurrentFolderItemsProperty, value);
     }
+    public static readonly DependencyProperty CurrentFolderItemsProperty = DependencyProperty.Register(
+        nameof(CurrentFolderItems),
+        typeof(ObservableCollection<ExplorerBrowserItem>),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(null,
+            new PropertyChangedCallback(OnCurrentFolderItemsChanged)));
     private static void OnCurrentFolderItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         //ImageWithLabelControl iwlc = d as ImageWithLabelControl; //null checks omitted
@@ -85,10 +94,24 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         Debug.Print($".OnCurrentFolderItemsChanged(): {s}");
     }
 
-    private ShellIconExtractor? _iconExtractor;
-    public static readonly DependencyProperty CurrentFolderItemsProperty = DependencyProperty.Register(nameof(CurrentFolderItems), typeof(ObservableCollection<ExplorerBrowserItem>), typeof(ExplorerBrowser), new PropertyMetadata(null, new PropertyChangedCallback(OnCurrentFolderItemsChanged)));
-    public static readonly DependencyProperty TreeViewVisibilityProperty = DependencyProperty.Register(nameof(TreeViewVisibility), typeof(Visibility), typeof(ExplorerBrowser), new PropertyMetadata(default(object)));
+    public string NavigationFailure
+    {
+        get => (string)GetValue(NavigationFailureProperty);
+        set => SetValue(NavigationFailureProperty, value);
+    }
+    public static readonly DependencyProperty NavigationFailureProperty = DependencyProperty.Register(
+        nameof(NavigationFailure),
+        typeof(string),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(string.Empty));
 
+    /// <summary>
+    /// HResult code for <code><see cref="System.Runtime.InteropServices.COMException"/> 0x80070490</code>
+    /// <remarks>Fired when `Element not found`</remarks>
+    /// </summary>
+    public HRESULT HResultElementNotFound = 0x80070490;
+
+    private ShellIconExtractor? _iconExtractor;
     public ShellIconExtractor? IconExtractor
     {
         get => _iconExtractor;
@@ -104,6 +127,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         get; set;
     }
 
+    public bool IsLoading
+    {
+        get; set;
+    }
+
     public Visibility GridViewVisibility
     {
         get; set;
@@ -114,6 +142,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         get => (Visibility)GetValue(TreeViewVisibilityProperty);
         set => SetValue(TreeViewVisibilityProperty, value);
     }
+    public static readonly DependencyProperty TreeViewVisibilityProperty = DependencyProperty.Register(
+        nameof(TreeViewVisibility),
+        typeof(Visibility),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(default(object)));
 
     public Visibility TopCommandBarVisibility
     {
@@ -135,6 +168,28 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             ? Visibility.Visible
             : Visibility.Collapsed;
 
+    public ICommand RefreshViewCommand
+    {
+        get;
+    }
+
+    /// <summary>Raises the <see cref="NavigationFailed"/> event.</summary>
+    internal void OnNavigationFailed(ExtNavigationFailedEventArgs nfevent)
+    {
+        if (nfevent?.FailedLocation is null)
+        {
+            return;
+        }
+
+        NavigationFailed?.Invoke(this, nfevent);
+    }
+
+    /// <summary>
+    /// Fires when either a Navigating listener cancels the navigation, or if the operating system determines that navigation is not possible.
+    /// </summary>
+    [Category("Action"), Description("Navigation failed.")]
+    public event EventHandler<ExtNavigationFailedEventArgs>? NavigationFailed;
+
     public ExplorerBrowser()
     {
         InitializeComponent();
@@ -143,6 +198,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         ImageCache = new ImageCache();
         CurrentFolderItems = [];
         CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
+        RefreshViewCommand = new RelayCommand(() => OnRefreshViewCommand(this, new RoutedEventArgs()));
+
+        NavigationFailed += ExplorerBrowser_NavigationFailed;
 
         ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeViewOnSelectionChanged;
         ShellGridView.NativeGridView.SelectionChanged += NativeGridView_SelectionChanged;
@@ -153,8 +211,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     private async Task InitializeViewModel()
     {
-        ShellGridView.DataContext = this;
-        ShellTreeView.DataContext = this;
+        //ShellGridView.DataContext = this;
+        //ShellTreeView.DataContext = this;
 
         CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
         var rootItems = new List<ExplorerBrowserItem>
@@ -180,8 +238,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /// DUMMY: TODO: InitializeStockIcons()
     ///
     /// Added code:
-    /// <see cref="GetWinUI3BitmapSourceFromIcon"/>
-    /// <see cref="GetWinUI3BitmapSourceFromGdiBitmap"/>
+    /// <see cref="GetWinUi3BitmapSourceFromIcon"/>
+    /// <see cref="GetWinUi3BitmapSourceFromGdiBitmap"/>
     /// </summary>
     public void InitializeStockIcons()
     {
@@ -198,7 +256,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             //if (icnHandle != null)
             {
                 //var icon = Icon.FromHandle((nint)icnHandle);
-                var bmpSource = GetWinUI3BitmapSourceFromIcon(icon);
+                var bmpSource = GetWinUi3BitmapSourceFromIcon(icon);
                 //_defaultFolderImageBitmapSource = bmpSource;
             }
 
@@ -211,10 +269,23 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
 
+    private void ExplorerBrowser_NavigationFailed(object? sender, ExtNavigationFailedEventArgs e)
+    {
+        var location = e.FailedLocation;
+
+        NavigationFailure = $"Navigation failed: '{location}' cannot be navigated to. <Show More Info> <Report a Bug>";
+        NavigationFailedInfoBar.IsOpen = true;
+        NavigationFailedInfoBar.Message = NavigationFailure;
+        var childElement = new TextBox();
+        NavigationFailedInfoBar.Content = childElement;
+        IsLoading = false;
+        e.IsHandled = true;
+    }
+
     public void ExtractChildItems(ExplorerBrowserItem targetFolder)
     {
         var itemCount = 0;
-        Debug.Print($".ExtractChildItems <{targetFolder?.DisplayName}> extracting...");
+        Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracting...");
         Debug.Assert(targetFolder is not null);
         if (targetFolder is null)
         {
@@ -223,22 +294,31 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         try
         {
-            Debug.Assert(targetFolder.IsFolder);
             Debug.Assert(targetFolder.ShellItem.PIDL != Shell32.PIDL.Null);
             var shItemId = targetFolder.ShellItem.PIDL;
-
             using var shFolder = new ShellFolder(shItemId);
+
+            if ((shFolder.Attributes & ShellItemAttribute.Removable) != 0)
+            {
+                // TODO: Check for Disc in Drive, fail only if device not present
+                // TODO: Add `Eject-Buttons` to TreeView (right side, instead of Pin header) and GridView
+                Debug.WriteLine($"GetChildItems: IsRemovable = true");
+                var eventArgs = new NavigationFailedEventArgs();
+                // TODO: Switch PresentationView to `Error`
+                return;
+            }
+
             var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
             var shellItems = children as ShellItem[] ?? children.ToArray();
             itemCount = shellItems.Length;
-            targetFolder.Children = new List<ExplorerBrowserItem>();
+            targetFolder.Children = null; // = new ReadOnlyDictionary<ExplorerBrowserItem, int>();
 
             if (shellItems.Length > 0)
             {
                 foreach (var child in shellItems)
                 {
                     var ebItem = new ExplorerBrowserItem(child);
-                    targetFolder.Children.Add(ebItem);
+                    //targetFolder.Children?.Add(ebItem);
                 }
             }
         }
@@ -248,12 +328,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             throw;
         }
 
-        Debug.Print($".ExtractChildItems <{targetFolder?.DisplayName}> extracted: {itemCount} items.");
-    }
-
-    private void RefreshButtonClick(object sender, RoutedEventArgs e)
-    {
-        // TODO: TryNavigate(CurrentFolderBrowserItem);
+        Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracted: {itemCount} items.");
     }
 
     private void NativeTreeViewOnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
@@ -311,41 +386,57 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     public void Navigate(ExplorerBrowserItem ebItem, bool selectTreeViewNode = false)
     {
-        var isFolder = ebItem.IsFolder;
-
-        if (isFolder)
+        try
         {
-            try
+            Debug.Print($".Navigate(`{ebItem.DisplayName}`)");
+            CurrentFolderBrowserItem = ebItem;
+            if (selectTreeViewNode)
             {
-                Debug.Print($".Navigate(`{ebItem.DisplayName}`)");
-                CurrentFolderBrowserItem = ebItem;
-                if (selectTreeViewNode)
-                {
-                    ebItem.IsSelected = true;
-                }
-                CurrentFolderItems.Clear();
-                ExtractChildItems(ebItem);
+                ebItem.IsSelected = true;
+            }
+            CurrentFolderItems.Clear();
+            IsLoading = true;
+            ExtractChildItems(ebItem);
 
-                if (!(ebItem.Children?.Count > 0))
+            if (!(ebItem.Children?.Count > 0))
+            {
+                return;
+            }
+
+            //foreach (var childItem in ebItem.Children)
+            //{
+            //    CurrentFolderItems.Add(childItem);
+            //}
+        }
+
+        catch (COMException comEx)
+        {
+            var navFailedEventArgs = new ExtNavigationFailedEventArgs();
+            navFailedEventArgs.Hresult = comEx.HResult;
+            navFailedEventArgs.FailedLocation = ebItem.ShellItem;
+
+            if (comEx.HResult == HResultElementNotFound)
+            {
+                Debug.WriteLine($"[Error] {comEx.HResult}: {navFailedEventArgs}");
+                //NavigationFailure = msg;
+                //HasNavigationFailure = true;
+                navFailedEventArgs.IsHandled = false;
+
+                OnNavigationFailed(navFailedEventArgs);
+
+                if (navFailedEventArgs.IsHandled)
                 {
                     return;
                 }
+            }
 
-                foreach(var childItem in ebItem.Children)
-                {
-                    CurrentFolderItems.Add(childItem);
-                }
-            }
-            catch
-            {
-                Debug.Fail($"ERROR: Navigate() failed");
-                throw;
-            }
+            Debug.Fail($"[Error] Navigate(<{ebItem}>) failed. COMException: {comEx.Message}");
+            throw;
         }
-        else
+        catch (Exception ex)
         {
-            Debug.Write($"[i] Navigate(ShellItem? newTargetItem): is not a folder.");
-            // TODO: try to open or execute the item
+            Debug.Fail($"[Error] Navigate(<{ebItem}>) failed. Exception: {ex.Message}");
+            throw;
         }
     }
 
@@ -354,14 +445,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /// </summary>
     /// <param name="icon"></param>
     /// <returns></returns>
-    public static async Task<SoftwareBitmapSource> GetWinUI3BitmapSourceFromIcon(System.Drawing.Icon icon)
+    public static async Task<SoftwareBitmapSource> GetWinUi3BitmapSourceFromIcon(System.Drawing.Icon icon)
     {
         if (icon == null)
             return null;
 
         // convert to bitmap
         using var bmp = icon.ToBitmap();
-        return await GetWinUI3BitmapSourceFromGdiBitmap(bmp);
+        return await GetWinUi3BitmapSourceFromGdiBitmap(bmp);
     }
 
     /// <summary>
@@ -369,7 +460,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /// </summary>
     /// <param name="icon"></param>
     /// <returns></returns>
-    public static async Task<SoftwareBitmapSource> GetWinUI3BitmapSourceFromGdiBitmap(System.Drawing.Bitmap bmp)
+    public static async Task<SoftwareBitmapSource> GetWinUi3BitmapSourceFromGdiBitmap(System.Drawing.Bitmap bmp)
     {
         if (bmp == null)
             return null;
@@ -392,6 +483,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         var source = new SoftwareBitmapSource();
         await source.SetBitmapAsync(softwareBitmap);
         return source;
+    }
+
+    public void OnRefreshViewCommand(object sender, RoutedEventArgs e)
+    {
+        Debug.WriteLine($".OnRefreshViewCommand(sender <{sender}>, RoutedEventArgs <{e.ToString()}>)");
+        /* // TODO: TryNavigate(CurrentFolderBrowserItem); */
     }
 
     #region Property stuff
@@ -418,16 +515,36 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     #endregion Property stuff
 }
 
-#region The following is original copy & paste from Vanara
-/// <summary>Event argument for The Navigated event</summary>
-public class NavigatedEventArgs : EventArgs
+/// <summary>Extended Event argument for the <see cref="NavigationFailedEventArgs"/> event</summary>
+public class ExtNavigationFailedEventArgs : NavigationFailedEventArgs
 {
-    /// <summary>The new location of the explorer browser</summary>
-    public ShellItem? NewLocation
+    public bool IsHandled
     {
         get; set;
     }
+    public HRESULT? Hresult
+    {
+        get;
+        set;
+    }
 }
+
+/// <summary>Event argument for The Navigated event</summary>
+public class ExtNavigatedEventArgs : NavigatedEventArgs
+{
+    public int ItemCount { get; set; } = 0;
+    public int FolderCount { get; set; } = 0;
+    public int FileCount { get; set; } = 0;
+
+    /// <summary>Initializes a new instance of the <see cref="T:Vanara.Windows.Shell.NavigatedEventArgs" /> class.</summary>
+    /// <param name="folder">The folder.</param>
+    public ExtNavigatedEventArgs(ShellFolder folder) : base(folder)
+    {
+        //NewLocation = folder;   // TODO: ?!?
+    }
+}
+
+#region The following is original copy & paste from Vanara
 
 /// <summary>Event argument for The Navigating event</summary>
 public class NavigatingEventArgs : EventArgs
@@ -445,13 +562,4 @@ public class NavigatingEventArgs : EventArgs
     }
 }
 
-/// <summary>Event argument for the NavigatinoFailed event</summary>
-public class NavigationFailedEventArgs : EventArgs
-{
-    /// <summary>The location the browser would have navigated to.</summary>
-    public ShellItem? FailedLocation
-    {
-        get; set;
-    }
-}
 #endregion

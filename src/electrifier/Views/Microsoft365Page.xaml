@@ -16,7 +16,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid
-            x:Name="ContentArea_NavigationBar"
+            x:Name="ContentAreaNavigationBar"
             Grid.Row="0"
             Height="Auto">
             <AppBarElementContainer>
@@ -25,7 +25,7 @@
             <AppBarSeparator />
             <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
         </Grid>
-        <Grid x:Name="ContentArea_WebView" Grid.Row="1">
+        <Grid x:Name="ContentAreaWebView" Grid.Row="1">
             <WebView2 x:Name="WebView" Source="{x:Bind ViewModel.Source, Mode=OneWay}" />
             <StackPanel
                 HorizontalAlignment="Center"
@@ -48,7 +48,7 @@
             </StackPanel>
         </Grid>
         <AppBar
-            x:Name="ContentArea_StatusCommandBar"
+            x:Name="ContentAreaStatusCommandBar"
             Grid.Row="2"
             HorizontalAlignment="Stretch"
             Background="Transparent">

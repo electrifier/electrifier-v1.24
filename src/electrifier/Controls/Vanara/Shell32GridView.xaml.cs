@@ -1,14 +1,7 @@
-using CommunityToolkit.WinUI.Collections;
 using Microsoft.UI.Xaml.Controls;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
-using System;
-using Vanara.Windows.Shell;
-using System.Collections.Specialized;
-using Microsoft.UI.Dispatching;
-using Visibility = Microsoft.UI.Xaml.Visibility;
 
 namespace electrifier.Controls.Vanara;
 
@@ -17,7 +10,6 @@ namespace electrifier.Controls.Vanara;
 public sealed partial class Shell32GridView : INotifyPropertyChanged
 {
     public GridView NativeGridView => GridView;
-
     public object ItemsSource
     {
         get => NativeGridView.ItemsSource;
@@ -27,12 +19,14 @@ public sealed partial class Shell32GridView : INotifyPropertyChanged
     public Shell32GridView()
     {
         InitializeComponent();
+        DataContext = this;
+
     }
 
-    private void NativeGridView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
-    {
-        //Debug.WriteLine($".NativeGridView_ContainerContentChanging()");
-    }
+    //private void NativeGridView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+    //{
+    //    //Debug.WriteLine($".NativeGridView_ContainerContentChanging()");
+    //}
 
     private string GetDebuggerDisplay()
     {

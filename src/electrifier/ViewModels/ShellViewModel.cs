@@ -18,15 +18,10 @@ public partial class ShellViewModel : ObservableRecipient
     private object? selected;
 
     /// <summary>
-    /// Gets the build version description.
-    /// Necessary for the xaml page to access the build version description.
+    /// Build version description.
     /// </summary>
     //[ObservableProperty]
-    //public string m_buildNumber = "Insert build number";
-    //[ObservableProperty]
-    //public string m_versionDescription = "Insert Description";
-    [ObservableProperty]
-    public object? m_BuildVersionDescription = "v1.24.726 Julius Forus";
+    public readonly string BuildVersionDescription = "v1.24.803 octavian";
 
     public INavigationService NavigationService
     {

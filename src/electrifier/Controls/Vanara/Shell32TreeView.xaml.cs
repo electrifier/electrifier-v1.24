@@ -1,12 +1,5 @@
-using CommunityToolkit.WinUI.Collections;
-using CommunityToolkit.WinUI;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
-using System.ComponentModel;
-using System.Diagnostics;
-using Vanara.PInvoke;
-using Vanara.Windows.Shell;
-using Visibility = Microsoft.UI.Xaml.Visibility;
+using Microsoft.UI.Xaml.Controls;
 
 // TODO: For EnumerateChildren-Calls, add HWND handle
 // TODO: See ShellItemCollection, perhaps use this instead of ObservableCollection
@@ -29,7 +22,6 @@ public sealed partial class Shell32TreeView : UserControl
         get => (ExplorerBrowserItem?)GetValue(SelectedItemProperty);
         set => SetValue(SelectedItemProperty, value);
     }
-
     public static readonly DependencyProperty SelectedItemProperty =
         DependencyProperty.Register(nameof(SelectedItem), typeof(ExplorerBrowserItem), typeof(Shell32TreeView),
             new PropertyMetadata(default(ExplorerBrowserItem?)));
@@ -40,9 +32,6 @@ public sealed partial class Shell32TreeView : UserControl
     {
         InitializeComponent();
         DataContext = this;
-
-        //var this.SelectionChanged += NativeTreeView.SelectionChanged(TreeView sender,
-        //    TreeViewSelectionChangedEventArgs SelectionChangedEventArgs);
     }
 
     // TODO: public object ItemFromContainer => NativeTreeView.ItemFromContainer()

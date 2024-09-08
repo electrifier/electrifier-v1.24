@@ -36,7 +36,7 @@
                     </StackPanel>
                 </Grid>
             </DataTemplate>
-            <Style x:Key="NativeGridView_ItemContainerStyle" TargetType="GridViewItem">
+            <Style x:Key="NativeGridViewItemContainerStyle" TargetType="GridViewItem">
                 <Setter Property="Background" Value="Transparent" />
                 <Setter Property="Margin" Value="8" />
                 <Setter Property="BorderThickness" Value="3" />
@@ -44,10 +44,17 @@
         </Grid.Resources>
         <GridView
             x:Name="GridView"
-            ContainerContentChanging="NativeGridView_ContainerContentChanging"
             IsItemClickEnabled="True"
-            ItemContainerStyle="{StaticResource NativeGridView_ItemContainerStyle}"
+            ItemContainerStyle="{StaticResource NativeGridViewItemContainerStyle}"
             ItemTemplate="{StaticResource ExplorerBrowserItemTemplate}"
             SelectionMode="Extended" />
+
+        <!--<ListView.ItemContainerStyle>
+            <Style TargetType="ListViewItem">
+                <Setter Property="HorizontalContentAlignment"
+                        Value="Stretch" />
+            </Style>
+        </ListView.ItemContainerStyle>-->
+
     </Grid>
 </UserControl>

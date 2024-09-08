@@ -17,17 +17,18 @@
                         HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"
                         IsExpanded="{x:Bind IsExpanded}"
                         IsSelected="{x:Bind IsSelected}"
-                        ItemsSource="{x:Bind Children}">
+                        ItemsSource="{x:Bind Children}"
+                        Opacity="0.66">
                         <StackPanel MaxHeight="20" Orientation="Horizontal">
                             <controls:ImageEx
-                                Name="ImageEx"
+                                Name="ExplorerBrowserItemImageEx"
                                 DecodePixelType="Physical"
                                 EnableLazyLoading="True"
                                 IsCacheEnabled="True"
                                 PlaceholderSource="ms-appx:///Assets/Views/Workbench/Shell32 Default Folder_16x16-32.png"
                                 Source="{x:Bind ImageIconSource}" />
                             <TextBlock
-                                x:Name="DisplayNameTextBlock"
+                                x:Name="ExplorerBrowserItemDisplayNameTextBlock"
                                 Margin="5,0,5,0"
                                 Text="{x:Bind DisplayName}"
                                 Visibility="Visible" />

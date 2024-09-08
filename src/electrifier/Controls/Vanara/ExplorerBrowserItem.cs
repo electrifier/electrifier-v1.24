@@ -1,15 +1,14 @@
-﻿using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
+﻿using Vanara.Windows.Shell;
 using System.Text;
+using System.Runtime.CompilerServices;
+using System.Diagnostics;
+using System.ComponentModel;
 using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
-using Vanara.Windows.Shell;
 
 namespace electrifier.Controls.Vanara;
+
+// TODO: TreeViewNode - Property
+// TODO: GridViewItem - Property
 
 /// <summary>
 /// A ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32TreeView"/> Items.
@@ -17,15 +16,38 @@ namespace electrifier.Controls.Vanara;
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
 public class ExplorerBrowserItem /* : INotifyPropertyChanged */
 {
+    /// <summary>Gets the set of Children as an <seealso cref="List{T}"/>.</summary>
     public List<ExplorerBrowserItem>? Children;
+
+    /// <summary>Gets the DisplayName.</summary>
     public string DisplayName
     {
         get;
     }
+    /// <summary>
+    /// HasUnrealizedChildren checks for flag ´SFGAO_HASSUBFOLDER´.
+    ///
+    /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/shell/sfgao"/>
+    /// The specified folders have subfolders. The SFGAO_HASSUBFOLDER attribute is only advisory and might be returned by Shell folder implementations even if they do not contain subfolders. Note, however, that the converse—failing to return SFGAO_HASSUBFOLDER—definitively states that the folder objects do not have subfolders.
+    /// Returning SFGAO_HASSUBFOLDER is recommended whenever a significant amount of time is required to determine whether any subfolders exist. For example, the Shell always returns SFGAO_HASSUBFOLDER when a folder is located on a network drive.
+    /// </summary>
     public bool HasUnrealizedChildren
     {
-        get;
-        private set;
+        get
+        {
+            try
+            {
+                if (ShellItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder))
+                {
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                Debug.Print("HasUnrealizedChildren failed!");
+            }
+            return false;
+        }
     }
     public ImageEx? ImageIconSource
     {
@@ -48,19 +70,10 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
     }
 
 
-    // TODO: TreeViewNode - Property
-    // TODO: GridViewItem - Property
     public ExplorerBrowserItem(ShellItem shItem)
     {
-        ShellItem = new(shItem.PIDL);
+        ShellItem = new ShellItem(shItem.PIDL);
         DisplayName = ShellItem.Name ?? ":error: <DisplayName.get()>";
-
-        if (ShellItem.IsFolder)
-        {
-            // TODO: Check, since this call has failed in case of TeeView/GridView navigation:
-            HasUnrealizedChildren = (ShellItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
-        }
-
         IsExpanded = false;
         // TODO: If IsSelected, add overlay of opened folder icon to TreeView
         IsSelected = false;
@@ -89,7 +102,11 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
 
     protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
-        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        if (EqualityComparer<T>.Default.Equals(field, value))
+        {
+            return false;
+        }
+
         field = value;
         OnPropertyChanged(propertyName);
         return true;

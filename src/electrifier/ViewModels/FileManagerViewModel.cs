@@ -1,7 +1,4 @@
-﻿using System.Diagnostics;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Vanara.PInvoke;
-using Vanara.Windows.Shell;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace electrifier.ViewModels;
 

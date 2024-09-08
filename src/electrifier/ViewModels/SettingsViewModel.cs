@@ -11,18 +11,14 @@ using Windows.ApplicationModel;
 
 namespace electrifier.ViewModels;
 
-
 /// <summary>
 /// <a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.debuggerdisplayattribute?view=net-6.0">Docs for DebuggerDisplay</a>
 /// </summary>
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
 public partial class SettingsViewModel : ObservableRecipient
 {
-    private readonly IThemeSelectorService _themeSelectorService;
-
-
-    //[ObservableProperty]
-    //private string _appearance;
+    [ObservableProperty]
+    private string _appearance;
 
     [ObservableProperty]
     private ElementTheme _elementTheme;
@@ -41,10 +37,10 @@ public partial class SettingsViewModel : ObservableRecipient
 
     public SettingsViewModel(IThemeSelectorService themeSelectorService)
     {
-        _themeSelectorService = themeSelectorService;
-        _elementTheme = _themeSelectorService.Theme;
+        var themeSelectorService1 = themeSelectorService;
+        _elementTheme = themeSelectorService1.Theme;
         _versionDescription = GetVersionDescription();
-        //_appearance = "Monochrome";
+        _appearance = "Monochrome";
 
         SwitchThemeCommand = new RelayCommand<ElementTheme>(
             async (param) =>
@@ -52,7 +48,7 @@ public partial class SettingsViewModel : ObservableRecipient
                 if (ElementTheme != param)
                 {
                     ElementTheme = param;
-                    await _themeSelectorService.SetThemeAsync(param);
+                    await themeSelectorService1.SetThemeAsync(param);
                 }
             });
     }
@@ -65,7 +61,7 @@ public partial class SettingsViewModel : ObservableRecipient
         {
             var packageVersion = Package.Current.Id.Version;
 
-            version = new(packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
+            version = new Version(packageVersion.Major, packageVersion.Minor, packageVersion.Build, packageVersion.Revision);
         }
         else
         {
