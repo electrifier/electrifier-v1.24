@@ -1,5 +1,4 @@
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI.UI;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml;
@@ -122,10 +121,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
 
-    public ImageCache? ImageCache
-    {
-        get; set;
-    }
+    //public ImageCache? ImageCache
+    //{
+    //    get; set;
+    //}
 
     public bool IsLoading
     {
@@ -195,7 +194,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         InitializeComponent();
         DataContext = this;
 
-        ImageCache = new ImageCache();
+//        ImageCache = new ImageCache();
         CurrentFolderItems = [];
         CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
         RefreshViewCommand = new RelayCommand(() => OnRefreshViewCommand(this, new RoutedEventArgs()));

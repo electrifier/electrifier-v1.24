@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using CommunityToolkit.WinUI.UI.Animations;
 using electrifier.Contracts.Services;
 using electrifier.Contracts.ViewModels;
 using electrifier.Helpers;
@@ -138,7 +137,7 @@ public class NavigationService : INavigationService
     }
     public void SetListDataItemForNextConnectedAnimation(object item)
     {
-        Frame.SetListDataItemForNextConnectedAnimation(item);
+//        Frame.SetListDataItemForNextConnectedAnimation(item);
     }
 
     private void OnNavigated(object sender, NavigationEventArgs e)

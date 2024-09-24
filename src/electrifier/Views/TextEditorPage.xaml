@@ -3,7 +3,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="using:electrifier.Behaviors"
-    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:editor="using:WinUIEditor"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -62,7 +61,7 @@
                     GridViewVisibility="Collapsed"
                     TopCommandBarVisibility="Collapsed" />
             </Border>
-            <controls:GridSplitter
+            <!--<controls:GridSplitter
                 x:Name="GridSplitter"
                 Grid.Column="1"
                 Width="12"
@@ -72,7 +71,7 @@
                 <controls:GridSplitter.RenderTransform>
                     <TranslateTransform X="-6" />
                 </controls:GridSplitter.RenderTransform>
-            </controls:GridSplitter>
+            </controls:GridSplitter>-->
             <Border x:Name="CodeEditorBorder" Grid.Column="2">
                 <editor:CodeEditorControl x:Name="CodeEditorControl" />
             </Border>

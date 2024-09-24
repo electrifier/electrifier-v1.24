@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.WinUI.UI.Animations;
-using electrifier.ViewModels;
+﻿using electrifier.ViewModels;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Navigation;
 
@@ -21,7 +20,7 @@ public sealed partial class KanbanBoardDetailPage : Page
     protected override void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        this.RegisterElementForConnectedAnimation("animationKeyContentGrid", ItemHero);
+        //this.RegisterElementForConnectedAnimation("animationKeyContentGrid", ItemHero);
     }
 
     protected override void OnNavigatingFrom(NavigatingCancelEventArgs e)

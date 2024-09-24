@@ -3,7 +3,6 @@ using System.Text;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using System.ComponentModel;
-using CommunityToolkit.WinUI.UI.Controls;
 
 namespace electrifier.Controls.Vanara;
 
@@ -49,11 +48,11 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
             return false;
         }
     }
-    public ImageEx? ImageIconSource
-    {
-        get;
-        internal set;
-    }
+    //public ImageEx? ImageIconSource
+    //{
+    //    get;
+    //    internal set;
+    //}
     public bool IsExpanded
     {
         get; set;
