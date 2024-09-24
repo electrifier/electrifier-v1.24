@@ -21,7 +21,7 @@
     <EnforceCodeStyleInBuild>True</EnforceCodeStyleInBuild>
     <Description>Integrated Desktop Environment</Description>
     <Copyright>(c) tajbender, electrifier.org</Copyright>
-    <PackageProjectUrl>https://www.electrifier.org</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/electrifier</PackageProjectUrl>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/electrifier</RepositoryUrl>
     <UserSecretsId>8a2a75f7-cf60-45ba-b4cc-68e3ff9a8e22</UserSecretsId>
