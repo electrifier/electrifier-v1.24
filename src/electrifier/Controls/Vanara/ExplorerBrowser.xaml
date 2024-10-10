@@ -16,7 +16,6 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal">
             <!-- <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />-->
@@ -202,7 +201,7 @@
             <!--<controls:SwitchPresenter Grid.Row="1" Value="{x:Bind HasNavigationFailure}">
             <controls:Case Value="true">-->
         </StackPanel>
-        <Border Grid.Row="1">
+        <Border Grid.Row="1" Visibility="Collapsed">
             <InfoBar
                 x:Name="NavigationFailedInfoBar"
                 Title="Navigation failed"
@@ -245,48 +244,15 @@
                 </StackPanel>-->
         <!--</controls:Case>
         </controls:SwitchPresenter>-->
-        <Grid x:Name="ArenaGrid" Grid.Row="3">
+        <Grid x:Name="ArenaGrid" Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <!--  controls:DockPanel.Dock="Left"  -->
                 <ColumnDefinition Width="256" MinWidth="76" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" MinWidth="76" />
             </Grid.ColumnDefinitions>
-            <Border x:Name="NavigationAreaBorder">
-                <StackPanel VerticalAlignment="Top">
-                    <Expander
-                        Grid.Column="0"
-                        Padding="8"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Top"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Top"
-                        IsEnabled="True"
-                        IsExpanded="True">
-                        <Expander.Header>
-                            <TextBlock>Desktop</TextBlock>
-                        </Expander.Header>
-                        <Expander.Content>
-                            <local:Shell32TreeView x:Name="ShellTreeView" VerticalAlignment="Top" />
-                        </Expander.Content>
-                    </Expander>
-                    <Expander
-                        Grid.Column="0"
-                        Padding="8"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Top"
-                        HorizontalContentAlignment="Stretch"
-                        VerticalContentAlignment="Top"
-                        IsEnabled="True"
-                        IsExpanded="True">
-                        <Expander.Header>
-                            <TextBlock>History</TextBlock>
-                        </Expander.Header>
-                        <Expander.Content>
-                            <Border />
-                        </Expander.Content>
-                    </Expander>
-                </StackPanel>
+            <Border x:Name="TreeViewBorder" Visibility="{x:Bind TreeViewVisibility}">
+                <local:Shell32TreeView x:Name="ShellTreeView" />
             </Border>
             <!--  TODO: GridSplitter is not Working when TreeView Visibility changes to Collapsed  -->
             <controls:GridSplitter
@@ -357,7 +323,7 @@
             </Border>-->
         </Grid>
         <CommandBar
-            Grid.Row="4"
+            Grid.Row="3"
             HorizontalAlignment="Left"
             VerticalAlignment="Center"
             HorizontalContentAlignment="Left"
