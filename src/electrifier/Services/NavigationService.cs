@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using CommunityToolkit.WinUI.UI.Animations;
+using CommunityToolkit.WinUI.Animations;
 using electrifier.Contracts.Services;
 using electrifier.Contracts.ViewModels;
 using electrifier.Helpers;
