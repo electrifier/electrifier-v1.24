@@ -246,17 +246,22 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         try
         {
             using var siFolder = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDER);
+
+            var loc = siFolder.Location;  // TODO: Why do we have to call this first, to init the StockIcon?
+
             //using var siFolderOpen = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);
             // TODO: Opened Folder Icon, use for selected TreeViewItems
             //using var siVar = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCASSOC);
 
             var icnHandle = siFolder.IconHandle.ToIcon();
-            HICON handle = siFolder.IconHandle;
-            var icon = siFolder.IconHandle.ToIcon();
+            //HICON handle = siFolder.IconHandle;
+            //var icon = siFolder.IconHandle.ToIcon();
             //if (icnHandle != null)
             {
                 //var icon = Icon.FromHandle((nint)icnHandle);
-                var bmpSource = GetWinUi3BitmapSourceFromIcon(icon);
+                var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
+
+                
                 //_defaultFolderImageBitmapSource = bmpSource;
             }
 
@@ -311,14 +316,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
             var shellItems = children as ShellItem[] ?? children.ToArray();
             itemCount = shellItems.Length;
-            targetFolder.Children = null; // = new ReadOnlyDictionary<ExplorerBrowserItem, int>();
+            targetFolder.Children = []; // TODO: new ReadOnlyDictionary<ExplorerBrowserItem, int>();
 
             if (shellItems.Length > 0)
             {
                 foreach (var child in shellItems)
                 {
                     var ebItem = new ExplorerBrowserItem(child);
-                    //targetFolder.Children?.Add(ebItem);
+                    targetFolder.Children?.Add(ebItem);
                 }
             }
         }
@@ -403,10 +408,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 return;
             }
 
-            //foreach (var childItem in ebItem.Children)
-            //{
-            //    CurrentFolderItems.Add(childItem);
-            //}
+            foreach (var childItem in ebItem.Children)
+            {
+                CurrentFolderItems.Add(childItem);
+            }
         }
 
         catch (COMException comEx)
