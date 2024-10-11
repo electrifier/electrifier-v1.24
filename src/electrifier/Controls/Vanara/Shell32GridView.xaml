@@ -3,7 +3,7 @@
     x:Class="electrifier.Controls.Vanara.Shell32GridView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:CommunityToolkit.WinUI.UI.Controls"
+    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:electrifier.Controls.Vanara"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -17,14 +17,11 @@
                         Width="72"
                         Height="96"
                         Orientation="Vertical">
-                        <controls:ImageEx
-                            Name="ImageEx"
-                            DecodePixelHeight="64"
-                            DecodePixelType="Physical"
-                            EnableLazyLoading="True"
-                            IsCacheEnabled="True"
-                            PlaceholderSource="ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File_64x64-32.png"
-                            Source="{x:Bind ImageIconSource}" />
+                        <Image
+                            Name="Image"
+                            Height="48"
+                            Source="ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File_64x64-32.png" />
+                        <!--  Source="{x:Bind ImageIconSource}" -->
                         <!--  ImageExOpened="ImageEx_ImageExOpened"  -->
                         <!--  CornerRadius="8"  -->
                         <TextBlock
