@@ -53,7 +53,7 @@
     <PackageReference Include="Vanara.Windows.Shell" Version="4.0.4" />
     <PackageReference Include="Vanara.Windows.Shell.Common" Version="4.0.4" />
     <PackageReference Include="WinUIEdit" Version="0.0.3-prerelease" />
-    <PackageReference Include="WinUIEx" Version="2.3.4" />
+    <PackageReference Include="WinUIEx" Version="2.4.2" />
   </ItemGroup>
   <ItemGroup>
     <None Update="appsettings.json">
