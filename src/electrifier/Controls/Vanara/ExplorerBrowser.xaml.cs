@@ -246,17 +246,22 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         try
         {
             using var siFolder = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDER);
+
+            var loc = siFolder.Location;  // TODO: Why do we have to call this first, to init the StockIcon?
+
             //using var siFolderOpen = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);
             // TODO: Opened Folder Icon, use for selected TreeViewItems
             //using var siVar = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCASSOC);
 
             var icnHandle = siFolder.IconHandle.ToIcon();
-            HICON handle = siFolder.IconHandle;
-            var icon = siFolder.IconHandle.ToIcon();
+            //HICON handle = siFolder.IconHandle;
+            //var icon = siFolder.IconHandle.ToIcon();
             //if (icnHandle != null)
             {
                 //var icon = Icon.FromHandle((nint)icnHandle);
-                var bmpSource = GetWinUi3BitmapSourceFromIcon(icon);
+                var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
+
+                
                 //_defaultFolderImageBitmapSource = bmpSource;
             }
 

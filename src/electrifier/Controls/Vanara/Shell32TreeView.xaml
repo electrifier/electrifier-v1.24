@@ -13,12 +13,12 @@
         <TreeView x:Name="TreeView" SelectionMode="Single">
             <TreeView.ItemTemplate>
                 <DataTemplate x:DataType="local:ExplorerBrowserItem">
+                    <!-- TODO: For hidden folders, add 'Opacity="0.66"' to TreeViewItem -->
                     <TreeViewItem
                         HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"
                         IsExpanded="{x:Bind IsExpanded}"
                         IsSelected="{x:Bind IsSelected}"
-                        ItemsSource="{x:Bind Children}"
-                        Opacity="0.66">
+                        ItemsSource="{x:Bind Children}">
                         <StackPanel MaxHeight="20" Orientation="Horizontal">
                             <controls:ImageEx
                                 Name="ExplorerBrowserItemImageEx"
