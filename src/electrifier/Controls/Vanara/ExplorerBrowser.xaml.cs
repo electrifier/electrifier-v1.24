@@ -5,11 +5,12 @@ using Microsoft.UI.Xaml;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
+using Vanara.PInvoke;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
-using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 using Visibility = Microsoft.UI.Xaml.Visibility;
 
@@ -17,13 +18,7 @@ namespace electrifier.Controls.Vanara;
 
 // https://github.com/dahall/Vanara/blob/master/Windows.Forms/Controls/ExplorerBrowser.cs
 
-/* TODO: Research this regarding Visual States
-   [Microsoft.UI.Xaml.TemplatePart(Name="Image", Type=typeof(System.Object))]
-   [Microsoft.UI.Xaml.TemplateVisualState(GroupName="CommonStates", Name="Loading")]
-   [Microsoft.UI.Xaml.TemplateVisualState(GroupName="CommonStates", Name="Loaded")]
-   [Microsoft.UI.Xaml.TemplateVisualState(GroupName="CommonStates", Name="Unloaded")]
-   [Microsoft.UI.Xaml.TemplateVisualState(GroupName="CommonStates", Name="Failed")]
- */
+/* todo: Use Visual States for Errors, Empty folders, Empty Drives */
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
     public ExplorerBrowserItem? CurrentFolderBrowserItem
@@ -181,9 +176,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         NavigationFailed += ExplorerBrowser_NavigationFailed;
 
-        ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeViewOnSelectionChanged;
+        ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
         ShellGridView.NativeGridView.SelectionChanged += NativeGridView_SelectionChanged;
-        //TODO: Should be ShellTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
 
         _ = InitializeViewModel();
     }
@@ -194,6 +188,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         var rootItems = new List<ExplorerBrowserItem>
         {
+            // todo: add home folder
+            // todo: add separator
             new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Desktop)),
             new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Downloads)),
             new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Documents)),
@@ -201,8 +197,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Music)),
             new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Videos)),
             // todo: add separator
+            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_OneDrive)),
             //new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop)), // TODO: Check why this leads to `SyncCenter`?
-            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder)),
+            //new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder)),
         };
 
         ShellTreeView.ItemsSource = rootItems;
@@ -284,10 +281,18 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
             if (shellItems.Length > 0)
             {
-                foreach (var child in shellItems)
+                foreach (var shItem in shellItems)
                 {
-                    var ebItem = new ExplorerBrowserItem(child);
-                    ebItem.BitmapSource = ebItem.IsFolder ? this._defaultFolderImageBitmapSource : this._defaultDocumentAssocImageBitmapSource;
+                    var ebItem = new ExplorerBrowserItem(shItem);
+                    if (ebItem.IsFolder)
+                    {
+                        ebItem.BitmapSource = this._defaultFolderImageBitmapSource;
+                    }
+                    else
+                    {
+                        ebItem.BitmapSource = this._defaultDocumentAssocImageBitmapSource;
+                    }
+
                     targetFolder.Children?.Add(ebItem);
                 }
             }
@@ -303,14 +308,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracted: {itemCount} items.");
     }
 
-    private void NativeTreeViewOnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
+    private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
         var selectedItem = args.AddedItems.FirstOrDefault();
         if (selectedItem != null)
         {
             if (selectedItem is ExplorerBrowserItem ebItem)
             {
-                Debug.Print($".NativeTreeViewOnSelectionChanged() {ebItem.DisplayName}");
+                Debug.Print($".ShellTreeView_SelectionChanged() {ebItem.DisplayName}");
 
                 Navigate(ebItem);
 
@@ -318,9 +323,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             }
             // TODO: else
             //{
-            //    Debug.Fail($"ERROR: NativeTreeViewOnSelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
+            //    Debug.Fail($"ERROR: ShellTreeView_SelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
             //    throw new ArgumentOutOfRangeException(
-            //        "$ERROR: NativeTreeViewOnSelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
+            //        "$ERROR: ShellTreeView_SelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
             //}
         }
     }

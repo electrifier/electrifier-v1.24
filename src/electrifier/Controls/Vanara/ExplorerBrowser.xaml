@@ -187,8 +187,7 @@
                               Label="Orientation" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
-        <Border Grid.Row="1"
-                Visibility="Collapsed">
+        <Border Grid.Row="1">
             <InfoBar x:Name="NavigationFailedInfoBar"
                      Title="Navigation failed"
                      BorderBrush="DarkRed"
@@ -222,9 +221,7 @@
                     Visibility="{x:Bind TreeViewVisibility}">
                 <local:Shell32TreeView x:Name="ShellTreeView" />
             </Border>
-            <!--  TODO: GridSplitter is not Working when TreeView Visibility changes to Collapsed  -->
-            <Border Grid.Column="1" />
-            <!-- controls:GridSplitter -->
+            <Border Grid.Column="1" Width="8" Background="Transparent"/><!-- controls:GridSplitter -->
             <Border x:Name="ShellGridViewBorder"
                     Grid.Column="2">
                 <StackPanel Orientation="Vertical">
