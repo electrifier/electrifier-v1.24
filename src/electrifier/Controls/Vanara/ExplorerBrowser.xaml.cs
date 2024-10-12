@@ -15,13 +15,7 @@ using Visibility = Microsoft.UI.Xaml.Visibility;
 
 namespace electrifier.Controls.Vanara;
 
-// INFO: Care for this: // Remember! We're not the owner of the given PIDL, so we have to make our own copy for our own heap! See Issue #158
-// TODO: INFO: See also https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.image.source?view=windows-app-sdk-1.5#microsoft-ui-xaml-controls-image-source
-
-// TODO: WARN: ExplorerBrowser doesn't show anything when hiding Shell32TreeView, cause of missing navigation
-
 // https://github.com/dahall/Vanara/blob/master/Windows.Forms/Controls/ExplorerBrowser.cs
-// TODO: See also https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs
 
 /* TODO: Research this regarding Visual States
    [Microsoft.UI.Xaml.TemplatePart(Name="Image", Type=typeof(System.Object))]
@@ -32,19 +26,6 @@ namespace electrifier.Controls.Vanara;
  */
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
-    // TODO: Use shell32 stock icons
-    internal static readonly BitmapImage DefaultFileImage =
-        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File.ico"));
-
-    internal static readonly BitmapImage DefaultFolderImage =
-        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Default Folder.ico"));
-
-    internal static readonly BitmapImage DefaultLibraryImage =
-        new(new Uri("ms-appx:///Assets/Views/Workbench/Shell32 Library.ico"));
-
-    /// <summary>
-    /// 
-    /// </summary>
     public ExplorerBrowserItem? CurrentFolderBrowserItem
     {
         get => GetValue(CurrentFolderBrowserItemProperty) as ExplorerBrowserItem;
@@ -213,7 +194,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         var galleryEbItem = new ExplorerBrowserItem(galleryFolder);
         rootItems.Add(galleryEbItem);
 
-        InitializeStockIcons();
+        await InitializeStockIcons();
 
         ShellTreeView.ItemsSource = rootItems;
         CurrentFolderBrowserItem.IsExpanded = true;
@@ -221,6 +202,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     }
 
     private SoftwareBitmapSource _defaultFolderImageBitmapSource;
+    private SoftwareBitmapSource _defaultDocumentAssocImageBitmapSource;
 
     /// <summary>
     /// DUMMY: TODO: InitializeStockIcons()
@@ -229,31 +211,26 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /// <see cref="GetWinUi3BitmapSourceFromIcon"/>
     /// <see cref="GetWinUi3BitmapSourceFromGdiBitmap"/>
     /// </summary>
-    public void InitializeStockIcons()
+    public async Task InitializeStockIcons()
     {
         try
         {
             using var siFolder = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDER);
-
-            var loc = siFolder.Location;  // TODO: Why do we have to call this first, to init the StockIcon?
-
-            //using var siFolderOpen = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);
-            // TODO: Opened Folder Icon, use for selected TreeViewItems
-            //using var siVar = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCASSOC);
-
-            var icnHandle = siFolder.IconHandle.ToIcon();
-            //HICON handle = siFolder.IconHandle;
-            //var icon = siFolder.IconHandle.ToIcon();
-            //if (icnHandle != null)
             {
-                //var icon = Icon.FromHandle((nint)icnHandle);
+                var idx = siFolder.SystemImageIndex;
+                var icnHandle = siFolder.IconHandle.ToIcon();
                 var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
-
-                
-                //_defaultFolderImageBitmapSource = bmpSource;
+                _defaultFolderImageBitmapSource = await bmpSource;
             }
 
-            //System.Drawing.Icon icn = Icon.FromHandle((IntPtr)siFolder.IconHandle);
+            using var siDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCASSOC); // SIID_DOCNOASSOC 
+            {
+                var idx = siDocument.SystemImageIndex;
+                var icnHandle = siDocument.IconHandle.ToIcon();
+                var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
+                _defaultDocumentAssocImageBitmapSource = await bmpSource;
+            }
+
         }
         catch (Exception e)
         {
@@ -311,6 +288,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 foreach (var child in shellItems)
                 {
                     var ebItem = new ExplorerBrowserItem(child);
+                    ebItem.BitmapSource = ebItem.IsFolder ? this._defaultFolderImageBitmapSource : this._defaultDocumentAssocImageBitmapSource;
                     targetFolder.Children?.Add(ebItem);
                 }
             }
@@ -450,6 +428,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     /// <summary>
     /// Taken from <see href="https://stackoverflow.com/questions/76640972/convert-system-drawing-icon-to-microsoft-ui-xaml-imagesource"/>
+    /// See also <see href="https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.image.source?view=windows-app-sdk-1.5#microsoft-ui-xaml-controls-image-source"/>
+    /// See also <see href="https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs"/>
     /// </summary>
     /// <param name="icon"></param>
     /// <returns></returns>

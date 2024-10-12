@@ -20,8 +20,7 @@
                         <Image
                             Name="Image"
                             Height="48"
-                            Source="ms-appx:///Assets/Views/Workbench/Shell32 Default unknown File_64x64-32.png" />
-                        <!--  Source="{x:Bind ImageIconSource}" -->
+                            Source="{x:Bind BitmapSource}" />
                         <!--  ImageExOpened="ImageEx_ImageExOpened"  -->
                         <!--  CornerRadius="8"  -->
                         <TextBlock

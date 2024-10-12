@@ -3,6 +3,7 @@ using System.Text;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using System.ComponentModel;
+using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace electrifier.Controls.Vanara;
 
@@ -62,6 +63,8 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
     {
         get;
     }
+
+    public SoftwareBitmapSource BitmapSource { get; set; }
 
 
     public ExplorerBrowserItem(ShellItem shItem)
