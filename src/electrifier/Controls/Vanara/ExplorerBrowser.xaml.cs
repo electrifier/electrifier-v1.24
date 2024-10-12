@@ -1,5 +1,4 @@
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.WinUI;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml;

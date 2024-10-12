@@ -3,7 +3,6 @@ using System.Text;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using System.ComponentModel;
-using CommunityToolkit.WinUI.Controls;
 
 namespace electrifier.Controls.Vanara;
 
