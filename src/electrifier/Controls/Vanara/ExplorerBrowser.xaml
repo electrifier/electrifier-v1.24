@@ -17,37 +17,6 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <!-- <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />-->
-            <Button x:Uid="BackButton">
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE652;" />
-            </Button>
-            <SplitButton x:Name="ForwardSplitButton" Height="32">
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE651;" />
-                <SplitButton.Flyout>
-                    <Flyout x:Name="Flyout" Placement="Bottom">
-                        <!--  TODO: Check                       <TreeViewList></TreeViewList> -->
-                        <ItemsStackPanel>
-                            <Button>Workbench</Button>
-                            <Button>Workbench</Button>
-                            <Button>Workbench</Button>
-                        </ItemsStackPanel>
-                        <!--  flyout content  -->
-                    </Flyout>
-                </SplitButton.Flyout>
-            </SplitButton>
-            <Button x:Uid="UpOneFolderButton">
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE650;" />
-            </Button>
-            <ProgressRing
-                x:Name="NavigationBarProgressRing"
-                BorderThickness="1"
-                IsActive="{x:Bind IsLoading, Mode=OneWay}"
-                Visibility="Visible" />
-            <Button x:Uid="ReloadButton">
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72C;" />
-            </Button>
-            <Border /><!-- controls:GridSplitter -->
             <CommandBar
                 x:Name="TopCommandBar"
                 Grid.Row="0"
@@ -200,7 +169,6 @@
             </CommandBar>
             <!--<controls:SwitchPresenter Grid.Row="1" Value="{x:Bind HasNavigationFailure}">
             <controls:Case Value="true">-->
-        </StackPanel>
         <Border Grid.Row="1" Visibility="Collapsed">
             <InfoBar
                 x:Name="NavigationFailedInfoBar"
@@ -223,27 +191,6 @@
                 </InfoBar.Content>
             </InfoBar>
         </Border>
-        <!--<StackPanel
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal">
-                    <TextBlock
-                        x:Uid="NavigationFailureTextBlock"
-                        HorizontalAlignment="Center"
-                        Text="Navigation has failed."
-                        TextWrapping="WrapWholeWords" />
-                    <TextBlock
-                        x:Uid="NavigationFailureTextBlock"
-                        HorizontalAlignment="Center"
-                        Text="Navigation has failed."
-                        TextWrapping="WrapWholeWords" />
-                    <HyperlinkButton
-                        x:Uid="NavigationFailureRefreshViewButton"
-                        HorizontalAlignment="Center"
-                        Command="{x:Bind RefreshViewCommand}" />
-                </StackPanel>-->
-        <!--</controls:Case>
-        </controls:SwitchPresenter>-->
         <Grid x:Name="ArenaGrid" Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <!--  controls:DockPanel.Dock="Left"  -->
