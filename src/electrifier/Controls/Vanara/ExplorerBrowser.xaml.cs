@@ -180,37 +180,27 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     private async Task InitializeViewModel()
     {
-        //ShellGridView.DataContext = this;
-        //ShellTreeView.DataContext = this;
+        _ = InitializeStockIcons();
 
-        CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
         var rootItems = new List<ExplorerBrowserItem>
         {
-            CurrentFolderBrowserItem,
+            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Desktop)),
+            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Downloads)),
+            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Documents)),
+            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Pictures)),
+            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Music)),
+            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Videos)),
+            // todo: add separator
+            //new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop)), // TODO: Check why this leads to `SyncCenter`?
+            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder)),
         };
 
-        // add second root folder as dummy
-        var galleryFolder = new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_PicturesLibrary);
-        var galleryEbItem = new ExplorerBrowserItem(galleryFolder);
-        rootItems.Add(galleryEbItem);
-
-        await InitializeStockIcons();
-
         ShellTreeView.ItemsSource = rootItems;
-        CurrentFolderBrowserItem.IsExpanded = true;
-        CurrentFolderBrowserItem.IsSelected = true;
     }
 
     private SoftwareBitmapSource _defaultFolderImageBitmapSource;
     private SoftwareBitmapSource _defaultDocumentAssocImageBitmapSource;
 
-    /// <summary>
-    /// DUMMY: TODO: InitializeStockIcons()
-    ///
-    /// Added code:
-    /// <see cref="GetWinUi3BitmapSourceFromIcon"/>
-    /// <see cref="GetWinUi3BitmapSourceFromGdiBitmap"/>
-    /// </summary>
     public async Task InitializeStockIcons()
     {
         try
@@ -271,10 +261,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             if ((shFolder.Attributes & ShellItemAttribute.Removable) != 0)
             {
                 // TODO: Check for Disc in Drive, fail only if device not present
-                // TODO: Add `Eject-Buttons` to TreeView (right side, instead of Pin header) and GridView
+                // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
                 Debug.WriteLine($"GetChildItems: IsRemovable = true");
                 var eventArgs = new NavigationFailedEventArgs();
-                // TODO: Switch PresentationView to `Error`
                 return;
             }
 
