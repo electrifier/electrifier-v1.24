@@ -73,6 +73,16 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         var s = e.NewValue; //null checks omitted
         Debug.Print($".OnCurrentFolderItemsChanged(): {s}");
     }
+    public int ItemCount
+    {
+        get => (int)GetValue(ItemCountProperty);
+        set => SetValue(ItemCountProperty, value);
+    }
+    public static readonly DependencyProperty ItemCountProperty = DependencyProperty.Register(
+        nameof(ItemCount),
+        typeof(int),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(null));
 
     public string NavigationFailure
     {
@@ -213,7 +223,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 _defaultFolderImageBitmapSource = await bmpSource;
             }
 
-            using var siDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCASSOC); // SIID_DOCNOASSOC 
+            using var siDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC);
             {
                 var idx = siDocument.SystemImageIndex;
                 var icnHandle = siDocument.IconHandle.ToIcon();
@@ -281,6 +291,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                     targetFolder.Children?.Add(ebItem);
                 }
             }
+
+            ItemCount = itemCount;
         }
         catch (Exception e)
         {

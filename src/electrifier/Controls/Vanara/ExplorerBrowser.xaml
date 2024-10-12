@@ -286,7 +286,7 @@
                     VerticalContentAlignment="Center"
                     Background="Transparent"
                     DefaultLabelPosition="Collapsed">
-            <AppBarButton Content="xxx Items"
+            <AppBarButton Content="{x:Bind ItemCount}"
                           IsCompact="True"
                           IsEnabled="False" />
             <AppBarSeparator />
