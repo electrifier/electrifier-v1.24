@@ -62,17 +62,7 @@
                     GridViewVisibility="Collapsed"
                     TopCommandBarVisibility="Collapsed" />
             </Border>
-            <controls:GridSplitter
-                x:Name="GridSplitter"
-                Grid.Column="1"
-                Width="12"
-                HorizontalAlignment="Left"
-                ResizeBehavior="BasedOnAlignment"
-                ResizeDirection="Columns">
-                <controls:GridSplitter.RenderTransform>
-                    <TranslateTransform X="-6" />
-                </controls:GridSplitter.RenderTransform>
-            </controls:GridSplitter>
+            <Border Grid.Column="1"/><!-- controls:GridSplitter -->
             <Border x:Name="CodeEditorBorder" Grid.Column="2">
                 <editor:CodeEditorControl x:Name="CodeEditorControl" />
             </Border>

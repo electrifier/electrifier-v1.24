@@ -74,16 +74,7 @@
                 <ItemsStackPanel />
             </Grid>
         </Border>
-        <controls:GridSplitter
-            Grid.Column="1"
-            Width="12"
-            HorizontalAlignment="Left"
-            ResizeBehavior="BasedOnAlignment"
-            ResizeDirection="Columns">
-            <controls:GridSplitter.RenderTransform>
-                <TranslateTransform X="-6" />
-            </controls:GridSplitter.RenderTransform>
-        </controls:GridSplitter>
+        <Border /><!-- controls:GridSplitter -->
         <StackPanel x:Name="SidebarStackPanel" Grid.Column="2">
             <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="SideBar" />
             <InfoBar
