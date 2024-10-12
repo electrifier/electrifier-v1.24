@@ -47,7 +47,7 @@
             <Button x:Uid="ReloadButton">
                 <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xE72C;" />
             </Button>
-            <controls:GridSplitter />
+            <Border /><!-- controls:GridSplitter -->
             <CommandBar
                 x:Name="TopCommandBar"
                 Grid.Row="0"
@@ -255,18 +255,7 @@
                 <local:Shell32TreeView x:Name="ShellTreeView" />
             </Border>
             <!--  TODO: GridSplitter is not Working when TreeView Visibility changes to Collapsed  -->
-            <controls:GridSplitter
-                x:Name="ArenaGridSplitter"
-                Grid.Column="1"
-                Width="12"
-                HorizontalAlignment="Left"
-                ResizeBehavior="BasedOnAlignment"
-                ResizeDirection="Columns"
-                Visibility="{x:Bind ArenaGridSplitterVisibility}">
-                <controls:GridSplitter.RenderTransform>
-                    <TranslateTransform X="-6" />
-                </controls:GridSplitter.RenderTransform>
-            </controls:GridSplitter>
+            <Border Grid.Column="1"  /><!-- controls:GridSplitter -->
             <Border x:Name="ShellGridViewBorder" Grid.Column="2">
                 <StackPanel Orientation="Vertical">
                     <local:Shell32GridView
