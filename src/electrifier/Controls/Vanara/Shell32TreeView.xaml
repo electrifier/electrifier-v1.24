@@ -22,8 +22,7 @@
                         <StackPanel MaxHeight="20" Orientation="Horizontal">
                             <Image
                                 Name="ExplorerBrowserItemImageEx"
-                                Source="ms-appx:///Assets/Views/Workbench/Shell32 Default Folder_16x16-32.png"/>
-                            <!--  Source="{x:Bind ImageIconSource}" -->
+                                Source="{x:Bind BitmapSource}"/>
                             <TextBlock
                                 x:Name="ExplorerBrowserItemDisplayNameTextBlock"
                                 Margin="5,0,5,0"
