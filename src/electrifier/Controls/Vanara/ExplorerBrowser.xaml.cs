@@ -5,6 +5,7 @@ using Microsoft.UI.Xaml;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using Vanara.PInvoke;
 using System.Runtime.CompilerServices;
@@ -204,8 +205,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Videos)),
             // todo: add separator
             new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_OneDrive)),
-            //new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop)), // TODO: Check why this leads to `SyncCenter`?
-            //new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder)),
+            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop)), // TODO: Check why this leads to `SyncCenter`?
+            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder)),
         };
 
         ShellTreeView.ItemsSource = rootItems;
@@ -214,6 +215,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     private SoftwareBitmapSource _defaultFolderImageBitmapSource;
     private SoftwareBitmapSource _defaultDocumentAssocImageBitmapSource;
 
+    /// <summary>
+    /// <see href="https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs"/>
+    /// </summary>
+    /// <returns></returns>
     public async Task InitializeStockIcons()
     {
         try
@@ -432,41 +437,40 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /// <summary>
     /// Taken from <see href="https://stackoverflow.com/questions/76640972/convert-system-drawing-icon-to-microsoft-ui-xaml-imagesource"/>
     /// </summary>
-    /// <param name="icon"></param>
+    /// <param name="bitmapIcon"></param>
     /// <returns></returns>
-    public static async Task<SoftwareBitmapSource> GetWinUi3BitmapSourceFromIcon(System.Drawing.Icon icon)
+    public static async Task<SoftwareBitmapSource> GetWinUi3BitmapSourceFromIcon(Icon bitmapIcon)
     {
-        if (icon == null)
+        if (bitmapIcon == null)
             return null;
 
         // convert to bitmap
-        using var bmp = icon.ToBitmap();
+        using var bmp = bitmapIcon.ToBitmap();
         return await GetWinUi3BitmapSourceFromGdiBitmap(bmp);
     }
 
     /// <summary>
     /// Taken from <see href="https://stackoverflow.com/questions/76640972/convert-system-drawing-icon-to-microsoft-ui-xaml-imagesource"/>
     /// See also <see href="https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.image.source?view=windows-app-sdk-1.5#microsoft-ui-xaml-controls-image-source"/>
-    /// See also <see href="https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs"/>
     /// </summary>
-    /// <param name="icon"></param>
+    /// <param name="gdiBitmap"></param>
     /// <returns></returns>
-    public static async Task<SoftwareBitmapSource> GetWinUi3BitmapSourceFromGdiBitmap(System.Drawing.Bitmap bmp)
+    public static async Task<SoftwareBitmapSource> GetWinUi3BitmapSourceFromGdiBitmap(Bitmap gdiBitmap)
     {
-        if (bmp == null)
+        if (gdiBitmap == null)
             return null;
 
         // get pixels as an array of bytes
-        var data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, bmp.PixelFormat);
+        var data = gdiBitmap.LockBits(new System.Drawing.Rectangle(0, 0, gdiBitmap.Width, gdiBitmap.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, gdiBitmap.PixelFormat);
         var bytes = new byte[data.Stride * data.Height];
         Marshal.Copy(data.Scan0, bytes, 0, bytes.Length);
-        bmp.UnlockBits(data);
+        gdiBitmap.UnlockBits(data);
 
         // get WinRT SoftwareBitmap
         var softwareBitmap = new Windows.Graphics.Imaging.SoftwareBitmap(
             Windows.Graphics.Imaging.BitmapPixelFormat.Bgra8,
-            bmp.Width,
-            bmp.Height,
+            gdiBitmap.Width,
+            gdiBitmap.Height,
             Windows.Graphics.Imaging.BitmapAlphaMode.Premultiplied);
         softwareBitmap.CopyFromBuffer(bytes.AsBuffer());
 
