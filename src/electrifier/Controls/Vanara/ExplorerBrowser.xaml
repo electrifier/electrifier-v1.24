@@ -20,24 +20,19 @@
                     Grid.Row="0"
                     HorizontalAlignment="Left"
                     Background="Transparent"
-                    DefaultLabelPosition="Collapsed"
+                    DefaultLabelPosition="Right"
                     IsOpen="False"
                     Visibility="{x:Bind TopCommandBarVisibility}">
             <AppBarElementContainer>
                 <SplitButton x:Name="NewItemSplitButton"
-                             Content="New"
-                             IsEnabled="False">
+                             Content="New">
                     <SplitButton.Flyout>
                         <Flyout>
-                            <StackPanel>
-                                <Button Background="Transparent"
-                                        Content="Folder" />
-                                <Button Background="Transparent"
-                                        Content="Text File" />
-                                <Button Background="Transparent"
-                                        Content="Shortcut" />
-                                <Button Background="Transparent"
-                                        Content="Select..." />
+                            <StackPanel >
+                                <AppBarButton Icon="Folder"
+                                              Label="Folder" />
+                                <AppBarButton Icon="Link"
+                                              Label="Shortcut" />
                             </StackPanel>
                         </Flyout>
                     </SplitButton.Flyout>
@@ -65,37 +60,26 @@
             <AppBarSeparator />
             <AppBarElementContainer>
                 <SplitButton x:Name="SortSplitButton"
-                             Content="Sort"
-                             IsEnabled="False">
+                             Content="Sort">
                     <SplitButton.Flyout>
                         <Flyout>
                             <StackPanel>
-                                <Button Background="Transparent"
-                                        Content="Name" />
-                                <Button Background="Transparent"
-                                        Content="Date Modified" />
-                                <Button Background="Transparent"
-                                        Content="Type" />
-                                <Button Background="Transparent"
-                                        Content="~" />
-                                <Button Background="Transparent"
-                                        Content="More" />
-                                <Button Background="Transparent"
-                                        Content="~" />
-                                <Button Background="Transparent"
-                                        Content="Ascending" />
-                                <Button Background="Transparent"
-                                        Content="Descending" />
-                                <Button Background="Transparent"
-                                        Content="~" />
-                                <Button Background="Transparent"
-                                        Content="Group by" />
+                                <Button Content="Name" />
+                                <Button Content="Date Modified" />
+                                <Button Content="Type" />
+                                <Button Content="~" />
+                                <Button Content="More" />
+                                <Button Content="~" />
+                                <Button Content="Ascending" />
+                                <Button Content="Descending" />
+                                <Button Content="~" />
+                                <Button Content="Group by" />
                             </StackPanel>
                         </Flyout>
                     </SplitButton.Flyout>
                     <SplitButton.Resources>
                         <TeachingTip x:Name="SortSplitButtonTeachingTip"
-                                     Title="Sort and Group options."
+                                     Title="TODO: Add Sort and Group options."
                                      Subtitle="Use the dropdown button option to save your item and create another."
                                      Target="{x:Bind SortSplitButton}" />
                     </SplitButton.Resources>
@@ -103,36 +87,31 @@
             </AppBarElementContainer>
             <AppBarElementContainer>
                 <SplitButton x:Name="ViewSplitButton"
-                             Content="View"
-                             IsEnabled="False">
+                             Content="View">
                     <SplitButton.Flyout>
                         <Flyout>
                             <StackPanel>
-                                <Button Background="Transparent"
-                                        Content="Tiles" />
-                                <Button Background="Transparent"
-                                        Content="Content" />
-                                <Button Background="Transparent"
-                                        Content="~" />
-                                <Button Background="Transparent"
-                                        Content="Details pane" />
-                                <Button Background="Transparent"
-                                        Content="Preview pane" />
-                                <Button Background="Transparent"
-                                        Content="~" />
-                                <Button Background="Transparent"
-                                        Content="Show" />
-                                <Button Background="Transparent"
-                                        Content="~" />
-                                <Button Background="Transparent"
-                                        Content="Two Pages" />
-                                <!--  Glyph: E89A, TwoPage  -->
+                                <Button Content="Tiles" />
+                                <Button Content="Content" />
+                                <Button Content="~" />
+                                <Button Content="Details pane" />
+                                <Button Content="Preview pane" />
+                                <Button Content="~" />
+                                <Button Content="Show" />
+                                <Button Content="~" />
+                                <Button Content="Two Pages" /> <!--  Glyph: E89A, TwoPage  -->
+                                <AppBarButton Icon="TwoPage"
+                                              Label="Double pane mode" />
+                                <AppBarButton Icon="Refresh"
+                                              Label="Refresh" />
+                                <AppBarButton Icon="Orientation"
+                                              Label="Orientation" />
                             </StackPanel>
                         </Flyout>
                     </SplitButton.Flyout>
                     <SplitButton.Resources>
                         <TeachingTip x:Name="ViewSplitButtonTeachingTip"
-                                     Title="Sort and Group options."
+                                     Title="TODO: Sort and Group options."
                                      Subtitle="Use the dropdown button option to save your item and create another."
                                      Target="{x:Bind SortSplitButton}" />
                     </SplitButton.Resources>
@@ -140,25 +119,20 @@
             </AppBarElementContainer>
             <AppBarElementContainer>
                 <SplitButton x:Name="FilterSplitButton"
-                             Content="Filter"
-                             IsEnabled="False">
+                             Content="Filter">
                     <SplitButton.Flyout>
                         <Flyout>
                             <StackPanel>
-                                <Button Background="Transparent"
-                                        Content="All File Types" />
-                                <Button Background="Transparent"
-                                        Content="~" />
-                                <Button Background="Transparent"
-                                        Content="Files" />
-                                <Button Background="Transparent"
-                                        Content="Folders" />
+                                <Button Content="All File Types" />
+                                <Button Content="~" />
+                                <Button Content="Files" />
+                                <Button Content="Folders" />
                             </StackPanel>
                         </Flyout>
                     </SplitButton.Flyout>
                     <SplitButton.Resources>
                         <TeachingTip x:Name="FilterSplitButtonTeachingTip"
-                                     Title="filter some options."
+                                     Title="TODO: Add filter options title text."
                                      Subtitle="Use the dropdown button option to save your item and create another."
                                      Target="{x:Bind FilterSplitButton}" />
                     </SplitButton.Resources>
@@ -172,19 +146,18 @@
                 <AppBarButton Icon="Pin"
                               Label="Pin to Quick access" />
                 <AppBarSeparator />
-                <AppBarButton Icon="Undo"
+                <AppBarButton Icon="SelectAll"
                               Label="Select all" />
-                <AppBarButton Icon="Undo"
+                <!-- TODO: The Icon="ViewAll" is the one, that Windows Explorer uses for `Select none` -->
+                <AppBarButton Icon="ClearSelection"
                               Label="Select none" />
-                <AppBarButton Icon="Undo"
+                <AppBarButton Icon="Shuffle"
                               Label="Invert selection" />
                 <AppBarSeparator />
-                <AppBarButton Icon="Undo"
+                <AppBarButton Icon="Repair"
                               Label="Properties" />
                 <AppBarButton Icon="Setting"
                               Label="Options" />
-                <AppBarButton Icon="Orientation"
-                              Label="Orientation" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
         <Border Grid.Row="1">

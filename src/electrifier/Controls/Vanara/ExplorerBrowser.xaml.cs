@@ -322,7 +322,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         FileCount = fileCount;
         FolderCount = folderCount;
 
-        Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracted: {ItemCount} items.");
+        Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracted: {ItemCount} items: {FileCount} files, {FolderCount} folders");
     }
 
     private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
