@@ -45,12 +45,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             Debug.WriteLine($"[E].OnCurrentFolderBrowserItemChanged(): `{s.ToString()}` -> ERROR:UNKNOWN TYPE! Should be <ExplorerBrowserItem>");
         }
     }
-
-    /// <summary>
-    /// Represents the current's folder content.
-    /// Each Item is an <see cref="ExplorerBrowserItem"/>.
-    /// It is then used as DataSource of <see cref="ShellGridView"/>.
-    /// </summary>
+    /// <summary>Current Folder content Items.</summary>
     public ObservableCollection<ExplorerBrowserItem> CurrentFolderItems
     {
         get => (ObservableCollection<ExplorerBrowserItem>)GetValue(CurrentFolderItemsProperty);
@@ -78,7 +73,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         typeof(int),
         typeof(ExplorerBrowser),
         new PropertyMetadata(null));
-
     public string NavigationFailure
     {
         get => (string)GetValue(NavigationFailureProperty);
@@ -89,13 +83,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         typeof(string),
         typeof(ExplorerBrowser),
         new PropertyMetadata(string.Empty));
-
     /// <summary>
     /// HResult code for <code><see cref="System.Runtime.InteropServices.COMException"/> 0x80070490</code>
     /// <remarks>Fired when `Element not found`</remarks>
     /// </summary>
     public HRESULT HResultElementNotFound = 0x80070490;
-
     private ShellIconExtractor? _iconExtractor;
     public ShellIconExtractor? IconExtractor
     {
@@ -106,17 +98,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             _iconExtractor = value;
         }
     }
-
     public bool IsLoading
     {
         get; set;
     }
-
     public Visibility GridViewVisibility
     {
         get; set;
     }
-
     public Visibility TreeViewVisibility
     {
         get => (Visibility)GetValue(TreeViewVisibilityProperty);
@@ -127,22 +116,18 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         typeof(Visibility),
         typeof(ExplorerBrowser),
         new PropertyMetadata(default(object)));
-
     public Visibility TopCommandBarVisibility
     {
         get; set;
     }
-
     public Visibility BottomAppBarVisibility
     {
         get; set;
     }
-
     public Visibility BottomCommandBarVisibility
     {
         get; set;
     }
-
     public ICommand RefreshViewCommand
     {
         get;
@@ -190,14 +175,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         {
             // todo: add home folder
             // todo: add separator
-            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Desktop)),
-            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Downloads)),
-            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Documents)),
-            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Pictures)),
-            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Music)),
-            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Videos)),
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Desktop)),
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Downloads)),
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Documents)),
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Pictures)),
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Music)),
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Videos)),
             // todo: add separator
-            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_OneDrive)),
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_OneDrive)),
             //new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop)), // TODO: Check why this leads to `SyncCenter`?
             //new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder)),
         };
@@ -287,17 +272,15 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                     if (ebItem.IsFolder)
                     {
                         ebItem.BitmapSource = this._defaultFolderImageBitmapSource;
+                        targetFolder.Children?.Insert(0, ebItem);
                     }
                     else
                     {
                         ebItem.BitmapSource = this._defaultDocumentAssocImageBitmapSource;
+                        targetFolder.Children?.Add(ebItem);
                     }
-
-                    targetFolder.Children?.Add(ebItem);
                 }
             }
-
-            ItemCount = itemCount;
         }
         catch (Exception e)
         {
@@ -305,7 +288,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             throw;
         }
 
-        Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracted: {itemCount} items.");
+        ItemCount = itemCount;
+        Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracted: {ItemCount} items.");
     }
 
     private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)

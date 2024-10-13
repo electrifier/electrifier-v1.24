@@ -193,7 +193,7 @@
                      BorderBrush="DarkRed"
                      BorderThickness="8"
                      IsClosable="True"
-                     IsOpen="True"
+                     IsOpen="False"
                      Message="{x:Bind NavigationFailure}"
                      Severity="Error">
                 <InfoBar.Content>
