@@ -221,7 +221,10 @@
                     Visibility="{x:Bind TreeViewVisibility}">
                 <local:Shell32TreeView x:Name="ShellTreeView" />
             </Border>
-            <Border Grid.Column="1" Width="8" Background="Transparent"/><!-- controls:GridSplitter -->
+            <Border Grid.Column="1"
+                    Width="8"
+                    Background="Transparent" />
+            <!-- controls:GridSplitter -->
             <Border x:Name="ShellGridViewBorder"
                     Grid.Column="2">
                 <StackPanel Orientation="Vertical">
@@ -283,25 +286,51 @@
                     VerticalContentAlignment="Center"
                     Background="Transparent"
                     DefaultLabelPosition="Collapsed">
-            <AppBarButton Content="{x:Bind ItemCount}"
-                          IsCompact="True"
-                          IsEnabled="False" />
+            <AppBarButton IsCompact="True"
+                          IsEnabled="False">
+                <TextBlock>
+                    <Run FontWeight="SemiBold"
+                         Text="Items: " />
+                    <Run Text="{x:Bind ItemCount}" />
+                </TextBlock>
+            </AppBarButton>
             <AppBarSeparator />
-            <AppBarToggleButton Content="xxx folders"
-                                IsChecked="True"
-                                IsCompact="True" />
+            <AppBarButton IsCompact="True"
+                          IsEnabled="False">
+                <TextBlock>
+                    <Run FontWeight="SemiBold"
+                         Text="Folders: " />
+                    <Run Text="{x:Bind ItemCount}" />
+                </TextBlock>
+            </AppBarButton>
             <AppBarSeparator />
-            <AppBarToggleButton Content="xxx files"
-                                IsChecked="True"
-                                IsCompact="True" />
+            <AppBarButton IsCompact="True"
+                          IsEnabled="False">
+                <TextBlock>
+                    <Run FontWeight="SemiBold"
+                         Text="Files: " />
+                    <Run Text="{x:Bind ItemCount}" />
+                </TextBlock>
+            </AppBarButton>
             <AppBarSeparator />
-            <AppBarToggleButton Content="xxx hidden (0 / 0)"
-                                IsChecked="True"
-                                IsCompact="True" />
+            <AppBarButton IsCompact="True"
+                          IsEnabled="False">
+                <TextBlock>
+                    <Run FontWeight="SemiBold"
+                         Text="Size: " />
+                    <Run Text="{x:Bind ItemCount}" />
+                    <Run Text="bytes" />
+                </TextBlock>
+            </AppBarButton>
             <AppBarSeparator />
-            <AppBarButton Content="Size: bytes"
-                          IsCompact="True"
-                          IsEnabled="False" />
+            <AppBarButton IsCompact="True"
+                          IsEnabled="False">
+                <TextBlock>
+                    <Run FontWeight="SemiBold"
+                         Text="Hidden: " />
+                    <Run Text="{x:Bind ItemCount}" />
+                </TextBlock>
+            </AppBarButton>
         </CommandBar>
     </Grid>
 </UserControl>
