@@ -72,7 +72,28 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         nameof(ItemCount),
         typeof(int),
         typeof(ExplorerBrowser),
-        new PropertyMetadata(null));
+        new PropertyMetadata(0));
+    public int FileCount
+    {
+        get => (int)GetValue(FileCountProperty);
+        set => SetValue(FileCountProperty, value);
+    }
+    public static readonly DependencyProperty FileCountProperty = DependencyProperty.Register(
+        nameof(FileCount),
+        typeof(int),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(0));
+    public int FolderCount
+    {
+        get => (int)GetValue(FolderCountProperty);
+        set => SetValue(FolderCountProperty, value);
+    }
+    public static readonly DependencyProperty FolderCountProperty = DependencyProperty.Register(
+        nameof(FolderCount),
+        typeof(int),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(0));
+
     public string NavigationFailure
     {
         get => (string)GetValue(NavigationFailureProperty);
@@ -237,6 +258,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     public void ExtractChildItems(ExplorerBrowserItem targetFolder)
     {
         var itemCount = 0;
+        var fileCount = 0;
+        var folderCount = 0;
         Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracting...");
         Debug.Assert(targetFolder is not null);
         if (targetFolder is null)
@@ -271,13 +294,15 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                     var ebItem = new ExplorerBrowserItem(shItem);
                     if (ebItem.IsFolder)
                     {
-                        ebItem.BitmapSource = this._defaultFolderImageBitmapSource;
+                        ebItem.BitmapSource = _defaultFolderImageBitmapSource;
                         targetFolder.Children?.Insert(0, ebItem);
+                        folderCount++;
                     }
                     else
                     {
-                        ebItem.BitmapSource = this._defaultDocumentAssocImageBitmapSource;
+                        ebItem.BitmapSource = _defaultDocumentAssocImageBitmapSource;
                         targetFolder.Children?.Add(ebItem);
+                        fileCount++;
                     }
                 }
             }
@@ -289,6 +314,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
 
         ItemCount = itemCount;
+        FileCount = fileCount;
+        FolderCount = folderCount;
+
         Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracted: {ItemCount} items.");
     }
 

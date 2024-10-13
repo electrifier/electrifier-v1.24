@@ -10,7 +10,7 @@ public sealed partial class Shell32BreadcrumbBar : UserControl
 {
     public Shell32BreadcrumbBar()
     {
-        this.InitializeComponent();
+        InitializeComponent();
 
         NativeBreadcrumbBar.ItemsSource = new ObservableCollection<Shell32.Folder> { };
         NativeBreadcrumbBar.ItemClicked += NativeBreadcrumbBar_ItemClicked;
