@@ -56,6 +56,18 @@
             <AppBarButton Icon="Delete"
                           IsEnabled="False"
                           Label="Delete" />
+
+            <!--<Button Content="Options">
+                <Button.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="Reset"/>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem Text="Repeat" IsChecked="True"/>
+                        <ToggleMenuFlyoutItem Text="Shuffle" IsChecked="True"/>
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>-->
+
             <AppBarSeparator />
             <AppBarElementContainer>
                 <SplitButton x:Name="SortSplitButton"

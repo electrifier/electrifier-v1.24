@@ -107,6 +107,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         new PropertyMetadata(string.Empty));
     /// <summary>
     /// HResult code for <code><see cref="System.Runtime.InteropServices.COMException"/> 0x80070490</code>
+    /// TODO: Add this to Vanara... https://github.com/dahall/Vanara/issues/490
     /// <remarks>Fired when `Element not found`</remarks>
     /// </summary>
     public HRESULT HResultElementNotFound = 0x80070490;
@@ -434,31 +435,31 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
 
+    /* TODO: add to https://github.com/tajbender/tajbender.Vanara/blob/master/WinUI.Extensions/ShellImageSource.cs */
+
     /// <summary>
     /// Taken from <see href="https://stackoverflow.com/questions/76640972/convert-system-drawing-icon-to-microsoft-ui-xaml-imagesource"/>
+    /// See also <see href="https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.media.imaging.bitmapimage?view=windows-app-sdk-1.6"/>, which can deal with .ico natively.
     /// </summary>
     /// <param name="bitmapIcon"></param>
     /// <returns></returns>
     public static async Task<SoftwareBitmapSource> GetWinUi3BitmapSourceFromIcon(Icon bitmapIcon)
     {
-        if (bitmapIcon == null)
-            return null;
+        ArgumentNullException.ThrowIfNull(bitmapIcon);
 
-        // convert to bitmap
-        using var bmp = bitmapIcon.ToBitmap();
-        return await GetWinUi3BitmapSourceFromGdiBitmap(bmp);
+        return await GetWinUi3BitmapSourceFromGdiBitmap(bitmapIcon.ToBitmap());
     }
 
     /// <summary>
-    /// Taken from <see href="https://stackoverflow.com/questions/76640972/convert-system-drawing-icon-to-microsoft-ui-xaml-imagesource"/>
-    /// See also <see href="https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.image.source?view=windows-app-sdk-1.5#microsoft-ui-xaml-controls-image-source"/>
+    /// Taken from <see href="https://stackoverflow.com/questions/76640972/convert-system-drawing-icon-to-microsoft-ui-xaml-imagesource"/>.
+    /// See also <see href="https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.image.source?view=windows-app-sdk-1.5#microsoft-ui-xaml-controls-image-source"/>.
+    /// See also <see href="https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.media.imaging.bitmapimage?view=windows-app-sdk-1.6"/>, which can deal with .ico natively.
     /// </summary>
     /// <param name="gdiBitmap"></param>
     /// <returns></returns>
     public static async Task<SoftwareBitmapSource> GetWinUi3BitmapSourceFromGdiBitmap(Bitmap gdiBitmap)
     {
-        if (gdiBitmap == null)
-            return null;
+        ArgumentNullException.ThrowIfNull(gdiBitmap);
 
         // get pixels as an array of bytes
         var data = gdiBitmap.LockBits(new System.Drawing.Rectangle(0, 0, gdiBitmap.Width, gdiBitmap.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, gdiBitmap.PixelFormat);
