@@ -197,6 +197,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         var rootItems = new List<ExplorerBrowserItem>
         {
             // todo: add home folder
+            // todo: add Gallery
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_OneDrive)),
             // todo: add separator
             new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Desktop)),
             new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Downloads)),
@@ -205,9 +207,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Music)),
             new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Videos)),
             // todo: add separator
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_OneDrive)),
-            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop)), // TODO: Check why this leads to `SyncCenter`?
-            new ExplorerBrowserItem(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder)),
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop)), // TODO: Check why this leads to `SyncCenter`?
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder)),
         };
 
         ShellTreeView.ItemsSource = rootItems;
