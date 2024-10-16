@@ -354,11 +354,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
             if (ebItem is not ExplorerBrowserItem)
             {
-                // TODO: Clear selection
+                Debug.Print($".ShellTreeView_SelectionChanged({args})");
+                shellItems?.Clear();
                 return;
             }
 
-            Debug.Print($".ShellTreeView_SelectionChanged() {ebItem.DisplayName}");
+            Debug.Print($".ShellTreeView_SelectionChanged({ebItem.DisplayName});");
 
             // todo: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh();
             // todo: Use CONSTANTS from ExplorerBrowser if possible
@@ -434,7 +435,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 CurrentFolderItems.Add(childItem);
             }
         }
-
         catch (COMException comEx)
         {
             var navFailedEventArgs = new ExtNavigationFailedEventArgs();
