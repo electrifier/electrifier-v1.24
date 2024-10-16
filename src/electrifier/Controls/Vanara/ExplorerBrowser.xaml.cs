@@ -1,3 +1,4 @@
+using System.Collections;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -275,7 +276,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         var fileCount = 0;
         var folderCount = 0;
         Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracting...");
-        Debug.Assert(targetFolder is not null);
+
+        shellItems?.Clear();
         if (targetFolder is null)
         {
             throw new ArgumentNullException(nameof(targetFolder));
@@ -296,30 +298,35 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 return;
             }
 
-            var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
-            var shellItems = children as ShellItem[] ?? children.ToArray();
-            itemCount = shellItems.Length;
-            targetFolder.Children = []; // TODO: new ReadOnlyDictionary<ExplorerBrowserItem, int>();
+            var ext = new ShellIconExtractor(new ShellFolder(targetFolder.ShellItem));
+            ext.Complete += ShellIconExtractorComplete;
+            ext.IconExtracted += ShellIconExtractorIconExtracted;
+            ext.Start();
 
-            if (shellItems.Length > 0)
-            {
-                foreach (var shItem in shellItems)
-                {
-                    var ebItem = new ExplorerBrowserItem(shItem);
-                    if (ebItem.IsFolder)
-                    {
-                        ebItem.BitmapSource = _defaultFolderImageBitmapSource;
-                        targetFolder.Children?.Insert(0, ebItem);
-                        folderCount++;
-                    }
-                    else
-                    {
-                        ebItem.BitmapSource = _defaultDocumentAssocImageBitmapSource;
-                        targetFolder.Children?.Add(ebItem);
-                        fileCount++;
-                    }
-                }
-            }
+            //var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
+            //var shellItems = children as ShellItem[] ?? children.ToArray();
+            //itemCount = shellItems.Length;
+            //targetFolder.Children = []; // TODO: new ReadOnlyDictionary<ExplorerBrowserItem, int>();
+
+            //if (shellItems.Length > 0)
+            //{
+            //    foreach (var shItem in shellItems)
+            //    {
+            //        var ebItem = new ExplorerBrowserItem(shItem);
+            //        if (ebItem.IsFolder)
+            //        {
+            //            ebItem.BitmapSource = _defaultFolderImageBitmapSource;
+            //            targetFolder.Children?.Insert(0, ebItem);
+            //            folderCount++;
+            //        }
+            //        else
+            //        {
+            //            ebItem.BitmapSource = _defaultDocumentAssocImageBitmapSource;
+            //            targetFolder.Children?.Add(ebItem);
+            //            fileCount++;
+            //        }
+            //    }
+            //}
         }
         catch (Exception e)
         {
@@ -334,11 +341,16 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracted: {ItemCount} items: {FileCount} files, {FolderCount} folders");
     }
 
+    private void ShellIconExtractorIconExtracted(object? sender, ShellIconExtractedEventArgs e) => throw new NotImplementedException();
+    private void ShellIconExtractorComplete(object? sender, EventArgs e) => throw new NotImplementedException();
+
+    private List<ShellItem>? shellItems;
+
     private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
         try
         {
-            var ebItem = (ExplorerBrowserItem)args.AddedItems.FirstOrDefault();
+            var ebItem = (ExplorerBrowserItem?)args.AddedItems.FirstOrDefault()!;
 
             if (ebItem is not ExplorerBrowserItem)
             {
