@@ -11,11 +11,11 @@ namespace electrifier.ViewModels;
 public partial class ShellViewModel : ObservableRecipient
 {
     [ObservableProperty]
-    private bool isBackEnabled;
+    private bool _isBackEnabled = false;
     [ObservableProperty]
-    private bool isForwardEnabled = true;
+    private bool _isForwardEnabled = true;
     [ObservableProperty]
-    private object? selected;
+    private object? _selected;
 
     /// <summary>
     /// Build version description.

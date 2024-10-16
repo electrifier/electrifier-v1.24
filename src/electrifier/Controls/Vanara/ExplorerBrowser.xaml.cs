@@ -114,6 +114,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /// </summary>
     public HRESULT HResultElementNotFound = 0x80070490;
 
+    public ExplorerBrowserItem Home = new(ShellFolder.Desktop);
+
     public bool IsLoading
     {
         get; set;
@@ -303,30 +305,30 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             ext.IconExtracted += ShellIconExtractorIconExtracted;
             ext.Start();
 
-            //var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
-            //var shellItems = children as ShellItem[] ?? children.ToArray();
-            //itemCount = shellItems.Length;
-            //targetFolder.Children = []; // TODO: new ReadOnlyDictionary<ExplorerBrowserItem, int>();
+            var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
+            var shellItems = children as ShellItem[] ?? children.ToArray();
+            itemCount = shellItems.Length;
+            targetFolder.Children = []; // TODO: new ReadOnlyDictionary<ExplorerBrowserItem, int>();
 
-            //if (shellItems.Length > 0)
-            //{
-            //    foreach (var shItem in shellItems)
-            //    {
-            //        var ebItem = new ExplorerBrowserItem(shItem);
-            //        if (ebItem.IsFolder)
-            //        {
-            //            ebItem.BitmapSource = _defaultFolderImageBitmapSource;
-            //            targetFolder.Children?.Insert(0, ebItem);
-            //            folderCount++;
-            //        }
-            //        else
-            //        {
-            //            ebItem.BitmapSource = _defaultDocumentAssocImageBitmapSource;
-            //            targetFolder.Children?.Add(ebItem);
-            //            fileCount++;
-            //        }
-            //    }
-            //}
+            if (shellItems.Length > 0)
+            {
+                foreach (var shItem in shellItems)
+                {
+                    var ebItem = new ExplorerBrowserItem(shItem);
+                    if (ebItem.IsFolder)
+                    {
+                        ebItem.BitmapSource = _defaultFolderImageBitmapSource;
+                        targetFolder.Children?.Insert(0, ebItem);
+                        folderCount++;
+                    }
+                    else
+                    {
+                        ebItem.BitmapSource = _defaultDocumentAssocImageBitmapSource;
+                        targetFolder.Children?.Add(ebItem);
+                        fileCount++;
+                    }
+                }
+            }
         }
         catch (Exception e)
         {
