@@ -180,19 +180,16 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         RefreshViewCommand = new RelayCommand(() => OnRefreshViewCommand(this, new RoutedEventArgs()));
 
-        _ = InitializeViewModel();
-
         this.Loading += ExplorerBrowser_Loading;
     }
 
     private async void ExplorerBrowser_Loading(FrameworkElement sender, object args)
     {
+        _ = InitializeViewModel();
         _ = RefreshGridView();
 
         Task RefreshGridView()
         {
-            Debug.WriteLine("Ätsch!");
-
             return null;
         }
     }
