@@ -12,6 +12,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
+using electrifier.Controls.Vanara.Services;
 using Vanara.Windows.Shell;
 using Visibility = Microsoft.UI.Xaml.Visibility;
 
@@ -111,16 +112,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /// <remarks>Fired when `Element not found`</remarks>
     /// </summary>
     public HRESULT HResultElementNotFound = 0x80070490;
-    private ShellIconExtractor? _iconExtractor;
-    public ShellIconExtractor? IconExtractor
-    {
-        get => _iconExtractor;
-        private set
-        {
-            _iconExtractor?.Cancel();
-            _iconExtractor = value;
-        }
-    }
+
     public bool IsLoading
     {
         get; set;
@@ -180,14 +172,29 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         CurrentFolderItems = [];
         CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
-        RefreshViewCommand = new RelayCommand(() => OnRefreshViewCommand(this, new RoutedEventArgs()));
 
         NavigationFailed += ExplorerBrowser_NavigationFailed;
 
         ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
         ShellGridView.NativeGridView.SelectionChanged += NativeGridView_SelectionChanged;
 
+        RefreshViewCommand = new RelayCommand(() => OnRefreshViewCommand(this, new RoutedEventArgs()));
+
         _ = InitializeViewModel();
+
+        this.Loading += ExplorerBrowser_Loading;
+    }
+
+    private async void ExplorerBrowser_Loading(FrameworkElement sender, object args)
+    {
+        _ = RefreshGridView();
+
+        Task RefreshGridView()
+        {
+            Debug.WriteLine("Ätsch!");
+
+            return null;
+        }
     }
 
     private async Task InitializeViewModel()
@@ -198,21 +205,23 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         {
             // todo: add home folder
             // todo: add Gallery
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_OneDrive)),
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_OneDrive),
             // todo: add separator
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Desktop)),
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Downloads)),
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Documents)),
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Pictures)),
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Music)),
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Videos)),
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder)),
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder)),
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Downloads),
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Documents),
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Pictures),
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Music),
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Videos),
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder),
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder),
             // todo: add separator new(ExplorerBrowserItemSeparator());
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop)), // todo: WARN: Check why this leads to `SyncCenter`?
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop), // todo: WARN: Check why this leads to `SyncCenter`?
         };
 
         ShellTreeView.ItemsSource = rootItems;
+
+        // todo: CurrentFolderBrowserItem = initialTarget; => OnLoaded()
     }
 
     private SoftwareBitmapSource? _defaultFolderImageBitmapSource;
