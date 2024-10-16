@@ -157,7 +157,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     }
 
     /// <summary>Raises the <see cref="NavigationFailed"/> event.</summary>
-    internal void OnNavigationFailed(ExtNavigationFailedEventArgs nfevent)
+    internal void OnNavigationFailed(ExtNavigationFailedEventArgs? nfevent)
     {
         if (nfevent?.FailedLocation is null)
         {
@@ -263,7 +263,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         e.IsHandled = true;
     }
 
-    public void ExtractChildItems(ExplorerBrowserItem targetFolder)
+    public void ExtractChildItems(ExplorerBrowserItem? targetFolder)
     {
         var itemCount = 0;
         var fileCount = 0;
@@ -330,23 +330,28 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
-        var selectedItem = args.AddedItems.FirstOrDefault();
-        if (selectedItem != null)
+        try
         {
-            if (selectedItem is ExplorerBrowserItem ebItem)
+            if (args.AddedItems.FirstOrDefault() is not ({ } and ExplorerBrowserItem ebItem))
             {
-                Debug.Print($".ShellTreeView_SelectionChanged() {ebItem.DisplayName}");
-
-                Navigate(ebItem);
-
-                // TODO: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh()
+                throw new ArgumentOutOfRangeException();
             }
-            // TODO: else
-            //{
-            //    Debug.Fail($"ERROR: ShellTreeView_SelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
-            //    throw new ArgumentOutOfRangeException(
-            //        "$ERROR: ShellTreeView_SelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
-            //}
+
+            Debug.Print($".ShellTreeView_SelectionChanged() {ebItem.DisplayName}");
+
+            // todo: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh();
+            // todo: Use CONSTANTS from ExplorerBrowser if possible
+            Navigate(ebItem, selectTreeViewNode: true);
+        }
+        catch (Exception e)
+        {
+            // todo: fire navigation failed event. Handle `IsHandled` before throwing
+            throw new ArgumentOutOfRangeException($"AddedItem is not type {nameof(ExplorerBrowserItem)}")
+            {
+                HelpLink = null,    // todo: link to github bug report
+                HResult = 0,    // todo: hresult treeview seelection failed
+                Source = $"{typeof(ExplorerBrowser)}",
+            };
         }
     }
 
@@ -381,7 +386,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
 
-    public void Navigate(ExplorerBrowserItem ebItem, bool selectTreeViewNode = false)
+    public void Navigate(ExplorerBrowserItem ebItem, bool selectTreeViewNode = true)
     {
         try
         {
