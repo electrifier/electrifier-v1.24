@@ -36,7 +36,7 @@
     <None Remove="Assets\Square44x44Logo.scale-200_altform-unplated.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Assets\Square44x44Logo.scale-200_altform-unplated.png" />
+    <EmbeddedResource Include="Assets\Square44x44Logo.scale-200_unplated.png" />
   </ItemGroup>
 
   <ItemGroup>

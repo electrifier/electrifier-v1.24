@@ -7,8 +7,8 @@ using Microsoft.UI.Xaml.Media.Imaging;
 
 namespace electrifier.Controls.Vanara;
 
-// TODO: TreeViewNode - Property
-// TODO: GridViewItem - Property
+// TODO: TreeViewNode - Property, events
+// TODO: GridViewItem - Property, events
 
 /// <summary>
 /// A ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32TreeView"/> Items.
@@ -64,7 +64,7 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
         get;
     }
 
-    public SoftwareBitmapSource BitmapSource { get; set; }
+    public SoftwareBitmapSource? BitmapSource { get; set; }
 
 
     public ExplorerBrowserItem(ShellItem shItem)
@@ -72,23 +72,12 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
         ShellItem = new ShellItem(shItem.PIDL);
         DisplayName = ShellItem.Name ?? ":error: <DisplayName.get()>";
         IsExpanded = false;
-        // TODO: If IsSelected, add overlay of opened folder icon to TreeView
+        // todo: If IsSelected, add overlay of opened folder icon to TreeView optionally
         IsSelected = false;
 
+        // todo: Use Debug-Levels as property
         //Debug.Print($"ExplorerBrowserItem <{GetDebuggerDisplay()}> created.");
     }
-
-    #region GetDebuggerDisplay()
-    private string GetDebuggerDisplay()
-    {
-        var sb = new StringBuilder();
-        sb.Append($"<{nameof(ExplorerBrowserItem)}> `{DisplayName}`");
-
-        if (IsFolder) { sb.Append(", [folder]"); }
-
-        return sb.ToString();
-    }
-    #endregion
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -108,4 +97,16 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
         OnPropertyChanged(propertyName);
         return true;
     }
+
+    #region GetDebuggerDisplay()
+    private string GetDebuggerDisplay()
+    {
+        var sb = new StringBuilder();
+        sb.Append($"<{nameof(ExplorerBrowserItem)}> `{DisplayName}`");
+
+        if (IsFolder) { sb.Append(", [folder]"); }
+
+        return sb.ToString();
+    }
+    #endregion
 }

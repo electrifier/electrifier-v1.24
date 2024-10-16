@@ -206,17 +206,17 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Pictures)),
             new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Music)),
             new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Videos)),
-            // todo: add separator
-//            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop)), // TODO: WARN: Check why this leads to `SyncCenter`?
             new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder)),
             new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder)),
+            // todo: add separator new(ExplorerBrowserItemSeparator());
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop)), // todo: WARN: Check why this leads to `SyncCenter`?
         };
 
         ShellTreeView.ItemsSource = rootItems;
     }
 
-    private SoftwareBitmapSource _defaultFolderImageBitmapSource;
-    private SoftwareBitmapSource _defaultDocumentAssocImageBitmapSource;
+    private SoftwareBitmapSource? _defaultFolderImageBitmapSource;
+    private SoftwareBitmapSource? _defaultDocumentAssocImageBitmapSource;
 
     /// <summary>
     /// <see href="https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs"/>
@@ -332,9 +332,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         try
         {
-            if (args.AddedItems.FirstOrDefault() is not ({ } and ExplorerBrowserItem ebItem))
+            var ebItem = (ExplorerBrowserItem)args.AddedItems.FirstOrDefault();
+
+            if (ebItem is not ExplorerBrowserItem)
             {
-                throw new ArgumentOutOfRangeException();
+                // TODO: Clear selection
+                return;
             }
 
             Debug.Print($".ShellTreeView_SelectionChanged() {ebItem.DisplayName}");
@@ -342,6 +345,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             // todo: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh();
             // todo: Use CONSTANTS from ExplorerBrowser if possible
             Navigate(ebItem, selectTreeViewNode: true);
+            // todo: add extension methods:
+            // Navigate().ThrowIfFailed;
+            // Navigate().InitialFolder();
         }
         catch (Exception e)
         {
@@ -450,7 +456,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /// </summary>
     /// <param name="bitmapIcon"></param>
     /// <returns></returns>
-    public static async Task<SoftwareBitmapSource> GetWinUi3BitmapSourceFromIcon(Icon bitmapIcon)
+    public static async Task<SoftwareBitmapSource?> GetWinUi3BitmapSourceFromIcon(Icon bitmapIcon)
     {
         ArgumentNullException.ThrowIfNull(bitmapIcon);
 
@@ -464,7 +470,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /// </summary>
     /// <param name="gdiBitmap"></param>
     /// <returns></returns>
-    public static async Task<SoftwareBitmapSource> GetWinUi3BitmapSourceFromGdiBitmap(Bitmap gdiBitmap)
+    public static async Task<SoftwareBitmapSource?> GetWinUi3BitmapSourceFromGdiBitmap(Bitmap gdiBitmap)
     {
         ArgumentNullException.ThrowIfNull(gdiBitmap);
 
