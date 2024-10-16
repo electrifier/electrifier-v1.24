@@ -207,7 +207,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Music)),
             new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Videos)),
             // todo: add separator
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop)), // TODO: Check why this leads to `SyncCenter`?
+//            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop)), // TODO: WARN: Check why this leads to `SyncCenter`?
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder)),
             new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder)),
         };
 
