@@ -411,7 +411,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
 
-    public void Navigate(ExplorerBrowserItem ebItem, bool selectTreeViewNode = true)
+    public void Navigate(ExplorerBrowserItem ebItem, bool selectTreeViewNode = true, bool handleErrors = true)
     {
         try
         {
@@ -457,12 +457,13 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             }
 
             Debug.Fail($"[Error] Navigate(<{ebItem}>) failed. COMException: {comEx.Message}");
-            throw;
+
+            if (!handleErrors) throw;
         }
         catch (Exception ex)
         {
             Debug.Fail($"[Error] Navigate(<{ebItem}>) failed. Exception: {ex.Message}");
-            throw;
+            if (!handleErrors) throw;
         }
     }
 
