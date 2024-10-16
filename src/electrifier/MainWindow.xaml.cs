@@ -4,6 +4,7 @@ using Microsoft.UI.Dispatching; // Needed for DispatcherQueue.
 using Microsoft.UI.Windowing;   // Needed for AppWindow.
 using Windows.UI.ViewManagement;
 using WinRT.Interop;            // Needed for XAML/HWND interop.
+using WinUIEx;
 
 namespace electrifier;
 

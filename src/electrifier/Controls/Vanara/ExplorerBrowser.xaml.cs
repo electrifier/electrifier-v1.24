@@ -1,3 +1,4 @@
+using System.Collections;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -5,11 +6,14 @@ using Microsoft.UI.Xaml;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing;
+using System.Linq;
+using Vanara.PInvoke;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
-using Vanara.PInvoke;
+using electrifier.Controls.Vanara.Services;
 using Vanara.Windows.Shell;
 using Visibility = Microsoft.UI.Xaml.Visibility;
 
@@ -17,13 +21,7 @@ namespace electrifier.Controls.Vanara;
 
 // https://github.com/dahall/Vanara/blob/master/Windows.Forms/Controls/ExplorerBrowser.cs
 
-/* TODO: Research this regarding Visual States
-   [Microsoft.UI.Xaml.TemplatePart(Name="Image", Type=typeof(System.Object))]
-   [Microsoft.UI.Xaml.TemplateVisualState(GroupName="CommonStates", Name="Loading")]
-   [Microsoft.UI.Xaml.TemplateVisualState(GroupName="CommonStates", Name="Loaded")]
-   [Microsoft.UI.Xaml.TemplateVisualState(GroupName="CommonStates", Name="Unloaded")]
-   [Microsoft.UI.Xaml.TemplateVisualState(GroupName="CommonStates", Name="Failed")]
- */
+/* todo: Use Visual States for Errors, Empty folders, Empty Drives */
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
     public ExplorerBrowserItem? CurrentFolderBrowserItem
@@ -50,12 +48,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             Debug.WriteLine($"[E].OnCurrentFolderBrowserItemChanged(): `{s.ToString()}` -> ERROR:UNKNOWN TYPE! Should be <ExplorerBrowserItem>");
         }
     }
-
-    /// <summary>
-    /// Represents the current's folder content.
-    /// Each Item is an <see cref="ExplorerBrowserItem"/>.
-    /// It is then used as DataSource of <see cref="ShellGridView"/>.
-    /// </summary>
+    /// <summary>Current Folder content Items.</summary>
     public ObservableCollection<ExplorerBrowserItem> CurrentFolderItems
     {
         get => (ObservableCollection<ExplorerBrowserItem>)GetValue(CurrentFolderItemsProperty);
@@ -73,6 +66,36 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         var s = e.NewValue; //null checks omitted
         Debug.Print($".OnCurrentFolderItemsChanged(): {s}");
     }
+    public int ItemCount
+    {
+        get => (int)GetValue(ItemCountProperty);
+        set => SetValue(ItemCountProperty, value);
+    }
+    public static readonly DependencyProperty ItemCountProperty = DependencyProperty.Register(
+        nameof(ItemCount),
+        typeof(int),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(0));
+    public int FileCount
+    {
+        get => (int)GetValue(FileCountProperty);
+        set => SetValue(FileCountProperty, value);
+    }
+    public static readonly DependencyProperty FileCountProperty = DependencyProperty.Register(
+        nameof(FileCount),
+        typeof(int),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(0));
+    public int FolderCount
+    {
+        get => (int)GetValue(FolderCountProperty);
+        set => SetValue(FolderCountProperty, value);
+    }
+    public static readonly DependencyProperty FolderCountProperty = DependencyProperty.Register(
+        nameof(FolderCount),
+        typeof(int),
+        typeof(ExplorerBrowser),
+        new PropertyMetadata(0));
 
     public string NavigationFailure
     {
@@ -84,34 +107,21 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         typeof(string),
         typeof(ExplorerBrowser),
         new PropertyMetadata(string.Empty));
-
     /// <summary>
     /// HResult code for <code><see cref="System.Runtime.InteropServices.COMException"/> 0x80070490</code>
+    /// TODO: Add this to Vanara... https://github.com/dahall/Vanara/issues/490
     /// <remarks>Fired when `Element not found`</remarks>
     /// </summary>
     public HRESULT HResultElementNotFound = 0x80070490;
-
-    private ShellIconExtractor? _iconExtractor;
-    public ShellIconExtractor? IconExtractor
-    {
-        get => _iconExtractor;
-        private set
-        {
-            _iconExtractor?.Cancel();
-            _iconExtractor = value;
-        }
-    }
 
     public bool IsLoading
     {
         get; set;
     }
-
     public Visibility GridViewVisibility
     {
         get; set;
     }
-
     public Visibility TreeViewVisibility
     {
         get => (Visibility)GetValue(TreeViewVisibilityProperty);
@@ -122,29 +132,25 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         typeof(Visibility),
         typeof(ExplorerBrowser),
         new PropertyMetadata(default(object)));
-
     public Visibility TopCommandBarVisibility
     {
         get; set;
     }
-
     public Visibility BottomAppBarVisibility
     {
         get; set;
     }
-
     public Visibility BottomCommandBarVisibility
     {
         get; set;
     }
-
     public ICommand RefreshViewCommand
     {
         get;
     }
 
     /// <summary>Raises the <see cref="NavigationFailed"/> event.</summary>
-    internal void OnNavigationFailed(ExtNavigationFailedEventArgs nfevent)
+    internal void OnNavigationFailed(ExtNavigationFailedEventArgs? nfevent)
     {
         if (nfevent?.FailedLocation is null)
         {
@@ -167,50 +173,62 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         CurrentFolderItems = [];
         CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
-        RefreshViewCommand = new RelayCommand(() => OnRefreshViewCommand(this, new RoutedEventArgs()));
 
         NavigationFailed += ExplorerBrowser_NavigationFailed;
 
-        ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeViewOnSelectionChanged;
+        ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
         ShellGridView.NativeGridView.SelectionChanged += NativeGridView_SelectionChanged;
-        //TODO: Should be ShellTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
 
+        RefreshViewCommand = new RelayCommand(() => OnRefreshViewCommand(this, new RoutedEventArgs()));
+
+        this.Loading += ExplorerBrowser_Loading;
+    }
+
+    private async void ExplorerBrowser_Loading(FrameworkElement sender, object args)
+    {
         _ = InitializeViewModel();
+        _ = RefreshGridView();
+
+        Task RefreshGridView()
+        {
+            return null;
+        }
     }
 
     private async Task InitializeViewModel()
     {
-        //ShellGridView.DataContext = this;
-        //ShellTreeView.DataContext = this;
+        _ = InitializeStockIcons();
 
-        CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
         var rootItems = new List<ExplorerBrowserItem>
         {
-            CurrentFolderBrowserItem,
+            // todo: add home folder
+            // todo: add Gallery
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_OneDrive),
+            // todo: add separator
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Downloads),
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Documents),
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Pictures),
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Music),
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Videos),
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder),
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder),
+            // todo: add separator new(ExplorerBrowserItemSeparator());
+            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop), // todo: WARN: Check why this leads to `SyncCenter`?
         };
 
-        // add second root folder as dummy
-        var galleryFolder = new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_PicturesLibrary);
-        var galleryEbItem = new ExplorerBrowserItem(galleryFolder);
-        rootItems.Add(galleryEbItem);
-
-        await InitializeStockIcons();
-
         ShellTreeView.ItemsSource = rootItems;
-        CurrentFolderBrowserItem.IsExpanded = true;
-        CurrentFolderBrowserItem.IsSelected = true;
+
+        // todo: CurrentFolderBrowserItem = initialTarget; => OnLoaded()
     }
 
-    private SoftwareBitmapSource _defaultFolderImageBitmapSource;
-    private SoftwareBitmapSource _defaultDocumentAssocImageBitmapSource;
+    private SoftwareBitmapSource? _defaultFolderImageBitmapSource;
+    private SoftwareBitmapSource? _defaultDocumentAssocImageBitmapSource;
 
     /// <summary>
-    /// DUMMY: TODO: InitializeStockIcons()
-    ///
-    /// Added code:
-    /// <see cref="GetWinUi3BitmapSourceFromIcon"/>
-    /// <see cref="GetWinUi3BitmapSourceFromGdiBitmap"/>
+    /// <see href="https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs"/>
     /// </summary>
+    /// <returns></returns>
     public async Task InitializeStockIcons()
     {
         try
@@ -223,7 +241,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 _defaultFolderImageBitmapSource = await bmpSource;
             }
 
-            using var siDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCASSOC); // SIID_DOCNOASSOC 
+            using var siDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC);
             {
                 var idx = siDocument.SystemImageIndex;
                 var icnHandle = siDocument.IconHandle.ToIcon();
@@ -252,11 +270,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         e.IsHandled = true;
     }
 
-    public void ExtractChildItems(ExplorerBrowserItem targetFolder)
+    public void ExtractChildItems(ExplorerBrowserItem? targetFolder)
     {
         var itemCount = 0;
+        var fileCount = 0;
+        var folderCount = 0;
         Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracting...");
-        Debug.Assert(targetFolder is not null);
+
+        shellItems?.Clear();
         if (targetFolder is null)
         {
             throw new ArgumentNullException(nameof(targetFolder));
@@ -271,27 +292,41 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             if ((shFolder.Attributes & ShellItemAttribute.Removable) != 0)
             {
                 // TODO: Check for Disc in Drive, fail only if device not present
-                // TODO: Add `Eject-Buttons` to TreeView (right side, instead of Pin header) and GridView
+                // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
                 Debug.WriteLine($"GetChildItems: IsRemovable = true");
                 var eventArgs = new NavigationFailedEventArgs();
-                // TODO: Switch PresentationView to `Error`
                 return;
             }
 
-            var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
-            var shellItems = children as ShellItem[] ?? children.ToArray();
-            itemCount = shellItems.Length;
-            targetFolder.Children = []; // TODO: new ReadOnlyDictionary<ExplorerBrowserItem, int>();
+            var ext = new ShellIconExtractor(new ShellFolder(targetFolder.ShellItem));
+            ext.Complete += ShellIconExtractorComplete;
+            ext.IconExtracted += ShellIconExtractorIconExtracted;
+            ext.Start();
 
-            if (shellItems.Length > 0)
-            {
-                foreach (var child in shellItems)
-                {
-                    var ebItem = new ExplorerBrowserItem(child);
-                    ebItem.BitmapSource = ebItem.IsFolder ? this._defaultFolderImageBitmapSource : this._defaultDocumentAssocImageBitmapSource;
-                    targetFolder.Children?.Add(ebItem);
-                }
-            }
+            //var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
+            //var shellItems = children as ShellItem[] ?? children.ToArray();
+            //itemCount = shellItems.Length;
+            //targetFolder.Children = []; // TODO: new ReadOnlyDictionary<ExplorerBrowserItem, int>();
+
+            //if (shellItems.Length > 0)
+            //{
+            //    foreach (var shItem in shellItems)
+            //    {
+            //        var ebItem = new ExplorerBrowserItem(shItem);
+            //        if (ebItem.IsFolder)
+            //        {
+            //            ebItem.BitmapSource = _defaultFolderImageBitmapSource;
+            //            targetFolder.Children?.Insert(0, ebItem);
+            //            folderCount++;
+            //        }
+            //        else
+            //        {
+            //            ebItem.BitmapSource = _defaultDocumentAssocImageBitmapSource;
+            //            targetFolder.Children?.Add(ebItem);
+            //            fileCount++;
+            //        }
+            //    }
+            //}
         }
         catch (Exception e)
         {
@@ -299,28 +334,49 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             throw;
         }
 
-        Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracted: {itemCount} items.");
+        ItemCount = itemCount;
+        FileCount = fileCount;
+        FolderCount = folderCount;
+
+        Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracted: {ItemCount} items: {FileCount} files, {FolderCount} folders");
     }
 
-    private void NativeTreeViewOnSelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
+    private void ShellIconExtractorIconExtracted(object? sender, ShellIconExtractedEventArgs e) => throw new NotImplementedException();
+    private void ShellIconExtractorComplete(object? sender, EventArgs e) => throw new NotImplementedException();
+
+    private List<ShellItem>? shellItems;
+
+    private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
-        var selectedItem = args.AddedItems.FirstOrDefault();
-        if (selectedItem != null)
+        try
         {
-            if (selectedItem is ExplorerBrowserItem ebItem)
+            var ebItem = (ExplorerBrowserItem?)args.AddedItems.FirstOrDefault()!;
+
+            if (ebItem is not ExplorerBrowserItem)
             {
-                Debug.Print($".NativeTreeViewOnSelectionChanged() {ebItem.DisplayName}");
-
-                Navigate(ebItem);
-
-                // TODO: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh()
+                Debug.Print($".ShellTreeView_SelectionChanged({args})");
+                shellItems?.Clear();
+                return;
             }
-            // TODO: else
-            //{
-            //    Debug.Fail($"ERROR: NativeTreeViewOnSelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
-            //    throw new ArgumentOutOfRangeException(
-            //        "$ERROR: NativeTreeViewOnSelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
-            //}
+
+            Debug.Print($".ShellTreeView_SelectionChanged({ebItem.DisplayName});");
+
+            // todo: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh();
+            // todo: Use CONSTANTS from ExplorerBrowser if possible
+            Navigate(ebItem, selectTreeViewNode: true);
+            // todo: add extension methods:
+            // Navigate().ThrowIfFailed;
+            // Navigate().InitialFolder();
+        }
+        catch (Exception e)
+        {
+            // todo: fire navigation failed event. Handle `IsHandled` before throwing
+            throw new ArgumentOutOfRangeException($"AddedItem is not type {nameof(ExplorerBrowserItem)}")
+            {
+                HelpLink = null,    // todo: link to github bug report
+                HResult = 0,    // todo: hresult treeview seelection failed
+                Source = $"{typeof(ExplorerBrowser)}",
+            };
         }
     }
 
@@ -355,7 +411,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
 
-    public void Navigate(ExplorerBrowserItem ebItem, bool selectTreeViewNode = false)
+    public void Navigate(ExplorerBrowserItem ebItem, bool selectTreeViewNode = true)
     {
         try
         {
@@ -379,7 +435,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 CurrentFolderItems.Add(childItem);
             }
         }
-
         catch (COMException comEx)
         {
             var navFailedEventArgs = new ExtNavigationFailedEventArgs();
@@ -411,44 +466,43 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
 
+    /* TODO: add to https://github.com/tajbender/tajbender.Vanara/blob/master/WinUI.Extensions/ShellImageSource.cs */
+
     /// <summary>
     /// Taken from <see href="https://stackoverflow.com/questions/76640972/convert-system-drawing-icon-to-microsoft-ui-xaml-imagesource"/>
+    /// See also <see href="https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.media.imaging.bitmapimage?view=windows-app-sdk-1.6"/>, which can deal with .ico natively.
     /// </summary>
-    /// <param name="icon"></param>
+    /// <param name="bitmapIcon"></param>
     /// <returns></returns>
-    public static async Task<SoftwareBitmapSource> GetWinUi3BitmapSourceFromIcon(System.Drawing.Icon icon)
+    public static async Task<SoftwareBitmapSource?> GetWinUi3BitmapSourceFromIcon(Icon bitmapIcon)
     {
-        if (icon == null)
-            return null;
+        ArgumentNullException.ThrowIfNull(bitmapIcon);
 
-        // convert to bitmap
-        using var bmp = icon.ToBitmap();
-        return await GetWinUi3BitmapSourceFromGdiBitmap(bmp);
+        return await GetWinUi3BitmapSourceFromGdiBitmap(bitmapIcon.ToBitmap());
     }
 
     /// <summary>
-    /// Taken from <see href="https://stackoverflow.com/questions/76640972/convert-system-drawing-icon-to-microsoft-ui-xaml-imagesource"/>
-    /// See also <see href="https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.image.source?view=windows-app-sdk-1.5#microsoft-ui-xaml-controls-image-source"/>
-    /// See also <see href="https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs"/>
+    /// Taken from <see href="https://stackoverflow.com/questions/76640972/convert-system-drawing-icon-to-microsoft-ui-xaml-imagesource"/>.
+    /// See also <see href="https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.controls.image.source?view=windows-app-sdk-1.5#microsoft-ui-xaml-controls-image-source"/>.
+    /// See also <see href="https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.media.imaging.bitmapimage?view=windows-app-sdk-1.6"/>, which can deal with .ico natively.
     /// </summary>
-    /// <param name="icon"></param>
+    /// <param name="gdiBitmap"></param>
     /// <returns></returns>
-    public static async Task<SoftwareBitmapSource> GetWinUi3BitmapSourceFromGdiBitmap(System.Drawing.Bitmap bmp)
+    public static async Task<SoftwareBitmapSource?> GetWinUi3BitmapSourceFromGdiBitmap(Bitmap gdiBitmap)
     {
-        if (bmp == null)
-            return null;
+        ArgumentNullException.ThrowIfNull(gdiBitmap);
 
         // get pixels as an array of bytes
-        var data = bmp.LockBits(new System.Drawing.Rectangle(0, 0, bmp.Width, bmp.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, bmp.PixelFormat);
+        var data = gdiBitmap.LockBits(new System.Drawing.Rectangle(0, 0, gdiBitmap.Width, gdiBitmap.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, gdiBitmap.PixelFormat);
         var bytes = new byte[data.Stride * data.Height];
         Marshal.Copy(data.Scan0, bytes, 0, bytes.Length);
-        bmp.UnlockBits(data);
+        gdiBitmap.UnlockBits(data);
 
         // get WinRT SoftwareBitmap
         var softwareBitmap = new Windows.Graphics.Imaging.SoftwareBitmap(
             Windows.Graphics.Imaging.BitmapPixelFormat.Bgra8,
-            bmp.Width,
-            bmp.Height,
+            gdiBitmap.Width,
+            gdiBitmap.Height,
             Windows.Graphics.Imaging.BitmapAlphaMode.Premultiplied);
         softwareBitmap.CopyFromBuffer(bytes.AsBuffer());
 

@@ -24,12 +24,13 @@ public sealed partial class Shell32GridView : INotifyPropertyChanged
         InitializeComponent();
         DataContext = this;
 
+        // todo: ScrollBarVisibility.Auto; NativeGridView.ShowsScrollingPlaceholders
     }
 
-    //private void NativeGridView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
-    //{
-    //    //Debug.WriteLine($".NativeGridView_ContainerContentChanging()");
-    //}
+    private void NativeGridView_ContainerContentChanging(ListViewBase sender, ContainerContentChangingEventArgs args)
+    {
+        Debug.WriteLine($".NativeGridView_ContainerContentChanging()");
+    }
 
     private string GetDebuggerDisplay()
     {

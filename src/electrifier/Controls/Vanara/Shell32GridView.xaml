@@ -3,7 +3,6 @@
     x:Class="electrifier.Controls.Vanara.Shell32GridView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:CommunityToolkit.WinUI.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:electrifier.Controls.Vanara"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -15,7 +14,7 @@
                 <Grid>
                     <StackPanel
                         Width="72"
-                        Height="96"
+                        Height="112"
                         Orientation="Vertical">
                         <Image
                             Name="Image"
@@ -25,7 +24,7 @@
                         <!--  CornerRadius="8"  -->
                         <TextBlock
                             VerticalAlignment="Center"
-                            FontSize="13"
+                            FontSize="12"
                             HorizontalTextAlignment="Center"
                             Text="{x:Bind DisplayName}"
                             TextWrapping="Wrap" />
@@ -43,14 +42,14 @@
             IsItemClickEnabled="True"
             ItemContainerStyle="{StaticResource NativeGridViewItemContainerStyle}"
             ItemTemplate="{StaticResource ExplorerBrowserItemTemplate}"
-            SelectionMode="Extended" />
-
-        <!--<ListView.ItemContainerStyle>
-            <Style TargetType="ListViewItem">
-                <Setter Property="HorizontalContentAlignment"
-                        Value="Stretch" />
-            </Style>
-        </ListView.ItemContainerStyle>-->
-
+            SelectionMode="Extended">
+            <GridView.ItemContainerStyleSelector>
+                <!--<ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                    </Style>
+                </ListView.ItemContainerStyle>-->
+            </GridView.ItemContainerStyleSelector>
+        </GridView>
     </Grid>
 </UserControl>

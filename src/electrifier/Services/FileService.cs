@@ -29,7 +29,7 @@ public class FileService : IFileService
         File.WriteAllText(Path.Combine(folderPath, fileName), fileContent, Encoding.UTF8);
     }
 
-    public void Delete(string folderPath, string fileName)
+    public void Delete(string folderPath, string? fileName)
     {
         if (fileName != null && File.Exists(Path.Combine(folderPath, fileName)))
         {
