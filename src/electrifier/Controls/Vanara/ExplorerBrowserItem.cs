@@ -67,7 +67,7 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
     public SoftwareBitmapSource? BitmapSource { get; set; }
 
 
-    public ExplorerBrowserItem(ShellItem shItem)
+    public ExplorerBrowserItem(ShellItem? shItem, bool isSeparator = false)
     {
         ShellItem = new ShellItem(shItem.PIDL);
         DisplayName = ShellItem.Name ?? ":error: <DisplayName.get()>";
@@ -84,6 +84,11 @@ public class ExplorerBrowserItem /* : INotifyPropertyChanged */
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    public static ExplorerBrowserItem ExplorerBrowserSeparator()
+    {
+        return new ExplorerBrowserItem(null, true);
     }
 
     protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
