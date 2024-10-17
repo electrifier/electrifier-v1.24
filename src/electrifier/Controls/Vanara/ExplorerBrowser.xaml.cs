@@ -315,7 +315,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         var folderCount = 0;
         Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracting...");
 
-        shellItems?.Clear();
+        _shellItems?.Clear();
         if (targetFolder is null)
         {
             throw new ArgumentNullException(nameof(targetFolder));
@@ -382,7 +382,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     private void ShellIconExtractorIconExtracted(object? sender, ShellIconExtractedEventArgs e) => throw new NotImplementedException();
     private void ShellIconExtractorComplete(object? sender, EventArgs e) => throw new NotImplementedException();
 
-    private List<ShellItem>? shellItems;
+    private List<ShellItem>? _shellItems;
     private bool _isLoading;
     private Visibility _gridViewVisibility;
     private Visibility _topCommandBarVisibility;
@@ -398,7 +398,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             if (ebItem is not ExplorerBrowserItem)
             {
                 Debug.Print($".ShellTreeView_SelectionChanged({args})");
-                shellItems?.Clear();
+                _shellItems?.Clear();
                 return;
             }
 
