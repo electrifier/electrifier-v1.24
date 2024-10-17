@@ -14,7 +14,7 @@
     <Grid x:Name="WorkbenchGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
-            <ColumnDefinition />
+            <ColumnDefinition MaxWidth="23"/>
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         <Border
