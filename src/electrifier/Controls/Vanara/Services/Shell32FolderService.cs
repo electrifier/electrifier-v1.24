@@ -10,5 +10,5 @@ public static class Shell32FolderService
     /// Create <see cref="ExplorerBrowserItem"/> from <see cref="Shell32.KNOWNFOLDERID"/>
     /// </summary>
     public static ExplorerBrowserItem KnownFolderItem(Shell32.KNOWNFOLDERID folderId) => new(new ShellFolder(folderId));
-    public static ExplorerBrowserItem Separator(bool visibility) => null;
+    public static ExplorerBrowserItem KnownFolderItemAppData(Shell32.KNOWNFOLDERID folderId) => new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_AppDataProgramData));
 }

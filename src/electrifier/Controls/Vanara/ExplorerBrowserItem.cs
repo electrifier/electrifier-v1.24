@@ -14,8 +14,22 @@ namespace electrifier.Controls.Vanara;
 /// A ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32TreeView"/> Items.
 /// </summary>
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
-public class ExplorerBrowserItem /* : INotifyPropertyChanged */
+public class ExplorerBrowserItem : INotifyPropertyChanged
 {
+    public record ExplorerBrowserItemViewState
+    {
+        public ExplorerBrowserItemViewState(bool transparentHiddenFiles)
+        {
+            TransparentHiddenFiles = transparentHiddenFiles;
+        }
+
+        private bool TransparentHiddenFiles
+        {
+            get;
+            set;
+        }
+    }
+
     /// <summary>Gets the set of Children as an <seealso cref="List{T}"/>.</summary>
     public List<ExplorerBrowserItem>? Children;
 
