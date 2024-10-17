@@ -62,6 +62,9 @@ https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#ico
                     <!--  update release name  -->
                 </StackPanel>
             </StackPanel>
+            <ItemsStackPanel>
+                <Button>Blubb</Button>
+            </ItemsStackPanel>
             <StackPanel x:Name="CenterStackPanel"
                         Grid.Column="1">
                 <Border Margin="42,8,0,42">
@@ -70,8 +73,9 @@ https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#ico
                              VerticalAlignment="Center" />
                 </Border>
             </StackPanel>
+            <AppBar Grid.Column="2" x:Name="AppBarRight"></AppBar>
             <Grid x:Name="SystemIconGrid"
-                  Grid.Column="2"
+                  Grid.Column="3"
                   HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal">
                     <HyperlinkButton x:Name="HelpButton"
@@ -88,7 +92,6 @@ https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#ico
         <!--  DefaultStyleResourceUri=""  -->
         <NavigationView x:Name="NavigationViewControl"
                         AlwaysShowHeader="True"
-                        CompactPaneLength="72"
                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
                         IsBackButtonVisible="Visible"
                         IsBackEnabled="True"
@@ -96,7 +99,7 @@ https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#ico
                         IsSettingsVisible="True"
                         IsTitleBarAutoPaddingEnabled="False"
                         Loaded="NavigationViewControl_Loaded"
-                        OpenPaneLength="195">
+                        OpenPaneLength="168">
             <!--  TODO: NavigationViewItems into the right upper border of header, as small icons  -->
             <!--  INFO: MultitaskExpanded  -->
             <NavigationView.MenuItems>
@@ -189,7 +192,7 @@ https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#ico
                 </behaviors:NavigationViewHeaderBehavior>
             </i:Interaction.Behaviors>
             <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
-                <Frame x:Name="NavigationFrame" />
+                    <Frame x:Name="NavigationFrame" />
             </Grid>
         </NavigationView>
     </Grid>
