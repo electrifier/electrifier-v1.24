@@ -388,7 +388,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     private Visibility _topCommandBarVisibility;
     private Visibility _bottomAppBarVisibility;
     private Visibility _bottomCommandBarVisibility;
-
     private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
         try
@@ -422,7 +421,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             };
         }
     }
-
     private void NativeGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         var addedItems = e.AddedItems;
@@ -453,7 +451,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             Debug.Print($".NativeGridView_SelectionChanged({newTarget})");
         }
     }
-
     public void Navigate(ExplorerBrowserItem ebItem, bool selectTreeViewNode = true)
     {
         try
@@ -508,8 +505,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             throw;
         }
     }
-
-    /* TODO: add to https://github.com/tajbender/tajbender.Vanara/blob/master/WinUI.Extensions/ShellImageSource.cs */
 
     /// <summary>
     /// Taken from <see href="https://stackoverflow.com/questions/76640972/convert-system-drawing-icon-to-microsoft-ui-xaml-imagesource"/>
@@ -614,22 +609,3 @@ public class ExtNavigatedEventArgs : NavigatedEventArgs
     }
 }
 
-#region The following is original copy & paste from Vanara
-
-/// <summary>Event argument for The Navigating event</summary>
-public class NavigatingEventArgs : EventArgs
-{
-    /// <summary>Set to 'True' to cancel the navigation.</summary>
-    public bool Cancel
-    {
-        get; set;
-    }
-
-    /// <summary>The location being navigated to</summary>
-    public ShellItem? PendingLocation
-    {
-        get; set;
-    }
-}
-
-#endregion

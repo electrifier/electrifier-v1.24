@@ -32,12 +32,6 @@ public sealed partial class Shell32GridView : INotifyPropertyChanged
     {
         Debug.WriteLine($".NativeGridView_ContainerContentChanging()");
     }
-
-    private string GetDebuggerDisplay()
-    {
-        return nameof(Shell32GridView) + ToString();
-    }
-
     #region INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -52,6 +46,12 @@ public sealed partial class Shell32GridView : INotifyPropertyChanged
         field = value;
         OnPropertyChanged(propertyName);
         return true;
+    }
+    #endregion
+    #region Debug Stuff
+    private string GetDebuggerDisplay()
+    {
+        return nameof(Shell32GridView) + ToString();
     }
     #endregion
 }
