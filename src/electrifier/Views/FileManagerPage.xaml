@@ -11,9 +11,21 @@
     d:DataContext="{d:DesignInstance Type=viewmodels:FileManagerViewModel}"
     mc:Ignorable="d">
     <Grid x:Name="ArenaGrid">
-        <Border x:Name="ExplorerBrowserBorder">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition></ColumnDefinition>
+            <ColumnDefinition></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Border x:Name="PrimaryExplorerBrowserBorder">
             <vanara:ExplorerBrowser
-                x:Name="ExplorerBrowserControl"
+                x:Name="PrimaryExplorerBrowserControl"
+                BottomAppBarVisibility="Collapsed"
+                BottomCommandBarVisibility="Visible"
+                GridViewVisibility="Visible"
+                TopCommandBarVisibility="Visible" />
+        </Border>
+        <Border Grid.Column="1" x:Name="SecondaryExplorerBrowserBorder">
+            <vanara:ExplorerBrowser
+                x:Name="SecondaryExplorerBrowserControl"
                 BottomAppBarVisibility="Collapsed"
                 BottomCommandBarVisibility="Visible"
                 GridViewVisibility="Visible"
