@@ -1,7 +1,7 @@
 ﻿<!--
   TODO: Insert MenuItemsSource
   TODO: IsPaneToggleButtonVisible = True -> PaneToggle-Style and overlap
-  TODO: See winui3 gallery://item/AnimatedIcon
+  TODO: See WinUI3 gallery://item/AnimatedIcon
   TODO: Create style in static resources: Style="{StaticResource AppTitleBarTitleStyle}"-->
 <Page x:Class="electrifier.Views.ShellPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -37,7 +37,7 @@
                 </StackPanel>
                 <Image x:Name="WindowIcon"
                        Height="32"
-                       Margin="8,-33,15,0"
+                       Margin="23,0,13,0"
                        Source="/Assets/Square44x44Logo.scale-200_unplated.png" />
             </StackPanel>
             <StackPanel x:Name="CenterStackPanel"
@@ -47,13 +47,13 @@
                         <Button>
                             <Image x:Name="AppTitleBarBackButtonImageCenter"
                                    VerticalAlignment="Top"
-                                   MaxHeight="27"
+                                   MaxHeight="23"
                                    Source="ms-appx:///Assets/Themes/Aero Blackcomb/Back Button 48px.png" />
                         </Button>
                         <Button>
                             <Image x:Name="AppTitleBarForwardButtonImageCenter"
-                                   VerticalAlignment="Top"
-                                   MaxHeight="27"
+                                   VerticalAlignment="Center"
+                                   MaxHeight="23"
                                    Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png" />
 
                         </Button>
@@ -71,7 +71,7 @@
                                      FontSize="13"
                                      NavigateUri="https://github.com/electrifier/docs"
                                      VerticalAlignment="Top">
-                        D'Oh!
+                        d'Oh!
                     </HyperlinkButton>
                     <Border Width="150"></Border>
                 </StackPanel>
