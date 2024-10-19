@@ -11,9 +11,9 @@ namespace electrifier.Services;
 
 // For more information on navigation between pages see
 // https://github.com/microsoft/TemplateStudio/blob/main/docs/WinUI/navigation.md
-public class NavigationService : INavigationService
+public class NavigationService(IPageService pageService) : INavigationService
 {
-    private readonly IPageService _pageService;
+    private readonly IPageService _pageService = pageService;
     private object? _lastParameterUsed;
     private Frame? _frame;
 
@@ -46,12 +46,6 @@ public class NavigationService : INavigationService
     }
 
     public event NavigatedEventHandler? Navigated;
-
-    public NavigationService(IPageService pageService)
-    {
-        _pageService = pageService;
-    }
-
 
     public bool GoBack()
     {
