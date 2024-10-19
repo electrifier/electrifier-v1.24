@@ -49,7 +49,7 @@ https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#ico
             </StackPanel>
             <StackPanel x:Name="CenterStackPanel"
                         Grid.Column="1">
-                <Border >
+                <Border>
                     <StackPanel Orientation="Horizontal">
                         <Button>
                             <Image x:Name="AppTitleBarBackButtonImageCenter"
@@ -107,27 +107,19 @@ https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#ico
                                   Glyph="&#xe8d1;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_KanbanBoard"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.KanbanBoardViewModel"
-                                    IsEnabled="False">
-                    <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb91;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
                 <NavigationViewItemSeparator />
-                <NavigationViewItem x:Uid="Shell_WebView"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
-                    <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb41;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_FileManager"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xec50;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Uid="Shell_WebView"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xeb41;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_TextEditor"
@@ -149,6 +141,14 @@ https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#ico
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xe716;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItem x:Uid="Shell_KanbanBoard"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.KanbanBoardViewModel"
+                                    IsEnabled="False">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xeb91;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.MenuItems>
