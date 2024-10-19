@@ -1,15 +1,8 @@
 ﻿<!--
   TODO: Insert MenuItemsSource
   TODO: IsPaneToggleButtonVisible = True -> PaneToggle-Style and overlap
-  TODO: <NavigationMode />
-  TODO: See winui3gallery://item/AnimatedIcon
-  TODO: Create style in static resources: Style="{StaticResource AppTitleBarTitleStyle}"
-  TODO: Update item titles by updating <x:Uid>.Content entries in Strings/en-us/Resources.resw.
-https://docs.microsoft.com/windows/uwp/app-resources/localize-strings-ui-manifest#refer-to-a-string-resource-identifier-from-xaml
-  TODO: Prefer Symbols over FontIcons for item icons.
-https://learn.microsoft.com/en-us/uwp/api/windows.ui.xaml.controls.symbol?view=winrt-22621
-  TODO: Update item icons by updating FontIcon.Glyph properties.
-https://docs.microsoft.com/windows/apps/design/style/segoe-fluent-icons-font#icon-list-->
+  TODO: See winui3 gallery://item/AnimatedIcon
+  TODO: Create style in static resources: Style="{StaticResource AppTitleBarTitleStyle}"-->
 <Page x:Class="electrifier.Views.ShellPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
