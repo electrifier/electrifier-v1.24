@@ -22,6 +22,7 @@ public class LocalSettingsService : ILocalSettingsService
 
     private bool _isInitialized;
 
+    // TODO: Load Default Settings from User-Directory.
     public LocalSettingsService(IFileService fileService, IOptions<LocalSettingsOptions> options)
     {
         _fileService = fileService;

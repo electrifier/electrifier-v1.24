@@ -1,9 +1,9 @@
 ﻿using electrifier.Helpers;
-using Microsoft.UI;             // Needed for WindowId.
-using Microsoft.UI.Dispatching; // Needed for DispatcherQueue.
-using Microsoft.UI.Windowing;   // Needed for AppWindow.
+using Microsoft.UI;
+using Microsoft.UI.Dispatching;
+using Microsoft.UI.Windowing;
 using Windows.UI.ViewManagement;
-using WinRT.Interop;            // Needed for XAML/HWND interop.
+using WinRT.Interop;
 using WinUIEx;
 
 namespace electrifier;
@@ -57,7 +57,7 @@ public sealed partial class MainWindow : WindowEx
         return AppWindow.GetFromWindowId(wndId);
     }
 
-    private void AppWindow_Changed(AppWindow sender, AppWindowChangedEventArgs args)
+    private static void AppWindow_Changed(AppWindow sender, AppWindowChangedEventArgs args)
     {
         if (args.DidPresenterChange)
         {
@@ -97,9 +97,6 @@ public sealed partial class MainWindow : WindowEx
     private void Settings_ColorValuesChanged(UISettings sender, object args)
     {
         // This calls comes off-thread, hence we will need to dispatch it to current app's thread
-        _mDispatcherQueue.TryEnqueue(() =>
-        {
-            TitleBarHelper.ApplySystemThemeToCaptionButtons();
-        });
+        _mDispatcherQueue.TryEnqueue(TitleBarHelper.ApplySystemThemeToCaptionButtons);
     }
 }

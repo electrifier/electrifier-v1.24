@@ -1,23 +1,197 @@
-﻿<Page
-    x:Class="electrifier.Views.FileManagerPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:behaviors="using:electrifier.Behaviors"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vanara="using:electrifier.Controls.Vanara"
-    xmlns:viewmodels="using:electrifier.ViewModels"
-    behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
-    d:DataContext="{d:DesignInstance Type=viewmodels:FileManagerViewModel}"
-    mc:Ignorable="d">
+﻿<Page x:Class="electrifier.Views.FileManagerPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:behaviors="using:electrifier.Behaviors"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:vanara="using:electrifier.Controls.Vanara"
+      xmlns:viewmodels="using:electrifier.ViewModels"
+      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+      d:DataContext="{d:DesignInstance Type=viewmodels:FileManagerViewModel}"
+      mc:Ignorable="d">
     <Grid x:Name="ArenaGrid">
-        <Border x:Name="ExplorerBrowserBorder">
-            <vanara:ExplorerBrowser
-                x:Name="ExplorerBrowserControl"
-                BottomAppBarVisibility="Collapsed"
-                BottomCommandBarVisibility="Visible"
-                GridViewVisibility="Visible"
-                TopCommandBarVisibility="Visible" />
-        </Border>
+        <Grid.RowDefinitions>
+            <RowDefinition>Auto</RowDefinition>
+            <RowDefinition>*</RowDefinition>
+        </Grid.RowDefinitions>
+        <CommandBar x:Name="CommandBar"
+                    Grid.Row="0"
+                    HorizontalAlignment="Left"
+                    Background="Transparent"
+                    DefaultLabelPosition="Right"
+                    IsOpen="False">
+            <!-- CommandBar.Visibility="{x:Bind TopCommandBarVisibility}" -->
+            <AppBarElementContainer>
+                <SplitButton x:Name="NewItemSplitButton"
+                             Content="New">
+                    <SplitButton.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <AppBarButton Icon="Folder"
+                                              Label="Folder" />
+                                <AppBarButton Icon="Link"
+                                              Label="Shortcut" />
+                            </StackPanel>
+                        </Flyout>
+                    </SplitButton.Flyout>
+                </SplitButton>
+            </AppBarElementContainer>
+            <AppBarSeparator />
+            <AppBarButton Icon="Cut"
+                          IsEnabled="False"
+                          Label="Cut" />
+            <AppBarButton Icon="Copy"
+                          IsEnabled="False"
+                          Label="Copy" />
+            <AppBarButton Icon="Paste"
+                          IsEnabled="False"
+                          Label="Paste" />
+            <AppBarButton Icon="Rename"
+                          IsEnabled="False"
+                          Label="Rename" />
+            <AppBarButton Icon="Share"
+                          IsEnabled="False"
+                          Label="Share" />
+            <AppBarButton Icon="Delete"
+                          IsEnabled="False"
+                          Label="Delete" />
+
+            <!--<Button Content="Options">
+                <Button.Flyout>
+                    <MenuFlyout>
+                        <MenuFlyoutItem Text="Reset"/>
+                        <MenuFlyoutSeparator/>
+                        <ToggleMenuFlyoutItem Text="Repeat" IsChecked="True"/>
+                        <ToggleMenuFlyoutItem Text="Shuffle" IsChecked="True"/>
+                    </MenuFlyout>
+                </Button.Flyout>
+            </Button>-->
+
+            <AppBarSeparator />
+            <AppBarElementContainer>
+                <SplitButton x:Name="SortSplitButton"
+                             Content="Sort">
+                    <SplitButton.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <Button Content="Name" />
+                                <Button Content="Date Modified" />
+                                <Button Content="Type" />
+                                <Button Content="~" />
+                                <Button Content="More" />
+                                <Button Content="~" />
+                                <Button Content="Ascending" />
+                                <Button Content="Descending" />
+                                <Button Content="~" />
+                                <Button Content="Group by" />
+                            </StackPanel>
+                        </Flyout>
+                    </SplitButton.Flyout>
+                    <SplitButton.Resources>
+                        <TeachingTip x:Name="SortSplitButtonTeachingTip"
+                                     Title="TODO: Add Sort and Group options."
+                                     Subtitle="Use the dropdown button option to save your item and create another."
+                                     Target="{x:Bind SortSplitButton}" />
+                    </SplitButton.Resources>
+                </SplitButton>
+            </AppBarElementContainer>
+            <AppBarElementContainer>
+                <SplitButton x:Name="ViewSplitButton"
+                             Content="View">
+                    <SplitButton.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <Button Content="Tiles" />
+                                <Button Content="Content" />
+                                <Button Content="~" />
+                                <Button Content="Details pane" />
+                                <Button Content="Preview pane" />
+                                <Button Content="~" />
+                                <Button Content="Show" />
+                                <Button Content="~" />
+                                <Button Content="Two Pages" />
+                                <!--  Glyph: E89A, TwoPage  -->
+                                <AppBarButton Icon="TwoPage"
+                                              Label="Double pane mode" />
+                                <AppBarButton Icon="Refresh"
+                                              Label="Refresh" />
+                                <AppBarButton Icon="Orientation"
+                                              Label="Orientation" />
+                            </StackPanel>
+                        </Flyout>
+                    </SplitButton.Flyout>
+                    <SplitButton.Resources>
+                        <TeachingTip x:Name="ViewSplitButtonTeachingTip"
+                                     Title="TODO: Sort and Group options."
+                                     Subtitle="Use the dropdown button option to save your item and create another."
+                                     Target="{x:Bind SortSplitButton}" />
+                    </SplitButton.Resources>
+                </SplitButton>
+            </AppBarElementContainer>
+            <AppBarElementContainer>
+                <SplitButton x:Name="FilterSplitButton"
+                             Content="Filter">
+                    <SplitButton.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <Button Content="All File Types" />
+                                <Button Content="~" />
+                                <Button Content="Files" />
+                                <Button Content="Folders" />
+                            </StackPanel>
+                        </Flyout>
+                    </SplitButton.Flyout>
+                    <SplitButton.Resources>
+                        <TeachingTip x:Name="FilterSplitButtonTeachingTip"
+                                     Title="TODO: Add filter options title text."
+                                     Subtitle="Use the dropdown button option to save your item and create another."
+                                     Target="{x:Bind FilterSplitButton}" />
+                    </SplitButton.Resources>
+                </SplitButton>
+            </AppBarElementContainer>
+            <AppBarSeparator />
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Icon="Undo"
+                              Label="Undo" />
+                <AppBarSeparator />
+                <AppBarButton Icon="Pin"
+                              Label="Pin to Quick access" />
+                <AppBarSeparator />
+                <AppBarButton Icon="SelectAll"
+                              Label="Select all" />
+                <!-- TODO: The Icon="ViewAll" is the one, that Windows Explorer uses for `Select none` -->
+                <AppBarButton Icon="ClearSelection"
+                              Label="Select none" />
+                <AppBarButton Icon="Shuffle"
+                              Label="Invert selection" />
+                <AppBarSeparator />
+                <AppBarButton Icon="Repair"
+                              Label="Properties" />
+                <AppBarButton Icon="Setting"
+                              Label="Options" />
+            </CommandBar.SecondaryCommands>
+        </CommandBar>
+        <Grid x:Name="SplitViewGrid"
+              Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Border x:Name="PrimaryExplorerBrowserBorder">
+                <vanara:ExplorerBrowser x:Name="PrimaryExplorerBrowserControl"
+                                        BottomAppBarVisibility="Collapsed"
+                                        BottomCommandBarVisibility="Visible"
+                                        GridViewVisibility="Visible"
+                                        TopCommandBarVisibility="Collapsed" />
+            </Border>
+            <Border Grid.Column="1"
+                    x:Name="SecondaryExplorerBrowserBorder">
+                <vanara:ExplorerBrowser x:Name="SecondaryExplorerBrowserControl"
+                                        BottomAppBarVisibility="Collapsed"
+                                        BottomCommandBarVisibility="Visible"
+                                        GridViewVisibility="Visible"
+                                        TopCommandBarVisibility="Collapsed" />
+            </Border>
+        </Grid>
     </Grid>
 </Page>

@@ -15,7 +15,8 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <CommandBar x:Name="TopCommandBar"
+        <!-- TODO: Move `CommandBar` into single Control, cause `FileManagerPage` will use it, too -->
+        <CommandBar x:Name="CommandBar"
                     Grid.Row="0"
                     HorizontalAlignment="Left"
                     Background="Transparent"
@@ -27,7 +28,7 @@
                              Content="New">
                     <SplitButton.Flyout>
                         <Flyout>
-                            <StackPanel >
+                            <StackPanel>
                                 <AppBarButton Icon="Folder"
                                               Label="Folder" />
                                 <AppBarButton Icon="Link"
@@ -56,18 +57,6 @@
             <AppBarButton Icon="Delete"
                           IsEnabled="False"
                           Label="Delete" />
-
-            <!--<Button Content="Options">
-                <Button.Flyout>
-                    <MenuFlyout>
-                        <MenuFlyoutItem Text="Reset"/>
-                        <MenuFlyoutSeparator/>
-                        <ToggleMenuFlyoutItem Text="Repeat" IsChecked="True"/>
-                        <ToggleMenuFlyoutItem Text="Shuffle" IsChecked="True"/>
-                    </MenuFlyout>
-                </Button.Flyout>
-            </Button>-->
-
             <AppBarSeparator />
             <AppBarElementContainer>
                 <SplitButton x:Name="SortSplitButton"
@@ -105,12 +94,14 @@
                                 <Button Content="Tiles" />
                                 <Button Content="Content" />
                                 <Button Content="~" />
+                                <Button Content="Navigation pane" />
                                 <Button Content="Details pane" />
                                 <Button Content="Preview pane" />
                                 <Button Content="~" />
                                 <Button Content="Show" />
                                 <Button Content="~" />
-                                <Button Content="Two Pages" /> <!--  Glyph: E89A, TwoPage  -->
+                                <Button Content="Two Pages" />
+                                <!--  Glyph: E89A, TwoPage  -->
                                 <AppBarButton Icon="TwoPage"
                                               Label="Double pane mode" />
                                 <AppBarButton Icon="Refresh"
@@ -195,7 +186,7 @@
               Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <!--  controls:DockPanel.Dock="Left"  -->
-                <ColumnDefinition Width="256"
+                <ColumnDefinition Width="176"
                                   MinWidth="76" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*"

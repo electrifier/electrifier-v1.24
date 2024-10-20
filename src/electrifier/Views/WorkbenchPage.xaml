@@ -1,66 +1,58 @@
-﻿<Page
-    x:Class="electrifier.Views.WorkbenchPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:behaviors="using:electrifier.Behaviors"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewmodels="using:electrifier.ViewModels"
-    behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
-    d:DataContext="{d:DesignInstance Type=viewmodels:WorkbenchViewModel}"
-    mc:Ignorable="d">
+﻿<Page x:Class="electrifier.Views.WorkbenchPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:behaviors="using:electrifier.Behaviors"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:viewmodels="using:electrifier.ViewModels"
+      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+      d:DataContext="{d:DesignInstance Type=viewmodels:WorkbenchViewModel}"
+      mc:Ignorable="d">
     <!--  TODO: ui:UIElementExtensions.ClipToBounds="{x:Bind IsClipped, Mode=OneWay}"  -->
     <!--  TODO: removed Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"  -->
     <Grid x:Name="WorkbenchGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
-            <ColumnDefinition />
+            <ColumnDefinition MaxWidth="23" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
-        <Border
-            x:Name="MainContentBorder"
-            Grid.Column="0"
-            AllowDrop="True"
-            BorderThickness="6">
+        <Border x:Name="MainContentBorder"
+                AllowDrop="True">
             <Grid>
-                <StackPanel x:Name="StackPanel">
-                    <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="Workbench" />
-                    <InfoBar
-                        Title="Your Workbench"
-                        BorderThickness="8"
-                        IsClosable="True"
-                        IsOpen="True"
-                        Message="Your Workbench is your personal workspace. You can customize it [here]." />
-                    <InfoBar
-                        x:Name="SettingsBackupWorkbenchInfoBar"
-                        Title="Backup your Personal User Settings"
-                        BorderThickness="8"
-                        IsClosable="True"
-                        IsOpen="True"
-                        Message="Do you want to allow electrifier to make backups of your Workbench settings?">
+                <StackPanel x:Name="StackPanel" Visibility="Collapsed">
+                    <TextBlock Style="{StaticResource TitleTextBlockStyle}"
+                               Text="Workbench" />
+                    <InfoBar Title="Your Workbench"
+                             BorderThickness="8"
+                             IsClosable="True"
+                             IsOpen="True"
+                             Message="Your Workbench is your personal workspace. You can customize it [here]." />
+                    <InfoBar x:Name="SettingsBackupWorkbenchInfoBar"
+                             Title="Backup your Personal User Settings"
+                             BorderThickness="8"
+                             IsClosable="True"
+                             IsOpen="True"
+                             Message="Do you want to allow electrifier to make backups of your Workbench settings?">
                         <InfoBar.Content>
-                            <ItemsStackPanel
-                                Height="Auto"
-                                HorizontalAlignment="Right"
-                                Orientation="Horizontal">
+                            <ItemsStackPanel Height="Auto"
+                                             HorizontalAlignment="Right"
+                                             Orientation="Horizontal">
                                 <CheckBox x:Name="SettingsBackupWorkbenchAllowed">
                                     Enable automatic backups and don't show again
                                 </CheckBox>
                             </ItemsStackPanel>
                         </InfoBar.Content>
                     </InfoBar>
-                    <InfoBar
-                        x:Name="SettingsRestoreLastUsedPages"
-                        Title="Quick launch to your last used Pages"
-                        BorderThickness="8"
-                        IsClosable="True"
-                        IsOpen="True"
-                        Message="Quick launch last used Pages">
+                    <InfoBar x:Name="SettingsRestoreLastUsedPages"
+                             Title="Quick launch to your last used Pages"
+                             BorderThickness="8"
+                             IsClosable="True"
+                             IsOpen="True"
+                             Message="Quick launch last used Pages">
                         <InfoBar.Content>
-                            <ItemsStackPanel
-                                Height="Auto"
-                                HorizontalAlignment="Right"
-                                Orientation="Horizontal">
+                            <ItemsStackPanel Height="Auto"
+                                             HorizontalAlignment="Right"
+                                             Orientation="Horizontal">
                                 <CheckBox x:Name="SettingsRestoreLastUsedPagesCheckBox">
                                     On Launch, restore last used Pages
                                 </CheckBox>
@@ -71,26 +63,8 @@
                 <ItemsStackPanel />
             </Grid>
         </Border>
-        <Border /><!-- controls:GridSplitter -->
-        <StackPanel x:Name="SidebarStackPanel" Grid.Column="2">
-            <TextBlock Style="{StaticResource TitleTextBlockStyle}" Text="SideBar" />
-            <InfoBar
-                x:Name="SettingsBackupWorkbenchLicenseInfoBar"
-                Title="License"
-                BorderThickness="8"
-                IsClosable="True"
-                IsOpen="True"
-                Message="Licensed under the Apache License, Version 2.0" />
-            <InfoBar
-                x:Name="ShortcutsInfoBar"
-                Title="Shortcuts"
-                BorderThickness="8"
-                IsClosable="True"
-                IsOpen="True"
-                Message="Shortcuts">
-                neue message
-            </InfoBar>
-            <!--  TODO: Bind to App Notifications  -->
-        </StackPanel>
+        <Border x:Name="Splitter"
+                Grid.Column="1" />
+        <Border Grid.Column="2" />
     </Grid>
 </Page>

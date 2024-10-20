@@ -9,9 +9,6 @@ namespace electrifier.Controls.Vanara;
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
 public sealed partial class Shell32GridView : INotifyPropertyChanged
 {
-    private static readonly IList<object> addedItems;
-    public IList<object> AddedItems => addedItems;
-
     public GridView NativeGridView => GridView;
     public object ItemsSource
     {
@@ -19,10 +16,14 @@ public sealed partial class Shell32GridView : INotifyPropertyChanged
         set => NativeGridView.ItemsSource = value;
     }
 
+    public int TreeViewWidth;
+
     public Shell32GridView()
     {
         InitializeComponent();
         DataContext = this;
+
+        NativeGridView.ShowsScrollingPlaceholders = true;
 
         // todo: ScrollBarVisibility.Auto; NativeGridView.ShowsScrollingPlaceholders
     }
@@ -31,12 +32,6 @@ public sealed partial class Shell32GridView : INotifyPropertyChanged
     {
         Debug.WriteLine($".NativeGridView_ContainerContentChanging()");
     }
-
-    private string GetDebuggerDisplay()
-    {
-        return nameof(Shell32GridView) + ToString();
-    }
-
     #region INotifyPropertyChanged
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -51,6 +46,12 @@ public sealed partial class Shell32GridView : INotifyPropertyChanged
         field = value;
         OnPropertyChanged(propertyName);
         return true;
+    }
+    #endregion
+    #region Debug Stuff
+    private string GetDebuggerDisplay()
+    {
+        return nameof(Shell32GridView) + ToString();
     }
     #endregion
 }

@@ -16,13 +16,13 @@ public partial class WebViewViewModel : ObservableRecipient, INavigationAware
     // DONE: Set the default URL to display.
     // Was: https://docs.microsoft.com/windows/apps/
     [ObservableProperty]
-    private Uri source = new("https://www.bing.com/");
+    private Uri _source = new("https://www.bing.com/");
 
     [ObservableProperty]
-    private bool isLoading = true;
+    private bool _isLoading = true;
 
     [ObservableProperty]
-    private bool hasFailures;
+    private bool _hasFailures;
 
     public IWebViewService WebViewService
     {

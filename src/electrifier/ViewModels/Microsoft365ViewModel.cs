@@ -13,14 +13,14 @@ namespace electrifier.ViewModels;
 public partial class Microsoft365ViewModel : ObservableRecipient, INavigationAware
 {
     [ObservableProperty]
-    private Uri source = new("https://www.office.com/");
+    private Uri _source = new("https://www.office.com/");
     // private Uri source = new("https://docs.microsoft.com/windows/apps/");   // NOTE: This is a placeholder URL for Windows Dev Center.
 
     [ObservableProperty]
-    private bool isLoading = true;
+    private bool _isLoading = true;
 
     [ObservableProperty]
-    private bool hasFailures;
+    private bool _hasFailures;
 
     public IWebViewService WebViewService
     {
