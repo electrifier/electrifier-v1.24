@@ -336,10 +336,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 return;
             }
 
-            var ext = new ShellIconExtractor(new ShellFolder(targetFolder.ShellItem));
-            ext.Complete += ShellIconExtractorComplete;
-            ext.IconExtracted += ShellIconExtractorIconExtracted;
-            ext.Start();
+            //var ext = new ShellIconExtractor(new ShellFolder(targetFolder.ShellItem));
+            //ext.Complete += ShellIconExtractorComplete;
+            //ext.IconExtracted += ShellIconExtractorIconExtracted;
+            //ext.Start();
 
             var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
             var shellItems = children as ShellItem[] ?? children.ToArray();
@@ -405,7 +405,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
             // todo: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh();
             // todo: Use CONSTANTS from ExplorerBrowser if possible
-            Navigate(ebItem, selectTreeViewNode: true);
+            Navigate(ebItem, selectTreeViewNode: false);
             // todo: add extension methods:
             // Navigate().ThrowIfFailed;
             // Navigate().InitialFolder();
