@@ -15,7 +15,8 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <CommandBar x:Name="TopCommandBar"
+        <!-- TODO: Move `CommandBar` into single Control, cause `FileManagerPage` will use it, too -->
+        <CommandBar x:Name="CommandBar" 
                     Grid.Row="0"
                     HorizontalAlignment="Left"
                     Background="Transparent"
@@ -195,7 +196,7 @@
               Grid.Row="2">
             <Grid.ColumnDefinitions>
                 <!--  controls:DockPanel.Dock="Left"  -->
-                <ColumnDefinition Width="256"
+                <ColumnDefinition Width="176"
                                   MinWidth="76" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*"
