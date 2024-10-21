@@ -173,20 +173,8 @@
         </CommandBar>
         <Grid x:Name="SplitViewGrid"
               Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition></ColumnDefinition>
-                <ColumnDefinition></ColumnDefinition>
-            </Grid.ColumnDefinitions>
             <Border x:Name="PrimaryExplorerBrowserBorder">
                 <vanara:ExplorerBrowser x:Name="PrimaryExplorerBrowserControl"
-                                        BottomAppBarVisibility="Collapsed"
-                                        BottomCommandBarVisibility="Visible"
-                                        GridViewVisibility="Visible"
-                                        TopCommandBarVisibility="Collapsed" />
-            </Border>
-            <Border Grid.Column="1"
-                    x:Name="SecondaryExplorerBrowserBorder">
-                <vanara:ExplorerBrowser x:Name="SecondaryExplorerBrowserControl"
                                         BottomAppBarVisibility="Collapsed"
                                         BottomCommandBarVisibility="Visible"
                                         GridViewVisibility="Visible"
