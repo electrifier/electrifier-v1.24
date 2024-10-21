@@ -29,11 +29,11 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
             set;
         }
     }
+    public SoftwareBitmapSource? BitmapSource { get; set; }
 
-    /// <summary>Gets the set of Children as an <seealso cref="List{T}"/>.</summary>
+    /// <summary>Get the current set of <seealso cref="ExplorerBrowserItem"/>s as <seealso cref="List{T}"/>.</summary>
     public List<ExplorerBrowserItem>? Children;
-
-    /// <summary>Gets the DisplayName.</summary>
+    /// <summary>Get the DisplayName.</summary>
     public string DisplayName
     {
         get;
@@ -61,10 +61,7 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
             return false;
         }
     }
-    public bool IsExpanded
-    {
-        get; set;
-    }
+    public bool IsExpanded { get; set; }
     public bool IsFolder => ShellItem.IsFolder;
     public bool IsLink => ShellItem.IsLink;
     public bool IsSelected
@@ -76,9 +73,6 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
         get;
     }
 
-    public SoftwareBitmapSource? BitmapSource { get; set; }
-
-
     public ExplorerBrowserItem(ShellItem? shItem, bool isSeparator = false)
     {
         ShellItem = new ShellItem(shItem.PIDL);
@@ -86,9 +80,6 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
         IsExpanded = false;
         // todo: If IsSelected, add overlay of opened folder icon to TreeView optionally
         IsSelected = false;
-
-        // todo: Use Debug-Levels as property
-        //Debug.Print($"ExplorerBrowserItem <{GetDebuggerDisplay()}> created.");
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
