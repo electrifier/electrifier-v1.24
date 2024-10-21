@@ -46,7 +46,7 @@
                     <StackPanel Orientation="Horizontal">
                         <Button>
                             <Image x:Name="AppTitleBarBackButtonImageCenter"
-                                   VerticalAlignment="Top"
+                                   VerticalAlignment="Center"
                                    MaxHeight="23"
                                    Source="ms-appx:///Assets/Themes/Aero Blackcomb/Back Button 48px.png" />
                         </Button>
@@ -59,7 +59,7 @@
                         </Button>
                         <TextBox x:Name="CenterStackPanelTextBlock"
                                  Text="Search..."
-                                 VerticalAlignment="Center" />
+                                 VerticalAlignment="Stretch" />
                     </StackPanel>
                 </Border>
             </StackPanel>

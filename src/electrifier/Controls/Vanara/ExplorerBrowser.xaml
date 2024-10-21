@@ -199,7 +199,6 @@
             <Border Grid.Column="1"
                     Width="8"
                     Background="Transparent" />
-            <!-- controls:GridSplitter -->
             <Border x:Name="ShellGridViewBorder"
                     Grid.Column="2">
                 <StackPanel Orientation="Vertical">
@@ -233,26 +232,6 @@
                     </AppBar>
                 </StackPanel>
             </Border>
-            <!-- add `ShellGridViewEast`:
-            <controls:GridSplitter
-                x:Name="MidArenaGridSplitter"
-                Grid.Column="3"
-                Width="12"
-                HorizontalAlignment="Left"
-                ResizeBehavior="BasedOnAlignment"
-                ResizeDirection="Columns"
-                Visibility="{x:Bind ArenaGridSplitterVisibility}">
-                <controls:GridSplitter.RenderTransform>
-                    <TranslateTransform X="-6" />
-                </controls:GridSplitter.RenderTransform>
-            </controls:GridSplitter>
-            <Border Grid.Column="4">
-                <local:Shell32GridView
-                    x:Name="ShellGridViewEast"
-                    BorderThickness="3"
-                    ItemsSource="{x:Bind CurrentFolderItems}"
-                    Visibility="{x:Bind GridViewVisibility}" />
-            </Border>-->
         </Grid>
         <CommandBar Grid.Row="3"
                     HorizontalAlignment="Left"
