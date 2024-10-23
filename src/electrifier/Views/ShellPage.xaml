@@ -26,11 +26,9 @@
                         Orientation="Horizontal">
                 <StackPanel>
                     <TextBlock x:Name="TitleTextBlockLeft"
-                               Margin="0,0"
                                FontSize="23"
                                Text="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}" />
                     <TextBlock x:Name="SubTitleTextBlockLeft"
-                               Margin="0,0"
                                FontSize="11"
                                FontStyle="Italic"
                                Text="electrifier alpha octavian" />
@@ -38,7 +36,7 @@
                 <Image x:Name="WindowIcon"
                        Height="32"
                        Margin="23,0,13,0"
-                       Source="/Assets/Square44x44Logo.scale-200_unplated.png" />
+                       Source="ms-appx:///Assets/Square44x44Logo_unplated.png" />
             </StackPanel>
             <StackPanel x:Name="CenterStackPanel"
                         Grid.Column="1">
