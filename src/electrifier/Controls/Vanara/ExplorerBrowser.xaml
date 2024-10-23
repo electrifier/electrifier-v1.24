@@ -11,158 +11,11 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <!-- TODO: Move `CommandBar` into single Control, cause `FileManagerPage` will use it, too -->
-        <CommandBar x:Name="CommandBar"
-                    Grid.Row="0"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
-                    DefaultLabelPosition="Right"
-                    IsOpen="False"
-                    Visibility="{x:Bind TopCommandBarVisibility}">
-            <AppBarElementContainer>
-                <SplitButton x:Name="NewItemSplitButton"
-                             Content="New">
-                    <SplitButton.Flyout>
-                        <Flyout>
-                            <StackPanel>
-                                <AppBarButton Icon="Folder"
-                                              Label="Folder" />
-                                <AppBarButton Icon="Link"
-                                              Label="Shortcut" />
-                            </StackPanel>
-                        </Flyout>
-                    </SplitButton.Flyout>
-                </SplitButton>
-            </AppBarElementContainer>
-            <AppBarSeparator />
-            <AppBarButton Icon="Cut"
-                          IsEnabled="False"
-                          Label="Cut" />
-            <AppBarButton Icon="Copy"
-                          IsEnabled="False"
-                          Label="Copy" />
-            <AppBarButton Icon="Paste"
-                          IsEnabled="False"
-                          Label="Paste" />
-            <AppBarButton Icon="Rename"
-                          IsEnabled="False"
-                          Label="Rename" />
-            <AppBarButton Icon="Share"
-                          IsEnabled="False"
-                          Label="Share" />
-            <AppBarButton Icon="Delete"
-                          IsEnabled="False"
-                          Label="Delete" />
-            <AppBarSeparator />
-            <AppBarElementContainer>
-                <SplitButton x:Name="SortSplitButton"
-                             Content="Sort">
-                    <SplitButton.Flyout>
-                        <Flyout>
-                            <StackPanel>
-                                <Button Content="Name" />
-                                <Button Content="Date Modified" />
-                                <Button Content="Type" />
-                                <Button Content="~" />
-                                <Button Content="More" />
-                                <Button Content="~" />
-                                <Button Content="Ascending" />
-                                <Button Content="Descending" />
-                                <Button Content="~" />
-                                <Button Content="Group by" />
-                            </StackPanel>
-                        </Flyout>
-                    </SplitButton.Flyout>
-                    <SplitButton.Resources>
-                        <TeachingTip x:Name="SortSplitButtonTeachingTip"
-                                     Title="TODO: Add Sort and Group options."
-                                     Subtitle="Use the dropdown button option to save your item and create another."
-                                     Target="{x:Bind SortSplitButton}" />
-                    </SplitButton.Resources>
-                </SplitButton>
-            </AppBarElementContainer>
-            <AppBarElementContainer>
-                <SplitButton x:Name="ViewSplitButton"
-                             Content="View">
-                    <SplitButton.Flyout>
-                        <Flyout>
-                            <StackPanel>
-                                <Button Content="Tiles" />
-                                <Button Content="Content" />
-                                <Button Content="~" />
-                                <Button Content="Navigation pane" />
-                                <Button Content="Details pane" />
-                                <Button Content="Preview pane" />
-                                <Button Content="~" />
-                                <Button Content="Show" />
-                                <Button Content="~" />
-                                <Button Content="Two Pages" />
-                                <!--  Glyph: E89A, TwoPage  -->
-                                <AppBarButton Icon="TwoPage"
-                                              Label="Double pane mode" />
-                                <AppBarButton Icon="Refresh"
-                                              Label="Refresh" />
-                                <AppBarButton Icon="Orientation"
-                                              Label="Orientation" />
-                            </StackPanel>
-                        </Flyout>
-                    </SplitButton.Flyout>
-                    <SplitButton.Resources>
-                        <TeachingTip x:Name="ViewSplitButtonTeachingTip"
-                                     Title="TODO: Sort and Group options."
-                                     Subtitle="Use the dropdown button option to save your item and create another."
-                                     Target="{x:Bind SortSplitButton}" />
-                    </SplitButton.Resources>
-                </SplitButton>
-            </AppBarElementContainer>
-            <AppBarElementContainer>
-                <SplitButton x:Name="FilterSplitButton"
-                             Content="Filter">
-                    <SplitButton.Flyout>
-                        <Flyout>
-                            <StackPanel>
-                                <Button Content="All File Types" />
-                                <Button Content="~" />
-                                <Button Content="Files" />
-                                <Button Content="Folders" />
-                            </StackPanel>
-                        </Flyout>
-                    </SplitButton.Flyout>
-                    <SplitButton.Resources>
-                        <TeachingTip x:Name="FilterSplitButtonTeachingTip"
-                                     Title="TODO: Add filter options title text."
-                                     Subtitle="Use the dropdown button option to save your item and create another."
-                                     Target="{x:Bind FilterSplitButton}" />
-                    </SplitButton.Resources>
-                </SplitButton>
-            </AppBarElementContainer>
-            <AppBarSeparator />
-            <CommandBar.SecondaryCommands>
-                <AppBarButton Icon="Undo"
-                              Label="Undo" />
-                <AppBarSeparator />
-                <AppBarButton Icon="Pin"
-                              Label="Pin to Quick access" />
-                <AppBarSeparator />
-                <AppBarButton Icon="SelectAll"
-                              Label="Select all" />
-                <!-- TODO: The Icon="ViewAll" is the one, that Windows Explorer uses for `Select none` -->
-                <AppBarButton Icon="ClearSelection"
-                              Label="Select none" />
-                <AppBarButton Icon="Shuffle"
-                              Label="Invert selection" />
-                <AppBarSeparator />
-                <AppBarButton Icon="Repair"
-                              Label="Properties" />
-                <AppBarButton Icon="Setting"
-                              Label="Options" />
-            </CommandBar.SecondaryCommands>
-        </CommandBar>
-        <Border Grid.Row="1">
+        <Border Grid.Row="0">
             <InfoBar x:Name="NavigationFailedInfoBar"
                      Title="Navigation failed"
                      BorderBrush="DarkRed"
@@ -183,7 +36,7 @@
             </InfoBar>
         </Border>
         <Grid x:Name="ArenaGrid"
-              Grid.Row="2">
+              Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <!--  controls:DockPanel.Dock="Left"  -->
                 <ColumnDefinition Width="176"
@@ -233,7 +86,7 @@
                 </StackPanel>
             </Border>
         </Grid>
-        <CommandBar Grid.Row="3"
+        <CommandBar Grid.Row="2"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     HorizontalContentAlignment="Left"

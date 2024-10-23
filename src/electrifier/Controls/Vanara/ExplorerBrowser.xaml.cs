@@ -242,8 +242,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         _ = InitializeStockIcons();
 
+        var home = new ShellFolder("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
+
         var rootItems = new List<ExplorerBrowserItem>
         {
+            new ExplorerBrowserItem(home),
+
             // todo: add home folder
             // todo: add Gallery
             Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_OneDrive),
@@ -315,7 +319,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         var folderCount = 0;
         Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracting...");
 
-        _shellItems?.Clear();
+        
+
+
         if (targetFolder is null)
         {
             throw new ArgumentNullException(nameof(targetFolder));
@@ -323,6 +329,25 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         try
         {
+            /*
+               Debug.Assert(targetFolder.ShellItem.PIDL != Shell32.PIDL.Null);
+               var shItemId = targetFolder.ShellItem.PIDL;
+               using var shFolder = new ShellFolder(shItemId);
+
+               if ((shFolder.Attributes & ShellItemAttribute.Removable) != 0)
+               {
+                   // TODO: Check for Disc in Drive, fail only if device not present
+                   // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
+                   Debug.WriteLine($"GetChildItems: IsRemovable = true");
+                   var eventArgs = new NavigationFailedEventArgs();
+                   return;
+               }
+
+               var ext = new ShellIconExtractor(new ShellFolder(targetFolder.ShellItem));
+               ext.Complete += ShellIconExtractorComplete;
+               ext.IconExtracted += ShellIconExtractorIconExtracted;
+               ext.Start();
+            */
             Debug.Assert(targetFolder.ShellItem.PIDL != Shell32.PIDL.Null);
             var shItemId = targetFolder.ShellItem.PIDL;
             using var shFolder = new ShellFolder(shItemId);
@@ -382,7 +407,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     private void ShellIconExtractorIconExtracted(object? sender, ShellIconExtractedEventArgs e) => throw new NotImplementedException();
     private void ShellIconExtractorComplete(object? sender, EventArgs e) => throw new NotImplementedException();
 
-    private List<ShellItem>? _shellItems;
     private bool _isLoading;
     private Visibility _gridViewVisibility;
     private Visibility _topCommandBarVisibility;
@@ -397,7 +421,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             if (ebItem is not ExplorerBrowserItem)
             {
                 Debug.Print($".ShellTreeView_SelectionChanged({args})");
-                _shellItems?.Clear();
                 return;
             }
 
