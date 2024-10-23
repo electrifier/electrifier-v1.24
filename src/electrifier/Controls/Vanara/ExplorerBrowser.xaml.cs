@@ -327,6 +327,25 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         try
         {
+            /*
+               Debug.Assert(targetFolder.ShellItem.PIDL != Shell32.PIDL.Null);
+               var shItemId = targetFolder.ShellItem.PIDL;
+               using var shFolder = new ShellFolder(shItemId);
+
+               if ((shFolder.Attributes & ShellItemAttribute.Removable) != 0)
+               {
+                   // TODO: Check for Disc in Drive, fail only if device not present
+                   // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
+                   Debug.WriteLine($"GetChildItems: IsRemovable = true");
+                   var eventArgs = new NavigationFailedEventArgs();
+                   return;
+               }
+
+               var ext = new ShellIconExtractor(new ShellFolder(targetFolder.ShellItem));
+               ext.Complete += ShellIconExtractorComplete;
+               ext.IconExtracted += ShellIconExtractorIconExtracted;
+               ext.Start();
+            */
             Debug.Assert(targetFolder.ShellItem.PIDL != Shell32.PIDL.Null);
             var shItemId = targetFolder.ShellItem.PIDL;
             using var shFolder = new ShellFolder(shItemId);
