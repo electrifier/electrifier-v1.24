@@ -242,8 +242,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         _ = InitializeStockIcons();
 
+        var home = new ShellFolder("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
+
         var rootItems = new List<ExplorerBrowserItem>
         {
+            new ExplorerBrowserItem(home),
+
             // todo: add home folder
             // todo: add Gallery
             Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_OneDrive),
