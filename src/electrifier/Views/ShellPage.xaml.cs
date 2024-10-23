@@ -43,6 +43,9 @@ public sealed partial class ShellPage
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Left, VirtualKeyModifiers.Menu));
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.GoBack));
 
+
+        NavigationBreadcrumbBar.ItemsSource = new string[]
+            { "Home", "Documents" };
         //var targetPageType = typeof(WorkbenchPage);
         //string targetPageKey = targetPageType.FullName;  // .ToString()
         //string targetPageArguments = string.Empty;

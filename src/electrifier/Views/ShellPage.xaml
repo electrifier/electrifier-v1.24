@@ -53,10 +53,13 @@
                     <Image x:Name="AppTitleBarForwardButtonImageCenter"
                            Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png" />
                 </Button>
-                <TextBox x:Name="CenterStackPanelTextBlock"
-                         VerticalAlignment="Stretch"
-                         PlaceholderText="Enter term to search or navigate..."
-                         PlaceholderForeground="DarkGray" />
+                <Border BorderThickness="1"
+                        BorderBrush="WhiteSmoke"
+                        Opacity="0.5"
+                        MinWidth="256">
+                    <BreadcrumbBar x:Name="NavigationBreadcrumbBar"
+                                   VerticalAlignment="Center" />
+                </Border>
             </StackPanel>
             <Grid x:Name="SystemIconGrid"
                   Grid.Column="2"
