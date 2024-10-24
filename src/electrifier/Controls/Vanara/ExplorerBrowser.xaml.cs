@@ -315,100 +315,49 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         e.IsHandled = true;
     }
 
-    public void ExtractChildItems(ExplorerBrowserItem? targetFolder)
+    public void ExtractChildItems(ExplorerBrowserItem targetFolder,
+        EventHandler<ShellIconExtractedEventArgs>? iconExtOnIconExtracted,
+        EventHandler? iconExtOnComplete)
     {
-        var itemCount = 0;
-        var fileCount = 0;
-        var folderCount = 0;
-        Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracting...");
-
-        
-
-
+        Debug.Print($"ExtractChildItems <{targetFolder.DisplayName}> <{iconExtOnIconExtracted}> <{iconExtOnComplete}>");
+        Debug.Assert(targetFolder is not null);
         if (targetFolder is null)
         {
             throw new ArgumentNullException(nameof(targetFolder));
         }
 
-        try
+        Debug.Assert(targetFolder.IsFolder);
+        Debug.Assert(targetFolder.ShellItem.PIDL != null);
+        var shItemId = targetFolder.ShellItem.PIDL;
+        var shFolder = new ShellFolder(shItemId);
+        var shellIconExtractor = new ShellIconExtractor(shFolder);
+        shellIconExtractor.IconExtracted += (sender, args) =>
         {
-            /*
-               Debug.Assert(targetFolder.ShellItem.PIDL != Shell32.PIDL.Null);
-               var shItemId = targetFolder.ShellItem.PIDL;
-               using var shFolder = new ShellFolder(shItemId);
+            var shItem = new ShellItem(args.ItemID);
+            var ebItem = new ExplorerBrowserItem(shItem);
 
-               if ((shFolder.Attributes & ShellItemAttribute.Removable) != 0)
-               {
-                   // TODO: Check for Disc in Drive, fail only if device not present
-                   // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
-                   Debug.WriteLine($"GetChildItems: IsRemovable = true");
-                   var eventArgs = new NavigationFailedEventArgs();
-                   return;
-               }
-
-               var ext = new ShellIconExtractor(new ShellFolder(targetFolder.ShellItem));
-               ext.Complete += ShellIconExtractorComplete;
-               ext.IconExtracted += ShellIconExtractorIconExtracted;
-               ext.Start();
-            */
-            Debug.Assert(targetFolder.ShellItem.PIDL != Shell32.PIDL.Null);
-            var shItemId = targetFolder.ShellItem.PIDL;
-            using var shFolder = new ShellFolder(shItemId);
-
-            if ((shFolder.Attributes & ShellItemAttribute.Removable) != 0)
+            DispatcherQueue.TryEnqueue(() =>
             {
-                // TODO: Check for Disc in Drive, fail only if device not present
-                // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
-                Debug.WriteLine($"GetChildItems: IsRemovable = true");
-                var eventArgs = new NavigationFailedEventArgs();
-                return;
-            }
-
-            //var ext = new ShellIconExtractor(new ShellFolder(targetFolder.ShellItem));
-            //ext.Complete += ShellIconExtractorComplete;
-            //ext.IconExtracted += ShellIconExtractorIconExtracted;
-            //ext.Start();
-
-            var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
-            var shellItems = children as ShellItem[] ?? children.ToArray();
-            itemCount = shellItems.Length;
-            targetFolder.Children = []; // TODO: new ReadOnlyDictionary<ExplorerBrowserItem, int>();
-
-            if (shellItems.Length > 0)
-            {
-                foreach (var shItem in shellItems)
-                {
-                    var ebItem = new ExplorerBrowserItem(shItem);
-                    if (ebItem.IsFolder)
-                    {
-                        ebItem.BitmapSource = _defaultFolderImageBitmapSource;
-                        targetFolder.Children?.Insert(0, ebItem);
-                        folderCount++;
-                    }
-                    else
-                    {
-                        ebItem.BitmapSource = _defaultDocumentAssocImageBitmapSource;
-                        targetFolder.Children?.Add(ebItem);
-                        fileCount++;
-                    }
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
-
-        ItemCount = itemCount;
-        FileCount = fileCount;
-        FolderCount = folderCount;
-
-        Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracted: {ItemCount} items: {FileCount} files, {FolderCount} folders");
+                CurrentFolderItems.Add(ebItem);
+            });
+        };
+        shellIconExtractor.IconExtracted += iconExtOnIconExtracted;
+        shellIconExtractor.Complete += iconExtOnComplete;
+        shellIconExtractor.Start();
     }
 
-    private void ShellIconExtractorIconExtracted(object? sender, ShellIconExtractedEventArgs e) => throw new NotImplementedException();
-    private void ShellIconExtractorComplete(object? sender, EventArgs e) => throw new NotImplementedException();
+    private void IconExtOnComplete(object? sender, EventArgs e)
+    {
+        var cnt = CurrentFolderItems.Count;
+        Debug.Print($".IconExtOnComplete(): {cnt} items");
+
+        //ShellTreeView.SetItemsSource(CurrentFolderItem, CurrentFolderItems);  // TODO: using root item here, should be target folder?!?
+        //if (GridViewVisibility == Microsoft.UI.Xaml.Visibility.Visible)
+        //{
+        //    Debug.Print($".GridViewVisibility = {Microsoft.UI.Xaml.Visibility.Visible}");
+        //    ShellGridView.SetItems(CurrentFolderItems);
+        //}
+    }
 
     private bool _isLoading;
     private Visibility _gridViewVisibility;
@@ -489,7 +438,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             }
             CurrentFolderItems.Clear();
             IsLoading = true;
-            ExtractChildItems(ebItem);
+            ExtractChildItems(ebItem, null, IconExtOnComplete);
 
             if (!(ebItem.Children?.Count > 0))
             {
