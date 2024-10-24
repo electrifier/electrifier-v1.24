@@ -31,6 +31,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /// </summary>
     public HRESULT HResultElementNotFound = 0x80070490;
 
+    private readonly ShellFolder HomeShellFolder = new("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
+
+
     public ExplorerBrowserItem? CurrentFolderBrowserItem
     {
         get => GetValue(CurrentFolderBrowserItemProperty) as ExplorerBrowserItem;
@@ -217,7 +220,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         DataContext = this;
 
         CurrentFolderItems = [];
-        CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop);
+        CurrentFolderBrowserItem = new ExplorerBrowserItem(HomeShellFolder);
 
         NavigationFailed += ExplorerBrowser_NavigationFailed;
 
@@ -226,27 +229,27 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         RefreshViewCommand = new RelayCommand(() => OnRefreshViewCommand(this, new RoutedEventArgs()));
 
-        this.Loading += ExplorerBrowser_Loading;
-    }
-    private async void ExplorerBrowser_Loading(FrameworkElement sender, object args)
-    {
-        _ = InitializeViewModel();
-        _ = RefreshGridView();
-
-        Task RefreshGridView()
+        this.Loading += async (sender, args) =>
         {
-            return null;
-        }
+            await InitializeViewModel();
+        };
+
+        this.Loaded += async (sender, args) =>
+        {
+            if (CurrentFolderBrowserItem != null)
+            {
+                Navigate(CurrentFolderBrowserItem);
+            }
+        };
     }
+
     private async Task InitializeViewModel()
     {
         _ = InitializeStockIcons();
 
-        var home = new ShellFolder("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
-
         var rootItems = new List<ExplorerBrowserItem>
         {
-            new ExplorerBrowserItem(home),
+            new ExplorerBrowserItem(HomeShellFolder),
 
             // todo: add home folder
             // todo: add Gallery
