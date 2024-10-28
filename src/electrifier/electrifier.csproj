@@ -34,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Assets\Square44x44Logo.scale-200_altform-unplated.png" />
+    <None Remove="Controls\Vanara\WinUI\Extensions\ResourceDictionary.xaml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Assets\Square44x44Logo_unplated.png" />
@@ -69,6 +70,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <Page Update="Controls\Vanara\WinUI\Extensions\ResourceDictionary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <None Update="README.md">
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
