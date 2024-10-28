@@ -336,6 +336,19 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             var shItem = new ShellItem(args.ItemID);
             var ebItem = new ExplorerBrowserItem(shItem);
 
+            if (ebItem.IsFolder)
+            {
+                ebItem.BitmapSource = _defaultFolderImageBitmapSource;
+                targetFolder.Children?.Insert(0, ebItem);
+                //folderCount++;
+            }
+            else
+            {
+                ebItem.BitmapSource = _defaultDocumentAssocImageBitmapSource;
+                targetFolder.Children?.Add(ebItem);
+                //fileCount++;
+            }
+
             DispatcherQueue.TryEnqueue(() =>
             {
                 CurrentFolderItems.Add(ebItem);
