@@ -244,14 +244,17 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         {
             if (CurrentFolderBrowserItem != null)
             {
+                await _stockIconTask;
                 Navigate(CurrentFolderBrowserItem);
             }
         };
     }
 
+    private Task _stockIconTask;
+
     private async Task InitializeViewModel()
     {
-        _ = InitializeStockIcons();
+        _stockIconTask = InitializeStockIcons();
 
         var rootItems = new List<ExplorerBrowserItem>
         {
