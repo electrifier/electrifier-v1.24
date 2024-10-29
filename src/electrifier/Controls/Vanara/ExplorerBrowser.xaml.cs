@@ -317,13 +317,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     public void ExtractChildItems(ExplorerBrowserItem? targetFolder)
     {
-        var itemCount = 0;
-        var fileCount = 0;
-        var folderCount = 0;
         Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracting...");
-
-        
-
 
         if (targetFolder is null)
         {
@@ -332,25 +326,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         try
         {
-            /*
-               Debug.Assert(targetFolder.ShellItem.PIDL != Shell32.PIDL.Null);
-               var shItemId = targetFolder.ShellItem.PIDL;
-               using var shFolder = new ShellFolder(shItemId);
-
-               if ((shFolder.Attributes & ShellItemAttribute.Removable) != 0)
-               {
-                   // TODO: Check for Disc in Drive, fail only if device not present
-                   // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
-                   Debug.WriteLine($"GetChildItems: IsRemovable = true");
-                   var eventArgs = new NavigationFailedEventArgs();
-                   return;
-               }
-
-               var ext = new ShellIconExtractor(new ShellFolder(targetFolder.ShellItem));
+            /* var ext = new ShellIconExtractor(new ShellFolder(targetFolder.ShellItem));
                ext.Complete += ShellIconExtractorComplete;
                ext.IconExtracted += ShellIconExtractorIconExtracted;
-               ext.Start();
-            */
+               ext.Start(); */
             Debug.Assert(targetFolder.ShellItem.PIDL != Shell32.PIDL.Null);
             var shItemId = targetFolder.ShellItem.PIDL;
             using var shFolder = new ShellFolder(shItemId);
@@ -371,7 +350,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
             var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
             var shellItems = children as ShellItem[] ?? children.ToArray();
-            itemCount = shellItems.Length;
+            //itemCount = shellItems.Length;
             targetFolder.Children = []; // TODO: new ReadOnlyDictionary<ExplorerBrowserItem, int>();
 
             if (shellItems.Length > 0)
@@ -383,13 +362,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                     {
                         ebItem.BitmapSource = _defaultFolderImageBitmapSource;
                         targetFolder.Children?.Insert(0, ebItem);
-                        folderCount++;
                     }
                     else
                     {
                         ebItem.BitmapSource = _defaultDocumentAssocImageBitmapSource;
                         targetFolder.Children?.Add(ebItem);
-                        fileCount++;
                     }
                 }
             }
@@ -400,15 +377,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             throw;
         }
 
-        ItemCount = itemCount;
-        FileCount = fileCount;
-        FolderCount = folderCount;
-
         Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracted: {ItemCount} items: {FileCount} files, {FolderCount} folders");
     }
 
-    private void ShellIconExtractorIconExtracted(object? sender, ShellIconExtractedEventArgs e) => throw new NotImplementedException();
-    private void ShellIconExtractorComplete(object? sender, EventArgs e) => throw new NotImplementedException();
 
     private bool _isLoading;
     private Visibility _gridViewVisibility;
