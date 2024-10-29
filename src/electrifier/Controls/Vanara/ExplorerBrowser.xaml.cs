@@ -13,6 +13,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
+using CommunityToolkit.WinUI.Collections;
 using electrifier.Controls.Vanara.Services;
 using Vanara.Windows.Shell;
 using Visibility = Microsoft.UI.Xaml.Visibility;
@@ -76,6 +77,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         var s = e.NewValue; //null checks omitted
         Debug.Print($".OnCurrentFolderItemsChanged(): {s}");
     }
+
+    private AdvancedCollectionView _advancedCollectionView;
+
     public int ItemCount
     {
         get => (int)GetValue(ItemCountProperty);
@@ -221,6 +225,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         CurrentFolderItems = [];
         CurrentFolderBrowserItem = new ExplorerBrowserItem(HomeShellFolder);
+
+        _advancedCollectionView = new(CurrentFolderItems, true);
 
         NavigationFailed += ExplorerBrowser_NavigationFailed;
 
