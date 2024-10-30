@@ -224,7 +224,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         DataContext = this;
 
         CurrentFolderItems = [];
-        CurrentFolderBrowserItem = new ExplorerBrowserItem(HomeShellFolder);
+        CurrentFolderBrowserItem = new ExplorerBrowserItem(HomeShellFolder.PIDL);
 
         _advancedCollectionView = new(CurrentFolderItems, true);
 
@@ -258,7 +258,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         var rootItems = new List<ExplorerBrowserItem>
         {
-            new ExplorerBrowserItem(HomeShellFolder),
+            new ExplorerBrowserItem(HomeShellFolder.PIDL),
 
             // todo: add home folder
             // todo: add Gallery
@@ -366,7 +366,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             {
                 foreach (var shItem in shellItems)
                 {
-                    var ebItem = new ExplorerBrowserItem(shItem);
+                    var ebItem = new ExplorerBrowserItem(shItem.PIDL);
                     if (ebItem.IsFolder)
                     {
                         ebItem.BitmapSource = _defaultFolderImageBitmapSource;
