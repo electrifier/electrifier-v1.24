@@ -62,6 +62,7 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
     public bool IsExpanded { get; set; }
     public bool IsFolder => ShellItem.IsFolder;
     public bool IsLink => ShellItem.IsLink;
+    public bool IsProgressing;
     public bool IsSelected
     {
         get; set;
@@ -75,6 +76,8 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
     {
         ShellItem = new ShellItem(shItemId);
         _imageListIndex = imageListIndex;
+
+        //if(NeedsDispatcher)
         // todo: If IsSelected, add overlay of opened folder icon to TreeView optionally
     }
 

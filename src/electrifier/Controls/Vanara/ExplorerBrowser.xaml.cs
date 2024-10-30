@@ -237,14 +237,18 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         this.Loading += async (sender, args) =>
         {
-            await InitializeViewModel();
+            _ = InitializeViewModel();
         };
 
         this.Loaded += async (sender, args) =>
         {
             if (CurrentFolderBrowserItem != null)
             {
-                await _stockIconTask;
+                if (_stockIconTask != null)
+                {
+                    await _stockIconTask;
+                }
+
                 Navigate(CurrentFolderBrowserItem);
             }
         };
@@ -324,6 +328,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         e.IsHandled = true;
     }
 
+
+    /// <summary>
+    /// TODO: Add Stack
+    /// </summary>
+    /// <param name="targetFolder"></param>
+    /// <exception cref="ArgumentNullException"></exception>
     public void ExtractChildItems(ExplorerBrowserItem? targetFolder)
     {
         Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracting...");

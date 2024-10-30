@@ -1,33 +1,39 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<UserControl
-    x:Class="electrifier.Controls.Vanara.Shell32TreeView"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:electrifier.Controls.Vanara"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DataContext="{d:DesignInstance Type=local:ExplorerBrowser}"
-    mc:Ignorable="d">
+<UserControl x:Class="electrifier.Controls.Vanara.Shell32TreeView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="using:electrifier.Controls.Vanara"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DataContext="{d:DesignInstance Type=local:ExplorerBrowser}"
+             mc:Ignorable="d">
     <Grid>
-        <TreeView x:Name="TreeView" SelectionMode="Single">
+        <TreeView x:Name="TreeView"
+                  SelectionMode="Single">
             <TreeView.ItemTemplate>
                 <DataTemplate x:DataType="local:ExplorerBrowserItem">
                     <!-- TODO: For hidden folders, add 'Opacity="0.66"' to TreeViewItem -->
-                    <TreeViewItem
-                        HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"
-                        IsExpanded="{x:Bind IsExpanded}"
-                        IsSelected="{x:Bind IsSelected}"
-                        ItemsSource="{x:Bind Children}">
-                        <StackPanel MaxHeight="20" Orientation="Horizontal">
-                            <Image
-                                Name="ExplorerBrowserItemImageEx"
-                                Source="{x:Bind BitmapSource}"/>
-                            <TextBlock
-                                x:Name="ExplorerBrowserItemDisplayNameTextBlock"
-                                Margin="5,0,5,0"
-                                Text="{x:Bind DisplayName}"
-                                Visibility="Visible" />
-                        </StackPanel>
+                    <TreeViewItem HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"
+                                  IsExpanded="{x:Bind IsExpanded}"
+                                  IsSelected="{x:Bind IsSelected}"
+                                  ItemsSource="{x:Bind Children}">
+                        <!-- IsProgressing="{x:Bind IsExpanded}" bind to child item progressring -->
+                        <Grid>
+                            <StackPanel MaxHeight="20"
+                                        Orientation="Horizontal"
+                                        HorizontalAlignment="Stretch">
+                                <Image Name="ExplorerBrowserItemImageEx"
+                                       Source="{x:Bind BitmapSource}" />
+                                <TextBlock x:Name="ExplorerBrowserItemDisplayNameTextBlock"
+                                           Text="{x:Bind DisplayName}"
+                                           Visibility="Visible" />
+                                <!--          ProgressRing.Background="LightGray" -->
+                                <ProgressRing 
+                                              IsActive="{x:Bind IsProgressing}"
+                                              MaxHeight="10"
+                                              MaxWidth="10" />
+                            </StackPanel>
+                        </Grid>
                     </TreeViewItem>
                 </DataTemplate>
             </TreeView.ItemTemplate>
