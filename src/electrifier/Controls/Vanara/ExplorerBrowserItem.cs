@@ -81,6 +81,12 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
         // todo: If IsSelected, add overlay of opened folder icon to TreeView optionally
     }
 
+    public ExplorerBrowserItem(Shell32.KNOWNFOLDERID kfId, int? imageListIndex = null)
+    {
+        //ShellItem = new ShellItem(kfId);
+        //var pidl= kfId.
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)

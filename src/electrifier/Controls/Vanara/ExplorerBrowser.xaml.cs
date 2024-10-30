@@ -25,16 +25,22 @@ namespace electrifier.Controls.Vanara;
 /* todo: Use Visual States for Errors, Empty folders, Empty Drives */
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
+    #region Vanara-Extensions
     /// <summary>
     /// HResult code for <code><see cref="System.Runtime.InteropServices.COMException"/> 0x80070490</code>
     /// TODO: Add this to Vanara... https://github.com/dahall/Vanara/issues/490
     /// <remarks>Fired when `Element not found`</remarks>
     /// </summary>
-    public HRESULT HResultElementNotFound = 0x80070490;
-
+    private HRESULT HResultElementNotFound = 0x80070490;
     private readonly ShellFolder HomeShellFolder = new("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
-
-
+    /// <summary>End of Vanara Extensions</summary>
+    #endregion
+    private Visibility _bottomAppBarVisibility;
+    private Visibility _bottomCommandBarVisibility;
+    private Visibility _gridViewVisibility;
+    private bool _isLoading;
+    private Task _stockIconTask;
+    private Visibility _topCommandBarVisibility;
     public ExplorerBrowserItem? CurrentFolderBrowserItem
     {
         get => GetValue(CurrentFolderBrowserItemProperty) as ExplorerBrowserItem;
@@ -77,9 +83,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         var s = e.NewValue; //null checks omitted
         Debug.Print($".OnCurrentFolderItemsChanged(): {s}");
     }
-
     private AdvancedCollectionView _advancedCollectionView;
-
     public int ItemCount
     {
         get => (int)GetValue(ItemCountProperty);
@@ -218,13 +222,17 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     }
     /// <summary>Fires when either a Navigating listener cancels the navigation, or if the operating system determines that navigation is not possible.</summary>
     public event EventHandler<ExtNavigationFailedEventArgs>? NavigationFailed;
+
+    /// <summary>
+    /// ExplorerBrowser Implementation for WinUI3
+    /// </summary>
     public ExplorerBrowser()
     {
         InitializeComponent();
         DataContext = this;
 
         CurrentFolderItems = [];
-        CurrentFolderBrowserItem = new ExplorerBrowserItem(HomeShellFolder.PIDL);
+        CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop.PIDL);
 
         _advancedCollectionView = new(CurrentFolderItems, true);
 
@@ -242,19 +250,19 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         this.Loaded += async (sender, args) =>
         {
-            if (CurrentFolderBrowserItem != null)
+            if (CurrentFolderBrowserItem == null)
             {
-                if (_stockIconTask != null)
-                {
-                    await _stockIconTask;
-                }
-
-                Navigate(CurrentFolderBrowserItem);
+                return;
             }
+
+            if (_stockIconTask != null)
+            {
+                await _stockIconTask;
+            }
+
+            Navigate(CurrentFolderBrowserItem);
         };
     }
-
-    private Task _stockIconTask;
 
     private async Task InitializeViewModel()
     {
@@ -262,28 +270,24 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         var rootItems = new List<ExplorerBrowserItem>
         {
-            new ExplorerBrowserItem(HomeShellFolder.PIDL),
-
-            // todo: add home folder
-            // todo: add Gallery
-            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_OneDrive),
-            // todo: add separator
-            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
-            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Downloads),
-            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Documents),
-            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Pictures),
-            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Music),
-            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_Videos),
-            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder),
-            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder),
-            // todo: add separator new(ExplorerBrowserItemSeparator());
-            Shell32FolderService.KnownFolderItem(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop), // todo: WARN: Check why this leads to `SyncCenter`?
+            // todo: new ExplorerBrowserItem(HomeShellFolder.PIDL),
+            // todo: add Gallery? is this Adobe?
+            // todo: add separators
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_OneDrive).PIDL),
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Downloads).PIDL),
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Documents).PIDL),
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Desktop).PIDL),
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Pictures).PIDL),
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Music).PIDL),
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Videos).PIDL),
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder).PIDL),
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder).PIDL),
+            // todo: WARN: Check why this leads to `SyncCenter`?
+            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop).PIDL),
         };
-
         ShellTreeView.ItemsSource = rootItems;
-
-        // todo: CurrentFolderBrowserItem = initialTarget; => OnLoaded()
     }
+
     /// <summary>
     /// <see href="https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs"/>
     /// </summary>
@@ -328,93 +332,90 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         e.IsHandled = true;
     }
 
-    // ShellDataTable
     /// <summary>
-    /// TODO: Add Stack
+    /// ExtractChildItems
+    /// TODO: Add Stack, or ShellDataTable
+    /// TODO: Pre-Enumerate slow folders while building the tree
     /// </summary>
-    /// <param name="browserItem"></param>
+    /// <param name="parentItem"><see cref="Shell32.PIDL">Parent folder's pidl</see> whose child items are requested.</param>
+    /// <param name="safeVerifiedOperations">Do slower fault-tolerant Enumeration.</param>
     /// <exception cref="ArgumentNullException"></exception>
-    public void ExtractChildItems(ExplorerBrowserItem browserItem)
+    public static async Task<ShellDataTable> ExtractChildItems(Shell32.PIDL parentItem, 
+        bool safeVerifiedOperations = true)
     {
-        Debug.Print($".ExtractChildItems(<{browserItem?.DisplayName}>) extracting...");
-        Debug.Assert(browserItem?.ShellItem?.PIDL is not null);
-        Debug.Assert(browserItem.ShellItem.PIDL != Shell32.PIDL.Null);
+        var cancelToken = new CancellationToken();
+        var shItem = ShellItem.Open(parentItem);
+        var shFolder = new ShellFolder(shItem);
+        var shDataTable = new ShellDataTable(shFolder);
 
-        if (browserItem is null)
-        {
-            throw new ArgumentNullException(nameof(browserItem));
-        }
-
-        var shellItem = browserItem.ShellItem;
-
-        if ((shellItem.Attributes & ShellItemAttribute.Removable) != 0)
+        if ((shItem.Attributes & ShellItemAttribute.Removable) != 0)
         {
             // TODO: Check for Disc in Drive, fail only if device not present
             // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
             Debug.WriteLine($"GetChildItems: IsRemovable = true");
-            var eventArgs = new NavigationFailedEventArgs();
-            return;
+            return shDataTable;
+            //var eventArgs = new NavigationFailedEventArgs();
+            //return Task.FromCanceled<>();
+            //cancelToken.ThrowIfCancellationRequested(); 
         }
 
-        if (shellItem.IsFolder)
+        if (!shItem.IsFolder)
         {
-            var shellFolder = new ShellFolder(shellItem);
-            var shellData = new ShellDataTable(shellFolder);
-
-            try
-            {
-                /* var ext = new ShellIconExtractor(new ShellFolder(browserItem.ShellItem));
-                   ext.Complete += ShellIconExtractorComplete;
-                   ext.IconExtracted += ShellIconExtractorIconExtracted;
-                   ext.Start(); */
-
-
-                //var ext = new ShellIconExtractor(new ShellFolder(browserItem.ShellItem));
-                //ext.Complete += ShellIconExtractorComplete;
-                //ext.IconExtracted += ShellIconExtractorIconExtracted;
-                //ext.Start();
-
-                var children = shellFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
-                var shellItems = children as ShellItem[] ?? children.ToArray();
-                
-                //var shellItems = shellData.;
-
-
-                browserItem.Children = []; // TODO: new ReadOnlyDictionary<ExplorerBrowserItem, int>();
-
-                if (shellItems.Length > 0)
-                {
-                    foreach (var shItem in shellItems)
-                    {
-                        var ebItem = new ExplorerBrowserItem(shItem.PIDL);
-                        if (ebItem.IsFolder)
-                        {
-                            ebItem.BitmapSource = _defaultFolderImageBitmapSource;
-                            browserItem.Children?.Insert(0, ebItem);
-                        }
-                        else
-                        {
-                            ebItem.BitmapSource = _defaultDocumentAssocImageBitmapSource;
-                            browserItem.Children?.Add(ebItem);
-                        }
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
+            return shDataTable;
         }
 
-        // TODO: Update msg of Debug.Print($".ExtractChildItems(<{browserItem?.DisplayName}>) extracted: {ItemCount} items: {FileCount} files, {FolderCount} folders");
+        try
+        {
+
+            /* var ext = new ShellIconExtractor(new ShellFolder(parentItem.ShellItem));
+                       ext.Complete += ShellIconExtractorComplete;
+                       ext.IconExtracted += ShellIconExtractorIconExtracted;
+                       ext.Start(); */
+            var task = shDataTable.RefreshAsync(cancelToken);
+
+            //var children = shellFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
+            //var shellItems = children as ShellItem[] ?? children.ToArray();
+            //var cnt = shellItems.Length;
+
+            await task;
+
+            Debug.Print($".ExtractChildItems: {task.ToString()}");
+
+            //parentItem.Children = []; // TODO: new ReadOnlyDictionary<ExplorerBrowserItem, int>();
+
+
+            //if (shellItems.Length > 0)
+            //{
+            //    foreach (var shItem in shellItems)
+            //    {
+            //        var ebItem = new ExplorerBrowserItem(shItem.PIDL);
+            //        if (ebItem.IsFolder)
+            //        {
+            //            ebItem.BitmapSource = _defaultFolderImageBitmapSource;
+            //            parentItem.Children?.Insert(0, ebItem);
+            //        }
+            //        else
+            //        {
+            //            ebItem.BitmapSource = _defaultDocumentAssocImageBitmapSource;
+            //            parentItem.Children?.Add(ebItem);
+            //        }
+            //    }
+            //}
+        }
+        catch (COMException comEx)
+        {
+            cancelToken.ThrowIfCancellationRequested();
+            Debug.Fail(comEx.Message);
+        }
+        catch (Exception e)
+        {
+            cancelToken.ThrowIfCancellationRequested();
+            Debug.Fail(e.Message);
+        }
+
+        return shDataTable;
     }
 
-    private bool _isLoading;
-    private Visibility _gridViewVisibility;
-    private Visibility _topCommandBarVisibility;
-    private Visibility _bottomAppBarVisibility;
-    private Visibility _bottomCommandBarVisibility;
     private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
         try
@@ -431,7 +432,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
             // todo: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh();
             // todo: Use CONSTANTS from ExplorerBrowser if possible
-            Navigate(ebItem, selectTreeViewNode: false);
+            Navigate(ebItem);
             // todo: add extension methods:
             // Navigate().ThrowIfFailed;
             // Navigate().InitialFolder();
@@ -456,50 +457,36 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             Debug.Print($".NativeGridView_SelectionChanged(`<newTarget==null>`");
             return;
         }
-        else
+
+        if (newTarget is ExplorerBrowserItem ebItem)
         {
-            if (newTarget is ExplorerBrowserItem ebItem)
-            {
-                Debug.Print($".NativeGridView_SelectionChanged(`{ebItem.DisplayName}`)");
+            Debug.Print($".NativeGridView_SelectionChanged(`{ebItem.DisplayName}`)");
 
-                Navigate(ebItem, selectTreeViewNode: true);
+            Navigate(ebItem); //, selectTreeViewNode: true);
 
-                // TODO: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh()
-            }
-            // TODO: else 
-            //{
-            //    Debug.Fail(
-            //        $"ERROR: NativeGridView_SelectionChanged() addedItem {newTarget.ToString()} is NOT of type <ExplorerBrowserItem>!");
-            //    throw new ArgumentOutOfRangeException(
-            //        "$ERROR: NativeGridView_SelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
-            //}
-
-            Debug.Print($".NativeGridView_SelectionChanged({newTarget})");
+            // TODO: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh()
         }
+        // TODO: else 
+        //{
+        //    Debug.Fail(
+        //        $"ERROR: NativeGridView_SelectionChanged() addedItem {newTarget.ToString()} is NOT of type <ExplorerBrowserItem>!");
+        //    throw new ArgumentOutOfRangeException(
+        //        "$ERROR: NativeGridView_SelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
+        //}
+
+        Debug.Print($".NativeGridView_SelectionChanged({newTarget})");
     }
-    public void Navigate(ExplorerBrowserItem ebItem, bool selectTreeViewNode = true)
+    public void Navigate(ExplorerBrowserItem ebItem)
     {
         try
         {
             Debug.Print($".Navigate(`{ebItem.DisplayName}`)");
             CurrentFolderBrowserItem = ebItem;
-            if (selectTreeViewNode)
-            {
-                ebItem.IsSelected = true;
-            }
             CurrentFolderItems.Clear();
             IsLoading = true;
-            ExtractChildItems(ebItem);
 
-            if (!(ebItem.Children?.Count > 0))
-            {
-                return;
-            }
-
-            foreach (var childItem in ebItem.Children)
-            {
-                CurrentFolderItems.Add(childItem);
-            }
+            var pidl = ebItem.ShellItem.PIDL;
+            var t = ExtractChildItems(pidl);
         }
         catch (COMException comEx)
         {
