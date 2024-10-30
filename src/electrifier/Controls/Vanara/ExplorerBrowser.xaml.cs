@@ -328,77 +328,87 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         e.IsHandled = true;
     }
 
-
+    // ShellDataTable
     /// <summary>
     /// TODO: Add Stack
     /// </summary>
-    /// <param name="targetFolder"></param>
+    /// <param name="browserItem"></param>
     /// <exception cref="ArgumentNullException"></exception>
-    public void ExtractChildItems(ExplorerBrowserItem? targetFolder)
+    public void ExtractChildItems(ExplorerBrowserItem browserItem)
     {
-        Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracting...");
+        Debug.Print($".ExtractChildItems(<{browserItem?.DisplayName}>) extracting...");
+        Debug.Assert(browserItem?.ShellItem?.PIDL is not null);
+        Debug.Assert(browserItem.ShellItem.PIDL != Shell32.PIDL.Null);
 
-        if (targetFolder is null)
+        if (browserItem is null)
         {
-            throw new ArgumentNullException(nameof(targetFolder));
+            throw new ArgumentNullException(nameof(browserItem));
         }
 
-        try
+        var shellItem = browserItem.ShellItem;
+
+        if ((shellItem.Attributes & ShellItemAttribute.Removable) != 0)
         {
-            /* var ext = new ShellIconExtractor(new ShellFolder(targetFolder.ShellItem));
-               ext.Complete += ShellIconExtractorComplete;
-               ext.IconExtracted += ShellIconExtractorIconExtracted;
-               ext.Start(); */
-            Debug.Assert(targetFolder.ShellItem.PIDL != Shell32.PIDL.Null);
-            var shItemId = targetFolder.ShellItem.PIDL;
-            using var shFolder = new ShellFolder(shItemId);
+            // TODO: Check for Disc in Drive, fail only if device not present
+            // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
+            Debug.WriteLine($"GetChildItems: IsRemovable = true");
+            var eventArgs = new NavigationFailedEventArgs();
+            return;
+        }
 
-            if ((shFolder.Attributes & ShellItemAttribute.Removable) != 0)
+        if (shellItem.IsFolder)
+        {
+            var shellFolder = new ShellFolder(shellItem);
+            var shellData = new ShellDataTable(shellFolder);
+
+            try
             {
-                // TODO: Check for Disc in Drive, fail only if device not present
-                // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
-                Debug.WriteLine($"GetChildItems: IsRemovable = true");
-                var eventArgs = new NavigationFailedEventArgs();
-                return;
-            }
+                /* var ext = new ShellIconExtractor(new ShellFolder(browserItem.ShellItem));
+                   ext.Complete += ShellIconExtractorComplete;
+                   ext.IconExtracted += ShellIconExtractorIconExtracted;
+                   ext.Start(); */
 
-            //var ext = new ShellIconExtractor(new ShellFolder(targetFolder.ShellItem));
-            //ext.Complete += ShellIconExtractorComplete;
-            //ext.IconExtracted += ShellIconExtractorIconExtracted;
-            //ext.Start();
 
-            var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
-            var shellItems = children as ShellItem[] ?? children.ToArray();
-            //itemCount = shellItems.Length;
-            targetFolder.Children = []; // TODO: new ReadOnlyDictionary<ExplorerBrowserItem, int>();
+                //var ext = new ShellIconExtractor(new ShellFolder(browserItem.ShellItem));
+                //ext.Complete += ShellIconExtractorComplete;
+                //ext.IconExtracted += ShellIconExtractorIconExtracted;
+                //ext.Start();
 
-            if (shellItems.Length > 0)
-            {
-                foreach (var shItem in shellItems)
+                var children = shellFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
+                var shellItems = children as ShellItem[] ?? children.ToArray();
+                
+                //var shellItems = shellData.;
+
+
+                browserItem.Children = []; // TODO: new ReadOnlyDictionary<ExplorerBrowserItem, int>();
+
+                if (shellItems.Length > 0)
                 {
-                    var ebItem = new ExplorerBrowserItem(shItem.PIDL);
-                    if (ebItem.IsFolder)
+                    foreach (var shItem in shellItems)
                     {
-                        ebItem.BitmapSource = _defaultFolderImageBitmapSource;
-                        targetFolder.Children?.Insert(0, ebItem);
-                    }
-                    else
-                    {
-                        ebItem.BitmapSource = _defaultDocumentAssocImageBitmapSource;
-                        targetFolder.Children?.Add(ebItem);
+                        var ebItem = new ExplorerBrowserItem(shItem.PIDL);
+                        if (ebItem.IsFolder)
+                        {
+                            ebItem.BitmapSource = _defaultFolderImageBitmapSource;
+                            browserItem.Children?.Insert(0, ebItem);
+                        }
+                        else
+                        {
+                            ebItem.BitmapSource = _defaultDocumentAssocImageBitmapSource;
+                            browserItem.Children?.Add(ebItem);
+                        }
                     }
                 }
             }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
-        Debug.Print($".ExtractChildItems(<{targetFolder?.DisplayName}>) extracted: {ItemCount} items: {FileCount} files, {FolderCount} folders");
+        // TODO: Update msg of Debug.Print($".ExtractChildItems(<{browserItem?.DisplayName}>) extracted: {ItemCount} items: {FileCount} files, {FolderCount} folders");
     }
-
 
     private bool _isLoading;
     private Visibility _gridViewVisibility;
