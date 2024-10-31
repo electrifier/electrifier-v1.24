@@ -18,11 +18,12 @@ public sealed partial class Shell32BreadcrumbBar : UserControl
     /// <param name="args">event args</param>
     private void NativeBreadcrumbBar_ItemClicked(BreadcrumbBar sender, BreadcrumbBarItemClickedEventArgs args)
     {
-        var items = NativeBreadcrumbBar.ItemsSource as ObservableCollection<ExplorerBrowserItem>;
-
-        for (int i = items.Count - 1; i >= args.Index + 1; i--)
+        if (NativeBreadcrumbBar.ItemsSource is ObservableCollection<ExplorerBrowserItem> items)
         {
-            items.RemoveAt(i);
+            for (var i = items.Count - 1; i >= args.Index + 1; i--)
+            {
+                items.RemoveAt(i);
+            }
         }
     }
 }
