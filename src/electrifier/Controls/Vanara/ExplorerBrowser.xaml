@@ -57,7 +57,7 @@
                 <StackPanel Orientation="Vertical">
                     <local:Shell32GridView x:Name="ShellGridView"
                                            BorderThickness="3"
-                                           ItemsSource="{x:Bind CurrentFolderItems}"
+                                           ItemsSource="{x:Bind _advancedCollectionView}"
                                            Visibility="{x:Bind GridViewVisibility}" />
                     <AppBar x:Name="BottomAppBar"
                             Grid.Row="3"

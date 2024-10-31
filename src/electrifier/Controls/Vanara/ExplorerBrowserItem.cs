@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using System.ComponentModel;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Vanara.PInvoke;
 
 namespace electrifier.Controls.Vanara;
 
@@ -34,10 +35,7 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
     /// <summary>Get the current set of <seealso cref="ExplorerBrowserItem"/>s as <seealso cref="List{T}"/>.</summary>
     public List<ExplorerBrowserItem>? Children;
     /// <summary>Get the DisplayName.</summary>
-    public string DisplayName
-    {
-        get;
-    }
+    public string DisplayName => ShellItem.Name ?? ":error: <DisplayName.get()>";
     /// <summary>
     /// The specified folders have subfolders. The SFGAO_HASSUBFOLDER attribute is only advisory and might be returned by Shell folder implementations even if they do not contain subfolders. Note, however, that the converse—failing to return SFGAO_HASSUBFOLDER—definitively states that the folder objects do not have subfolders.
     /// Returning SFGAO_HASSUBFOLDER is recommended whenever a significant amount of time is required to determine whether any subfolders exist. For example, the Shell always returns SFGAO_HASSUBFOLDER when a folder is located on a network drive.
@@ -64,6 +62,7 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
     public bool IsExpanded { get; set; }
     public bool IsFolder => ShellItem.IsFolder;
     public bool IsLink => ShellItem.IsLink;
+    public bool IsProgressing;
     public bool IsSelected
     {
         get; set;
@@ -72,14 +71,20 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
     {
         get;
     }
-
-    public ExplorerBrowserItem(ShellItem? shItem, bool isSeparator = false)
+    private readonly int? _imageListIndex;
+    public ExplorerBrowserItem(Shell32.PIDL shItemId, int? imageListIndex = null)
     {
-        ShellItem = new ShellItem(shItem.PIDL);
-        DisplayName = ShellItem.Name ?? ":error: <DisplayName.get()>";
-        IsExpanded = false;
+        ShellItem = new ShellItem(shItemId);
+        _imageListIndex = imageListIndex;
+
+        //if(NeedsDispatcher)
         // todo: If IsSelected, add overlay of opened folder icon to TreeView optionally
-        IsSelected = false;
+    }
+
+    public ExplorerBrowserItem(Shell32.KNOWNFOLDERID kfId, int? imageListIndex = null)
+    {
+        //ShellItem = new ShellItem(kfId);
+        //var pidl= kfId.
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -87,11 +92,6 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    public static ExplorerBrowserItem ExplorerBrowserSeparator()
-    {
-        return new ExplorerBrowserItem(null, true);
     }
 
     protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
