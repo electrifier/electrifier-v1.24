@@ -25,16 +25,13 @@ namespace electrifier.Controls.Vanara;
 /* todo: Use Visual States for Errors, Empty folders, Empty Drives */
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
-    #region Vanara-Extensions
     /// <summary>
-    /// HResult code for <code><see cref="System.Runtime.InteropServices.COMException"/> 0x80070490</code>
-    /// TODO: Add this to Vanara... https://github.com/dahall/Vanara/issues/490
+    /// HResult code for <code><see cref="System.Runtime.InteropServices.COMException"/>: 0x80070490</code>
     /// <remarks>Fired when `Element not found`</remarks>
     /// </summary>
-    private HRESULT HResultElementNotFound = 0x80070490;
-    private readonly ShellFolder HomeShellFolder = new("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
-    /// <summary>End of Vanara Extensions</summary>
-    #endregion
+    public readonly HRESULT HResultElementNotFound = new HRESULT(0x80070490);
+    public readonly ShellFolder HomeShellFolder = new("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
+
     private Visibility _bottomAppBarVisibility;
     private Visibility _bottomCommandBarVisibility;
     private Visibility _gridViewVisibility;
