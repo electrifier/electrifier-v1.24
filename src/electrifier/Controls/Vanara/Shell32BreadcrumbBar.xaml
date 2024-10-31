@@ -1,23 +1,25 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<UserControl
-    x:Class="electrifier.Controls.Vanara.Shell32BreadcrumbBar"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:local="using:electrifier.Controls.Vanara"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:shell="using:Vanara.Windows.Shell"
-    mc:Ignorable="d">
+<UserControl x:Class="electrifier.Controls.Vanara.Shell32BreadcrumbBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="using:electrifier.Controls.Vanara"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:shell="using:Vanara.Windows.Shell"
+             mc:Ignorable="d">
 
     <Grid>
         <Border>
-            <BreadcrumbBar x:Name="NativeBreadcrumbBar" MinWidth="80">
+            <BreadcrumbBar x:Name="NativeBreadcrumbBar">
                 <BreadcrumbBar.ItemTemplate>
-                    <DataTemplate x:DataType="shell:ShellItem">
-                        <BreadcrumbBarItem AutomationProperties.Name="{Binding Name}" Content="{Binding}">
+                    <DataTemplate x:DataType="local:ExplorerBrowserItem">
+                        <BreadcrumbBarItem AutomationProperties.Name="{Binding Name}"
+                                           Content="{Binding}">
                             <BreadcrumbBarItem.ContentTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Name}" />
+                                    <StackPanel>
+                                        <TextBlock Text="{Binding Name}" />
+                                    </StackPanel>
                                 </DataTemplate>
                             </BreadcrumbBarItem.ContentTemplate>
                         </BreadcrumbBarItem>

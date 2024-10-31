@@ -17,21 +17,22 @@
                                   IsExpanded="{x:Bind IsExpanded}"
                                   IsSelected="{x:Bind IsSelected}"
                                   ItemsSource="{x:Bind Children}">
-                        <!-- IsProgressing="{x:Bind IsExpanded}" bind to child item progressring -->
                         <Grid>
                             <StackPanel MaxHeight="20"
                                         Orientation="Horizontal"
                                         HorizontalAlignment="Stretch">
+                                <!-- todo: add overlay, ghosted / hidden -->
                                 <Image Name="ExplorerBrowserItemImageEx"
                                        Source="{x:Bind BitmapSource}" />
+                                <ProgressRing IsActive="false"
+                                              Visibility="Collapsed"
+                                              MaxHeight="13"
+                                              Background="LightGray"
+                                              MaxWidth="13" />
                                 <TextBlock x:Name="ExplorerBrowserItemDisplayNameTextBlock"
                                            Text="{x:Bind DisplayName}"
+                                           Margin="5,0,5,0"
                                            Visibility="Visible" />
-                                <!--          ProgressRing.Background="LightGray" -->
-                                <ProgressRing 
-                                              IsActive="{x:Bind IsProgressing}"
-                                              MaxHeight="10"
-                                              MaxWidth="10" />
                             </StackPanel>
                         </Grid>
                     </TreeViewItem>

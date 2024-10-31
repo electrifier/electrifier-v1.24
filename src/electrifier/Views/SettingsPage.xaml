@@ -12,7 +12,8 @@
       d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}"
       mc:Ignorable="d">
     <Page.Resources>
-        <helpers:StringToUriConverter x:Key="StringToUriConverter" />
+        <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+        <helpers:StringToUriConverter x:Key="ToUriConverter" />
         <x:String x:Key="PrivacyTermsLinkUri">https://github.com/electrifier/electrifier/blob/main/PRIVACY.md</x:String>
         <x:String x:Key="LicenseTermsLinkUri">https://github.com/electrifier/electrifier/blob/main/LICENSE</x:String>
     </Page.Resources>
