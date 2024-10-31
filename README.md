@@ -19,7 +19,7 @@
 ## Contributions and 3rd Party Packages
 | Who | What | Regards |
 |--------------|:-----------:|:--------|
-| [David Hall](https://github.com/dahall) | ![Vanara](https://raw.githubusercontent.com/dahall/Vanara/master/docs/icons/Vanara64x64.png) | Support, Help and Inspiration when using [Vanara](https://github.com/dahall/Vanara) |
+| [David Hall](https://github.com/dahall) | ![Vanara](https://raw.githubusercontent.com/dahall/Vanara/master/docs/icons/Vanara64x64.png) | Support, Help and Inspiration when using [Vanara](https://github.com/dahall/Vanara). Brought the idea, that disposing things that didn't belong to you is a bad idea 💡 |
 | [JetBrains s.r.o.](https://www.jetbrains.com/) |  ![ReSharper logo](https://resources.jetbrains.com/storage/products/company/brand/logos/ReSharper.png) |  _Copyright © 2000-2024 JetBrains s.r.o. <br><br> JetBrains and the JetBrains logo are registered trademarks of [JetBrains s.r.o.](https://www.jetbrains.com/)_ |
 
 ---
