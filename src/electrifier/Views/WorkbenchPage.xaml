@@ -7,25 +7,27 @@
       xmlns:viewmodels="using:electrifier.ViewModels"
       xmlns:controls="using:CommunityToolkit.WinUI.Controls"
       xmlns:winUi="using:CommunityToolkit.WinUI"
-      behaviors:NavigationViewHeaderBehavior.HeaderMode="Always"
+      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
       d:DataContext="{d:DesignInstance Type=viewmodels:WorkbenchViewModel}"
       mc:Ignorable="d">
     <!--  TODO: ui:UIElementExtensions.ClipToBounds="{x:Bind IsClipped, Mode=OneWay}"  -->
     <!--  TODO: removed Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"  -->
-    <Grid x:Name="ArenaGrid">
+    <Grid x:Name="ArenaGrid" 
+          DropCompleted="ArenaGrid_OnDropCompleted">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
             <ColumnDefinition MaxWidth="23" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
-        <Border x:Name="MainContentBorder"
+        <Border x:Name="ArenaLeftColumnBorder"
                 AllowDrop="True"
                 VerticalAlignment="Top">
             <Grid>
+                <!-- HeaderIcon mdl2-RememberedDevice -->
                 <controls:SettingsCard x:Name="WorkbenchAutostartCard"
-                                       Description="You can set up electrifier's ''startup behaviour''. Let This be my preferred choice for the future [x], as I know I can change this always in its ''Settings Page''."
-                                       Header="What do you want to finish tonight?"
-                                       HeaderIcon="{winUi:FontIcon Glyph=&#xE799;}"
+                                       Description="It is your choice, what Page gets navigated to when electrifier starts the next time. Let This be my preferred choice for the future [x], as I know I can change this always in its ''Settings Page::startup behaviour''."
+                                       Header="Where do you want to finish tonight?"
+                                       HeaderIcon="{winUi:FontIcon Glyph=&#xE70C;}" 
                                        IsEnabled="true">
                     <ComboBox SelectedIndex="0">
                         <ComboBoxItem>Shell</ComboBoxItem>
@@ -81,6 +83,8 @@
         <Border x:Name="Splitter"
                 Grid.Column="1" />
         <Border Grid.Column="2"
-                BorderThickness="13" />
+                BorderThickness="13"
+                AllowDrop="True"
+                VerticalAlignment="Top" />
     </Grid>
 </Page>

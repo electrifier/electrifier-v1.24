@@ -1,18 +1,16 @@
 ﻿using electrifier.ViewModels;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-
 namespace electrifier.Views;
-
 public sealed partial class WorkbenchPage : Page
 {
-    public WorkbenchViewModel ViewModel
-    {
-        get;
-    }
-
     public WorkbenchPage()
     {
-        ViewModel = App.GetService<WorkbenchViewModel>();
+        App.GetService<WorkbenchViewModel>();
         InitializeComponent();
+    }
+    private void ArenaGrid_OnDropCompleted(UIElement sender, DropCompletedEventArgs args)
+    {
+        throw new NotImplementedException();
     }
 }
