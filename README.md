@@ -3,16 +3,17 @@
 ## Read Me First
 
 ### A _Complete Refactoring of electrifier_
-- State: In Development
-- Latest stable Releases: _None -._
-- Latest *debug*  Releases: _None -._
+- State: ⚠ Development
+- Stable Release: _None -._
+- *debug* Releases: _None -._
 
 ### Latest builds: 🦇 _Halloween_ edition v1.24.111
-- State: In Development ⚠
-- Latest stable Releases: _None -._
+- State: ⚠ Development
+- Stable Releases: _None -._
 
 ### Downloads
-- [Latest Debug Build v1.24](https://github.com/electrifier/electrifier-v1.24) ⚠️ Disclaimer: Not for use in productive environments
+- [Latest Debug Build v1.24](https://github.com/electrifier/electrifier-v1.24)
+⚠️ Disclaimer: Not for use in productive environments
 ---
 
 # About
