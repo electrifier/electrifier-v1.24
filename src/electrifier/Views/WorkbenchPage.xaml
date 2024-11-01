@@ -12,7 +12,7 @@
       mc:Ignorable="d">
     <!--  TODO: ui:UIElementExtensions.ClipToBounds="{x:Bind IsClipped, Mode=OneWay}"  -->
     <!--  TODO: removed Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"  -->
-    <Grid x:Name="ArenaGrid" 
+    <Grid x:Name="ArenaGrid"
           DropCompleted="ArenaGrid_OnDropCompleted">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
@@ -27,9 +27,10 @@
                 <controls:SettingsCard x:Name="WorkbenchAutostartCard"
                                        Description="It is your choice, what Page gets navigated to when electrifier starts the next time. Let This be my preferred choice for the future [x], as I know I can change this always in its ''Settings Page::startup behaviour''."
                                        Header="Where do you want to finish tonight?"
-                                       HeaderIcon="{winUi:FontIcon Glyph=&#xE70C;}" 
+                                       HeaderIcon="{winUi:FontIcon Glyph=&#xE70C;}"
                                        IsEnabled="true">
                     <ComboBox SelectedIndex="0">
+                        <ComboBoxItem>Workbench</ComboBoxItem>
                         <ComboBoxItem>Shell</ComboBoxItem>
                         <ComboBoxItem>Browser</ComboBoxItem>
                         <ComboBoxItem>Editor</ComboBoxItem>
@@ -85,6 +86,13 @@
         <Border Grid.Column="2"
                 BorderThickness="13"
                 AllowDrop="True"
-                VerticalAlignment="Top" />
+                VerticalAlignment="Top">
+            <controls:SettingsCard x:Name="BlubbCard"
+                                   Description="It is your choice, what Page gets navigated to when electrifier starts the next time. Let This be my preferred choice for the future [x], as I know I can change this always in its ''Settings Page::startup behaviour''."
+                                   Header="Where do you want to finish tonight?"
+                                   HeaderIcon="{winUi:FontIcon Glyph=&#xE70C;}"
+                                   IsEnabled="true"></controls:SettingsCard>
+
+        </Border>
     </Grid>
 </Page>
