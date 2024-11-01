@@ -28,4 +28,8 @@
 | [JetBrains s.r.o.](https://www.jetbrains.com/) |  ![ReSharper logo](https://resources.jetbrains.com/storage/products/company/brand/logos/ReSharper.png) |  _Copyright © 2000-2024 JetBrains s.r.o. <br><br> JetBrains and the JetBrains logo are registered trademarks of [JetBrains s.r.o.](https://www.jetbrains.com/)_ |
 
 ---
-📆 Last Update: 1-11-24. _Eine Scheunenproduktion._
+_Eine Scheunenproduktion, Es kamen keine 🐯 zu Schaden_ 
+---
+| Copyright | Disclaimer | Last Update |
+|--------------|:-----:|:----|
+| (c) 2023, 2024 Thorsten Jung, electrifier.org, tajbender | electrifier is free Software. See the Apache License 2.0 | 📆 1-11-24
