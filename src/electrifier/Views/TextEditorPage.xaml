@@ -66,32 +66,5 @@
                 <editor:CodeEditorControl x:Name="CodeEditorControl" />
             </Border>
         </Grid>
-        <CommandBar
-            x:Name="StatusCommandBar"
-            Grid.Row="2"
-            HorizontalAlignment="Left"
-            Background="Transparent"
-            DefaultLabelPosition="Right">
-            <AppBarElementContainer
-                HorizontalAlignment="Left"
-                VerticalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch"
-                VerticalContentAlignment="Center">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock x:Name="StatusTextBlockLine" Text="{x:Bind StatusCursorPosition}" />
-                </StackPanel>
-            </AppBarElementContainer>
-            <AppBarSeparator />
-            <CommandBar.SecondaryCommands>
-                <AppBarButton
-                    Icon="Setting"
-                    Label="Settings"
-                    ToolTipService.ToolTip="Setting Ctrl + I">
-                    <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="I" Modifiers="Control" />
-                    </AppBarButton.KeyboardAccelerators>
-                </AppBarButton>
-            </CommandBar.SecondaryCommands>
-        </CommandBar>
     </Grid>
 </Page>
