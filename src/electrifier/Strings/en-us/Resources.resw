@@ -189,13 +189,13 @@
     <value>ContentGrid</value>
   </data>
   <data name="Shell_FileManager.Content" xml:space="preserve">
-    <value>Explore...</value>
+    <value>Manage</value>
   </data>
   <data name="Shell_ListDetails.Content" xml:space="preserve">
     <value>Details</value>
   </data>
   <data name="Shell_WebView.Content" xml:space="preserve">
-    <value>Browse...</value>
+    <value>Browse</value>
   </data>
   <data name="Shell_Workbench.Content" xml:space="preserve">
     <value>Workbench</value>
@@ -210,10 +210,10 @@
     <value>Reload</value>
   </data>
   <data name="Shell_TextEditor.Content" xml:space="preserve">
-    <value>Edit...</value>
+    <value>Edit</value>
   </data>
   <data name="Shell_KanbanBoard.Content" xml:space="preserve">
-    <value>Kanban Board</value>
+    <value>Organize</value>
   </data>
   <data name="Shell_Microsoft365.Content" xml:space="preserve">
     <value>Create...</value>
@@ -231,10 +231,10 @@
     <value>Edit</value>
   </data>
   <data name="ShellPage_Microsoft365.Content" xml:space="preserve">
-    <value>Create...</value>
+    <value>Create</value>
   </data>
   <data name="ShellPage_People.Content" xml:space="preserve">
-    <value>Contact...</value>
+    <value>Contact</value>
   </data>
   <data name="Settings_Appearance_Monochrome.Content" xml:space="preserve">
     <value>Monochrome</value>
