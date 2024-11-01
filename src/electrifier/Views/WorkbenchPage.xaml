@@ -24,7 +24,7 @@
             <Grid>
                 <controls:SettingsCard x:Name="WorkbenchAutostartCard"
                                        Description="You can set up electrifier's ''startup behaviour''. Let This be my preferred choice for the future [x], as I know I can change this always in its ''Settings Page''."
-                                       Header="Where do you want to end tonight?"
+                                       Header="What do you want to finish tonight?"
                                        HeaderIcon="{winUi:FontIcon Glyph=&#xE799;}"
                                        IsEnabled="true">
                     <ComboBox SelectedIndex="0">

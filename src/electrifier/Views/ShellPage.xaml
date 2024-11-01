@@ -10,7 +10,11 @@
       xmlns:helpers="using:electrifier.Helpers"
       xmlns:i="using:Microsoft.Xaml.Interactivity"
       Loaded="OnLoaded">
-    <Grid>
+    <Grid VerticalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
         <Grid x:Name="AppTitleBar"
               HorizontalAlignment="Stretch"
               VerticalAlignment="Top"
@@ -77,16 +81,17 @@
         </Grid>
         <!--  CompactPaneGridLength: double  -->
         <!--  DefaultStyleResourceUri=""  -->
-        <NavigationView x:Name="NavigationViewControl"
-                        AlwaysShowHeader="True"
-                        DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
-                        IsBackButtonVisible="Visible"
-                        IsBackEnabled="True"
-                        IsPaneOpen="True"
-                        IsSettingsVisible="True"
-                        IsTitleBarAutoPaddingEnabled="False"
-                        Loaded="NavigationViewControl_Loaded"
-                        OpenPaneLength="184">
+        <NavigationView  x:Name="NavigationViewControl"
+                         Grid.Row="1"
+                         AlwaysShowHeader="True"
+                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
+                         IsBackButtonVisible="Visible"
+                         IsBackEnabled="True"
+                         IsPaneOpen="True"
+                         IsSettingsVisible="True"
+                         IsTitleBarAutoPaddingEnabled="False"
+                         Loaded="NavigationViewControl_Loaded"
+                         OpenPaneLength="156">
             <!--  TODO: NavigationViewItems into the right upper border of header, as small icons  -->
             <!--  INFO: MultitaskExpanded  -->
             <NavigationView.MenuItems>
@@ -178,7 +183,7 @@
                     </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                 </behaviors:NavigationViewHeaderBehavior>
             </i:Interaction.Behaviors>
-            <Grid Margin="{StaticResource NavigationViewPageContentMargin}">
+            <Grid Margin="{StaticResource NavigationViewPageContentMargin}" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Frame x:Name="NavigationFrame" />
             </Grid>
         </NavigationView>
