@@ -5,21 +5,37 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:viewmodels="using:electrifier.ViewModels"
-      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+      xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+      xmlns:winUi="using:CommunityToolkit.WinUI"
+      behaviors:NavigationViewHeaderBehavior.HeaderMode="Always"
       d:DataContext="{d:DesignInstance Type=viewmodels:WorkbenchViewModel}"
       mc:Ignorable="d">
     <!--  TODO: ui:UIElementExtensions.ClipToBounds="{x:Bind IsClipped, Mode=OneWay}"  -->
     <!--  TODO: removed Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"  -->
-    <Grid x:Name="WorkbenchGrid">
+    <Grid x:Name="ArenaGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
             <ColumnDefinition MaxWidth="23" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
         <Border x:Name="MainContentBorder"
-                AllowDrop="True">
+                AllowDrop="True"
+                VerticalAlignment="Top">
             <Grid>
-                <StackPanel x:Name="StackPanel" Visibility="Collapsed">
+                <controls:SettingsCard x:Name="WorkbenchAutostartCard"
+                                       Description="You can set up electrifier's ''startup behaviour''. Let This be my preferred choice for the future [x], as I know I can change this always in its ''Settings Page''."
+                                       Header="Where do you want to end tonight?"
+                                       HeaderIcon="{winUi:FontIcon Glyph=&#xE799;}"
+                                       IsEnabled="true">
+                    <ComboBox SelectedIndex="0">
+                        <ComboBoxItem>Shell</ComboBoxItem>
+                        <ComboBoxItem>Browser</ComboBoxItem>
+                        <ComboBoxItem>Editor</ComboBoxItem>
+                        <ComboBoxItem>Microsoft 365</ComboBoxItem>
+                    </ComboBox>
+                </controls:SettingsCard>
+                <StackPanel x:Name="StackPanel"
+                            Visibility="Collapsed">
                     <TextBlock Style="{StaticResource TitleTextBlockStyle}"
                                Text="Workbench" />
                     <InfoBar Title="Your Workbench"
@@ -60,11 +76,11 @@
                         </InfoBar.Content>
                     </InfoBar>
                 </StackPanel>
-                <ItemsStackPanel />
             </Grid>
         </Border>
         <Border x:Name="Splitter"
                 Grid.Column="1" />
-        <Border Grid.Column="2" />
+        <Border Grid.Column="2"
+                BorderThickness="13" />
     </Grid>
 </Page>

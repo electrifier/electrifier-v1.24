@@ -8,7 +8,7 @@
       xmlns:viewmodels="using:electrifier.ViewModels"
       xmlns:xaml="using:Microsoft.UI.Xaml"
       xmlns:system="using:System"
-      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+      behaviors:NavigationViewHeaderBehavior.HeaderMode="Minimal"
       d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}"
       mc:Ignorable="d">
     <Page.Resources>
