@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static Vanara.PInvoke.Shell32;
 using static Vanara.PInvoke.Shell32.ShellUtil;
 using Vanara.PInvoke;
@@ -185,9 +180,9 @@ public class TempIconExtractor
             if (isf is null)
             {
                 SHFILEINFO sfi = new() { dwAttributes = (int)SFGAO.SFGAO_FOLDER };
-                return SHGetFileInfo(pidl, System.IO.FileAttributes.Directory, ref sfi, SHFILEINFO.Size, SHGFI.SHGFI_ATTRIBUTES | SHGFI.SHGFI_ATTR_SPECIFIED) != IntPtr.Zero && sfi.dwAttributes != 0;
+                return SHGetFileInfo(pidl, FileAttributes.Directory, ref sfi, SHFILEINFO.Size, SHGFI.SHGFI_ATTRIBUTES | SHGFI.SHGFI_ATTR_SPECIFIED) != IntPtr.Zero && sfi.dwAttributes != 0;
             }
-            return (SHGetDataFromIDList<WIN32_FIND_DATA>(isf, pidl, SHGetDataFormat.SHGDFIL_FINDDATA).dwFileAttributes & System.IO.FileAttributes.Directory) != 0;
+            return (SHGetDataFromIDList<WIN32_FIND_DATA>(isf, pidl, SHGetDataFormat.SHGDFIL_FINDDATA).dwFileAttributes & FileAttributes.Directory) != 0;
         }
     }
 }

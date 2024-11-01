@@ -1,10 +1,27 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿namespace electrifier.ViewModels;
+using CommunityToolkit.Mvvm.ComponentModel;
+using System.Diagnostics;
+using System.Text;
 using Vanara.Windows.Shell;
-namespace electrifier.ViewModels;
+[DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
 public partial class TextEditorViewModel : ObservableRecipient
 {
     public ShellItem CurrentFolder = ShellFolder.Desktop;
+    private int CursorX
+    {
+        get;
+        set;
+    } = 0;
+    private int CursorY
+    {
+        get;
+        set;
+    } = 0;
     public string CursorPosition => $"Ln: {CursorY}   Ch: {CursorX}";
-    public int CursorX { get; set; } = 0;
-    public int CursorY { get; set; } = 0;
+    private string GetDebuggerDisplay()
+    {
+        var dbgDisplay = new StringBuilder();
+        _ = dbgDisplay.Append(nameof(TextEditorViewModel));
+        return dbgDisplay.ToString();
+    }
 }

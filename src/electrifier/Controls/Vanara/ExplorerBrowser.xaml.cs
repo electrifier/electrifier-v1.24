@@ -1,5 +1,8 @@
-using System.Collections;
+/* todo: Use Visual States for Errors, Empty folders, Empty Drives */
+using Vanara.PInvoke;
+using Vanara.Windows.Shell;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.WinUI.Collections;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml;
@@ -7,22 +10,14 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using Vanara.PInvoke;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
-using CommunityToolkit.WinUI.Collections;
-using electrifier.Controls.Vanara.Services;
-using Vanara.Windows.Shell;
-using Visibility = Microsoft.UI.Xaml.Visibility;
-
 namespace electrifier.Controls.Vanara;
-
+using Visibility = Microsoft.UI.Xaml.Visibility;
 // https://github.com/dahall/Vanara/blob/master/Windows.Forms/Controls/ExplorerBrowser.cs
-
-/* todo: Use Visual States for Errors, Empty folders, Empty Drives */
+/// <summary>Replacement for <see cref="Vanara.Windows.Forms.Controls.Explorer.cs">Windows.Forms/Controls/ExplorerBrowser.cs</see></summary>
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
     /// <summary>
@@ -31,7 +26,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /// </summary>
     public readonly HRESULT HResultElementNotFound = new HRESULT(0x80070490);
     public readonly ShellFolder HomeShellFolder = new("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
-
     private Visibility _bottomAppBarVisibility;
     private Visibility _bottomCommandBarVisibility;
     private Visibility _gridViewVisibility;
@@ -240,12 +234,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         RefreshViewCommand = new RelayCommand(() => OnRefreshViewCommand(this, new RoutedEventArgs()));
 
-        this.Loading += async (sender, args) =>
+        Loading += async (sender, args) =>
         {
             _ = InitializeViewModel();
         };
 
-        this.Loaded += async (sender, args) =>
+        Loaded += async (sender, args) =>
         {
             if (CurrentFolderBrowserItem == null)
             {
@@ -541,7 +535,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         ArgumentNullException.ThrowIfNull(gdiBitmap);
 
         // get pixels as an array of bytes
-        var data = gdiBitmap.LockBits(new System.Drawing.Rectangle(0, 0, gdiBitmap.Width, gdiBitmap.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, gdiBitmap.PixelFormat);
+        var data = gdiBitmap.LockBits(new Rectangle(0, 0, gdiBitmap.Width, gdiBitmap.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, gdiBitmap.PixelFormat);
         var bytes = new byte[data.Stride * data.Height];
         Marshal.Copy(data.Scan0, bytes, 0, bytes.Length);
         gdiBitmap.UnlockBits(data);

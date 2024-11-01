@@ -1,6 +1,5 @@
-﻿<!--
-    todo: Insert MenuItemsSource
-    todo: IsPaneToggleButtonVisible = True -> PaneToggle-Style and overlap
+﻿<!-- todo: Insert MenuItemsSource
+     todo: IsPaneToggleButtonVisible = True -> PaneToggle-Style and overlap
     todo: See WinUI3 gallery://item/AnimatedIcon -->
 <Page x:Class="electrifier.Views.ShellPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -14,7 +13,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid x:Name="AppTitleBar"
+        <Grid Grid.Row="0"  x:Name="AppTitleBar"
               HorizontalAlignment="Stretch"
               VerticalAlignment="Top"
               IsHitTestVisible="True">
@@ -31,6 +30,22 @@
                 <Image x:Name="WindowIcon"
                        MaxWidth="32"
                        Source="ms-appx:///Assets/Square44x44Logo_unplated.png" />
+                <Button>
+                    <Image x:Name="AppTitleBarBackButtonImageCenter"
+                           Source="ms-appx:///Assets/Themes/Aero Blackcomb/Back Button 48px.png"
+                           MaxHeight="32" />
+                </Button>
+                <Button>
+                    <Image x:Name="AppTitleBarForwardButtonImageCenter"
+                           Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png"
+                           MaxHeight="32" />
+                </Button>
+                <Border BorderThickness="2"
+                        Background="Transparent">
+                    <BreadcrumbBar x:Name="NavigationBreadcrumbBar"
+                                   VerticalAlignment="Center" />
+                </Border>
+
                 <StackPanel>
                     <TextBlock x:Name="TitleTextBlockLeft"
                                FontSize="23"
@@ -43,7 +58,7 @@
                 </StackPanel>
             </StackPanel>
             <!-- todo: Convert `CenterStackPanel` to Grid. -->
-            <StackPanel x:Name="CenterStackPanel"
+            <!--<StackPanel x:Name="CenterStackPanel"
                         Grid.Column="1"
                         Orientation="Horizontal"
                         HorizontalAlignment="Left">
@@ -62,7 +77,7 @@
                     <BreadcrumbBar x:Name="NavigationBreadcrumbBar"
                                    VerticalAlignment="Center" />
                 </Border>
-            </StackPanel>
+            </StackPanel>-->
             <Grid x:Name="SystemIconGrid"
                   Grid.Column="2"
                   HorizontalAlignment="Right">

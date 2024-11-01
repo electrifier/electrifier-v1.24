@@ -1,6 +1,5 @@
 using System.Collections.ObjectModel;
 using Microsoft.UI.Xaml.Controls;
-using Vanara.PInvoke;
 namespace electrifier.Controls.Vanara;
 public sealed partial class Shell32BreadcrumbBar : UserControl
 {
@@ -9,7 +8,6 @@ public sealed partial class Shell32BreadcrumbBar : UserControl
     public Shell32BreadcrumbBar()
     {
         InitializeComponent();
-
         NativeBreadcrumbBar.ItemsSource = new ObservableCollection<ExplorerBrowserItem> { };
         NativeBreadcrumbBar.ItemClicked += NativeBreadcrumbBar_ItemClicked;
     }
