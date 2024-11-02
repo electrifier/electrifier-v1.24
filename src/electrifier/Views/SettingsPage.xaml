@@ -1,16 +1,15 @@
-﻿<Page
-    x:Class="electrifier.Views.SettingsPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:behaviors="using:electrifier.Behaviors"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:helpers="using:electrifier.Helpers"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewmodels="using:electrifier.ViewModels"
-    xmlns:xaml="using:Microsoft.UI.Xaml"
-    behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
-    d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}"
-    mc:Ignorable="d">
+﻿<Page x:Class="electrifier.Views.SettingsPage"
+      xmlns:behaviors="using:electrifier.Behaviors"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:helpers="using:electrifier.Helpers"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:viewmodels="using:electrifier.ViewModels"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:xaml="using:Microsoft.UI.Xaml"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+      d:DataContext="{d:DesignInstance Type=viewmodels:SettingsViewModel}"
+      mc:Ignorable="d">
     <Page.Resources>
         <helpers:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
         <x:String x:Key="PrivacyTermsLinkUri">
@@ -22,82 +21,88 @@
     </Page.Resources>
     <Grid>
         <StackPanel x:Name="ContentArea">
-            <TextBlock x:Uid="Settings_Personalization" Style="{ThemeResource SubtitleTextBlockStyle}" />
-            <StackPanel x:Name="SettingsAppearance" Margin="{StaticResource SmallTopBottomMargin}">
+            <TextBlock x:Uid="Settings_Personalization"
+                       Style="{ThemeResource SubtitleTextBlockStyle}" />
+            <StackPanel x:Name="SettingsAppearance"
+                        Margin="{StaticResource SmallTopBottomMargin}">
                 <TextBlock x:Uid="Settings_AppearanceTextBlock">Appearance</TextBlock>
                 <StackPanel Margin="{StaticResource XSmallTopMargin}">
                     <DropDownButton Content="Monochrome">
                         <DropDownButton.Flyout>
                             <MenuFlyout Placement="BottomEdgeAlignedRight">
-                                <MenuFlyoutItem IsEnabled="False" Text="Aroma" />
-                                <MenuFlyoutItem IsEnabled="False" Text="Dawnbreed" />
-                                <MenuFlyoutItem IsEnabled="False" Text="Kiosk" />
-                                <MenuFlyoutItem IsEnabled="False" Text="Luxus" />
-                                <MenuFlyoutItem IsEnabled="True" Text="Monochrome" />
-                                <MenuFlyoutItem IsEnabled="False" Text="Robot" />
+                                <MenuFlyoutItem IsEnabled="False"
+                                                Text="Aroma" />
+                                <MenuFlyoutItem IsEnabled="False"
+                                                Text="Dawnbreed" />
+                                <MenuFlyoutItem IsEnabled="False"
+                                                Text="Kiosk" />
+                                <MenuFlyoutItem IsEnabled="False"
+                                                Text="Luxus" />
+                                <MenuFlyoutItem IsEnabled="True"
+                                                Text="Monochrome" />
+                                <MenuFlyoutItem IsEnabled="False"
+                                                Text="Robot" />
                                 <MenuFlyoutSeparator />
-                                <MenuFlyoutItem IsEnabled="False" Text="Aero" />
-                                <MenuFlyoutItem IsEnabled="False" Text="Longhorn" />
+                                <MenuFlyoutItem IsEnabled="False"
+                                                Text="Aero" />
+                                <MenuFlyoutItem IsEnabled="False"
+                                                Text="Longhorn" />
                                 <MenuFlyoutSeparator />
-                                <MenuFlyoutItem IsEnabled="False" Text="Customize..." />
+                                <MenuFlyoutItem IsEnabled="False"
+                                                Text="Customize..." />
                             </MenuFlyout>
                         </DropDownButton.Flyout>
                     </DropDownButton>
                 </StackPanel>
             </StackPanel>
 
-            <StackPanel x:Name="SettingsTheme" Margin="{StaticResource SmallTopBottomMargin}">
+            <StackPanel x:Name="SettingsTheme"
+                        Margin="{StaticResource SmallTopBottomMargin}">
                 <TextBlock x:Uid="Settings_Theme" />
                 <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                    <RadioButton
-                        x:Uid="Settings_Theme_Light"
-                        Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                        FontSize="15"
-                        GroupName="AppTheme"
-                        IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}">
+                    <RadioButton x:Uid="Settings_Theme_Light"
+                                 Command="{x:Bind ViewModel.SwitchThemeCommand}"
+                                 FontSize="15"
+                                 GroupName="AppTheme"
+                                 IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Light, Mode=OneWay}">
                         <RadioButton.CommandParameter>
                             <xaml:ElementTheme>Light</xaml:ElementTheme>
                         </RadioButton.CommandParameter>
                     </RadioButton>
-                    <RadioButton
-                        x:Uid="Settings_Theme_Dark"
-                        Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                        FontSize="15"
-                        GroupName="AppTheme"
-                        IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}">
+                    <RadioButton x:Uid="Settings_Theme_Dark"
+                                 Command="{x:Bind ViewModel.SwitchThemeCommand}"
+                                 FontSize="15"
+                                 GroupName="AppTheme"
+                                 IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Dark, Mode=OneWay}">
                         <RadioButton.CommandParameter>
                             <xaml:ElementTheme>Dark</xaml:ElementTheme>
                         </RadioButton.CommandParameter>
                     </RadioButton>
-                    <RadioButton
-                        x:Uid="Settings_Theme_Default"
-                        Command="{x:Bind ViewModel.SwitchThemeCommand}"
-                        FontSize="15"
-                        GroupName="AppTheme"
-                        IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=OneWay}">
+                    <RadioButton x:Uid="Settings_Theme_Default"
+                                 Command="{x:Bind ViewModel.SwitchThemeCommand}"
+                                 FontSize="15"
+                                 GroupName="AppTheme"
+                                 IsChecked="{x:Bind ViewModel.ElementTheme, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter=Default, Mode=OneWay}">
                         <RadioButton.CommandParameter>
                             <xaml:ElementTheme>Default</xaml:ElementTheme>
                         </RadioButton.CommandParameter>
                     </RadioButton>
                 </StackPanel>
             </StackPanel>
-            <TextBlock x:Uid="Settings_About" Style="{ThemeResource SubtitleTextBlockStyle}" />
+            <TextBlock x:Uid="Settings_About"
+                       Style="{ThemeResource SubtitleTextBlockStyle}" />
             <StackPanel Margin="{StaticResource XSmallTopMargin}">
-                <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}" Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />
-                <TextBlock
-                    x:Uid="Settings_AboutDescription"
-                    Margin="{StaticResource XSmallTopMargin}"
-                    Style="{ThemeResource BodyTextBlockStyle}" />
-                <HyperlinkButton
-                    x:Uid="SettingsPage_PrivacyTermsLink"
-                    Margin="{StaticResource SettingsPageHyperlinkButtonMargin}"
-                    NavigateUri="{StaticResource LicenseTermsLinkUri}"
-                    ToolTipService.ToolTip="{StaticResource PrivacyTermsLinkUri}" />
-                <HyperlinkButton
-                    x:Uid="SettingsPage_LicenseTermsLink"
-                    Margin="{StaticResource SettingsPageHyperlinkButtonMargin}"
-                    NavigateUri="{StaticResource LicenseTermsLinkUri}"
-                    ToolTipService.ToolTip="{StaticResource LicenseTermsLinkUri}" />
+                <TextBlock Style="{ThemeResource SubtitleTextBlockStyle}"
+                           Text="{x:Bind ViewModel.VersionDescription, Mode=OneWay}" />
+                <TextBlock x:Uid="Settings_AboutDescription"
+                           Margin="{StaticResource XSmallTopMargin}"
+                           Style="{ThemeResource BodyTextBlockStyle}" />
+                <HyperlinkButton x:Uid="SettingsPage_PrivacyTermsLink"
+                                 Margin="{StaticResource SettingsPageHyperlinkButtonMargin}"
+                                 ToolTipService.ToolTip="{StaticResource PrivacyTermsLinkUri}" />
+                <HyperlinkButton x:Uid="SettingsPage_LicenseTermsLink"
+                                 Margin="{StaticResource SettingsPageHyperlinkButtonMargin}"
+                                 ToolTipService.ToolTip="{StaticResource LicenseTermsLinkUri}" />
             </StackPanel>
         </StackPanel>
     </Grid>
