@@ -67,16 +67,12 @@
         </Grid>
         <NavigationView  x:Name="NavigationViewControl"
                          Grid.Row="1"
-                         AlwaysShowHeader="True"
-                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
                          IsBackButtonVisible="Visible"
-                         IsBackEnabled="True"
-                         IsPaneOpen="True"
-                         ShoulderNavigationEnabled="Always"
-                         IsSettingsVisible="True"
-                         IsTitleBarAutoPaddingEnabled="False"
+                         IsBackEnabled="False"
+                         IsTitleBarAutoPaddingEnabled="True"
+                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
                          Loaded="NavigationViewControl_Loaded"
-                         OpenPaneLength="168">
+                         OpenPaneLength="176">
             <!--  TODO: NavigationViewItems into the right upper border of header, as small icons  -->
             <!--  INFO: MultitaskExpanded  -->
             <NavigationView.MenuItems>

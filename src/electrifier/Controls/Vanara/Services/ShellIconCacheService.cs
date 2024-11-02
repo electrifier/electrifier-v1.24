@@ -21,7 +21,7 @@ public class ShellIconExtractedEventArgs(PIDL pidl, int idx) : EventArgs
 }
 
 /// <summary>Class that simplifies extracting icons from items in a Shell Folder.</summary>
-public class TempIconExtractor
+public class ShellIconCacheService
 {
     private const int defSize = 32;
     private readonly List<Bitmap> images = [];
@@ -34,7 +34,7 @@ public class TempIconExtractor
     private CancellationTokenSource? lastCanceler;
     private List<Task> lastRunThreads = [];
 
-    static TempIconExtractor()
+    static ShellIconCacheService()
     {
         if (!FileIconInit(false)) FileIconInit(true);
     }
@@ -43,7 +43,7 @@ public class TempIconExtractor
     /// <param name="folder">The folder.</param>
     /// <param name="filter">The filter to determine which child items of the folder are enumerated.</param>
     /// <param name="bmpSize">The width and height of the bitmaps to fetch.</param>
-    public TempIconExtractor(ShellFolder folder,
+    public ShellIconCacheService(ShellFolder folder,
         FolderItemFilter filter = FolderItemFilter.Folders | FolderItemFilter.NonFolders,
         int bmpSize = defSize)
     {
@@ -55,7 +55,7 @@ public class TempIconExtractor
     /// <summary>Initializes a new instance of the <see cref="ShellIconExtractor"/> class.</summary>
     /// <param name="items">The items.</param>
     /// <param name="bmpSize">The width and height of the bitmaps to fetch.</param>
-    public TempIconExtractor(IEnumerable<ShellItem> items, int bmpSize = defSize) :
+    public ShellIconCacheService(IEnumerable<ShellItem> items, int bmpSize = defSize) :
         this(items.Select(i => i.PIDL), bmpSize)
     {
     }
@@ -63,7 +63,7 @@ public class TempIconExtractor
     /// <summary>Initializes a new instance of the <see cref="ShellIconExtractor"/> class.</summary>
     /// <param name="items">The items.</param>
     /// <param name="bmpSize">The width and height of the bitmaps to fetch.</param>
-    public TempIconExtractor(IEnumerable<PIDL> items, int bmpSize = defSize)
+    public ShellIconCacheService(IEnumerable<PIDL> items, int bmpSize = defSize)
     {
         this.items = items.ToArray();
         imageSize = bmpSize;
