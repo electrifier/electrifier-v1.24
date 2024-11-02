@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="AppDescription" xml:space="preserve">
-    <value>electrifier app description</value>
+    <value>electrifier: integrated desktop environment</value>
   </data>
   <data name="AppNotificationSamplePayload" xml:space="preserve">
     <value>&lt;toast launch="action=ToastClick"&gt;
@@ -210,13 +210,13 @@
     <value>Reload</value>
   </data>
   <data name="Shell_TextEditor.Content" xml:space="preserve">
-    <value>Editor</value>
+    <value>Edit</value>
   </data>
   <data name="Shell_KanbanBoard.Content" xml:space="preserve">
     <value>Organize</value>
   </data>
   <data name="Shell_Microsoft365.Content" xml:space="preserve">
-    <value>Microsoft 365</value>
+    <value>Create</value>
   </data>
   <data name="ShellPage_KanbanBoard.Content" xml:space="preserve">
     <value>Kanban Board</value>

@@ -210,13 +210,13 @@
     <value>Reload</value>
   </data>
   <data name="Shell_TextEditor.Content" xml:space="preserve">
-    <value>Editor</value>
+    <value>Edit</value>
   </data>
   <data name="Shell_KanbanBoard.Content" xml:space="preserve">
     <value>Organize</value>
   </data>
   <data name="Shell_Microsoft365.Content" xml:space="preserve">
-    <value>Microsoft 365</value>
+    <value>Create</value>
   </data>
   <data name="ShellPage_KanbanBoard.Content" xml:space="preserve">
     <value>Kanban Board</value>
