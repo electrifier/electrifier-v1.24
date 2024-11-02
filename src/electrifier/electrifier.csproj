@@ -30,9 +30,6 @@
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
   </PropertyGroup>
   <ItemGroup>
-    <Content Remove="Assets\Square44x44Logo.scale-200_altform-unplated.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove="Assets\Square44x44Logo.scale-200_altform-unplated.png" />
   </ItemGroup>
   <ItemGroup>
@@ -83,6 +80,9 @@
       <PackagePath>\</PackagePath>
     </None>
 	  <Folder Include="Assets\Themes\Aero Blackcomb\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\app.ico" />
   </ItemGroup>
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
