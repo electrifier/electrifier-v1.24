@@ -81,9 +81,6 @@
     </None>
 	  <Folder Include="Assets\Themes\Aero Blackcomb\" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Assets\app.ico" />
-  </ItemGroup>
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
   </PropertyGroup>
