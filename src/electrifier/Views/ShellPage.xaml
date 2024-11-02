@@ -1,19 +1,20 @@
 ﻿<!-- todo: Insert MenuItemsSource
      todo: IsPaneToggleButtonVisible = True -> PaneToggle-Style and overlap
-    todo: See WinUI3 gallery://item/AnimatedIcon -->
+     todo: See WinUI3 gallery://item/AnimatedIcon -->
 <Page x:Class="electrifier.Views.ShellPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:behaviors="using:electrifier.Behaviors"
       xmlns:helpers="using:electrifier.Helpers"
       xmlns:i="using:Microsoft.Xaml.Interactivity"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       Loaded="OnLoaded">
     <Grid VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0"  x:Name="AppTitleBar"
+        <Grid Grid.Row="0"
+              x:Name="AppTitleBar"
               HorizontalAlignment="Stretch"
               VerticalAlignment="Top"
               IsHitTestVisible="True">
@@ -27,9 +28,11 @@
                         Grid.Column="0"
                         VerticalAlignment="Stretch"
                         Orientation="Horizontal">
-                <Image x:Name="WindowIcon"
-                       MaxWidth="32"
-                       Source="ms-appx:///Assets/Square44x44Logo_unplated.png" />
+                <Button>
+                    <Image x:Name="WindowIcon"
+                           MaxWidth="32"
+                           Source="ms-appx:///Assets/Square44x44Logo_unplated.png" />
+                </Button>
                 <Button>
                     <Image x:Name="AppTitleBarBackButtonImageCenter"
                            Source="ms-appx:///Assets/Themes/Aero Blackcomb/Back Button 48px.png"
@@ -40,14 +43,13 @@
                            Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png"
                            MaxHeight="32" />
                 </Button>
-                <Border BorderThickness="2"
+                <!--<Border BorderThickness="2"
                         Background="Transparent">
                     <BreadcrumbBar x:Name="NavigationBreadcrumbBar"
-                                   VerticalAlignment="Center" />
+                                   VerticalAlignment="Stretch" />
                 </Border>
-
                 <StackPanel>
-                    <TextBlock x:Name="TitleTextBlockLeft"
+                    <TextBlock x:Name="TitleTextBlockRight"
                                FontSize="23"
                                HorizontalAlignment="Left"
                                Text="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}" />
@@ -55,7 +57,7 @@
                                FontSize="11"
                                FontStyle="Italic"
                                Text="electrifier alpha octavian" />
-                </StackPanel>
+                </StackPanel>-->
             </StackPanel>
             <!-- todo: Convert `CenterStackPanel` to Grid. -->
             <!--<StackPanel x:Name="CenterStackPanel"
@@ -171,7 +173,7 @@
             </NavigationView.FooterMenuItems>
             <NavigationView.PaneCustomContent>
                 <HyperlinkButton x:Name="PaneHyperlink"
-                                 Content="wb"
+                                 Content="hi!"
                                  Visibility="Visible" />
             </NavigationView.PaneCustomContent>
             <NavigationView.HeaderTemplate>
