@@ -43,43 +43,14 @@
                            Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png"
                            MaxHeight="32" />
                 </Button>
-                <!--<Border BorderThickness="2"
-                        Background="Transparent">
-                    <BreadcrumbBar x:Name="NavigationBreadcrumbBar"
-                                   VerticalAlignment="Stretch" />
-                </Border>
-                <StackPanel>
-                    <TextBlock x:Name="TitleTextBlockRight"
-                               FontSize="23"
-                               HorizontalAlignment="Left"
-                               Text="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}" />
-                    <TextBlock x:Name="SubTitleTextBlockLeft"
-                               FontSize="11"
-                               FontStyle="Italic"
-                               Text="electrifier alpha octavian" />
-                </StackPanel>-->
             </StackPanel>
-            <!-- todo: Convert `CenterStackPanel` to Grid. -->
-            <!--<StackPanel x:Name="CenterStackPanel"
+            <StackPanel x:Name="TitleStackPanelCenter"
                         Grid.Column="1"
-                        Orientation="Horizontal"
-                        HorizontalAlignment="Left">
-                <Button>
-                    <Image x:Name="AppTitleBarBackButtonImageCenter"
-                           Source="ms-appx:///Assets/Themes/Aero Blackcomb/Back Button 48px.png"
-                           MaxHeight="32" />
-                </Button>
-                <Button>
-                    <Image x:Name="AppTitleBarForwardButtonImageCenter"
-                           Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png"
-                           MaxHeight="32" />
-                </Button>
-                <Border BorderThickness="2"
-                        Background="Transparent">
-                    <BreadcrumbBar x:Name="NavigationBreadcrumbBar"
-                                   VerticalAlignment="Center" />
-                </Border>
-            </StackPanel>-->
+                        HorizontalAlignment="Stretch"
+                        Orientation="Horizontal">
+                <BreadcrumbBar x:Name="NavigationBreadcrumbBar"
+                               VerticalAlignment="Center" />
+            </StackPanel>
             <Grid x:Name="SystemIconGrid"
                   Grid.Column="2"
                   HorizontalAlignment="Right">
