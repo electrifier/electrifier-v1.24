@@ -64,7 +64,6 @@ public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
     public bool IsProgressing;
     public bool IsSelected { get; set; }
     public ShellItem ShellItem { get; set; }
-
     private bool disposedValue;
     private readonly int? _imageListIndex;
 
@@ -83,13 +82,11 @@ public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
         _imageListIndex = imageListIndex;
     }
 
-    public event PropertyChangedEventHandler? PropertyChanged;
-
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
+    public event PropertyChangedEventHandler? PropertyChanged;
     protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value))
@@ -102,7 +99,7 @@ public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
         return true;
     }
 
-    #region Dispose
+    #region Dispose pattern // todo: not implemented yet
     protected virtual void Dispose(bool disposing)
     {
         if (!disposedValue)
@@ -131,7 +128,7 @@ public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
         Dispose(disposing: true);
         GC.SuppressFinalize(this);
     }
-    #endregion Dispose
+    #endregion Dispose pattern
 
     #region GetDebuggerDisplay()
     private string GetDebuggerDisplay()
