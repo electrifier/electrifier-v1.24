@@ -15,7 +15,7 @@ namespace electrifier.Controls.Vanara;
 /// A ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32TreeView"/> Items.
 /// </summary>
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
-public class ExplorerBrowserItem : INotifyPropertyChanged
+public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
 {
     public record ExplorerBrowserItemViewState
     {
@@ -31,7 +31,6 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
         }
     }
     public SoftwareBitmapSource? BitmapSource { get; set; }
-
     /// <summary>Get the current set of <seealso cref="ExplorerBrowserItem"/>s as <seealso cref="List{T}"/>.</summary>
     public List<ExplorerBrowserItem>? Children;
     /// <summary>Get the DisplayName.</summary>
@@ -63,28 +62,25 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
     public bool IsFolder => ShellItem.IsFolder;
     public bool IsLink => ShellItem.IsLink;
     public bool IsProgressing;
-    public bool IsSelected
-    {
-        get; set;
-    }
-    public ShellItem ShellItem
-    {
-        get;
-    }
+    public bool IsSelected { get; set; }
+    public ShellItem ShellItem { get; set; }
+
+    private bool disposedValue;
     private readonly int? _imageListIndex;
+
     public ExplorerBrowserItem(Shell32.PIDL shItemId, int? imageListIndex = null)
     {
         ShellItem = new ShellItem(shItemId);
         _imageListIndex = imageListIndex;
 
-        //if(NeedsDispatcher)
+        // warn: if(NeedsDispatcher)
         // todo: If IsSelected, add overlay of opened folder icon to TreeView optionally
     }
 
     public ExplorerBrowserItem(Shell32.KNOWNFOLDERID kfId, int? imageListIndex = null)
     {
-        //ShellItem = new ShellItem(kfId);
-        //var pidl= kfId.
+        ShellItem = new ShellFolder(kfId);
+        _imageListIndex = imageListIndex;
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -106,6 +102,37 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
         return true;
     }
 
+    #region Dispose
+    protected virtual void Dispose(bool disposing)
+    {
+        if (!disposedValue)
+        {
+            if (disposing)
+            {
+                // TODO: dispose managed state (managed objects)
+            }
+
+            // TODO: free unmanaged resources (unmanaged objects) and override finalizer
+            // TODO: set large fields to null
+            disposedValue = true;
+        }
+    }
+
+    // // TODO: override finalizer only if 'Dispose(bool disposing)' has code to free unmanaged resources
+    // ~ExplorerBrowserItem()
+    // {
+    //     // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+    //     Dispose(disposing: false);
+    // }
+
+    void IDisposable.Dispose()
+    {
+        // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+        Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+    #endregion Dispose
+
     #region GetDebuggerDisplay()
     private string GetDebuggerDisplay()
     {
@@ -116,5 +143,5 @@ public class ExplorerBrowserItem : INotifyPropertyChanged
 
         return sb.ToString();
     }
-    #endregion
+    #endregion GetDebuggerDisplay()
 }
