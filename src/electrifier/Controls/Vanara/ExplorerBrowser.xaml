@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <UserControl x:Class="electrifier.Controls.Vanara.ExplorerBrowser"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="using:electrifier.Controls.Vanara"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              d:DataContext="{d:DesignInstance Type=local:ExplorerBrowser}"
              mc:Ignorable="d">
     <!--  TODO: Fix TeachingTip  -->
@@ -15,21 +15,25 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <!-- TODO: Move `CommandBar` into single Control, cause `FileManagerPage` will use it, too -->
-        <Border Grid.Row="0">
+        <Border x:Name="NavigationFailedBorder"
+                Grid.Row="0">
             <InfoBar x:Name="NavigationFailedInfoBar"
-                     Title="Navigation failed"
                      BorderBrush="DarkRed"
                      BorderThickness="8"
                      IsClosable="True"
                      IsOpen="False"
                      Message="{x:Bind NavigationFailure}"
-                     Severity="Error">
+                     Severity="Error"
+                     Title="Navigation failed">
                 <InfoBar.Content>
                     <ItemsStackPanel Height="Auto"
                                      HorizontalAlignment="Right"
                                      Orientation="Horizontal">
                         <Button>
-                            Reload folder.
+                            Reload folder
+                        </Button>
+                        <Button>
+                            Report a bug via GitHub...
                         </Button>
                     </ItemsStackPanel>
                 </InfoBar.Content>
@@ -46,12 +50,15 @@
                                   MinWidth="76" />
             </Grid.ColumnDefinitions>
             <Border x:Name="TreeViewBorder"
+                    Grid.Column="0"
                     Visibility="{x:Bind TreeViewVisibility}">
-                <local:Shell32TreeView x:Name="ShellTreeView" />
+                <local:Shell32TreeView x:Name="ShellTreeView"
+                                       HorizontalAlignment="Stretch" />
             </Border>
-            <Border Grid.Column="1"
-                    Width="8"
-                    Background="Transparent" />
+            <Border x:Name="TodoSplitterBorder"
+                    Grid.Column="1"
+                    Background="Transparent"
+                    Width="8" />
             <Border x:Name="ShellGridViewBorder"
                     Grid.Column="2">
                 <StackPanel Orientation="Vertical">

@@ -49,11 +49,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         var s = e.NewValue; //null checks omitted
         if (s is ExplorerBrowserItem ebItem)
         {
-            Debug.WriteLine($".OnCurrentFolderBrowserItemChanged(<'{ebItem.DisplayName}'>) DependencyObject <'{d.ToString()}'>");
+            Debug.WriteLine($".OnCurrentFolderBrowserItemChanged(<'{ebItem.DisplayName}'>) DependencyObject <'{d}'>");
         }
         else
         {
-            Debug.WriteLine($"[E].OnCurrentFolderBrowserItemChanged(): `{s.ToString()}` -> ERROR:UNKNOWN TYPE! Should be <ExplorerBrowserItem>");
+            Debug.WriteLine($"[E].OnCurrentFolderBrowserItemChanged(): `{s}` -> ERROR:UNKNOWN TYPE! Should be <ExplorerBrowserItem>");
         }
     }
     /// <summary>Current Folder content Items.</summary>
@@ -370,7 +370,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
             await task;
 
-            Debug.Print($".ExtractChildItems: {task.ToString()}");
+            Debug.Print($".ExtractChildItems: {task}");
 
             //parentItem.Children = []; // TODO: new ReadOnlyDictionary<ExplorerBrowserItem, int>();
 
@@ -413,7 +413,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         {
             var ebItem = (ExplorerBrowserItem?)args.AddedItems.FirstOrDefault()!;
 
-            if (ebItem is not ExplorerBrowserItem)
+            if (ebItem is null)
             {
                 Debug.Print($".ShellTreeView_SelectionChanged({args})");
                 return;
@@ -481,9 +481,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
         catch (COMException comEx)
         {
-            var navFailedEventArgs = new ExtNavigationFailedEventArgs();
-            navFailedEventArgs.Hresult = comEx.HResult;
-            navFailedEventArgs.FailedLocation = ebItem.ShellItem;
+            var navFailedEventArgs = new ExtNavigationFailedEventArgs
+            {
+                Hresult = comEx.HResult,
+                FailedLocation = ebItem.ShellItem
+            };
 
             if (comEx.HResult == HResultElementNotFound)
             {
@@ -556,7 +558,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     public void OnRefreshViewCommand(object sender, RoutedEventArgs e)
     {
-        Debug.WriteLine($".OnRefreshViewCommand(sender <{sender}>, RoutedEventArgs <{e.ToString()}>)");
+        Debug.WriteLine($".OnRefreshViewCommand(sender <{sender}>, RoutedEventArgs <{e}>)");
         /* // TODO: TryNavigate(CurrentFolderBrowserItem); */
     }
 
@@ -599,17 +601,12 @@ public class ExtNavigationFailedEventArgs : NavigationFailedEventArgs
 }
 
 /// <summary>Event argument for The Navigated event</summary>
-public class ExtNavigatedEventArgs : NavigatedEventArgs
+/// <remarks>Initializes a new instance of the <see cref="T:Vanara.Windows.Shell.NavigatedEventArgs" /> class.</remarks>
+/// <param name="folder">The folder.</param>
+public class ExtNavigatedEventArgs(ShellFolder folder) : NavigatedEventArgs(folder)
 {
     public int ItemCount { get; set; } = 0;
     public int FolderCount { get; set; } = 0;
     public int FileCount { get; set; } = 0;
-
-    /// <summary>Initializes a new instance of the <see cref="T:Vanara.Windows.Shell.NavigatedEventArgs" /> class.</summary>
-    /// <param name="folder">The folder.</param>
-    public ExtNavigatedEventArgs(ShellFolder folder) : base(folder)
-    {
-        //NewLocation = folder;   // TODO: ?!?
-    }
 }
 
