@@ -1,5 +1,6 @@
 ﻿namespace electrifier.Controls.Vanara.Services;
 
-public static class ShellNamespaceService
+public static partial class ShellNamespaceService
 {
+
 }

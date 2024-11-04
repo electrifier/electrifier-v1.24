@@ -7,6 +7,11 @@ using Vanara.Windows.Shell;
 
 namespace electrifier.Controls.Vanara.Services;
 
+// todo: add service handler, self-registering
+
+public partial class ShellNamespaceService
+    {
+
 /// <summary>Event arguments that expose an ID list and associated image.</summary>
 /// <seealso cref="System.EventArgs"/>
 public class ShellIconExtractedEventArgs(PIDL pidl, int idx) : EventArgs
@@ -21,7 +26,7 @@ public class ShellIconExtractedEventArgs(PIDL pidl, int idx) : EventArgs
 }
 
 /// <summary>Class that simplifies extracting icons from items in a Shell Folder.</summary>
-public class ShellIconCacheService
+public class TempShellIconExtractor
 {
     private const int defSize = 32;
     private readonly List<Bitmap> images = [];
@@ -34,7 +39,7 @@ public class ShellIconCacheService
     private CancellationTokenSource? lastCanceler;
     private List<Task> lastRunThreads = [];
 
-    static ShellIconCacheService()
+    static TempShellIconExtractor()
     {
         if (!FileIconInit(false)) FileIconInit(true);
     }
@@ -43,7 +48,7 @@ public class ShellIconCacheService
     /// <param name="folder">The folder.</param>
     /// <param name="filter">The filter to determine which child items of the folder are enumerated.</param>
     /// <param name="bmpSize">The width and height of the bitmaps to fetch.</param>
-    public ShellIconCacheService(ShellFolder folder,
+    public TempShellIconExtractor(ShellFolder folder,
         FolderItemFilter filter = FolderItemFilter.Folders | FolderItemFilter.NonFolders,
         int bmpSize = defSize)
     {
@@ -55,7 +60,7 @@ public class ShellIconCacheService
     /// <summary>Initializes a new instance of the <see cref="ShellIconExtractor"/> class.</summary>
     /// <param name="items">The items.</param>
     /// <param name="bmpSize">The width and height of the bitmaps to fetch.</param>
-    public ShellIconCacheService(IEnumerable<ShellItem> items, int bmpSize = defSize) :
+    public TempShellIconExtractor(IEnumerable<ShellItem> items, int bmpSize = defSize) :
         this(items.Select(i => i.PIDL), bmpSize)
     {
     }
@@ -63,7 +68,7 @@ public class ShellIconCacheService
     /// <summary>Initializes a new instance of the <see cref="ShellIconExtractor"/> class.</summary>
     /// <param name="items">The items.</param>
     /// <param name="bmpSize">The width and height of the bitmaps to fetch.</param>
-    public ShellIconCacheService(IEnumerable<PIDL> items, int bmpSize = defSize)
+    public TempShellIconExtractor(IEnumerable<PIDL> items, int bmpSize = defSize)
     {
         this.items = items.ToArray();
         imageSize = bmpSize;
@@ -185,4 +190,5 @@ public class ShellIconCacheService
             return (SHGetDataFromIDList<WIN32_FIND_DATA>(isf, pidl, SHGetDataFormat.SHGDFIL_FINDDATA).dwFileAttributes & FileAttributes.Directory) != 0;
         }
     }
+}
 }
