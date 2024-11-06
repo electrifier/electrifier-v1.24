@@ -23,11 +23,11 @@ public partial class ShellNamespaceService
     public int IconSize => IconExtractor.ImageSize;
     internal static SoftwareBitmapSource DefaultFolderImageBitmapSource;
     internal static SoftwareBitmapSource DefaultDocumentAssocImageBitmapSource;
-    internal StockIcon siFolder = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDER);
-    internal StockIcon siDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC);
-    internal StockIcon siFolderOpen = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);  // overlay: SIID_FOLDERFRONT, SIID_FOLDERBACK
-    internal StockIcon siDocumentWithAssociation = new StockIcon(SHSTOCKICONID.SIID_DOCASSOC);
-    internal StockIcon siLinkOverlay = new StockIcon(SHSTOCKICONID.SIID_LINK);
+    internal StockIcon SiFolder = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDER);
+    internal StockIcon SiDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC);
+    internal StockIcon SiFolderOpen = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);  // overlay: SIID_FOLDERFRONT, SIID_FOLDERBACK
+    internal StockIcon SiDocumentWithAssociation = new StockIcon(SHSTOCKICONID.SIID_DOCASSOC);
+    internal StockIcon SiLinkOverlay = new StockIcon(SHSTOCKICONID.SIID_LINK);
     private Task? _stockIconTask;
     public ShellNamespaceService()
     {
@@ -80,39 +80,12 @@ public partial class ShellNamespaceService
             });
             ext.IconExtracted += new((sender, args) =>
             {
-                var test = args.ItemID;
-                var test2 = args.ImageListIndex;
                 Debug.Assert(sender.Equals(ext));
-                //YieldAwaitable return new ExplorerBrowserItem(args.ItemID, args.ImageListIndex);
+                //Yield Awaitable return new ExplorerBrowserItem(args.ItemID, args.ImageListIndex);
             });
             ext.Start();
 
-
-
             // DispatcherTimer
-
-            //var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
-            //var shellItems = children as ShellItem[] ?? children.ToArray();
-            ////itemCount = shellItems.Length;
-            //parentItem.Children = []; // TODO: new ReadOnlyDictionary<ExplorerBrowserItem, int>();
-
-            //if (shellItems.Length > 0)
-            //{
-            //    foreach (var shItem in shellItems)
-            //    {
-            //        var ebItem = new ExplorerBrowserItem(shItem);
-            //        if (ebItem.IsFolder)
-            //        {
-            //            ebItem.BitmapSource = _defaultFolderImageBitmapSource;
-            //            parentItem.Children?.Insert(0, ebItem);
-            //        }
-            //        else
-            //        {
-            //            ebItem.BitmapSource = _defaultDocumentAssocImageBitmapSource;
-            //            parentItem.Children?.Add(ebItem);
-            //        }
-            //    }
-            //}
         }
         catch (Exception e)
         {

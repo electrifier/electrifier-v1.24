@@ -241,15 +241,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     }
     private void ExplorerBrowser_NavigationFailed(object? sender, ExtNavigationFailedEventArgs e)
     {
-        var location = e.FailedLocation;
-
-        NavigationFailure = $"Navigation failed: '{location}' cannot be navigated to. <Show More Info> <Report a Bug>";
-        NavigationFailedInfoBar.IsOpen = true;
-        NavigationFailedInfoBar.Message = NavigationFailure;
-        var childElement = new TextBox();
-        NavigationFailedInfoBar.Content = childElement;
+        NavigationFailure = $"Navigation failed: '{e.FailedLocation}' cannot be navigated to. <Show More Info> <Report a Bug>";
         IsLoading = false;
-        e.IsHandled = true;
+        throw new ArgumentOutOfRangeException(NavigationFailure);
     }
     /// <summary>
     /// ExtractChildItems
@@ -383,6 +377,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             CurrentFolderItems.Clear();
             IsLoading = true;
 
+            var testEnum = ShellNamespaceService.RequestChildItemsAsync(targetBrowserItem);
             var childShellItems = ExtractChildItems(targetBrowserItem);
 
             if (childShellItems.Count <= 0)

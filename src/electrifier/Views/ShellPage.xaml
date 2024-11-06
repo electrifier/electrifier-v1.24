@@ -73,8 +73,7 @@
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel"
                                     IsSelected="True">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xe8d1;" />
+                        <ImageIcon Source="/Assets/Legacy Assets from Old-School electrifier/Electrifier Icon.ico" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_WebView"

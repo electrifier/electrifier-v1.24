@@ -9,42 +9,13 @@
              mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <!-- TODO: Move `CommandBar` into single Control, cause `FileManagerPage` will use it, too -->
-        <Border x:Name="NavigationFailedBorder"
-                Grid.Row="0">
-            <InfoBar x:Name="NavigationFailedInfoBar"
-                     BorderBrush="DarkRed"
-                     BorderThickness="8"
-                     IsClosable="True"
-                     IsOpen="True"
-                     Message="{x:Bind NavigationFailure}"
-                     Severity="Error"
-                     Title="Navigation failed">
-                <InfoBar.Content>
-                    <ItemsStackPanel Height="Auto"
-                                     HorizontalAlignment="Right"
-                                     Orientation="Horizontal">
-                        <Button>
-                            Reload folder
-                        </Button>
-                        <Button>
-                            Report a bug via GitHub...
-                        </Button>
-                    </ItemsStackPanel>
-                </InfoBar.Content>
-            </InfoBar>
-        </Border>
-        <Grid x:Name="ArenaGrid"
-              Grid.Row="1">
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <!--  controls:DockPanel.Dock="Left"  -->
                 <ColumnDefinition Width="176"
                                   MinWidth="76" />
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*"
                                   MinWidth="76" />
             </Grid.ColumnDefinitions>
@@ -54,10 +25,6 @@
                 <local:Shell32TreeView x:Name="ShellTreeView"
                                        HorizontalAlignment="Stretch" />
             </Border>
-            <Border x:Name="TodoSplitterBorder"
-                    Grid.Column="1"
-                    Background="Transparent"
-                    Width="8" />
             <Border x:Name="ShellGridViewBorder"
                     Grid.Column="2">
                 <StackPanel Orientation="Vertical">
@@ -92,12 +59,11 @@
                 </StackPanel>
             </Border>
         </Grid>
-        <CommandBar Grid.Row="2"
+        <CommandBar Grid.Row="1"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Center"
                     HorizontalContentAlignment="Left"
                     VerticalContentAlignment="Center"
-                    Background="Transparent"
                     DefaultLabelPosition="Collapsed">
             <AppBarButton IsCompact="True"
                           IsEnabled="False">

@@ -4,10 +4,8 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:viewmodels="using:electrifier.ViewModels"
-      xmlns:winUi="using:CommunityToolkit.WinUI"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:vanara="using:electrifier.Controls.Vanara"
       d:DataContext="{d:DesignInstance Type=viewmodels:WorkbenchViewModel}"
       behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
       mc:Ignorable="d">
@@ -15,11 +13,6 @@
     <!--  TODO: removed Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"  -->
     <Grid AllowDrop="True"
           DropCompleted="ArenaGrid_OnDropCompleted">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5*" />
-            <ColumnDefinition MaxWidth="23" />
-            <ColumnDefinition Width="2*" />
-        </Grid.ColumnDefinitions>
         <Border AllowDrop="True"
                 VerticalAlignment="Top">
             <StackPanel Orientation="Vertical">
@@ -27,9 +20,9 @@
                 <controls:SettingsCard x:Name="WorkbenchAutostartCard"
                                        Description="Your new Workbench is your personal workspace and data warehouse. You can have as many workbenches as you wish and can customize them here. It is your choice, what Page gets navigated to when electrifier starts the next time. Let This be my preferred choice for the future [x], as I know I can change this always in its ''Settings Page::startup behaviour''."
                                        Header="Where do you want to start?">
-                    <StackPanel>
-                        <TextBlock>Customize your Workbench</TextBlock>
-                        <ListBox MaxWidth="128">
+                    <StackPanel Width="150">
+                        <CheckBox>Always start with:</CheckBox>
+                        <ListBox>
                             <ListBoxItem>Workbench</ListBoxItem>
                             <ListBoxItem>Browser</ListBoxItem>
                             <ListBoxItem>Shell</ListBoxItem>
@@ -39,11 +32,6 @@
                     </StackPanel>
                 </controls:SettingsCard>
             </StackPanel>
-        </Border>
-        <Border Grid.Column="1"
-                Width="23" />
-        <Border Grid.Column="2">
-            <vanara:Shell32TreeView />
         </Border>
     </Grid>
 </Page>
