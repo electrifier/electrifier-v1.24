@@ -20,34 +20,30 @@
             <ColumnDefinition MaxWidth="23" />
             <ColumnDefinition Width="2*" />
         </Grid.ColumnDefinitions>
-        <Border x:Name="ArenaGridLeftColumnBorder"
-                AllowDrop="True"
+        <Border AllowDrop="True"
                 VerticalAlignment="Top">
             <StackPanel Orientation="Vertical">
                 <!-- HeaderIcon mdl2-RememberedDevice -->
                 <controls:SettingsCard x:Name="WorkbenchAutostartCard"
                                        Description="Your new Workbench is your personal workspace and data warehouse. You can have as many workbenches as you wish and can customize them here. It is your choice, what Page gets navigated to when electrifier starts the next time. Let This be my preferred choice for the future [x], as I know I can change this always in its ''Settings Page::startup behaviour''."
-                                       Header="Where do you want to go tomorrow?">
-                    <ComboBox SelectedIndex="1">
-                        <ComboBoxItem>Workbench</ComboBoxItem>
-                        <ComboBoxItem>Shell</ComboBoxItem>
-                        <ComboBoxItem>Browser</ComboBoxItem>
-                        <ComboBoxItem>Editor</ComboBoxItem>
-                        <ComboBoxItem>Microsoft 365</ComboBoxItem>
-                    </ComboBox>
+                                       Header="Where do you want to start?">
+                    <StackPanel>
+                        <TextBlock>Customize your Workbench</TextBlock>
+                        <ListBox MaxWidth="128">
+                            <ListBoxItem>Workbench</ListBoxItem>
+                            <ListBoxItem>Browser</ListBoxItem>
+                            <ListBoxItem>Shell</ListBoxItem>
+                            <ListBoxItem>Edit...</ListBoxItem>
+                            <ListBoxItem>Create</ListBoxItem>
+                        </ListBox>
+                    </StackPanel>
                 </controls:SettingsCard>
             </StackPanel>
         </Border>
         <Border Grid.Column="1"
                 Width="23" />
-        <!--  TODO: ExplorerBrowser isn't stretching horizontally  -->
-        <Border Grid.Column="2"
-                x:Name="ExplorerBrowserBorder">
-            <vanara:ExplorerBrowser x:Name="ExplorerBrowserControl"
-                                    BottomAppBarVisibility="Collapsed"
-                                    BottomCommandBarVisibility="Collapsed"
-                                    GridViewVisibility="Collapsed"
-                                    TopCommandBarVisibility="Collapsed" />
+        <Border Grid.Column="2">
+            <vanara:Shell32TreeView />
         </Border>
     </Grid>
 </Page>

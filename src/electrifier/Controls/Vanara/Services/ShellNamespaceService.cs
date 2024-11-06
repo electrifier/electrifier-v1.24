@@ -34,9 +34,9 @@ public partial class ShellNamespaceService
         IconBitmaps = IconExtractor.ImageList;
         _stockIconTask = InitializeStockIcons();
     }
-    public static async IAsyncEnumerable<ExplorerBrowserItem> ExtractChildItemsAsync(ExplorerBrowserItem? parentItem)
+    public static async IAsyncEnumerable<ExplorerBrowserItem> RequestChildItemsAsync(ExplorerBrowserItem? parentItem)
     {
-        Debug.Print($".ExtractChildItemsAsync(<{parentItem?.DisplayName}>) extracting...");
+        Debug.Print($".RequestChildItemsAsync(<{parentItem?.DisplayName}>) extracting...");
 
         var ct = new CancellationToken();
 
