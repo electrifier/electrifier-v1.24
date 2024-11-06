@@ -13,22 +13,22 @@ namespace electrifier.Controls.Vanara.Services;
 
 public partial class ShellNamespaceService
 {
+    /// <summary>HResult code for <code><see cref="COMException"/>: 0x80070490.</code>
+    /// <remarks>Fired when `Element not found`.</remarks></summary>
+    public static readonly HRESULT HResultElementNotFound = new HRESULT(0x80070490);
+    public static readonly ShellFolder HomeShellFolder = new("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
     public IReadOnlyList<Bitmap> IconBitmaps;
     internal TempShellIconExtractor IconExtractor  = new(ShellFolder.Desktop);
     public int IconSize => IconExtractor.ImageSize;
-    private static SoftwareBitmapSource? _defaultFolderImageBitmapSource;
-    private static SoftwareBitmapSource? _defaultDocumentAssocImageBitmapSource;
-
+    internal static SoftwareBitmapSource? DefaultFolderImageBitmapSource;
+    internal static SoftwareBitmapSource? DefaultDocumentAssocImageBitmapSource;
     private Task? _stockIconTask;
-
     public ShellNamespaceService()
     {
         IconBitmaps = IconExtractor.ImageList;
         _stockIconTask = InitializeStockIcons();
     }
-
     public void Dispose() { }
-
     /// <summary>
     /// <see href="https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs"/>
     /// </summary>
@@ -42,7 +42,7 @@ public partial class ShellNamespaceService
                 var idx = siFolder.SystemImageIndex;
                 var icnHandle = siFolder.IconHandle.ToIcon();
                 var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
-                _defaultFolderImageBitmapSource = await bmpSource;
+                DefaultFolderImageBitmapSource = await bmpSource;
             }
 
             using var siDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC);
@@ -50,7 +50,7 @@ public partial class ShellNamespaceService
                 var idx = siDocument.SystemImageIndex;
                 var icnHandle = siDocument.IconHandle.ToIcon();
                 var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
-                _defaultDocumentAssocImageBitmapSource = await bmpSource;
+                DefaultDocumentAssocImageBitmapSource = await bmpSource;
             }
         }
         catch (Exception e)
@@ -59,14 +59,12 @@ public partial class ShellNamespaceService
             throw;
         }
     }
-
     public static async Task<SoftwareBitmapSource?> GetWinUi3BitmapSourceFromIcon(Icon bitmapIcon)
     {
         ArgumentNullException.ThrowIfNull(bitmapIcon);
 
         return await GetWinUi3BitmapSourceFromGdiBitmap(bitmapIcon.ToBitmap());
     }
-
     public static async Task<SoftwareBitmapSource?> GetWinUi3BitmapSourceFromGdiBitmap(Bitmap gdiBitmap)
     {
         ArgumentNullException.ThrowIfNull(gdiBitmap);
@@ -90,5 +88,4 @@ public partial class ShellNamespaceService
         await source.SetBitmapAsync(softwareBitmap);
         return source;
     }
-
 }

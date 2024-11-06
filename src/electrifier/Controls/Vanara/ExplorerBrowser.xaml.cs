@@ -21,16 +21,11 @@ using Visibility = Microsoft.UI.Xaml.Visibility;
 /// <summary>Replacement for <see cref="Vanara.Windows.Forms.Controls.Explorer.cs">Windows.Forms/Controls/ExplorerBrowser.cs</see></summary>
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
-    /// <summary>
-    /// HResult code for <code><see cref="System.Runtime.InteropServices.COMException"/>: 0x80070490</code>
-    /// <remarks>Fired when `Element not found`</remarks>
-    /// </summary>
-    public readonly HRESULT HResultElementNotFound = new HRESULT(0x80070490);
-    public readonly ShellFolder HomeShellFolder = new("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
     private Visibility _bottomAppBarVisibility;
     private Visibility _bottomCommandBarVisibility;
     private Visibility _gridViewVisibility;
     private bool _isLoading;
+    private ShellNamespaceService _namespaceService = new ShellNamespaceService();
     private Task _stockIconTask;
     private Visibility _topCommandBarVisibility;
     public ExplorerBrowserItem? CurrentFolderBrowserItem
@@ -57,7 +52,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             Debug.WriteLine($"[E].OnCurrentFolderBrowserItemChanged(): `{s}` -> ERROR:UNKNOWN TYPE! Should be <ExplorerBrowserItem>");
         }
     }
-    /// <summary>Current Folder content Items.</summary>
+    /// <summary>Current Folder content Items, as used by <see cref="Shell32GridView"/>.</summary>
     public ObservableCollection<ExplorerBrowserItem> CurrentFolderItems
     {
         get => (ObservableCollection<ExplorerBrowserItem>)GetValue(CurrentFolderItemsProperty);
@@ -212,11 +207,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     }
     /// <summary>Fires when either a Navigating listener cancels the navigation, or if the operating system determines that navigation is not possible.</summary>
     public event EventHandler<ExtNavigationFailedEventArgs>? NavigationFailed;
-    private ShellNamespaceService _nsService = new ShellNamespaceService();
-
-    /// <summary>
-    /// ExplorerBrowser Implementation for WinUI3
-    /// </summary>
+    /// <summary>ExplorerBrowser Implementation for WinUI3.</summary>
     public ExplorerBrowser()
     {
         InitializeComponent();
@@ -254,7 +245,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             Navigate(CurrentFolderBrowserItem);
         };
     }
-
     private async Task InitializeViewModel()
     {
         var rootItems = new List<ExplorerBrowserItem>
@@ -276,7 +266,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         };
         ShellTreeView.ItemsSource = rootItems;
     }
-
     private void ExplorerBrowser_NavigationFailed(object? sender, ExtNavigationFailedEventArgs e)
     {
         var location = e.FailedLocation;
@@ -289,7 +278,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         IsLoading = false;
         e.IsHandled = true;
     }
-
     /// <summary>
     /// ExtractChildItems
     /// TODO: Add Stack, or ShellDataTable
@@ -330,10 +318,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                     var ebItem = new ExplorerBrowserItem(item.PIDL);
                     if (ebItem.IsFolder)
                     {
+                        ebItem.BitmapSource = ShellNamespaceService.DefaultFolderImageBitmapSource;
                         result.Insert(0, ebItem);
                     }
                     else
                     {
+                        ebItem.BitmapSource = ShellNamespaceService.DefaultDocumentAssocImageBitmapSource;
                         result.Add(ebItem);
                     }
                 }
@@ -440,7 +430,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 FailedLocation = targetBrowserItem.ShellItem
             };
 
-            if (comEx.HResult == HResultElementNotFound)
+            if (comEx.HResult == ShellNamespaceService.HResultElementNotFound)
             {
                 Debug.WriteLine($"[Error] {comEx.HResult}: {navFailedEventArgs}");
                 //NavigationFailure = msg;
