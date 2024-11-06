@@ -8,6 +8,7 @@ using Vanara.Windows.Shell;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace electrifier.Controls.Vanara.Services;
 
@@ -33,7 +34,92 @@ public partial class ShellNamespaceService
         IconBitmaps = IconExtractor.ImageList;
         _stockIconTask = InitializeStockIcons();
     }
-    public void Dispose() { }
+    public static async IAsyncEnumerable<ExplorerBrowserItem> ExtractChildItemsAsync(ExplorerBrowserItem? parentItem)
+    {
+        Debug.Print($".ExtractChildItemsAsync(<{parentItem?.DisplayName}>) extracting...");
+
+        var ct = new CancellationToken();
+
+        if (parentItem is null)
+        {
+            yield break;
+        }
+
+        /*  public bool Wait(TimeSpan timeout) {
+                long totalMilliseconds = (long)timeout.TotalMilliseconds;
+                if (totalMilliseconds < -1 || totalMilliseconds > int.MaxValue)
+                    { throw new ArgumentOutOfRangeException(nameof(timeout)); }
+
+                return Wait((int)totalMilliseconds, new CancellationToken());
+            } */
+
+        try
+        {
+            /* var ext = new ShellIconExtractor(new ShellFolder(parentItem.ShellItem));
+               ext.Complete += ShellIconExtractorComplete;
+               ext.IconExtracted += ShellIconExtractorIconExtracted;
+               ext.Start(); */
+            Debug.Assert(parentItem.ShellItem.PIDL != Shell32.PIDL.Null);
+            var shItemId = parentItem.ShellItem.PIDL;
+            using var shFolder = new ShellFolder(shItemId);
+
+            if ((shFolder.Attributes & ShellItemAttribute.Removable) != 0)
+            {
+                // TODO: Check for Disc in Drive, fail only if device not present
+                // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
+                Debug.WriteLine($"GetChildItems: IsRemovable = true");
+                var eventArgs = new NavigationFailedEventArgs();
+                yield break;
+            }
+
+            var ext = new TempShellIconExtractor(new ShellFolder(parentItem.ShellItem));
+
+            ext.Complete += new((sender, args) =>
+            {
+                Debug.Assert(sender.Equals(ext));
+            });
+            ext.IconExtracted += new((sender, args) =>
+            {
+                var test = args.ItemID;
+                var test2 = args.ImageListIndex;
+                Debug.Assert(sender.Equals(ext));
+                //YieldAwaitable return new ExplorerBrowserItem(args.ItemID, args.ImageListIndex);
+            });
+            ext.Start();
+
+
+
+            // DispatcherTimer
+
+            //var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
+            //var shellItems = children as ShellItem[] ?? children.ToArray();
+            ////itemCount = shellItems.Length;
+            //parentItem.Children = []; // TODO: new ReadOnlyDictionary<ExplorerBrowserItem, int>();
+
+            //if (shellItems.Length > 0)
+            //{
+            //    foreach (var shItem in shellItems)
+            //    {
+            //        var ebItem = new ExplorerBrowserItem(shItem);
+            //        if (ebItem.IsFolder)
+            //        {
+            //            ebItem.BitmapSource = _defaultFolderImageBitmapSource;
+            //            parentItem.Children?.Insert(0, ebItem);
+            //        }
+            //        else
+            //        {
+            //            ebItem.BitmapSource = _defaultDocumentAssocImageBitmapSource;
+            //            parentItem.Children?.Add(ebItem);
+            //        }
+            //    }
+            //}
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+    }
     /// <summary>
     /// <see href="https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs"/>
     /// </summary>
