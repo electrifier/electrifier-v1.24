@@ -13,8 +13,7 @@
       mc:Ignorable="d">
     <!--  TODO: ui:UIElementExtensions.ClipToBounds="{x:Bind IsClipped, Mode=OneWay}"  -->
     <!--  TODO: removed Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"  -->
-    <Grid x:Name="ArenaGrid"
-          AllowDrop="True"
+    <Grid AllowDrop="True"
           DropCompleted="ArenaGrid_OnDropCompleted">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5*" />
@@ -39,8 +38,8 @@
                 </controls:SettingsCard>
             </StackPanel>
         </Border>
-        <Border x:Name="Splitter"
-                Grid.Column="1" />
+        <Border Grid.Column="1"
+                Width="23" />
         <!--  TODO: ExplorerBrowser isn't stretching horizontally  -->
         <Border Grid.Column="2"
                 x:Name="ExplorerBrowserBorder">
