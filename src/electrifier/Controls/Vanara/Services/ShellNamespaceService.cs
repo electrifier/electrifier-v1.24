@@ -22,6 +22,11 @@ public partial class ShellNamespaceService
     public int IconSize => IconExtractor.ImageSize;
     internal static SoftwareBitmapSource DefaultFolderImageBitmapSource;
     internal static SoftwareBitmapSource DefaultDocumentAssocImageBitmapSource;
+    internal StockIcon siFolder = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDER);
+    internal StockIcon siDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC);
+    internal StockIcon siFolderOpen = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);  // overlay: SIID_FOLDERFRONT, SIID_FOLDERBACK
+    internal StockIcon siDocumentWithAssociation = new StockIcon(SHSTOCKICONID.SIID_DOCASSOC);
+    internal StockIcon siLinkOverlay = new StockIcon(SHSTOCKICONID.SIID_LINK);
     private Task? _stockIconTask;
     public ShellNamespaceService()
     {

@@ -26,7 +26,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     private Visibility _gridViewVisibility;
     private bool _isLoading;
     private ShellNamespaceService _namespaceService = new ShellNamespaceService();
-    private Task _stockIconTask;
     private Visibility _topCommandBarVisibility;
     public ExplorerBrowserItem? CurrentFolderBrowserItem
     {
@@ -212,59 +211,33 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         InitializeComponent();
         DataContext = this;
-
+        CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellNamespaceService.HomeShellFolder);
         CurrentFolderItems = [];
-        CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellFolder.Desktop.PIDL);
-
         _advancedCollectionView = new(CurrentFolderItems, true);
-
-        NavigationFailed += ExplorerBrowser_NavigationFailed;
-
         ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
         ShellGridView.NativeGridView.SelectionChanged += NativeGridView_SelectionChanged;
-
-        RefreshViewCommand = new RelayCommand(() => OnRefreshViewCommand(this, new RoutedEventArgs()));
-
+        ShellTreeView.ItemsSource = new List<ExplorerBrowserItem>
+        {
+            CurrentFolderBrowserItem,
+            // todo: add separators
+            new(Shell32.KNOWNFOLDERID.FOLDERID_OneDrive),
+            new(Shell32.KNOWNFOLDERID.FOLDERID_Downloads),
+            new(Shell32.KNOWNFOLDERID.FOLDERID_Documents),
+            new(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
+            new(Shell32.KNOWNFOLDERID.FOLDERID_Pictures),
+            new(Shell32.KNOWNFOLDERID.FOLDERID_Music),
+            new(Shell32.KNOWNFOLDERID.FOLDERID_Videos),
+            new(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder),
+            new(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder),
+            // todo: WARN: Check why this leads to `SyncCenter`?
+            new(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop),
+            // todo: WARN: add Gallery? is this Item caused by Adobe?
+        };
         Loading += async (sender, args) =>
         {
-            _ = InitializeViewModel();
-        };
-
-        Loaded += async (sender, args) =>
-        {
-            if (CurrentFolderBrowserItem == null)
-            {
-                return;
-            }
-
-            if (_stockIconTask != null)
-            {
-                await _stockIconTask;
-            }
-
             Navigate(CurrentFolderBrowserItem);
         };
-    }
-    private async Task InitializeViewModel()
-    {
-        var rootItems = new List<ExplorerBrowserItem>
-        {
-            // todo: new ExplorerBrowserItem(HomeShellFolder.PIDL),
-            // todo: add Gallery? is this Adobe?
-            // todo: add separators
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_OneDrive).PIDL),
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Downloads).PIDL),
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Documents).PIDL),
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Desktop).PIDL),
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Pictures).PIDL),
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Music).PIDL),
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_Videos).PIDL),
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder).PIDL),
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder).PIDL),
-            // todo: WARN: Check why this leads to `SyncCenter`?
-            new(new ShellFolder(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop).PIDL),
-        };
-        ShellTreeView.ItemsSource = rootItems;
+        NavigationFailed += ExplorerBrowser_NavigationFailed;
     }
     private void ExplorerBrowser_NavigationFailed(object? sender, ExtNavigationFailedEventArgs e)
     {

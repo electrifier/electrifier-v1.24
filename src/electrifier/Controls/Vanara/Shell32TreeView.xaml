@@ -11,31 +11,23 @@
         <Grid.Resources>
             <DataTemplate x:Name="Shell32TreeViewItemTemplate"
                           x:DataType="local:ExplorerBrowserItem">
-                <!-- TODO: For hidden folders, add 'Opacity="0.66"' to TreeViewItem -->
                 <TreeViewItem HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"
                               IsExpanded="{x:Bind IsExpanded}"
                               IsSelected="{x:Bind IsSelected}"
                               ItemsSource="{x:Bind Children}">
                     <Grid>
                         <StackPanel HorizontalAlignment="Stretch"
-                                    MaxHeight="20"
+                                    MaxHeight="23"
                                     Orientation="Horizontal">
-                            <!-- todo: add overlay, ghosted / hidden -->
+                            <!-- todo: add overlay for shared, links etc. -->
                             <Image Name="Image"
-                                   MaxHeight="16"
                                    Opacity="{x:Bind Opacity}"
                                    Source="{x:Bind BitmapSource}"
                                    Visibility="Visible" />
-                            <ProgressRing x:Name="ProgressRing"
-                                          IsActive="false"
-                                          Visibility="Collapsed"
-                                          MaxHeight="13"
-                                          Background="LightGray"
-                                          MaxWidth="13" />
                             <TextBlock x:Name="TextBlock"
                                        Margin="5,0,5,0"
-                                       Text="{x:Bind DisplayName}"
-                                       />
+                                       Opacity="{x:Bind Opacity}"
+                                       Text="{x:Bind DisplayName}" />
                         </StackPanel>
                     </Grid>
                 </TreeViewItem>
