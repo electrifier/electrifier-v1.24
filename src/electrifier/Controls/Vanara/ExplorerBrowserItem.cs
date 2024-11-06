@@ -31,8 +31,8 @@ public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
         }
     }
     public SoftwareBitmapSource? BitmapSource { get; set; }
-    /// <summary>Get the current set of <seealso cref="ExplorerBrowserItem"/>s as <seealso cref="List{T}"/>.</summary>
-    public List<ExplorerBrowserItem>? Children;
+    /// <summary>Get the current set of child items. <seealso cref="ExplorerBrowserItem"/>s as <seealso cref="List{T}"/>.</summary>
+    public List<ExplorerBrowserItem> Children;
     /// <summary>Get the DisplayName.</summary>
     public string DisplayName => ShellItem.Name ?? ":error: <DisplayName.get()>";
     /// <summary>
@@ -71,16 +71,16 @@ public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
     {
         ShellItem = new ShellItem(shItemId);
         _imageListIndex = imageListIndex;
+        Children = [];
 
         // warn: if(NeedsDispatcher)
         // todo: If IsSelected, add overlay of opened folder icon to TreeView optionally
     }
 
-    public ExplorerBrowserItem(Shell32.KNOWNFOLDERID kfId, int? imageListIndex = null)
-    {
-        ShellItem = new ShellFolder(kfId);
-        _imageListIndex = imageListIndex;
-    }
+    public ExplorerBrowserItem(Shell32.KNOWNFOLDERID kfId, int? imageListIndex = null) : this(
+        new ShellFolder(kfId).PIDL, imageListIndex) { }
+
+    public ExplorerBrowserItem(ShellItem childItem) : this(childItem.PIDL) { }
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {

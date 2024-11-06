@@ -199,8 +199,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         get;
     }
-    private SoftwareBitmapSource? _defaultFolderImageBitmapSource;
-    private SoftwareBitmapSource? _defaultDocumentAssocImageBitmapSource;
+    private static SoftwareBitmapSource? _defaultFolderImageBitmapSource;
+    private static SoftwareBitmapSource? _defaultDocumentAssocImageBitmapSource;
     /// <summary>Raises the <see cref="NavigationFailed"/> event.</summary>
     internal void OnNavigationFailed(ExtNavigationFailedEventArgs? nfevent)
     {
@@ -302,7 +302,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
                 _defaultDocumentAssocImageBitmapSource = await bmpSource;
             }
-
         }
         catch (Exception e)
         {
@@ -328,23 +327,17 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /// TODO: Add Stack, or ShellDataTable
     /// TODO: Pre-Enumerate slow folders while building the tree
     /// </summary>
-    /// <param name="parentItem"><see cref="Shell32.PIDL">Parent folder's pidl</see> whose child items are requested.</param>
-    /// <param name="safeVerifiedOperations">Do slower fault-tolerant Enumeration.</param>
-    /// <exception cref="ArgumentNullException"></exception>
-    public static async Task<ShellDataTable> ExtractChildItems(Shell32.PIDL parentItem, 
-        bool safeVerifiedOperations = true)
+    public static List<ExplorerBrowserItem> ExtractChildItems(ExplorerBrowserItem parentBrowserItem)
     {
-        var cancelToken = new CancellationToken();
-        var shItem = ShellItem.Open(parentItem);
-        var shFolder = new ShellFolder(shItem);
-        var shDataTable = new ShellDataTable(shFolder);
+        var shItem = parentBrowserItem.ShellItem;
+        var result = new List<ExplorerBrowserItem>();
 
         if ((shItem.Attributes & ShellItemAttribute.Removable) != 0)
         {
             // TODO: Check for Disc in Drive, fail only if device not present
             // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
             Debug.WriteLine($"GetChildItems: IsRemovable = true");
-            return shDataTable;
+            return result;
             //var eventArgs = new NavigationFailedEventArgs();
             //return Task.FromCanceled<>();
             //cancelToken.ThrowIfCancellationRequested(); 
@@ -352,59 +345,44 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         if (!shItem.IsFolder)
         {
-            return shDataTable;
+            return result;
         }
 
         try
         {
+            using var shFolder = new ShellFolder(shItem);
+            var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
+            var shellItems = children as ShellItem[] ?? children.ToArray();
+            var cnt = shellItems.Length;
 
-            /* var ext = new ShellIconExtractor(new ShellFolder(parentItem.ShellItem));
-                       ext.Complete += ShellIconExtractorComplete;
-                       ext.IconExtracted += ShellIconExtractorIconExtracted;
-                       ext.Start(); */
-            var task = shDataTable.RefreshAsync(cancelToken);
-
-            //var children = shellFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
-            //var shellItems = children as ShellItem[] ?? children.ToArray();
-            //var cnt = shellItems.Length;
-
-            await task;
-
-            Debug.Print($".ExtractChildItems: {task}");
-
-            //parentItem.Children = []; // TODO: new ReadOnlyDictionary<ExplorerBrowserItem, int>();
-
-
-            //if (shellItems.Length > 0)
-            //{
-            //    foreach (var shItem in shellItems)
-            //    {
-            //        var ebItem = new ExplorerBrowserItem(shItem.PIDL);
-            //        if (ebItem.IsFolder)
-            //        {
-            //            ebItem.BitmapSource = _defaultFolderImageBitmapSource;
-            //            parentItem.Children?.Insert(0, ebItem);
-            //        }
-            //        else
-            //        {
-            //            ebItem.BitmapSource = _defaultDocumentAssocImageBitmapSource;
-            //            parentItem.Children?.Add(ebItem);
-            //        }
-            //    }
-            //}
+            if (cnt > 0)
+            {
+                foreach (var item in shellItems)
+                {
+                    var ebItem = new ExplorerBrowserItem(item.PIDL);
+                    if (ebItem.IsFolder)
+                    {
+                        ebItem.BitmapSource = _defaultFolderImageBitmapSource;
+                        result.Insert(0, ebItem);
+                    }
+                    else
+                    {
+                        ebItem.BitmapSource = _defaultDocumentAssocImageBitmapSource;
+                        result.Add(ebItem);
+                    }
+                }
+            }
         }
         catch (COMException comEx)
         {
-            cancelToken.ThrowIfCancellationRequested();
             Debug.Fail(comEx.Message);
         }
         catch (Exception e)
         {
-            cancelToken.ThrowIfCancellationRequested();
             Debug.Fail(e.Message);
         }
 
-        return shDataTable;
+        return result;
     }
 
     private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
@@ -467,24 +445,33 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         Debug.Print($".NativeGridView_SelectionChanged({newTarget})");
     }
-    public void Navigate(ExplorerBrowserItem ebItem)
+    public void Navigate(ExplorerBrowserItem targetBrowserItem)
     {
         try
         {
-            Debug.Print($".Navigate(`{ebItem.DisplayName}`)");
-            CurrentFolderBrowserItem = ebItem;
+            Debug.Print($".Navigate(`{targetBrowserItem.DisplayName}`)");
+            CurrentFolderBrowserItem = targetBrowserItem;
             CurrentFolderItems.Clear();
             IsLoading = true;
 
-            var pidl = ebItem.ShellItem.PIDL;
-            var t = ExtractChildItems(pidl);
+            var childShellItems = ExtractChildItems(targetBrowserItem);
+
+            if (childShellItems.Count <= 0)
+            {
+                return;
+            }
+
+            foreach (var childItem in childShellItems)
+            {
+                CurrentFolderItems.Add(childItem);
+            }
         }
         catch (COMException comEx)
         {
             var navFailedEventArgs = new ExtNavigationFailedEventArgs
             {
                 Hresult = comEx.HResult,
-                FailedLocation = ebItem.ShellItem
+                FailedLocation = targetBrowserItem.ShellItem
             };
 
             if (comEx.HResult == HResultElementNotFound)
@@ -502,13 +489,18 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 }
             }
 
-            Debug.Fail($"[Error] Navigate(<{ebItem}>) failed. COMException: {comEx.Message}");
+            Debug.Fail($"[Error] Navigate(<{targetBrowserItem}>) failed. COMException: {comEx.Message}");
             throw;
         }
         catch (Exception ex)
         {
-            Debug.Fail($"[Error] Navigate(<{ebItem}>) failed. Exception: {ex.Message}");
+            Debug.Fail($"[Error] Navigate(<{targetBrowserItem}>) failed. Exception: {ex.Message}");
             throw;
+        }
+        finally
+        {
+            IsLoading = false;
+
         }
     }
 
