@@ -17,13 +17,15 @@
                               IsSelected="{x:Bind IsSelected}"
                               ItemsSource="{x:Bind Children}">
                     <Grid>
-                        <StackPanel MaxHeight="20"
-                                    Orientation="Horizontal"
-                                    HorizontalAlignment="Stretch">
+                        <StackPanel HorizontalAlignment="Stretch"
+                                    MaxHeight="20"
+                                    Orientation="Horizontal">
                             <!-- todo: add overlay, ghosted / hidden -->
                             <Image Name="Image"
-                                   Height="48"
-                                   Source="{x:Bind BitmapSource}" />
+                                   MaxHeight="16"
+                                   Opacity="{x:Bind Opacity}"
+                                   Source="{x:Bind BitmapSource}"
+                                   Visibility="Visible" />
                             <ProgressRing x:Name="ProgressRing"
                                           IsActive="false"
                                           Visibility="Collapsed"

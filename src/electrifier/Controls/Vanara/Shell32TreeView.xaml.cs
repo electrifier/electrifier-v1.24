@@ -1,8 +1,10 @@
+using System.ComponentModel;
+using System.Diagnostics;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 
-// TODO: For EnumerateChildren-Calls, add HWND handle
-// TODO: See ShellItemCollection, perhaps use this instead of ObservableCollection
+// todo: For EnumerateChildren-Calls, add HWND handle
+// todo: See ShellItemCollection, perhaps use this instead of ObservableCollection
 // https://github.com/dahall/Vanara/blob/master/Windows.Shell.Common/ShellObjects/ShellItemArray.cs
 
 namespace electrifier.Controls.Vanara;

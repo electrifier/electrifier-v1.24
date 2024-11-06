@@ -20,8 +20,8 @@ public partial class ShellNamespaceService
     public IReadOnlyList<Bitmap> IconBitmaps;
     internal TempShellIconExtractor IconExtractor  = new(ShellFolder.Desktop);
     public int IconSize => IconExtractor.ImageSize;
-    internal static SoftwareBitmapSource? DefaultFolderImageBitmapSource;
-    internal static SoftwareBitmapSource? DefaultDocumentAssocImageBitmapSource;
+    internal static SoftwareBitmapSource DefaultFolderImageBitmapSource;
+    internal static SoftwareBitmapSource DefaultDocumentAssocImageBitmapSource;
     private Task? _stockIconTask;
     public ShellNamespaceService()
     {

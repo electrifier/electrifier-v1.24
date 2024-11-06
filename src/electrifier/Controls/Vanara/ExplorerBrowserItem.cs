@@ -3,6 +3,7 @@ using System.Text;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 using System.ComponentModel;
+using electrifier.Controls.Vanara.Services;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Vanara.PInvoke;
 
@@ -11,28 +12,13 @@ namespace electrifier.Controls.Vanara;
 // TODO: TreeViewNode - Property, events
 // TODO: GridViewItem - Property, events
 
-/// <summary>
-/// A ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32TreeView"/> Items.
-/// </summary>
+/// <summary>ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32TreeView"/> Items.</summary>
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
-public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
+public class ExplorerBrowserItem(Shell32.PIDL shItemId, SoftwareBitmapSource? bitmapSource = null) : IDisposable, INotifyPropertyChanged
 {
-    public record ExplorerBrowserItemViewState
-    {
-        public ExplorerBrowserItemViewState(bool transparentHiddenFiles)
-        {
-            TransparentHiddenFiles = transparentHiddenFiles;
-        }
-
-        private bool TransparentHiddenFiles
-        {
-            get;
-            set;
-        }
-    }
-    public SoftwareBitmapSource? BitmapSource { get; set; }
+    public SoftwareBitmapSource BitmapSource { get; set; } = bitmapSource ?? ShellNamespaceService.DefaultDocumentAssocImageBitmapSource;
     /// <summary>Get the current set of child items. <seealso cref="ExplorerBrowserItem"/>s as <seealso cref="List{T}"/>.</summary>
-    public List<ExplorerBrowserItem> Children;
+    public List<ExplorerBrowserItem> Children = [];
     /// <summary>Get the DisplayName.</summary>
     public string DisplayName => ShellItem.Name ?? ":error: <DisplayName.get()>";
     /// <summary>
@@ -63,24 +49,16 @@ public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
     public bool IsLink => ShellItem.IsLink;
     public bool IsProgressing;
     public bool IsSelected { get; set; }
-    public ShellItem ShellItem { get; set; }
-    private bool disposedValue;
+    public double Opacity { get; set; } = 1;
+    public ShellItem ShellItem { get; set; } = new ShellItem(shItemId);
+    private bool _disposedValue;
     private readonly int? _imageListIndex;
 
-    public ExplorerBrowserItem(Shell32.PIDL shItemId, int? imageListIndex = null)
-    {
-        ShellItem = new ShellItem(shItemId);
-        _imageListIndex = imageListIndex;
-        Children = [];
-
-        // warn: if(NeedsDispatcher)
-        // todo: If IsSelected, add overlay of opened folder icon to TreeView optionally
-    }
-
-    public ExplorerBrowserItem(Shell32.KNOWNFOLDERID kfId, int? imageListIndex = null) : this(
-        new ShellFolder(kfId).PIDL, imageListIndex) { }
-
     public ExplorerBrowserItem(ShellItem childItem) : this(childItem.PIDL) { }
+    public ExplorerBrowserItem(Shell32.KNOWNFOLDERID kfId) : this(new ShellFolder(kfId).PIDL)
+    {
+        BitmapSource = ShellNamespaceService.DefaultFolderImageBitmapSource;
+    }
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
@@ -102,7 +80,7 @@ public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
     #region Dispose pattern // todo: not implemented yet
     protected virtual void Dispose(bool disposing)
     {
-        if (!disposedValue)
+        if (!_disposedValue)
         {
             if (disposing)
             {
@@ -111,7 +89,7 @@ public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
 
             // TODO: free unmanaged resources (unmanaged objects) and override finalizer
             // TODO: set large fields to null
-            disposedValue = true;
+            _disposedValue = true;
         }
     }
 
