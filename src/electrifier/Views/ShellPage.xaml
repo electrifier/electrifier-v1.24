@@ -16,8 +16,7 @@
         <Grid Grid.Row="0"
               x:Name="AppTitleBar"
               HorizontalAlignment="Stretch"
-              VerticalAlignment="Top"
-              IsHitTestVisible="True">
+              VerticalAlignment="Top">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
@@ -28,7 +27,7 @@
                         VerticalAlignment="Stretch"
                         Orientation="Horizontal">
                 <Button>
-                    <Image Source="/Assets/Legacy Assets from Old-School electrifier/Electrifier Icon.ico"
+                    <Image Source="ms-appx:///Assets/Legacy Assets from Old-School electrifier/Electrifier Icon.ico"
                            MaxHeight="32" />
                 </Button>
                 <Button>

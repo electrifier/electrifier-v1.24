@@ -1,8 +1,7 @@
 /* todo: Use Visual States for Errors, Empty folders, Empty Drives */
-using Vanara.PInvoke;
-using Vanara.Windows.Shell;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI.Collections;
+using electrifier.Controls.Vanara.Services;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml;
@@ -14,7 +13,8 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
-using electrifier.Controls.Vanara.Services;
+using Vanara.PInvoke;
+using Vanara.Windows.Shell;
 namespace electrifier.Controls.Vanara;
 using Visibility = Microsoft.UI.Xaml.Visibility;
 // https://github.com/dahall/Vanara/blob/master/Windows.Forms/Controls/ExplorerBrowser.cs
@@ -190,22 +190,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+    /// <summary>Fires when either a Navigating listener cancels the navigation, or if the operating system determines that navigation is not possible.</summary>
+    public event EventHandler<ExtNavigationFailedEventArgs>? NavigationFailed;
     public ICommand RefreshViewCommand
     {
         get;
     }
-    /// <summary>Raises the <see cref="NavigationFailed"/> event.</summary>
-    internal void OnNavigationFailed(ExtNavigationFailedEventArgs? nfevent)
-    {
-        if (nfevent?.FailedLocation is null)
-        {
-            return;
-        }
-
-        NavigationFailed?.Invoke(this, nfevent);
-    }
-    /// <summary>Fires when either a Navigating listener cancels the navigation, or if the operating system determines that navigation is not possible.</summary>
-    public event EventHandler<ExtNavigationFailedEventArgs>? NavigationFailed;
     /// <summary>ExplorerBrowser Implementation for WinUI3.</summary>
     public ExplorerBrowser()
     {
@@ -238,12 +228,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             Navigate(CurrentFolderBrowserItem);
         };
         NavigationFailed += ExplorerBrowser_NavigationFailed;
-    }
-    private void ExplorerBrowser_NavigationFailed(object? sender, ExtNavigationFailedEventArgs e)
-    {
-        NavigationFailure = $"Navigation failed: '{e.FailedLocation}' cannot be navigated to. <Show More Info> <Report a Bug>";
-        IsLoading = false;
-        throw new ArgumentOutOfRangeException(NavigationFailure);
     }
     /// <summary>
     /// ExtractChildItems
@@ -432,6 +416,22 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         Debug.WriteLine($".OnRefreshViewCommand(sender <{sender}>, RoutedEventArgs <{e}>)");
         /* // TODO: TryNavigate(CurrentFolderBrowserItem); */
+    }
+    /// <summary>Raises the <see cref="NavigationFailed"/> event.</summary>
+    internal void OnNavigationFailed(ExtNavigationFailedEventArgs? nfevent)
+    {
+        if (nfevent?.FailedLocation is null)
+        {
+            return;
+        }
+
+        NavigationFailed?.Invoke(this, nfevent);
+    }
+    private void ExplorerBrowser_NavigationFailed(object? sender, ExtNavigationFailedEventArgs e)
+    {
+        NavigationFailure = $"Navigation failed: '{e.FailedLocation}' cannot be navigated to. <Show More Info> <Report a Bug>";
+        IsLoading = false;
+        throw new ArgumentOutOfRangeException(NavigationFailure);
     }
 
     #region Property stuff
