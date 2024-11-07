@@ -1,4 +1,5 @@
 ﻿using electrifier.ViewModels;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Vanara.Windows.Shell;
 
@@ -11,8 +12,15 @@ public sealed partial class FileManagerPage : Page
         get; set;
     }
 
+    public int ItemCount
+    {
+        get => (int)GetValue(ItemCountProperty);
+        set => SetValue(ItemCountProperty, value);
+    }
+
     // primary member
     public ShellItem CurrentFolder;
+    public static readonly DependencyProperty ItemCountProperty = DependencyProperty.Register(nameof(ItemCount), typeof(int), typeof(FileManagerPage), new PropertyMetadata(default(int)));
 
     /// <summary>
     /// Initializes a new instance of the <see cref="FileManagerPage"/> class.
@@ -25,5 +33,6 @@ public sealed partial class FileManagerPage : Page
         InitializeComponent();
 
         CurrentFolder = ShellFolder.Desktop;
+        ItemCount = 666;  // todo: set real value
     }
 }

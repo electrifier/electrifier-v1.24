@@ -57,14 +57,19 @@
                 </StackPanel>
             </Grid>
         </Grid>
-        <NavigationView  x:Name="NavigationViewControl"
-                         Grid.Row="1"
-                         IsBackButtonVisible="Visible"
-                         IsBackEnabled="False"
-                         IsTitleBarAutoPaddingEnabled="True"
-                         DisplayModeChanged="NavigationViewControl_DisplayModeChanged"
-                         Loaded="NavigationViewControl_Loaded"
-                         OpenPaneLength="176">
+        <NavigationView Grid.Row="1" 
+                        x:Name="NavigationViewControl"
+                        AlwaysShowHeader="True"
+                        ExpandedModeThresholdWidth="128"
+                        IsBackButtonVisible="Auto"
+                        IsBackEnabled="False"
+                        IsSettingsVisible="True"
+                        IsTabStop="False"
+                        OpenPaneLength="176"
+                        PaneDisplayMode="Left"
+                        PaneTitle="electrifier"
+                        SelectionChanged="NavigationView_SelectionChanged"
+                        SelectionFollowsFocus="Enabled">
             <!--  TODO: NavigationViewItems into the right upper border of header, as small icons  -->
             <!--  INFO: MultitaskExpanded  -->
             <NavigationView.MenuItems>
@@ -97,7 +102,7 @@
                                   Glyph="&#xe70f;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_Microsoft365"
+                <NavigationViewItem x:Uid="Shell_Microsoft 365"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.Microsoft365ViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"

@@ -21,7 +21,6 @@
                                        Description="Your new Workbench is your personal workspace and data warehouse. You can have as many workbenches as you wish and can customize them here. It is your choice, what Page gets navigated to when electrifier starts the next time. Let This be my preferred choice for the future [x], as I know I can change this always in its ''Settings Page::startup behaviour''."
                                        Header="Where do you want to start?">
                     <StackPanel Width="150">
-                        <CheckBox>Always start with:</CheckBox>
                         <ListBox>
                             <ListBoxItem>Workbench</ListBoxItem>
                             <ListBoxItem>Browser</ListBoxItem>
@@ -29,6 +28,7 @@
                             <ListBoxItem>Edit...</ListBoxItem>
                             <ListBoxItem>Create</ListBoxItem>
                         </ListBox>
+                        <CheckBox>Let this be my default</CheckBox>
                     </StackPanel>
                 </controls:SettingsCard>
             </StackPanel>

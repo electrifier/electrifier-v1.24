@@ -1,4 +1,5 @@
-﻿using electrifier.Contracts.Services;
+﻿using System.Diagnostics;
+using electrifier.Contracts.Services;
 using electrifier.Helpers;
 using electrifier.ViewModels;
 using Microsoft.UI.Xaml;
@@ -14,7 +15,6 @@ public sealed partial class ShellPage
     {
         get;
     }
-
     /// <summary>
     /// Create a new instance of ShellPage using default values.
     /// </summary>
@@ -27,7 +27,10 @@ public sealed partial class ShellPage
 
         ViewModel.NavigationService.Frame = NavigationFrame;
         ViewModel.NavigationViewService.Initialize(NavigationViewControl);
-
+        //NavigationViewControl.Loaded += new // TODO: Check whether this is still necessary
+        //{   // Needs to set focus explicitly due to WinUI 3 regression
+        //    // https://github.com/microsoft/microsoft-ui-xaml/issues/8816
+        //    ((Control)sender).Focus(FocusState.Programmatic);};
         // TODO: Set the title bar icon by updating /Assets/WindowIcon.ico.
         // A custom title bar is required for full window theme and Mica support.
         // https://docs.microsoft.com/windows/apps/develop/title-bar?tabs=winui3#full-customization
@@ -35,29 +38,24 @@ public sealed partial class ShellPage
         App.MainWindow.SetTitleBar(AppTitleBar);
         App.MainWindow.Activated += MainWindow_Activated;
     }
-
     private void OnLoaded(object sender, RoutedEventArgs e)
     {
         TitleBarHelper.UpdateTitleBar(RequestedTheme);
+        NavigationBreadcrumbBar.ItemsSource = new string[] { "Home", "Documents" };
 
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.Left, VirtualKeyModifiers.Menu));
         KeyboardAccelerators.Add(BuildKeyboardAccelerator(VirtualKey.GoBack));
 
-
-        NavigationBreadcrumbBar.ItemsSource = new string[]
-            { "Home", "Documents" };
         //var targetPageType = typeof(WorkbenchPage);
         //string targetPageKey = targetPageType.FullName;  // .ToString()
         //string targetPageArguments = string.Empty;
         ////rootPage.Navigate(targetPageType, targetPageArguments);
         //ViewModel.NavigationService.NavigateTo(targetPageKey, targetPageArguments);
     }
-
     private void MainWindow_Activated(object sender, WindowActivatedEventArgs args)
     {
         //App.AppTitleBar = AppTitleBarTextBlock;
     }
-
     private void AppTitleBar_BackButton_Click(object sender, RoutedEventArgs e)
     {
         var navigationService = App.GetService<INavigationService>();
@@ -70,7 +68,6 @@ public sealed partial class ShellPage
 
         navigationService.GoForward();
     }
-
     private void NavigationViewControl_DisplayModeChanged(NavigationView sender, NavigationViewDisplayModeChangedEventArgs args)
     {
         AppTitleBar.Margin = new Thickness()
@@ -81,7 +78,6 @@ public sealed partial class ShellPage
             Bottom = AppTitleBar.Margin.Bottom
         };
     }
-
     private static KeyboardAccelerator BuildKeyboardAccelerator(VirtualKey key, VirtualKeyModifiers? modifiers = null)
     {
         var keyboardAccelerator = new KeyboardAccelerator() { Key = key };
@@ -95,7 +91,6 @@ public sealed partial class ShellPage
 
         return keyboardAccelerator;
     }
-
     private static void OnKeyboardAcceleratorInvoked(KeyboardAccelerator sender, KeyboardAcceleratorInvokedEventArgs args)
     {
         var navigationService = App.GetService<INavigationService>();
@@ -104,9 +99,8 @@ public sealed partial class ShellPage
 
         args.Handled = result;
     }
-    private void NavigationViewControl_Loaded(object sender, RoutedEventArgs e)
+    private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
-        // Needs to set focus explicitly due to WinUI 3 regression https://github.com/microsoft/microsoft-ui-xaml/issues/8816 
-        ((Control)sender).Focus(FocusState.Programmatic);
+        Debug.Print("NavigationView_SelectionChanged todo:");
     }
 }

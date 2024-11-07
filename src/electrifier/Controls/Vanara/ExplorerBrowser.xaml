@@ -7,7 +7,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              d:DataContext="{d:DesignInstance Type=local:ExplorerBrowser}"
              mc:Ignorable="d">
-    <Grid VerticalAlignment="Top" Height="Stretch">
+    <Grid VerticalAlignment="Top">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
@@ -60,57 +60,5 @@
                 </StackPanel>
             </Border>
         </Grid>
-        <CommandBar Grid.Row="1"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
-                    HorizontalContentAlignment="Left"
-                    VerticalContentAlignment="Center"
-                    DefaultLabelPosition="Collapsed">
-            <AppBarButton IsCompact="True"
-                          IsEnabled="False">
-                <TextBlock>
-                    <Run FontWeight="SemiBold"
-                         Text="Items: " />
-                    <Run Text="{x:Bind ItemCount}" />
-                </TextBlock>
-            </AppBarButton>
-            <AppBarSeparator />
-            <AppBarButton IsCompact="True"
-                          IsEnabled="False">
-                <TextBlock>
-                    <Run FontWeight="SemiBold"
-                         Text="Folders: " />
-                    <Run Text="{x:Bind ItemCount}" />
-                </TextBlock>
-            </AppBarButton>
-            <AppBarSeparator />
-            <AppBarButton IsCompact="True"
-                          IsEnabled="False">
-                <TextBlock>
-                    <Run FontWeight="SemiBold"
-                         Text="Files: " />
-                    <Run Text="{x:Bind ItemCount}" />
-                </TextBlock>
-            </AppBarButton>
-            <AppBarSeparator />
-            <AppBarButton IsCompact="True"
-                          IsEnabled="False">
-                <TextBlock>
-                    <Run FontWeight="SemiBold"
-                         Text="Size: " />
-                    <Run Text="{x:Bind ItemCount}" />
-                    <Run Text="bytes" />
-                </TextBlock>
-            </AppBarButton>
-            <AppBarSeparator />
-            <AppBarButton IsCompact="True"
-                          IsEnabled="False">
-                <TextBlock>
-                    <Run FontWeight="SemiBold"
-                         Text="Hidden: " />
-                    <Run Text="{x:Bind ItemCount}" />
-                </TextBlock>
-            </AppBarButton>
-        </CommandBar>
     </Grid>
 </UserControl>

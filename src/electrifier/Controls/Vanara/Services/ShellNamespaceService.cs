@@ -23,6 +23,11 @@ public partial class ShellNamespaceService
     public int IconSize => IconExtractor.ImageSize;
     internal static SoftwareBitmapSource DefaultFolderImageBitmapSource;
     internal static SoftwareBitmapSource DefaultDocumentAssocImageBitmapSource;
+    /// <summary>
+    /// todo: die ganzen StockIcons in ein struct packen.
+    /// Indexer ist `Shell32.SHSTOCKICONID`
+    /// get-Methode, die erst die Icons holt wenn danach gefragt wird.
+    /// </summary>
     internal StockIcon SiFolder = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDER);
     internal StockIcon SiDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC);
     internal StockIcon SiFolderOpen = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);  // overlay: SIID_FOLDERFRONT, SIID_FOLDERBACK
