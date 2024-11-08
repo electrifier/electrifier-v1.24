@@ -23,12 +23,12 @@
                     <StackPanel Width="150">
                         <ListBox>
                             <ListBoxItem>Workbench</ListBoxItem>
-                            <ListBoxItem>Browser</ListBoxItem>
                             <ListBoxItem>Shell</ListBoxItem>
-                            <ListBoxItem>Edit...</ListBoxItem>
+                            <ListBoxItem>Browser</ListBoxItem>
                             <ListBoxItem>Create</ListBoxItem>
+                            <ListBoxItem>Edit</ListBoxItem>
                         </ListBox>
-                        <CheckBox>Let this be my default</CheckBox>
+                        <CheckBox>Make this my default</CheckBox>
                     </StackPanel>
                 </controls:SettingsCard>
             </StackPanel>

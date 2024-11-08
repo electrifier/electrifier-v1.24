@@ -57,7 +57,7 @@
                 </StackPanel>
             </Grid>
         </Grid>
-        <NavigationView Grid.Row="1" 
+        <NavigationView Grid.Row="1"
                         x:Name="NavigationViewControl"
                         AlwaysShowHeader="True"
                         ExpandedModeThresholdWidth="128"
@@ -80,19 +80,19 @@
                         <ImageIcon Source="/Assets/Legacy Assets from Old-School electrifier/Electrifier Icon.ico" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItem x:Uid="Shell_WebView"
-                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
-                    <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xeb41;" />
-                    </NavigationViewItem.Icon>
-                </NavigationViewItem>
-                <NavigationViewItemSeparator />
                 <NavigationViewItem x:Uid="Shell_FileManager"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
                     <NavigationViewItem.Icon>
                         <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                   Glyph="&#xec50;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
+                <NavigationViewItemSeparator />
+                <NavigationViewItem x:Uid="Shell_WebView"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xeb41;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_TextEditor"
@@ -126,22 +126,33 @@
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
+                <NavigationViewItem x:Uid="Shell_FileManager"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xec50;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_Workbench"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel">
                     <NavigationViewItem.Icon>
-                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                  Glyph="&#xe8d1;" />
+                        <ImageIcon Source="/Assets/Legacy Assets from Old-School electrifier/Electrifier Icon.ico" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
             </NavigationView.FooterMenuItems>
             <NavigationView.HeaderTemplate>
                 <DataTemplate>
                     <Grid>
-                        <TextBlock Style="{ThemeResource TitleTextBlockStyle}"
-                                   Text="{Binding}" />
+                        <ImageIcon Source="/Assets/Legacy Assets from Old-School electrifier/Electrifier Icon.ico" />
+                        <!--<TextBlock Style="{ThemeResource TitleTextBlockStyle}" Text="{Binding}" />-->
                     </Grid>
                 </DataTemplate>
             </NavigationView.HeaderTemplate>
+            <Grid Margin="{StaticResource NavigationViewPageContentMargin}"
+                  VerticalAlignment="Stretch"
+                  HorizontalAlignment="Stretch">
+                <Frame x:Name="NavigationFrame" />
+            </Grid>
             <i:Interaction.Behaviors>
                 <behaviors:NavigationViewHeaderBehavior DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
                     <behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
@@ -154,11 +165,6 @@
                     </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                 </behaviors:NavigationViewHeaderBehavior>
             </i:Interaction.Behaviors>
-            <Grid Margin="{StaticResource NavigationViewPageContentMargin}"
-                  VerticalAlignment="Stretch"
-                  HorizontalAlignment="Stretch">
-                <Frame x:Name="NavigationFrame" />
-            </Grid>
         </NavigationView>
     </Grid>
 </Page>

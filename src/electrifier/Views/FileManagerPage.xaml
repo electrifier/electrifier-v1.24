@@ -216,7 +216,7 @@
                                         TopCommandBarVisibility="Collapsed" />
             </Border>
         </Grid>
-        <CommandBar Grid.Row="1"
+        <CommandBar Grid.Row="2"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Bottom"
                     HorizontalContentAlignment="Left"

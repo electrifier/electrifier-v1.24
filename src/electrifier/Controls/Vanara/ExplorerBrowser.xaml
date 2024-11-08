@@ -12,7 +12,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="1" >
+        <Grid Grid.Row="0" >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="176"
                                   MinWidth="76" />
@@ -31,29 +31,29 @@
                                            BorderThickness="3"
                                            ItemsSource="{x:Bind _advancedCollectionView}"
                                            Visibility="{x:Bind GridViewVisibility}" />
-                    <AppBar HorizontalAlignment="Stretch"
-                            Background="Transparent">
-                        <StackPanel>
-                            <TextBlock Text="no binding :(" />
-                            <AppBarButton Icon="Folder"
-                                          Label="folder"
-                                          ToolTipService.ToolTip="Number of Folders" />
-                            <AppBarSeparator />
-                            <AppBarButton Icon="OpenFile"
-                                          Label="open-file"
-                                          ToolTipService.ToolTip="Number of Files" />
-                            <AppBarSeparator />
-                            <AppBarButton Icon="Setting"
-                                          Label="Settings">
-                                <AppBarButton.KeyboardAccelerators>
-                                    <KeyboardAccelerator Key="I"
-                                                         Modifiers="Control" />
-                                </AppBarButton.KeyboardAccelerators>
-                            </AppBarButton>
-                        </StackPanel>
-                    </AppBar>
                 </StackPanel>
             </Border>
         </Grid>
+        <AppBar Grid.Row="1" HorizontalAlignment="Stretch"
+                Background="Transparent">
+            <StackPanel>
+                <TextBlock Text="no binding :(" />
+                <AppBarButton Icon="Folder"
+                              Label="folder"
+                              ToolTipService.ToolTip="Number of Folders" />
+                <AppBarSeparator />
+                <AppBarButton Icon="OpenFile"
+                              Label="open-file"
+                              ToolTipService.ToolTip="Number of Files" />
+                <AppBarSeparator />
+                <AppBarButton Icon="Setting"
+                              Label="Settings">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="I"
+                                             Modifiers="Control" />
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
+            </StackPanel>
+        </AppBar>
     </Grid>
 </UserControl>
