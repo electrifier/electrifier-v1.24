@@ -1,11 +1,11 @@
-﻿using Vanara.Windows.Shell;
-using System.Text;
-using System.Runtime.CompilerServices;
-using System.Diagnostics;
-using System.ComponentModel;
-using electrifier.Controls.Vanara.Services;
+﻿using electrifier.Controls.Vanara.Services;
 using Microsoft.UI.Xaml.Media.Imaging;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
+using System.Text;
 using Vanara.PInvoke;
+using Vanara.Windows.Shell;
 
 namespace electrifier.Controls.Vanara;
 
@@ -27,57 +27,35 @@ public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
     /// Returning SFGAO_HASSUBFOLDER is recommended whenever a significant amount of time is required to determine whether any subfolders exist. For example, the Shell always returns SFGAO_HASSUBFOLDER when a folder is located on a network drive.
     /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/shell/sfgao"/>
     /// </summary>
-    public bool HasUnrealizedChildren
-    {
-        get
-        {
-            try
-            {
-                if (ShellItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder))
-                {
-                    return true;
-                }
-            }
-            catch (Exception)
-            {
-                Debug.Print("HasUnrealizedChildren failed!");
-            }
-            return false;
-        }
-    }
+    public bool HasUnrealizedChildren => (ShellItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder));
     public bool IsExpanded { get; set; }
     public bool IsFolder => ShellItem.IsFolder;
+    public bool IsHidden { get; set; } = false;
     public bool IsLink => ShellItem.IsLink;
-    public bool IsProgressing;
+    public bool IsProgressing { get; set; } = false;
     public bool IsSelected { get; set; }
     public double Opacity { get; set; } = 1;
-    public ShellItem ShellItem { get; set; }
+    public ShellItem ShellItem { get; }
     private bool _disposedValue;
-    private readonly int? _imageListIndex;
-
-    public ExplorerBrowserItem(ShellItem shItem) : this(shItem.PIDL)
-    {
-        if (shItem.IsFolder)
-        {
-            BitmapSource = ShellNamespaceService.DefaultFolderImageBitmapSource;
-        }
-
-        else
-        {
-            BitmapSource = ShellNamespaceService.DefaultFolderImageBitmapSource;  // TODO: Check for Library, call default constructor
-        }
-    }
-    public ExplorerBrowserItem(Shell32.KNOWNFOLDERID kfId) : this(new ShellFolder(kfId).PIDL)
-    {
-        BitmapSource = ShellNamespaceService.DefaultFolderImageBitmapSource;  // TODO: Check for Library, call default constructor
-    }
 
     /// <summary>ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32TreeView"/> Items.</summary>
     public ExplorerBrowserItem(Shell32.PIDL shItemId, SoftwareBitmapSource? bitmapSource = null)
     {
-        BitmapSource = bitmapSource ?? ShellNamespaceService.DefaultDocumentAssocImageBitmapSource;
         ShellItem = new ShellItem(shItemId);
+
+        // TODO: Check for Library
+        if (IsFolder)
+        {
+            BitmapSource = ShellNamespaceService.DefaultFolderImageBitmapSource;
+        }
+        else
+        {
+            BitmapSource = ShellNamespaceService.DefaultFolderImageBitmapSource;  
+        }
     }
+    public ExplorerBrowserItem(ShellItem shItem, SoftwareBitmapSource? bitmapSource = null) : this(shItem.PIDL, bitmapSource) { }
+    public ExplorerBrowserItem(Shell32.KNOWNFOLDERID kfId, SoftwareBitmapSource? bitmapSource = null) : this(new ShellFolder(kfId).PIDL, bitmapSource) { }
+
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
