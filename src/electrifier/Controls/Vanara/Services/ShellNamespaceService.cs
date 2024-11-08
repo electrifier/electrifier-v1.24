@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Drawing;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
-using Vanara.Windows.Shell;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.InteropServices;

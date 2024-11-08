@@ -5,6 +5,7 @@
       xmlns:behaviors="using:electrifier.Behaviors"
       xmlns:helpers="using:electrifier.Helpers"
       xmlns:i="using:Microsoft.Xaml.Interactivity"
+      xmlns:data="using:Microsoft.UI.Xaml.Data"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       Loaded="OnLoaded">
@@ -53,7 +54,7 @@
                                      VerticalAlignment="Top">
                         d'Oh!
                     </HyperlinkButton>
-                    <Border Width="150"></Border>
+                    <Border Width="150" />
                 </StackPanel>
             </Grid>
         </Grid>
@@ -154,12 +155,13 @@
                 <Frame x:Name="NavigationFrame" />
             </Grid>
             <i:Interaction.Behaviors>
-                <behaviors:NavigationViewHeaderBehavior DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, Mode=OneWay}">
+                <behaviors:NavigationViewHeaderBehavior DefaultHeader="{x:Bind ((ContentControl)ViewModel.Selected).Content, FallbackValue=666, Mode=OneWay}">
                     <behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>
                         <DataTemplate>
                             <Grid>
                                 <TextBlock Style="{ThemeResource TitleTextBlockStyle}"
-                                           Text="{Binding}" />
+                                           Text="In peace, we come" />
+                                <!-- todo: set DataContext, then Text="{Binding ...}" -->
                             </Grid>
                         </DataTemplate>
                     </behaviors:NavigationViewHeaderBehavior.DefaultHeaderTemplate>

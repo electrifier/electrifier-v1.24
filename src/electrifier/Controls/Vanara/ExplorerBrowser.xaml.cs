@@ -225,7 +225,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         {
             ShellTreeView.ItemsSource = rootItems;
             if (rootItems.FirstOrDefault(new ExplorerBrowserItem(Shell32.KNOWNFOLDERID.FOLDERID_Desktop))
-                is ExplorerBrowserItem ebItem)
+                is { } ebItem)
             {
                 Navigate(ebItem);
                 CurrentFolderBrowserItem = ebItem;
@@ -294,7 +294,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         return result;
     }
-
     private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
         try
@@ -413,12 +412,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             IsLoading = false;
 
         }
-    }
-
-    public void OnRefreshViewCommand(object sender, RoutedEventArgs e)
-    {
-        Debug.WriteLine($".OnRefreshViewCommand(sender <{sender}>, RoutedEventArgs <{e}>)");
-        /* // TODO: TryNavigate(CurrentFolderBrowserItem); */
     }
     /// <summary>Raises the <see cref="NavigationFailed"/> event.</summary>
     internal void OnNavigationFailed(ExtNavigationFailedEventArgs? nfevent)
