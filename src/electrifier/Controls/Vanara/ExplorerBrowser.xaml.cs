@@ -192,23 +192,21 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     }
     /// <summary>Fires when either a Navigating listener cancels the navigation, or if the operating system determines that navigation is not possible.</summary>
     public event EventHandler<ExtNavigationFailedEventArgs>? NavigationFailed;
-    public ICommand RefreshViewCommand
-    {
-        get;
-    }
     /// <summary>ExplorerBrowser Implementation for WinUI3.</summary>
     public ExplorerBrowser()
     {
         InitializeComponent();
         DataContext = this;
-        CurrentFolderBrowserItem = new ExplorerBrowserItem(ShellNamespaceService.HomeShellFolder);
         CurrentFolderItems = [];
         _advancedCollectionView = new(CurrentFolderItems, true);
+        NavigationFailed += ExplorerBrowser_NavigationFailed;
         ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
         ShellGridView.NativeGridView.SelectionChanged += NativeGridView_SelectionChanged;
-        ShellTreeView.ItemsSource = new List<ExplorerBrowserItem>
+
+        // todo: ask for rootItems in callback event handler
+        var rootItems = new List<ExplorerBrowserItem>
         {
-            CurrentFolderBrowserItem,
+            new (ShellNamespaceService.HomeShellFolder),
             // todo: add separators
             new(Shell32.KNOWNFOLDERID.FOLDERID_OneDrive),
             new(Shell32.KNOWNFOLDERID.FOLDERID_Downloads),
@@ -225,9 +223,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         };
         Loading += async (sender, args) =>
         {
-            Navigate(CurrentFolderBrowserItem);
+            ShellTreeView.ItemsSource = rootItems;
+            if (rootItems.FirstOrDefault(new ExplorerBrowserItem(Shell32.KNOWNFOLDERID.FOLDERID_Desktop))
+                is ExplorerBrowserItem ebItem)
+            {
+                Navigate(ebItem);
+                CurrentFolderBrowserItem = ebItem;
+            }
         };
-        NavigationFailed += ExplorerBrowser_NavigationFailed;
     }
     /// <summary>
     /// ExtractChildItems

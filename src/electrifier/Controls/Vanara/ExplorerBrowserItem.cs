@@ -14,10 +14,11 @@ namespace electrifier.Controls.Vanara;
 
 /// <summary>ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32TreeView"/> Items.</summary>
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
-public class ExplorerBrowserItem(Shell32.PIDL shItemId, SoftwareBitmapSource? bitmapSource = null) : IDisposable, INotifyPropertyChanged
+public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
 {
-    public SoftwareBitmapSource BitmapSource { get; set; } = bitmapSource ?? ShellNamespaceService.DefaultDocumentAssocImageBitmapSource;
-    /// <summary>Get the current set of child items. <seealso cref="ExplorerBrowserItem"/>s as <seealso cref="List{T}"/>.</summary>
+    /// <summary>The Shell Icon as <seealso cref="SoftwareBitmapSource"/>.</summary>
+    public SoftwareBitmapSource BitmapSource { get; set; }
+    /// <summary>The current set of child <seealso cref="ExplorerBrowserItem"/>s as <seealso cref="List{T}"/>.</summary>
     public List<ExplorerBrowserItem> Children = [];
     /// <summary>Get the DisplayName.</summary>
     public string DisplayName => ShellItem.Name ?? ":error: <DisplayName.get()>";
@@ -50,14 +51,32 @@ public class ExplorerBrowserItem(Shell32.PIDL shItemId, SoftwareBitmapSource? bi
     public bool IsProgressing;
     public bool IsSelected { get; set; }
     public double Opacity { get; set; } = 1;
-    public ShellItem ShellItem { get; set; } = new ShellItem(shItemId);
+    public ShellItem ShellItem { get; set; }
     private bool _disposedValue;
     private readonly int? _imageListIndex;
 
-    public ExplorerBrowserItem(ShellItem childItem) : this(childItem.PIDL) { }
+    public ExplorerBrowserItem(ShellItem shItem) : this(shItem.PIDL)
+    {
+        if (shItem.IsFolder)
+        {
+            BitmapSource = ShellNamespaceService.DefaultFolderImageBitmapSource;
+        }
+
+        else
+        {
+            BitmapSource = ShellNamespaceService.DefaultFolderImageBitmapSource;  // TODO: Check for Library, call default constructor
+        }
+    }
     public ExplorerBrowserItem(Shell32.KNOWNFOLDERID kfId) : this(new ShellFolder(kfId).PIDL)
     {
-        BitmapSource = ShellNamespaceService.DefaultFolderImageBitmapSource;
+        BitmapSource = ShellNamespaceService.DefaultFolderImageBitmapSource;  // TODO: Check for Library, call default constructor
+    }
+
+    /// <summary>ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32TreeView"/> Items.</summary>
+    public ExplorerBrowserItem(Shell32.PIDL shItemId, SoftwareBitmapSource? bitmapSource = null)
+    {
+        BitmapSource = bitmapSource ?? ShellNamespaceService.DefaultDocumentAssocImageBitmapSource;
+        ShellItem = new ShellItem(shItemId);
     }
 
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
