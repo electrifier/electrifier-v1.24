@@ -25,7 +25,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     private Visibility _bottomCommandBarVisibility;
     private Visibility _gridViewVisibility;
     private bool _isLoading;
-    private ShellNamespaceService _namespaceService = new ShellNamespaceService();
+    private ShellNamespaceService _namespaceService = new();
     private Visibility _topCommandBarVisibility;
     public ExplorerBrowserItem? CurrentFolderBrowserItem
     {

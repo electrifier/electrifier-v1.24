@@ -19,25 +19,20 @@
                 <ColumnDefinition Width="*"
                                   MinWidth="76" />
             </Grid.ColumnDefinitions>
-            <Border x:Name="TreeViewBorder"
-                    Grid.Column="0"
+            <Border Grid.Column="0"
                     Visibility="{x:Bind TreeViewVisibility}"
                     VerticalAlignment="Top">
                 <local:Shell32TreeView x:Name="ShellTreeView"
                                        HorizontalAlignment="Stretch" />
             </Border>
-            <Border x:Name="ShellGridViewBorder"
-                    Grid.Column="1">
+            <Border Grid.Column="1">
                 <StackPanel Orientation="Vertical">
                     <local:Shell32GridView x:Name="ShellGridView"
                                            BorderThickness="3"
                                            ItemsSource="{x:Bind _advancedCollectionView}"
                                            Visibility="{x:Bind GridViewVisibility}" />
-                    <AppBar x:Name="BottomAppBar"
-                            Grid.Row="3"
-                            HorizontalAlignment="Stretch"
-                            Background="Transparent"
-                            Visibility="{x:Bind BottomAppBarVisibility}">
+                    <AppBar HorizontalAlignment="Stretch"
+                            Background="Transparent">
                         <StackPanel>
                             <TextBlock Text="no binding :(" />
                             <AppBarButton Icon="Folder"

@@ -16,7 +16,7 @@ public partial class ShellNamespaceService
 {
     /// <summary>HResult code for <code><see cref="COMException"/>: 0x80070490.</code>
     /// <remarks>Fired when `Element not found`.</remarks></summary>
-    public static readonly HRESULT HResultElementNotFound = new HRESULT(0x80070490);
+    public static readonly HRESULT HResultElementNotFound = new(0x80070490);
     public static readonly ShellFolder HomeShellFolder = new("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
     public IReadOnlyList<Bitmap> IconBitmaps;
     internal TempShellIconExtractor IconExtractor  = new(ShellFolder.Desktop);
@@ -28,11 +28,11 @@ public partial class ShellNamespaceService
     /// Indexer ist `Shell32.SHSTOCKICONID`
     /// get-Methode, die erst die Icons holt wenn danach gefragt wird.
     /// </summary>
-    internal StockIcon SiFolder = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDER);
-    internal StockIcon SiDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC);
-    internal StockIcon SiFolderOpen = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);  // overlay: SIID_FOLDERFRONT, SIID_FOLDERBACK
-    internal StockIcon SiDocumentWithAssociation = new StockIcon(SHSTOCKICONID.SIID_DOCASSOC);
-    internal StockIcon SiLinkOverlay = new StockIcon(SHSTOCKICONID.SIID_LINK);
+    internal StockIcon SiFolder = new(Shell32.SHSTOCKICONID.SIID_FOLDER);
+    internal StockIcon SiDocument = new(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC);
+    internal StockIcon SiFolderOpen = new(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);  // overlay: SIID_FOLDERFRONT, SIID_FOLDERBACK
+    internal StockIcon SiDocumentWithAssociation = new(SHSTOCKICONID.SIID_DOCASSOC);
+    internal StockIcon SiLinkOverlay = new(SHSTOCKICONID.SIID_LINK);
     private Task? _stockIconTask;
     public ShellNamespaceService()
     {
