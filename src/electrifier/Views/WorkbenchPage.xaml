@@ -17,7 +17,7 @@
                 VerticalAlignment="Top">
             <StackPanel Orientation="Vertical">
                 <!-- HeaderIcon mdl2-RememberedDevice -->
-                <controls:SettingsCard x:Name="WorkbenchAutostartCard"
+                <controls:SettingsCard x:Name="WorkbenchAutostartSettingsCard"
                                        Description="Your new Workbench is your personal workspace and data warehouse. You can have as many workbenches as you wish and can customize them here. It is your choice, what Page gets navigated to when electrifier starts the next time. Let This be my preferred choice for the future [x], as I know I can change this always in its ''Settings Page::startup behaviour''."
                                        Header="Where do you want to start?">
                     <StackPanel Width="150">
@@ -28,9 +28,47 @@
                             <ListBoxItem>Create</ListBoxItem>
                             <ListBoxItem>Edit</ListBoxItem>
                         </ListBox>
-                        <CheckBox>Make this my default</CheckBox>
+                        <CheckBox>Always launch this</CheckBox>
                     </StackPanel>
                 </controls:SettingsCard>
+                <Border>
+                    <SelectorBar x:Name="QuickLaunchSelectorBar">
+                        <SelectorBarItem Text="Recent"
+                                         Icon="Clock" />
+                        <SelectorBarItem Text="Favorites"
+                                         Icon="Favorite" />
+                        <SelectorBarItem Text="Tagged"
+                                         Icon="Favorite" />
+                        <SelectorBarItem Text="Shell">
+                            <SelectorBarItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                          Glyph="&#xec50;" />
+                            </SelectorBarItem.Icon>
+                        </SelectorBarItem>
+                        <SelectorBarItem Text="Browser">
+                            <SelectorBarItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                          Glyph="&#xeb41;" />
+                            </SelectorBarItem.Icon>
+                        </SelectorBarItem>
+                        <SelectorBarItem Text="Edit...">
+                            <SelectorBarItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                          Glyph="&#xe70f;" />
+                            </SelectorBarItem.Icon>
+                        </SelectorBarItem>
+                        <SelectorBarItem Text="Create...">
+                            <SelectorBarItem.Icon>
+                                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                          Glyph="&#xeb3c;" />
+                            </SelectorBarItem.Icon>
+                        </SelectorBarItem>
+                        <SelectorBarItem Text="Cloud"
+                                         Icon="Share" />
+                        <SelectorBarItem Text="Shared"
+                                         Icon="Share" />
+                    </SelectorBar>
+                </Border>
             </StackPanel>
         </Border>
     </Grid>
