@@ -232,68 +232,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             }
         };
     }
-    /// <summary>
-    /// ExtractChildItems
-    /// TODO: Add Stack, or ShellDataTable
-    /// TODO: Pre-Enumerate slow folders while building the tree
-    /// </summary>
-    public static List<ExplorerBrowserItem> ExtractChildItems(ExplorerBrowserItem parentBrowserItem)
-    {
-        var shItem = parentBrowserItem.ShellItem;
-        var result = new List<ExplorerBrowserItem>();
-
-        if ((shItem.Attributes & ShellItemAttribute.Removable) != 0)
-        {
-            // TODO: Check for Disc in Drive, fail only if device not present
-            // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
-            Debug.WriteLine($"GetChildItems: IsRemovable = true");
-            return result;
-            //var eventArgs = new NavigationFailedEventArgs();
-            //return Task.FromCanceled<>();
-            //cancelToken.ThrowIfCancellationRequested(); 
-        }
-
-        if (!shItem.IsFolder)
-        {
-            return result;
-        }
-
-        try
-        {
-            using var shFolder = new ShellFolder(shItem);
-            var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
-            var shellItems = children as ShellItem[] ?? children.ToArray();
-            var cnt = shellItems.Length;
-
-            if (cnt > 0)
-            {
-                foreach (var item in shellItems)
-                {
-                    var ebItem = new ExplorerBrowserItem(item.PIDL);
-                    if (ebItem.IsFolder)
-                    {
-                        ebItem.BitmapSource = ShellNamespaceService.DefaultFolderImageBitmapSource;
-                        result.Insert(0, ebItem);
-                    }
-                    else
-                    {
-                        ebItem.BitmapSource = ShellNamespaceService.DefaultDocumentAssocImageBitmapSource;
-                        result.Add(ebItem);
-                    }
-                }
-            }
-        }
-        catch (COMException comEx)
-        {
-            Debug.Fail(comEx.Message);
-        }
-        catch (Exception e)
-        {
-            Debug.Fail(e.Message);
-        }
-
-        return result;
-    }
     private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
         try
@@ -364,7 +302,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             IsLoading = true;
 
             var testEnum = ShellNamespaceService.RequestChildItemsAsync(targetBrowserItem);
-            var childShellItems = ExtractChildItems(targetBrowserItem);
+            var childShellItems = ShellNamespaceService.ExtractChildItems(targetBrowserItem);
 
             if (childShellItems.Count <= 0)
             {
