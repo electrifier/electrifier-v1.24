@@ -17,8 +17,8 @@ public partial class ShellNamespaceService
     /// <remarks>Fired when `Element not found`.</remarks></summary>
     public static readonly HRESULT HResultElementNotFound = new(0x80070490);
     public static readonly ShellFolder HomeShellFolder = new("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
-    public IReadOnlyList<Bitmap> IconBitmaps;
-    internal TempShellIconExtractor IconExtractor  = new(ShellFolder.Desktop);
+    internal readonly TempShellIconExtractor IconExtractor;
+    public IReadOnlyList<Bitmap> IconExtractorBitmaps;
     public int IconSize => IconExtractor.ImageSize;
     internal static SoftwareBitmapSource DefaultFolderImageBitmapSource;
     internal static SoftwareBitmapSource DefaultDocumentAssocImageBitmapSource;
@@ -35,9 +35,12 @@ public partial class ShellNamespaceService
     private Task? _stockIconTask;
     public ShellNamespaceService()
     {
-        IconBitmaps = IconExtractor.ImageList;
+        IconExtractor = new(ShellFolder.Desktop);
+        IconExtractorBitmaps = IconExtractor.ImageList;
         _stockIconTask = InitializeStockIcons();
     }
+
+    // TODO: Add await event handler to every ebItem, so Icon Extractor can call back the item
     public static async IAsyncEnumerable<ExplorerBrowserItem> RequestChildItemsAsync(ExplorerBrowserItem? parentItem)
     {
         Debug.Print($".RequestChildItemsAsync(<{parentItem?.DisplayName}>) extracting...");
@@ -98,10 +101,10 @@ public partial class ShellNamespaceService
         }
     }
     /// <summary>
-    /// <see href="https://github.com/dahall/Vanara/blob/ac0a1ac301dd4fdea9706688dedf96d596a4908a/Windows.Shell.Common/StockIcon.cs"/>
+    /// <see href="https://github.com/dahall/Vanara/blob/Windows.Shell.Common/StockIcon.cs"/>
     /// </summary>
     /// <returns></returns>
-    public async Task InitializeStockIcons()
+    public static async Task InitializeStockIcons()
     {
         try
         {

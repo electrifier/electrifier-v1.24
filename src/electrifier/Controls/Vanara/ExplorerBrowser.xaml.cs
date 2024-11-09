@@ -228,7 +228,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 is { } ebItem)
             {
                 Navigate(ebItem);
-                CurrentFolderBrowserItem = ebItem;
+                CurrentFolderBrowserItem = ebItem;  // TODO; Put to OnNavigated() event-handler
             }
         };
     }

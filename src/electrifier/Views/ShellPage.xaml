@@ -65,7 +65,7 @@
                         IsBackButtonVisible="Auto"
                         IsBackEnabled="False"
                         IsSettingsVisible="True"
-                        IsTabStop="False"
+                        IsTabStop="True"
                         OpenPaneLength="176"
                         PaneDisplayMode="Left"
                         PaneTitle="electrifier"
@@ -88,7 +88,6 @@
                                   Glyph="&#xec50;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
-                <NavigationViewItemSeparator />
                 <NavigationViewItem x:Uid="Shell_WebView"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
                     <NavigationViewItem.Icon>
@@ -96,6 +95,7 @@
                                   Glyph="&#xeb41;" />
                     </NavigationViewItem.Icon>
                 </NavigationViewItem>
+                <NavigationViewItemSeparator />
                 <NavigationViewItem x:Uid="Shell_TextEditor"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.TextEditorViewModel">
                     <NavigationViewItem.Icon>
@@ -127,6 +127,13 @@
                 </NavigationViewItem>
             </NavigationView.MenuItems>
             <NavigationView.FooterMenuItems>
+                <NavigationViewItem x:Uid="Shell_WebView"
+                                    helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WebViewViewModel">
+                    <NavigationViewItem.Icon>
+                        <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                  Glyph="&#xeb41;" />
+                    </NavigationViewItem.Icon>
+                </NavigationViewItem>
                 <NavigationViewItem x:Uid="Shell_FileManager"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.FileManagerViewModel">
                     <NavigationViewItem.Icon>
