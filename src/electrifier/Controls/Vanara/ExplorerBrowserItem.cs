@@ -41,6 +41,7 @@ public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
     /// <summary>ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32TreeView"/> Items.</summary>
     public ExplorerBrowserItem(Shell32.PIDL shItemId, SoftwareBitmapSource? bitmapSource = null)
     {
+        BitmapSource = bitmapSource;
         ShellItem = new ShellItem(shItemId);
 
         // TODO: Check for Library

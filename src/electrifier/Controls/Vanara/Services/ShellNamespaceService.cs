@@ -13,9 +13,11 @@ namespace electrifier.Controls.Vanara.Services;
 
 public partial class ShellNamespaceService
 {
-    /// <summary>HResult code for <code><see cref="COMException"/>: 0x80070490.</code>
+    /// <summary>HResult code of <code><see cref="COMException"/>('0x80070490')</code>
     /// <remarks>Fired when `Element not found`.</remarks></summary>
     public static readonly HRESULT HResultElementNotFound = new(0x80070490);
+    /// <summary><see cref="ShellFolder"/> of virtual `Home` directory.
+    /// <remarks>This equals Shell 32 URI: <code>shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}</code></remarks></summary>
     public static readonly ShellFolder HomeShellFolder = new("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
     internal readonly TempShellIconExtractor IconExtractor;
     public IReadOnlyList<Bitmap> IconExtractorBitmaps;
@@ -84,9 +86,12 @@ public partial class ShellNamespaceService
             ext.Complete += new((sender, args) =>
             {
                 Debug.Assert(sender.Equals(ext));
+                Debug.WriteLine($".IAsyncEnumerable<ExplorerBrowserItem> RequestChildItemsAsync(ExplorerBrowserItem? parentItem) completed.");
             });
             ext.IconExtracted += new((sender, args) =>
             {
+                var shItem = args.ItemID;
+                var idx = args.ImageListIndex;
                 Debug.Assert(sender.Equals(ext));
                 //Yield Awaitable return new ExplorerBrowserItem(args.ItemID, args.ImageListIndex);
             });
@@ -136,7 +141,8 @@ public partial class ShellNamespaceService
     /// TODO: Add Stack, or ShellDataTable
     /// TODO: Pre-Enumerate slow folders while building the tree
     /// </summary>
-    public static List<ExplorerBrowserItem> ExtractChildItems(ExplorerBrowserItem parentBrowserItem)
+    public static List<ExplorerBrowserItem> ExtractChildItems(ExplorerBrowserItem parentBrowserItem,
+        FolderItemFilter itemFilter = (FolderItemFilter.Folders | FolderItemFilter.NonFolders))
     {
         var shItem = parentBrowserItem.ShellItem;
         var result = new List<ExplorerBrowserItem>();
@@ -160,7 +166,7 @@ public partial class ShellNamespaceService
         try
         {
             using var shFolder = new ShellFolder(shItem);
-            var children = shFolder.EnumerateChildren(FolderItemFilter.Folders | FolderItemFilter.NonFolders);
+            var children = shFolder.EnumerateChildren(itemFilter);
             var shellItems = children as ShellItem[] ?? children.ToArray();
             var cnt = shellItems.Length;
 
@@ -205,6 +211,7 @@ public partial class ShellNamespaceService
         ArgumentNullException.ThrowIfNull(gdiBitmap);
 
         // get pixels as an array of bytes
+        // TODO: See in vanara IconExtractor in terms of getting byte data array
         var data = gdiBitmap.LockBits(new Rectangle(0, 0, gdiBitmap.Width, gdiBitmap.Height), System.Drawing.Imaging.ImageLockMode.ReadOnly, gdiBitmap.PixelFormat);
         var bytes = new byte[data.Stride * data.Height];
         Marshal.Copy(data.Scan0, bytes, 0, bytes.Length);
