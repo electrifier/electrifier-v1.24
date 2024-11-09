@@ -27,7 +27,7 @@
     <PackageIcon>Assets\Square44x44Logo_unplated.png</PackageIcon>
     <PackageCertificateThumbprint>412DFB2FB1169368A38C65F3586FFEFECA0AB03B</PackageCertificateThumbprint>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <ApplicationIcon>Assets\Legacy Assets from Old-School electrifier\Electrifier Icon.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="Assets\BadgeLogo.scale-100.png" />
@@ -90,6 +90,7 @@
     <None Remove="Assets\Square150x150Logo.scale-100.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Assets\app.ico" />
     <EmbeddedResource Include="Assets\Square150x150Logo.scale-100.png" />
     <EmbeddedResource Include="Assets\Square44x44Logo_unplated.png" />
   </ItemGroup>
