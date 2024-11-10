@@ -297,21 +297,32 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         try
         {
             Debug.Print($".Navigate(`{targetBrowserItem.DisplayName}`)");
-            CurrentFolderBrowserItem = targetBrowserItem;
-            CurrentFolderItems.Clear();
-            IsLoading = true;
 
-            var testEnum = ShellNamespaceService.RequestChildItemsAsync(targetBrowserItem);
-            var childShellItems = ShellNamespaceService.ExtractChildItems(targetBrowserItem);
-
-            if (childShellItems.Count <= 0)
+            if (targetBrowserItem.IsFolder)
             {
-                return;
-            }
+                using var shFolder = new ShellFolder(targetBrowserItem.ShellItem);
 
-            foreach (var childItem in childShellItems)
-            {
-                CurrentFolderItems.Add(childItem);
+                // todo: warn: put to finally block
+                CurrentFolderBrowserItem = targetBrowserItem;
+                CurrentFolderItems.Clear();
+                IsLoading = true;
+
+
+                var testEnum = ShellNamespaceService.RequestChildItemsAsync(shFolder);
+
+                //var childShellItems = ShellNamespaceService.ExtractChildItems(targetBrowserItem);
+
+                //if (childShellItems.Count <= 0)
+                //{
+                //    return;
+                //}
+
+                //foreach (var childItem in childShellItems)
+                //{
+                //    CurrentFolderItems.Add(childItem);
+                //}
+
+                Debug.Print($".Navigate(): RequestChildItemsAsync() returned {testEnum.Result.Rows.Count}");
             }
         }
         catch (COMException comEx)

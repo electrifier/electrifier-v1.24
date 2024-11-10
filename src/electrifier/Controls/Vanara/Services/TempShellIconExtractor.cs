@@ -9,6 +9,9 @@ namespace electrifier.Controls.Vanara.Services;
 
 // todo: add service handler, self-registering
 
+/// <summary>
+/// todo: See <seealso href="https://learn.microsoft.com/en-us/windows/windows-app-sdk/api/winrt/microsoft.ui.xaml.media.imaging.bitmapcreateoptions?view=windows-app-sdk-1.6">BitmapCreateOptions</seealso>
+/// </summary>
 public partial class ShellNamespaceService
 {
     /// <summary>Event arguments that expose an ID list and associated image.</summary>

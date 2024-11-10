@@ -1,6 +1,7 @@
 ﻿using static Vanara.PInvoke.Shell32.ShellUtil;
 using static Vanara.PInvoke.Shell32;
 using System.ComponentModel;
+using System.Data;
 using System.Drawing;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
@@ -8,6 +9,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
+using static Vanara.PInvoke.Ole32;
 
 namespace electrifier.Controls.Vanara.Services;
 
@@ -43,67 +45,91 @@ public partial class ShellNamespaceService
     }
 
     // TODO: Add await event handler to every ebItem, so Icon Extractor can call back the item
-    public static async IAsyncEnumerable<ExplorerBrowserItem> RequestChildItemsAsync(ExplorerBrowserItem? parentItem)
+    public static Task<ShellDataTable> RequestChildItemsAsync(ShellFolder shFolder)
     {
-        Debug.Print($".RequestChildItemsAsync(<{parentItem?.DisplayName}>) extracting...");
-
+        Debug.Print($".RequestChildItemsAsync(<{shFolder}>) extracting...");
         var ct = new CancellationToken();
 
-        if (parentItem is null)
+        var propKeys = new List<Ole32.PROPERTYKEY>()
         {
-            yield break;
-        }
+            Ole32.PROPERTYKEY.System.FileFRN, /* This is the unique file ID, also known as the File Reference Number. */
+        };
 
-        /*  public bool Wait(TimeSpan timeout) {
-                long totalMilliseconds = (long)timeout.TotalMilliseconds;
-                if (totalMilliseconds < -1 || totalMilliseconds > int.MaxValue)
-                    { throw new ArgumentOutOfRangeException(nameof(timeout)); }
+        var shDataTable = new ShellDataTable(shFolder);
+        shDataTable.AllFastRowsAdded += ShDataTable_AllFastRowsAdded;
+        shDataTable.TableLoaded += ShDataTableOnTableLoaded;
+        var populationTask = shDataTable.PopulateTableAsync(propKeys, ct);
 
-                return Wait((int)totalMilliseconds, new CancellationToken());
-            } */
+        return Task.FromResult(shDataTable);
 
-        try
-        {
-            /* var ext = new ShellIconExtractor(new ShellFolder(parentItem.ShellItem));
-               ext.Complete += ShellIconExtractorComplete;
-               ext.IconExtracted += ShellIconExtractorIconExtracted;
-               ext.Start(); */
-            Debug.Assert(parentItem.ShellItem.PIDL != Shell32.PIDL.Null);
-            var shItemId = parentItem.ShellItem.PIDL;
-            using var shFolder = new ShellFolder(shItemId);
 
-            if ((shFolder.Attributes & ShellItemAttribute.Removable) != 0)
-            {
-                // TODO: Check for Disc in Drive, fail only if device not present
-                // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
-                Debug.WriteLine($"GetChildItems: IsRemovable = true");
-                var eventArgs = new NavigationFailedEventArgs();
-                yield break;
-            }
 
-            var ext = new TempShellIconExtractor(new ShellFolder(parentItem.ShellItem));
+        //var ct = new CancellationToken();
 
-            ext.Complete += new((sender, args) =>
-            {
-                Debug.Assert(sender.Equals(ext));
-                Debug.WriteLine($".IAsyncEnumerable<ExplorerBrowserItem> RequestChildItemsAsync(ExplorerBrowserItem? parentItem) completed.");
-            });
-            ext.IconExtracted += new((sender, args) =>
-            {
-                var shItem = args.ItemID;
-                var idx = args.ImageListIndex;
-                Debug.Assert(sender.Equals(ext));
-                //Yield Awaitable return new ExplorerBrowserItem(args.ItemID, args.ImageListIndex);
-            });
-            ext.Start();
+        //if (parentItem is null)
+        //{
+        //    yield break;
+        //}
 
-            // DispatcherTimer
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        ///*  public bool Wait(TimeSpan timeout) {
+        //        long totalMilliseconds = (long)timeout.TotalMilliseconds;
+        //        if (totalMilliseconds < -1 || totalMilliseconds > int.MaxValue)
+        //            { throw new ArgumentOutOfRangeException(nameof(timeout)); }
+
+        //        return Wait((int)totalMilliseconds, new CancellationToken());
+        //    } */
+
+        //try
+        //{
+        //    /* var ext = new ShellIconExtractor(new ShellFolder(parentItem.ShellItem));
+        //       ext.Complete += ShellIconExtractorComplete;
+        //       ext.IconExtracted += ShellIconExtractorIconExtracted;
+        //       ext.Start(); */
+        //    Debug.Assert(parentItem.ShellItem.PIDL != Shell32.PIDL.Null);
+        //    var shItemId = parentItem.ShellItem.PIDL;
+        //    using var shFolder = new ShellFolder(shItemId);
+
+        //    if ((shFolder.Attributes & ShellItemAttribute.Removable) != 0)
+        //    {
+        //        // TODO: Check for Disc in Drive, fail only if device not present
+        //        // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
+        //        Debug.WriteLine($"GetChildItems: IsRemovable = true");
+        //        var eventArgs = new NavigationFailedEventArgs();
+        //        yield break;
+        //    }
+
+        //    var ext = new TempShellIconExtractor(new ShellFolder(parentItem.ShellItem));
+
+        //    ext.Complete += new((sender, args) =>
+        //    {
+        //        Debug.Assert(sender.Equals(ext));
+        //        Debug.WriteLine($".IAsyncEnumerable<ExplorerBrowserItem> RequestChildItemsAsync(ExplorerBrowserItem? parentItem) completed.");
+        //    });
+        //    ext.IconExtracted += new((sender, args) =>
+        //    {
+        //        var shItem = args.ItemID;
+        //        var idx = args.ImageListIndex;
+        //        Debug.Assert(sender.Equals(ext));
+        //        //Yield Awaitable return new ExplorerBrowserItem(args.ItemID, args.ImageListIndex);
+        //    });
+        //    ext.Start();
+
+        //    // DispatcherTimer
+        //}
+        //catch (Exception e)
+        //{
+        //    Console.WriteLine(e);
+        //    throw;
+        //}
+    }
+
+    private static void ShDataTable_AllFastRowsAdded(object? sender, EventArgs e)
+    {
+        Debug.Print($".ShDataTable_AllFastRowsAdded({sender})");
+    }
+    private static void ShDataTableOnTableLoaded(object? sender, EventArgs e)
+    {
+        Debug.Print($".ShDataTableOnTableLoaded({sender})");
     }
     /// <summary>
     /// <see href="https://github.com/dahall/Vanara/blob/Windows.Shell.Common/StockIcon.cs"/>
