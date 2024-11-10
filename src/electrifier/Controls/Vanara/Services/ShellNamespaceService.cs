@@ -45,7 +45,7 @@ public partial class ShellNamespaceService
     }
 
     // TODO: Add await event handler to every ebItem, so Icon Extractor can call back the item
-    public static Task<ShellDataTable> RequestChildItemsAsync(ShellFolder shFolder,
+    public static async Task<ShellDataTable> RequestChildItemsAsync(ShellFolder shFolder,
         FolderItemFilter itemFilter = (FolderItemFilter.Folders | FolderItemFilter.NonFolders),
         EventHandler? allFastRowsAddedHandler = null, EventHandler? tableLoadedHandler = null)
     {
@@ -53,17 +53,19 @@ public partial class ShellNamespaceService
         var ct = new CancellationToken();
 
         var propKeys = new List<Ole32.PROPERTYKEY>()
-        { Ole32.PROPERTYKEY.System.FileFRN, /* This is the unique file ID, also known as the File Reference Number. */ };
+        {
+            Ole32.PROPERTYKEY.System.FileFRN, /* This is the unique file ID, also known as the File Reference Number. */
+        };
 
         var shDataTable = new ShellDataTable(shFolder, itemFilter);
-        shDataTable.AllFastRowsAdded += ShDataTable_AllFastRowsAdded;
-        if (allFastRowsAddedHandler != null) shDataTable.AllFastRowsAdded += allFastRowsAddedHandler;
-        shDataTable.TableLoaded += ShDataTableOnTableLoaded;
-        if (tableLoadedHandler != null) shDataTable.TableLoaded += tableLoadedHandler;
-        var populationTask = shDataTable.PopulateTableAsync(propKeys, ct);
+        shDataTable.AllFastRowsAdded += allFastRowsAddedHandler;
+        shDataTable.TableLoaded += tableLoadedHandler;
+        await shDataTable.PopulateTableAsync(propKeys, ct);
 
-        return Task.FromResult(shDataTable);
+        Debug.Print($".RequestChildItemsAsync(<{shFolder}>): {shDataTable.Rows.Count}");
 
+        return shDataTable;
+    }
 
 
     //var ct = new CancellationToken();
@@ -123,16 +125,7 @@ public partial class ShellNamespaceService
     //    Console.WriteLine(e);
     //    throw;
     //}
-    }
 
-    private static void ShDataTable_AllFastRowsAdded(object? sender, EventArgs e)
-    {
-        Debug.Print($".ShDataTable_AllFastRowsAdded({sender})...");
-    }
-    private static void ShDataTableOnTableLoaded(object? sender, EventArgs e)
-    {
-        Debug.Print($".ShDataTableOnTableLoaded({sender})...");
-    }
     /// <summary>
     /// <see href="https://github.com/dahall/Vanara/blob/Windows.Shell.Common/StockIcon.cs"/>
     /// </summary>

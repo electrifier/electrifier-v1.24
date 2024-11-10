@@ -7,6 +7,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.CompilerServices;
@@ -227,7 +228,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             if (rootItems.FirstOrDefault(new ExplorerBrowserItem(Shell32.KNOWNFOLDERID.FOLDERID_Desktop))
                 is { } ebItem)
             {
-                Navigate(ebItem);
+                //                Navigate(ebItem); // todo: recover initial navigation
                 CurrentFolderBrowserItem = ebItem;  // TODO; Put to OnNavigated() event-handler
             }
         };
@@ -293,9 +294,26 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         Debug.Print($".NativeGridView_SelectionChanged({newTarget})");
     }
 
+    private Task<ShellDataTable>? shDataTableTask;
+    /* todo: see DataRow.Version */
+
+    public async Task UpdateGridView()
+    {
+        if (shDataTableTask is not null)
+        {
+            await shDataTableTask;
+            var rows = shDataTableTask.Result.Rows;
+            foreach (DataRow row in rows)
+            {
+                var pidl = ShellDataTable.GetPIDL(row);
+
+                CurrentFolderItems.Add(new ExplorerBrowserItem(pidl));
+            }
+        }
+    }
 
     /* FolderItemFilter.FlatList => für Home-Folder */
-    public void Navigate(ExplorerBrowserItem targetBrowserItem)
+    public async void Navigate(ExplorerBrowserItem targetBrowserItem)
     {
         try
         {
@@ -310,48 +328,18 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 CurrentFolderItems.Clear();
                 IsLoading = true;
 
-                var asyncFastChildFolderItems = ShellNamespaceService.RequestChildItemsAsync(shFolder,
-                    FolderItemFilter.FastItems | FolderItemFilter.Folders | FolderItemFilter.IncludeHidden,
-                    AllFastRowsAddedHandler,
-                    FastTableLoadedHandler);
+                shDataTableTask = ShellNamespaceService.RequestChildItemsAsync(shFolder,
+                    FolderItemFilter.NonFolders | FolderItemFilter.Folders | FolderItemFilter.IncludeHidden,
+                    AllFastRowsAddedHandler, TableLoadedHandler);
 
-                var asyncAllChildFolderItems = ShellNamespaceService.RequestChildItemsAsync(shFolder,
-                    FolderItemFilter.Folders | FolderItemFilter.IncludeHidden,
-                    AllRowsAddedHandler,
-                    TableLoadedHandler);
-
-
-/*
-   //var childShellItems = ShellNamespaceService.ExtractChildItems(targetBrowserItem);
-
-   //if (childShellItems.Count <= 0)
-   //{
-   //    return;
-   //}
-
-   //foreach (var childItem in childShellItems)
-   //{
-   //    CurrentFolderItems.Add(childItem);
-   //}
-
-   Debug.Print($".Navigate(): RequestChildItemsAsync() returned {asyncAllChildFolderItems.Result.Rows.Count} items, including {asyncFastChildFolderItems.Result.Rows.Count} fast items");
-
- */
+                //Task.WaitAll(tasks: /*task*/, cancellationToken: /*ct*/);
                 void AllFastRowsAddedHandler(object? sender, EventArgs e)
                 {
-                    Debug.Print($"ShellNamespaceService.RequestChildItemsAsync().AllFastRowsAddedHandler(({sender?.ToString()} {e.ToString()});");
-                }
-                void AllRowsAddedHandler(object? sender, EventArgs e)
-                {
-                    Debug.Print($"ShellNamespaceService.RequestChildItemsAsync().AllRowsAddedHandler({sender?.ToString()} {e.ToString()});");
-                }
-                void FastTableLoadedHandler(object? sender, EventArgs e)
-                {
-                    Debug.Print($"ShellNamespaceService.RequestChildItemsAsync().FastTableLoadedHandler({sender?.ToString()} {e.ToString()});");
+                    Debug.Print($"ExplorerBrowser.Navigate.AllFastRowsAddedHandler({sender?.ToString()} {e.ToString()});");
                 }
                 void TableLoadedHandler(object? sender, EventArgs e)
                 {
-                    Debug.Print($"ShellNamespaceService.RequestChildItemsAsync().TableLoadedHandler({sender?.ToString()} {e.ToString()});");
+                    Debug.Print($"ExplorerBrowser.Navigate.TableLoadedHandler({sender?.ToString()} {e.ToString()});");
                 }
             }
         }
@@ -359,7 +347,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         {
             var navFailedEventArgs = new NavigationFailedEventArgs
             {
-//                Hresult = comEx.HResult, // todo: put to lasterror, so com hresult handling
+                //                Hresult = comEx.HResult, // todo: put to lasterror, so com hresult handling
                 FailedLocation = targetBrowserItem.ShellItem
             };
 
@@ -389,7 +377,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         finally
         {
             IsLoading = false;
-
+            _ = UpdateGridView();
         }
     }
     /// <summary>Raises the <see cref="NavigationFailed"/> event.</summary>

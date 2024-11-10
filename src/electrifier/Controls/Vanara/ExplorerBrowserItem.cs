@@ -45,14 +45,9 @@ public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
         ShellItem = new ShellItem(shItemId);
 
         // TODO: Check for Library
-        if (IsFolder)
-        {
-            BitmapSource = ShellNamespaceService.DefaultFolderImageBitmapSource;
-        }
-        else
-        {
-            BitmapSource = ShellNamespaceService.DefaultFolderImageBitmapSource;  
-        }
+        BitmapSource = IsFolder
+            ? ShellNamespaceService.DefaultFolderImageBitmapSource
+            : ShellNamespaceService.DefaultDocumentAssocImageBitmapSource;
     }
     public ExplorerBrowserItem(ShellItem shItem, SoftwareBitmapSource? bitmapSource = null) : this(shItem.PIDL, bitmapSource) { }
     public ExplorerBrowserItem(Shell32.KNOWNFOLDERID kfId, SoftwareBitmapSource? bitmapSource = null) : this(new ShellFolder(kfId).PIDL, bitmapSource) { }
