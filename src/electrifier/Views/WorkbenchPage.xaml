@@ -24,49 +24,22 @@
                 </controls:SettingsCard>
                 <Border BorderBrush="GhostWhite"
                         BorderThickness="3">
-                    <StackPanel>
+                    <StackPanel Orientation="Vertical">
                         <SelectorBar x:Name="QuickLaunchSelectorBar">
-                            <SelectorBarItem Text="Recent"
-                                             Icon="Clock" />
+                            <SelectorBarItem Text="History"
+                                             Icon="Clock" /> <!-- todo: add timeline here -->
                             <SelectorBarItem Text="Favorites"
                                              Icon="Favorite" />
                             <SelectorBarItem Text="Tagged"
                                              Icon="Favorite" />
-                            <SelectorBarItem Text="Shell">
-                                <SelectorBarItem.Icon>
-                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                              Glyph="&#xec50;" />
-                                </SelectorBarItem.Icon>
-                            </SelectorBarItem>
                             <SelectorBarItem Text="Desktop">
                                 <SelectorBarItem.Icon>
                                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                               Glyph="&#xec50;" />
                                 </SelectorBarItem.Icon>
-                            </SelectorBarItem>
-                            <SelectorBarItem Text="Browser">
-                                <SelectorBarItem.Icon>
-                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                              Glyph="&#xeb41;" />
-                                </SelectorBarItem.Icon>
-                            </SelectorBarItem>
-                            <SelectorBarItem Text="Edit...">
-                                <SelectorBarItem.Icon>
-                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                              Glyph="&#xe70f;" />
-                                </SelectorBarItem.Icon>
-                            </SelectorBarItem>
-                            <SelectorBarItem Text="Create...">
-                                <SelectorBarItem.Icon>
-                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                              Glyph="&#xeb3c;" />
-                                </SelectorBarItem.Icon>
-                            </SelectorBarItem>
-                            <SelectorBarItem Text="Cloud"
-                                             Icon="Share" />
-                            <SelectorBarItem Text="Shared"
-                                             Icon="Share" />
+                            </SelectorBarItem> <!-- add miniature desktop here -->
                         </SelectorBar>
+                        <ListView MinHeight="176"></ListView>
                         <CheckBox>Always launch selection when I start this Workbench.</CheckBox>
                     </StackPanel>
                 </Border>

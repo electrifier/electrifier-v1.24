@@ -25,7 +25,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     private Visibility _bottomCommandBarVisibility;
     private Visibility _gridViewVisibility;
     private bool _isLoading;
-    private ShellNamespaceService _namespaceService = new();
+    private readonly ShellNamespaceService _namespaceService = new();
     private Visibility _topCommandBarVisibility;
     public ExplorerBrowserItem? CurrentFolderBrowserItem
     {
@@ -343,11 +343,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 }
                 void AllRowsAddedHandler(object? sender, EventArgs e)
                 {
-                    Debug.Print($"ShellNamespaceService.RequestChildItemsAsync().AllFastRowsAddedHandler({sender?.ToString()} {e.ToString()});");
+                    Debug.Print($"ShellNamespaceService.RequestChildItemsAsync().AllRowsAddedHandler({sender?.ToString()} {e.ToString()});");
                 }
                 void FastTableLoadedHandler(object? sender, EventArgs e)
                 {
-                    Debug.Print($"ShellNamespaceService.RequestChildItemsAsync().TableLoadedHandler({sender?.ToString()} {e.ToString()});");
+                    Debug.Print($"ShellNamespaceService.RequestChildItemsAsync().FastTableLoadedHandler({sender?.ToString()} {e.ToString()});");
                 }
                 void TableLoadedHandler(object? sender, EventArgs e)
                 {
