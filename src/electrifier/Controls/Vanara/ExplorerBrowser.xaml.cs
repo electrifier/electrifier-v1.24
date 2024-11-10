@@ -191,7 +191,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
     /// <summary>Fires when either a Navigating listener cancels the navigation, or if the operating system determines that navigation is not possible.</summary>
-    public event EventHandler<ExtNavigationFailedEventArgs>? NavigationFailed;
+    public event EventHandler<NavigationFailedEventArgs>? NavigationFailed;
     /// <summary>ExplorerBrowser Implementation for WinUI3.</summary>
     public ExplorerBrowser()
     {
@@ -292,6 +292,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         Debug.Print($".NativeGridView_SelectionChanged({newTarget})");
     }
+
+
+    /* FolderItemFilter.FlatList => für Home-Folder */
     public void Navigate(ExplorerBrowserItem targetBrowserItem)
     {
         try
@@ -307,29 +310,56 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 CurrentFolderItems.Clear();
                 IsLoading = true;
 
+                var asyncFastChildFolderItems = ShellNamespaceService.RequestChildItemsAsync(shFolder,
+                    FolderItemFilter.FastItems | FolderItemFilter.Folders | FolderItemFilter.IncludeHidden,
+                    AllFastRowsAddedHandler,
+                    FastTableLoadedHandler);
 
-                var testEnum = ShellNamespaceService.RequestChildItemsAsync(shFolder);
+                var asyncAllChildFolderItems = ShellNamespaceService.RequestChildItemsAsync(shFolder,
+                    FolderItemFilter.Folders | FolderItemFilter.IncludeHidden,
+                    AllRowsAddedHandler,
+                    TableLoadedHandler);
 
-                //var childShellItems = ShellNamespaceService.ExtractChildItems(targetBrowserItem);
 
-                //if (childShellItems.Count <= 0)
-                //{
-                //    return;
-                //}
+/*
+   //var childShellItems = ShellNamespaceService.ExtractChildItems(targetBrowserItem);
 
-                //foreach (var childItem in childShellItems)
-                //{
-                //    CurrentFolderItems.Add(childItem);
-                //}
+   //if (childShellItems.Count <= 0)
+   //{
+   //    return;
+   //}
 
-                Debug.Print($".Navigate(): RequestChildItemsAsync() returned {testEnum.Result.Rows.Count}");
+   //foreach (var childItem in childShellItems)
+   //{
+   //    CurrentFolderItems.Add(childItem);
+   //}
+
+   Debug.Print($".Navigate(): RequestChildItemsAsync() returned {asyncAllChildFolderItems.Result.Rows.Count} items, including {asyncFastChildFolderItems.Result.Rows.Count} fast items");
+
+ */
+                void AllFastRowsAddedHandler(object? sender, EventArgs e)
+                {
+                    Debug.Print($"ShellNamespaceService.RequestChildItemsAsync().AllFastRowsAddedHandler(({sender?.ToString()} {e.ToString()});");
+                }
+                void AllRowsAddedHandler(object? sender, EventArgs e)
+                {
+                    Debug.Print($"ShellNamespaceService.RequestChildItemsAsync().AllFastRowsAddedHandler({sender?.ToString()} {e.ToString()});");
+                }
+                void FastTableLoadedHandler(object? sender, EventArgs e)
+                {
+                    Debug.Print($"ShellNamespaceService.RequestChildItemsAsync().TableLoadedHandler({sender?.ToString()} {e.ToString()});");
+                }
+                void TableLoadedHandler(object? sender, EventArgs e)
+                {
+                    Debug.Print($"ShellNamespaceService.RequestChildItemsAsync().TableLoadedHandler({sender?.ToString()} {e.ToString()});");
+                }
             }
         }
         catch (COMException comEx)
         {
-            var navFailedEventArgs = new ExtNavigationFailedEventArgs
+            var navFailedEventArgs = new NavigationFailedEventArgs
             {
-                Hresult = comEx.HResult,
+//                Hresult = comEx.HResult, // todo: put to lasterror, so com hresult handling
                 FailedLocation = targetBrowserItem.ShellItem
             };
 
@@ -338,22 +368,22 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 Debug.WriteLine($"[Error] {comEx.HResult}: {navFailedEventArgs}");
                 //NavigationFailure = msg;
                 //HasNavigationFailure = true;
-                navFailedEventArgs.IsHandled = false;
+                //navFailedEventArgs.IsHandled = false;
 
                 OnNavigationFailed(navFailedEventArgs);
 
-                if (navFailedEventArgs.IsHandled)
-                {
-                    return;
-                }
+                //if (navFailedEventArgs.IsHandled)
+                //{
+                //    return;
+                //}
             }
 
-            Debug.Fail($"[Error] Navigate(<{targetBrowserItem}>) failed. COMException: {comEx.Message}");
+            Debug.Fail($"[Error] Navigate(<{targetBrowserItem}>) failed. COMException: <Result: {comEx.HResult}>: `{comEx.Message}`");
             throw;
         }
         catch (Exception ex)
         {
-            Debug.Fail($"[Error] Navigate(<{targetBrowserItem}>) failed. Exception: {ex.Message}");
+            Debug.Fail($"[Error] Navigate(<{targetBrowserItem}>) failed, reason unknown: {ex.Message}");
             throw;
         }
         finally
@@ -363,7 +393,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
     /// <summary>Raises the <see cref="NavigationFailed"/> event.</summary>
-    internal void OnNavigationFailed(ExtNavigationFailedEventArgs? nfevent)
+    internal void OnNavigationFailed(NavigationFailedEventArgs? nfevent)
     {
         if (nfevent?.FailedLocation is null)
         {
@@ -372,7 +402,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         NavigationFailed?.Invoke(this, nfevent);
     }
-    private void ExplorerBrowser_NavigationFailed(object? sender, ExtNavigationFailedEventArgs e)
+    private void ExplorerBrowser_NavigationFailed(object? sender, NavigationFailedEventArgs e)
     {
         NavigationFailure = $"Navigation failed: '{e.FailedLocation}' cannot be navigated to. <Show More Info> <Report a Bug>";
         IsLoading = false;
@@ -402,28 +432,3 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     #endregion Property stuff
 }
-
-/// <summary>Extended Event argument for the <see cref="NavigationFailedEventArgs"/> event</summary>
-public class ExtNavigationFailedEventArgs : NavigationFailedEventArgs
-{
-    public bool IsHandled
-    {
-        get; set;
-    }
-    public HRESULT? Hresult
-    {
-        get;
-        set;
-    }
-}
-
-/// <summary>Event argument for The Navigated event</summary>
-/// <remarks>Initializes a new instance of the <see cref="T:Vanara.Windows.Shell.NavigatedEventArgs" /> class.</remarks>
-/// <param name="folder">The folder.</param>
-public class ExtNavigatedEventArgs(ShellFolder folder) : NavigatedEventArgs(folder)
-{
-    public int ItemCount { get; set; } = 0;
-    public int FolderCount { get; set; } = 0;
-    public int FileCount { get; set; } = 0;
-}
-

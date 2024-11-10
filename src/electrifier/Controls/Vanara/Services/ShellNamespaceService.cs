@@ -45,91 +45,93 @@ public partial class ShellNamespaceService
     }
 
     // TODO: Add await event handler to every ebItem, so Icon Extractor can call back the item
-    public static Task<ShellDataTable> RequestChildItemsAsync(ShellFolder shFolder)
+    public static Task<ShellDataTable> RequestChildItemsAsync(ShellFolder shFolder,
+        FolderItemFilter itemFilter = (FolderItemFilter.Folders | FolderItemFilter.NonFolders),
+        EventHandler? allFastRowsAddedHandler = null, EventHandler? tableLoadedHandler = null)
     {
         Debug.Print($".RequestChildItemsAsync(<{shFolder}>) extracting...");
         var ct = new CancellationToken();
 
         var propKeys = new List<Ole32.PROPERTYKEY>()
-        {
-            Ole32.PROPERTYKEY.System.FileFRN, /* This is the unique file ID, also known as the File Reference Number. */
-        };
+        { Ole32.PROPERTYKEY.System.FileFRN, /* This is the unique file ID, also known as the File Reference Number. */ };
 
-        var shDataTable = new ShellDataTable(shFolder);
+        var shDataTable = new ShellDataTable(shFolder, itemFilter);
         shDataTable.AllFastRowsAdded += ShDataTable_AllFastRowsAdded;
+        if (allFastRowsAddedHandler != null) shDataTable.AllFastRowsAdded += allFastRowsAddedHandler;
         shDataTable.TableLoaded += ShDataTableOnTableLoaded;
+        if (tableLoadedHandler != null) shDataTable.TableLoaded += tableLoadedHandler;
         var populationTask = shDataTable.PopulateTableAsync(propKeys, ct);
 
         return Task.FromResult(shDataTable);
 
 
 
-        //var ct = new CancellationToken();
+    //var ct = new CancellationToken();
 
-        //if (parentItem is null)
-        //{
-        //    yield break;
-        //}
+    //if (parentItem is null)
+    //{
+    //    yield break;
+    //}
 
-        ///*  public bool Wait(TimeSpan timeout) {
-        //        long totalMilliseconds = (long)timeout.TotalMilliseconds;
-        //        if (totalMilliseconds < -1 || totalMilliseconds > int.MaxValue)
-        //            { throw new ArgumentOutOfRangeException(nameof(timeout)); }
+    ///*  public bool Wait(TimeSpan timeout) {
+    //        long totalMilliseconds = (long)timeout.TotalMilliseconds;
+    //        if (totalMilliseconds < -1 || totalMilliseconds > int.MaxValue)
+    //            { throw new ArgumentOutOfRangeException(nameof(timeout)); }
 
-        //        return Wait((int)totalMilliseconds, new CancellationToken());
-        //    } */
+    //        return Wait((int)totalMilliseconds, new CancellationToken());
+    //    } */
 
-        //try
-        //{
-        //    /* var ext = new ShellIconExtractor(new ShellFolder(parentItem.ShellItem));
-        //       ext.Complete += ShellIconExtractorComplete;
-        //       ext.IconExtracted += ShellIconExtractorIconExtracted;
-        //       ext.Start(); */
-        //    Debug.Assert(parentItem.ShellItem.PIDL != Shell32.PIDL.Null);
-        //    var shItemId = parentItem.ShellItem.PIDL;
-        //    using var shFolder = new ShellFolder(shItemId);
+    //try
+    //{
+    //    /* var ext = new ShellIconExtractor(new ShellFolder(parentItem.ShellItem));
+    //       ext.Complete += ShellIconExtractorComplete;
+    //       ext.IconExtracted += ShellIconExtractorIconExtracted;
+    //       ext.Start(); */
+    //    Debug.Assert(parentItem.ShellItem.PIDL != Shell32.PIDL.Null);
+    //    var shItemId = parentItem.ShellItem.PIDL;
+    //    using var shFolder = new ShellFolder(shItemId);
 
-        //    if ((shFolder.Attributes & ShellItemAttribute.Removable) != 0)
-        //    {
-        //        // TODO: Check for Disc in Drive, fail only if device not present
-        //        // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
-        //        Debug.WriteLine($"GetChildItems: IsRemovable = true");
-        //        var eventArgs = new NavigationFailedEventArgs();
-        //        yield break;
-        //    }
+    //    if ((shFolder.Attributes & ShellItemAttribute.Removable) != 0)
+    //    {
+    //        // TODO: Check for Disc in Drive, fail only if device not present
+    //        // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
+    //        Debug.WriteLine($"GetChildItems: IsRemovable = true");
+    //        var eventArgs = new NavigationFailedEventArgs();
+    //        yield break;
+    //    }
 
-        //    var ext = new TempShellIconExtractor(new ShellFolder(parentItem.ShellItem));
+    //    var ext = new TempShellIconExtractor(new ShellFolder(parentItem.ShellItem));
 
-        //    ext.Complete += new((sender, args) =>
-        //    {
-        //        Debug.Assert(sender.Equals(ext));
-        //        Debug.WriteLine($".IAsyncEnumerable<ExplorerBrowserItem> RequestChildItemsAsync(ExplorerBrowserItem? parentItem) completed.");
-        //    });
-        //    ext.IconExtracted += new((sender, args) =>
-        //    {
-        //        var shItem = args.ItemID;
-        //        var idx = args.ImageListIndex;
-        //        Debug.Assert(sender.Equals(ext));
-        //        //Yield Awaitable return new ExplorerBrowserItem(args.ItemID, args.ImageListIndex);
-        //    });
-        //    ext.Start();
+    //    ext.Complete += new((sender, args) =>
+    //    {
+    //        Debug.Assert(sender.Equals(ext));
+    //        Debug.WriteLine($".IAsyncEnumerable<ExplorerBrowserItem> RequestChildItemsAsync(ExplorerBrowserItem? parentItem) completed.");
+    //    });
+    //    ext.IconExtracted += new((sender, args) =>
+    //    {
+    //        var shItem = args.ItemID;
+    //        var idx = args.ImageListIndex;
+    //        Debug.Assert(sender.Equals(ext));
+    //        //Yield Awaitable return new ExplorerBrowserItem(args.ItemID, args.ImageListIndex);
+    //    });
+    //    ext.Start();
 
-        //    // DispatcherTimer
-        //}
-        //catch (Exception e)
-        //{
-        //    Console.WriteLine(e);
-        //    throw;
-        //}
+    //    // DispatcherTimer
+    //}
+    //catch (Exception e)
+    //{
+    //    Console.WriteLine(e);
+    //    throw;
+    //}
     }
 
     private static void ShDataTable_AllFastRowsAdded(object? sender, EventArgs e)
     {
-        Debug.Print($".ShDataTable_AllFastRowsAdded({sender})");
+        Debug.Print($".ShDataTable_AllFastRowsAdded({sender})...");
     }
     private static void ShDataTableOnTableLoaded(object? sender, EventArgs e)
     {
-        Debug.Print($".ShDataTableOnTableLoaded({sender})");
+        Debug.Print($".ShDataTableOnTableLoaded({sender})...");
     }
     /// <summary>
     /// <see href="https://github.com/dahall/Vanara/blob/Windows.Shell.Common/StockIcon.cs"/>
