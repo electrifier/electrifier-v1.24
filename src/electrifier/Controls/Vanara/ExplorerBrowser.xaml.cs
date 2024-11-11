@@ -26,9 +26,6 @@ using Visibility = Microsoft.UI.Xaml.Visibility;
 /// <summary>Replacement for <see cref="Vanara.Windows.Forms.Controls.Explorer.cs">Windows.Forms/Controls/ExplorerBrowser.cs</see></summary>
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
-    private Visibility _bottomAppBarVisibility;
-    private Visibility _bottomCommandBarVisibility;
-    private Visibility _gridViewVisibility;
     private bool _isLoading;
     private readonly ShellNamespaceService _namespaceService = new();
     private Visibility _topCommandBarVisibility;
@@ -41,54 +38,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         get; private set;
     }
-    ///// <summary>Current Folder content ListViewItems, as used by <see cref="ShellListView"/>.</summary>
-    //public ExplorerBrowserItemCollection CurrentFolderItems
-    //{
-    //    get => (ExplorerBrowserItemCollection)GetValue(CurrentFolderItemsProperty);
-    //    set => SetValue(CurrentFolderItemsProperty, value);
-    //}
-    //public static readonly DependencyProperty CurrentFolderItemsProperty = DependencyProperty.Register(
-    //    nameof(CurrentFolderItems),
-    //    typeof(ObservableCollection<ExplorerBrowserItem>),
-    //    typeof(ExplorerBrowser),
-    //    new PropertyMetadata(null,
-    //        new PropertyChangedCallback(OnCurrentFolderItemsChanged)));
-    //private static void OnCurrentFolderItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    //{
-    //    //ImageWithLabelControl iwlc = d as ImageWithLabelControl; //null checks omitted
-    //    var s = e.NewValue; //null checks omitted
-    //    Debug.Print($".OnCurrentFolderItemsChanged(): {s}");
-    //}
-    public int ItemCount
-    {
-        get => (int)GetValue(ItemCountProperty);
-        set => SetValue(ItemCountProperty, value);
-    }
-    public static readonly DependencyProperty ItemCountProperty = DependencyProperty.Register(
-        nameof(ItemCount),
-        typeof(int),
-        typeof(ExplorerBrowser),
-        new PropertyMetadata(0));
-    public int FileCount
-    {
-        get => (int)GetValue(FileCountProperty);
-        set => SetValue(FileCountProperty, value);
-    }
-    public static readonly DependencyProperty FileCountProperty = DependencyProperty.Register(
-        nameof(FileCount),
-        typeof(int),
-        typeof(ExplorerBrowser),
-        new PropertyMetadata(0));
-    public int FolderCount
-    {
-        get => (int)GetValue(FolderCountProperty);
-        set => SetValue(FolderCountProperty, value);
-    }
-    public static readonly DependencyProperty FolderCountProperty = DependencyProperty.Register(
-        nameof(FolderCount),
-        typeof(int),
-        typeof(ExplorerBrowser),
-        new PropertyMetadata(0));
     public string NavigationFailure
     {
         get => (string)GetValue(NavigationFailureProperty);
@@ -110,72 +59,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             }
 
             _isLoading = value;
-            OnPropertyChanged();
-        }
-    }
-    public Visibility GridViewVisibility
-    {
-        get => _gridViewVisibility;
-        set
-        {
-            if (value == _gridViewVisibility)
-            {
-                return;
-            }
-
-            _gridViewVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-    public Visibility TreeViewVisibility
-    {
-        get => (Visibility)GetValue(TreeViewVisibilityProperty);
-        set => SetValue(TreeViewVisibilityProperty, value);
-    }
-    public static readonly DependencyProperty TreeViewVisibilityProperty = DependencyProperty.Register(
-        nameof(TreeViewVisibility),
-        typeof(Visibility),
-        typeof(ExplorerBrowser),
-        new PropertyMetadata(default(object)));
-    public Visibility TopCommandBarVisibility
-    {
-        get => _topCommandBarVisibility;
-        set
-        {
-            if (value == _topCommandBarVisibility)
-            {
-                return;
-            }
-
-            _topCommandBarVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-    public Visibility BottomAppBarVisibility
-    {
-        get => _bottomAppBarVisibility;
-        set
-        {
-            if (value == _bottomAppBarVisibility)
-            {
-                return;
-            }
-
-            _bottomAppBarVisibility = value;
-            OnPropertyChanged();
-        }
-    }
-    public Visibility BottomCommandBarVisibility
-    {
-        get => _bottomCommandBarVisibility;
-        set
-        {
-            if (value == _bottomCommandBarVisibility)
-            {
-                return;
-            }
-
-            _bottomCommandBarVisibility = value;
             OnPropertyChanged();
         }
     }
