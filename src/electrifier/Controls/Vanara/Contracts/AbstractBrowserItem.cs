@@ -24,19 +24,19 @@ public abstract class AbstractBrowserItem<T>(bool isFolder, AbstractBrowserItemC
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
 public abstract class AbstractBrowserItemCollection<T> : IEnumerable<AbstractBrowserItem<T>>, IList<AbstractBrowserItem<T>>
 {
-    private readonly IList<AbstractBrowserItem<T>> _collection = [];
+    protected readonly IList<AbstractBrowserItem<T>> Collection = [];
 
-    AbstractBrowserItem<T> IList<AbstractBrowserItem<T>>.this[int index] { get => _collection[index]; set => _collection[index] = value; }
-    int ICollection<AbstractBrowserItem<T>>.Count => _collection.Count;
+    AbstractBrowserItem<T> IList<AbstractBrowserItem<T>>.this[int index] { get => Collection[index]; set => Collection[index] = value; }
+    int ICollection<AbstractBrowserItem<T>>.Count => Collection.Count;
     bool ICollection<AbstractBrowserItem<T>>.IsReadOnly => false;
-    void ICollection<AbstractBrowserItem<T>>.Add(AbstractBrowserItem<T> item) => _collection.Add(item);
-    void ICollection<AbstractBrowserItem<T>>.Clear() => _collection.Clear();
-    bool ICollection<AbstractBrowserItem<T>>.Contains(AbstractBrowserItem<T> item) => _collection.Contains(item);
-    void ICollection<AbstractBrowserItem<T>>.CopyTo(AbstractBrowserItem<T>[] array, int arrayIndex) => _collection.CopyTo(array, arrayIndex);
-    IEnumerator<AbstractBrowserItem<T>> IEnumerable<AbstractBrowserItem<T>>.GetEnumerator() => _collection.GetEnumerator();
-    IEnumerator IEnumerable.GetEnumerator() => _collection.GetEnumerator();
-    int IList<AbstractBrowserItem<T>>.IndexOf(AbstractBrowserItem<T> item) => _collection.IndexOf(item);
-    void IList<AbstractBrowserItem<T>>.Insert(int index, AbstractBrowserItem<T> item) => _collection.Insert(index, item);
-    bool ICollection<AbstractBrowserItem<T>>.Remove(AbstractBrowserItem<T> item) => _collection.Remove(item);
-    void IList<AbstractBrowserItem<T>>.RemoveAt(int index) => _collection.RemoveAt(index);
+    void ICollection<AbstractBrowserItem<T>>.Add(AbstractBrowserItem<T> item) => Collection.Add(item);
+    void ICollection<AbstractBrowserItem<T>>.Clear() => Collection.Clear();
+    bool ICollection<AbstractBrowserItem<T>>.Contains(AbstractBrowserItem<T> item) => Collection.Contains(item);
+    void ICollection<AbstractBrowserItem<T>>.CopyTo(AbstractBrowserItem<T>[] array, int arrayIndex) => Collection.CopyTo(array, arrayIndex);
+    IEnumerator<AbstractBrowserItem<T>> IEnumerable<AbstractBrowserItem<T>>.GetEnumerator() => Collection.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => Collection.GetEnumerator();
+    int IList<AbstractBrowserItem<T>>.IndexOf(AbstractBrowserItem<T> item) => Collection.IndexOf(item);
+    void IList<AbstractBrowserItem<T>>.Insert(int index, AbstractBrowserItem<T> item) => Collection.Insert(index, item);
+    bool ICollection<AbstractBrowserItem<T>>.Remove(AbstractBrowserItem<T> item) => Collection.Remove(item);
+    void IList<AbstractBrowserItem<T>>.RemoveAt(int index) => Collection.RemoveAt(index);
 }

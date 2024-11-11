@@ -115,19 +115,6 @@ public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
     #endregion GetDebuggerDisplay()
 }
 
-public static class ExplorerBrowserItemExtensions
-{
-    public static ExplorerBrowserItem enumChilds(this ExplorerBrowserItem itm)
-    {
-        if (itm.Children.Count > 0)
-        {
-            itm.Children.Clear();
-        }
-
-        return itm;
-    }
-}
-
 /// <summary>
 /// Wrapper for 
 ///     Vanara.Windows.Shell.ShellItemArray

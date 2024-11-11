@@ -12,7 +12,7 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0" >
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="176"
                                   MinWidth="76" />
@@ -23,7 +23,8 @@
                     Visibility="{x:Bind TreeViewVisibility}"
                     VerticalAlignment="Top">
                 <local:Shell32TreeView x:Name="ShellTreeView"
-                                       HorizontalAlignment="Stretch" />
+                                       HorizontalAlignment="Stretch"
+                                       ItemsSource="{x:Bind TreeViewItems}" />
             </Border>
             <Border Grid.Column="1">
                 <StackPanel Orientation="Vertical">
@@ -34,7 +35,8 @@
                 </StackPanel>
             </Border>
         </Grid>
-        <AppBar Grid.Row="1" HorizontalAlignment="Stretch"
+        <AppBar Grid.Row="1"
+                HorizontalAlignment="Stretch"
                 Background="Transparent">
             <StackPanel>
                 <TextBlock Text="no binding :(" />

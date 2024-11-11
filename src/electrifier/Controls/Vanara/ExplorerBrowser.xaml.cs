@@ -32,10 +32,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     private readonly ShellNamespaceService _namespaceService = new();
     private Visibility _topCommandBarVisibility;
 
-    public BrowserItemCollection Items { get; private set; }
+    public BrowserItemCollection ListViewItems { get; private set; }
+    public BrowserItemCollection TreeViewItems { get; private set; }
     //public AbstractBrowserItemCollection<AbstractBrowserItem> CurrentItems = new();
     private AdvancedCollectionView _shell32AdvancedCollectionView;
-    ///// <summary>Current Folder content Items, as used by <see cref="Shell32GridView"/>.</summary>
+    ///// <summary>Current Folder content ListViewItems, as used by <see cref="Shell32GridView"/>.</summary>
     //public ExplorerBrowserItemCollection CurrentFolderItems
     //{
     //    get => (ExplorerBrowserItemCollection)GetValue(CurrentFolderItemsProperty);
@@ -181,9 +182,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         InitializeComponent();
         DataContext = this;
 
-        Items = new();
-        _shell32AdvancedCollectionView = new AdvancedCollectionView(Items, true);
-        //_shell32AdvancedCollectionView.Source = Items;
+        //ListViewItems = new();
+        _shell32AdvancedCollectionView = new AdvancedCollectionView(ListViewItems, true);
+        TreeViewItems = new BrowserItemCollection();
+        
+        //_shell32AdvancedCollectionView.Source = ListViewItems;
         //_shell32AdvancedCollectionView 
         //_advancedCollectionView = new(CurrentFolderItems, true);
         NavigationFailed += ExplorerBrowser_NavigationFailed;
@@ -212,13 +215,17 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         };
         Loading += async (sender, args) =>
         {
-            ShellTreeView.ItemsSource = rootItems;
-            if (rootItems.FirstOrDefault(new ExplorerBrowserItem(Shell32.KNOWNFOLDERID.FOLDERID_Desktop))
-                is { } ebItem)
-            {
-                //                Navigate(ebItem); // todo: recover initial navigation
-                //CurrentFolderBrowserItem = ebItem;  // TODO; Put to OnNavigated() event-handler
-            }
+            TreeViewItems.Add(ShellFolder.Desktop);
+            ShellTreeView.ItemsSource = TreeViewItems;
+
+
+            //ShellTreeView.ItemsSource = rootItems;
+            //if (rootItems.FirstOrDefault(new ExplorerBrowserItem(Shell32.KNOWNFOLDERID.FOLDERID_Desktop))
+            //    is { } ebItem)
+            //{
+            //    //                Navigate(ebItem); // todo: recover initial navigation
+            //    //CurrentFolderBrowserItem = ebItem;  // TODO; Put to OnNavigated() event-handler
+            //}
         };
     }
     private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
@@ -406,36 +413,36 @@ public class BrowserItem(Shell32.PIDL PIDL, bool isFolder)
 }
 public partial class BrowserItemCollection : AbstractBrowserItemCollection<ShellItem>, IList
 {
-    private IList _listImplementation;
-    public void CopyTo(Array array, int index) => _listImplementation.CopyTo(array, index);
+    protected IList ListImplementation => new List<ShellItem>();
+    public void CopyTo(Array array, int index) => ListImplementation.CopyTo(array, index);
 
-    public int Count => _listImplementation.Count;
+    public int Count => ListImplementation.Count;
 
-    public bool IsSynchronized => _listImplementation.IsSynchronized;
+    public bool IsSynchronized => ListImplementation.IsSynchronized;
 
-    public object SyncRoot => _listImplementation.SyncRoot;
+    public object SyncRoot => ListImplementation.SyncRoot;
 
-    public int Add(object? value) => _listImplementation.Add(value);
+    public int Add(object? value) => ListImplementation.Add(value);
 
-    public void Clear() => _listImplementation.Clear();
+    public void Clear() => ListImplementation.Clear();
 
-    public bool Contains(object? value) => _listImplementation.Contains(value);
+    public bool Contains(object? value) => ListImplementation.Contains(value);
 
-    public int IndexOf(object? value) => _listImplementation.IndexOf(value);
+    public int IndexOf(object? value) => ListImplementation.IndexOf(value);
 
-    public void Insert(int index, object? value) => _listImplementation.Insert(index, value);
+    public void Insert(int index, object? value) => ListImplementation.Insert(index, value);
 
-    public void Remove(object? value) => _listImplementation.Remove(value);
+    public void Remove(object? value) => ListImplementation.Remove(value);
 
-    public void RemoveAt(int index) => _listImplementation.RemoveAt(index);
+    public void RemoveAt(int index) => ListImplementation.RemoveAt(index);
 
-    public bool IsFixedSize => _listImplementation.IsFixedSize;
+    public bool IsFixedSize => ListImplementation.IsFixedSize;
 
-    public bool IsReadOnly => _listImplementation.IsReadOnly;
+    public bool IsReadOnly => ListImplementation.IsReadOnly;
 
     public object? this[int index]
     {
-        get => _listImplementation[index];
-        set => _listImplementation[index] = value;
+        get => ListImplementation[index];
+        set => ListImplementation[index] = value;
     }
 }
