@@ -9,24 +9,19 @@
              mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
-            <DataTemplate x:Name="Shell32TreeViewItemTemplate"
-                          x:DataType="local:ExplorerBrowserItem">
-                <TreeViewItem HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"
-                              IsExpanded="{x:Bind IsExpanded}"
-                              IsSelected="{x:Bind IsSelected}"
-                              ItemsSource="{x:Bind Children}">
+            <DataTemplate x:Name="BrowserItemTemplate"
+                          x:DataType="local:BrowserItem">
+                <TreeViewItem>
                     <Grid>
                         <StackPanel HorizontalAlignment="Stretch"
                                     MaxHeight="23"
                                     Orientation="Horizontal">
                             <!-- todo: add overlay for shared, links etc. -->
                             <Image Name="Image"
-                                   Opacity="{x:Bind Opacity}"
                                    Source="{x:Bind BitmapSource}"
                                    Visibility="Visible" />
                             <TextBlock x:Name="TextBlock"
                                        Margin="5,0,5,0"
-                                       Opacity="{x:Bind Opacity}"
                                        Text="{x:Bind DisplayName}" />
                         </StackPanel>
                     </Grid>
@@ -34,8 +29,7 @@
             </DataTemplate>
         </Grid.Resources>
         <TreeView x:Name="TreeView"
-                  ItemTemplate="{StaticResource Shell32TreeViewItemTemplate}"
-                  SelectionMode="Single">
+                  ItemTemplate="{StaticResource BrowserItemTemplate}">
         </TreeView>
     </Grid>
 </UserControl>

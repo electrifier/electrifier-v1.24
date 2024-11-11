@@ -12,7 +12,7 @@
         <Border>
             <BreadcrumbBar x:Name="NativeBreadcrumbBar">
                 <BreadcrumbBar.ItemTemplate>
-                    <DataTemplate x:DataType="local:ExplorerBrowserItem">
+                    <DataTemplate x:DataType="local:BrowserItem">
                         <BreadcrumbBarItem AutomationProperties.Name="{Binding Name}"
                                            Content="{Binding}">
                             <BreadcrumbBarItem.ContentTemplate>

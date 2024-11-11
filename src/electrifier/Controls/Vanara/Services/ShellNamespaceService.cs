@@ -157,76 +157,13 @@ public partial class ShellNamespaceService
         }
     }
 
-    /// <summary>
-    /// ExtractChildItems
-    /// TODO: Add Stack, or ShellDataTable
-    /// TODO: Pre-Enumerate slow folders while building the tree
-    /// </summary>
-    public static List<ExplorerBrowserItem> ExtractChildItems(ExplorerBrowserItem parentBrowserItem,
-        FolderItemFilter itemFilter = (FolderItemFilter.Folders | FolderItemFilter.NonFolders))
-    {
-        var shItem = parentBrowserItem.ShellItem;
-        var result = new List<ExplorerBrowserItem>();
-
-        if ((shItem.Attributes & ShellItemAttribute.Removable) != 0)
-        {
-            // TODO: Check for Disc in Drive, fail only if device not present
-            // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
-            Debug.WriteLine($"GetChildItems: IsRemovable = true");
-            return result;
-            //var eventArgs = new NavigationFailedEventArgs();
-            //return Task.FromCanceled<>();
-            //cancelToken.ThrowIfCancellationRequested(); 
-        }
-
-        if (!shItem.IsFolder)
-        {
-            return result;
-        }
-
-        try
-        {
-            using var shFolder = new ShellFolder(shItem);
-            var children = shFolder.EnumerateChildren(itemFilter);
-            var shellItems = children as ShellItem[] ?? children.ToArray();
-            var cnt = shellItems.Length;
-
-            if (cnt > 0)
-            {
-                foreach (var item in shellItems)
-                {
-                    var ebItem = new ExplorerBrowserItem(item.PIDL);
-                    if (ebItem.IsFolder)
-                    {
-                        ebItem.BitmapSource = ShellNamespaceService.DefaultFolderImageBitmapSource;
-                        result.Insert(0, ebItem);
-                    }
-                    else
-                    {
-                        ebItem.BitmapSource = ShellNamespaceService.DefaultDocumentAssocImageBitmapSource;
-                        result.Add(ebItem);
-                    }
-                }
-            }
-        }
-        catch (COMException comEx)
-        {
-            Debug.Fail(comEx.Message);
-        }
-        catch (Exception e)
-        {
-            Debug.Fail(e.Message);
-        }
-
-        return result;
-    }
-
     public static async Task<SoftwareBitmapSource?> GetWinUi3BitmapSourceFromIcon(Icon bitmapIcon)
     {
         ArgumentNullException.ThrowIfNull(bitmapIcon);
 
         return await GetWinUi3BitmapSourceFromGdiBitmap(bitmapIcon.ToBitmap());
     }
+
     public static async Task<SoftwareBitmapSource?> GetWinUi3BitmapSourceFromGdiBitmap(Bitmap gdiBitmap)
     {
         ArgumentNullException.ThrowIfNull(gdiBitmap);
