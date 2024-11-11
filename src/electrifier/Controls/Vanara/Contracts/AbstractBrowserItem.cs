@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -11,39 +12,104 @@ using Vanara.Windows.Shell;
 
 namespace electrifier.Controls.Vanara.Contracts;
 
+/// <summary>
+/// Abstract base class of an <see cref="ExplorerBrowser"/> Item.
+/// </summary>
+/// <typeparam name="T"></typeparam>
+/// <typeparam name="T2"></typeparam>
+/// <param name="abstractItem"></param>
+/// <param name="id"></param>
+/// <param name="isFolder"></param>
+/// <param name="childItems"></param>
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-public abstract class AbstractBrowserItem<T>
+public abstract class AbstractBrowserItem<T, T2>(T abstractItem, T2 id, bool isFolder, AbstractBrowserItemCollection<T, T2> childItems)
 {
-    public T AbstractItem { get; }
-    public bool IsFolder;
-    public ShellItem ShellItem = global::Vanara.Windows.Shell.ShellItem.Open(Shell32.PIDL.Null);
-    public Shell32.IShellItemArray GetChildArray() => null;
-    public new string ToString() => $"AbstractBrowserItem<T {typeof(T)}>({AbstractItem})";
+    public T Item = abstractItem;
+    public T2 Id = id;
+    public bool IsFolder = isFolder;
+    public AbstractBrowserItemCollection<T, T2> ChildItems = childItems;
+    public new string ToString() => $"AbstractBrowserItem<T {typeof(T)}>({abstractItem})";
+}
+/// <summary>
+/// Base class for BrowserItemCollection
+/// <typeparam name="T">BrowserItem</typeparam>
+/// <typeparam name="T2">BrowserItemIdentifier</typeparam>
+/// </summary>
+[DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
+public abstract class AbstractBrowserItemCollection<T, T2> : ICollection<T>
+{
+    public abstract int Count
+    {
+        get;
+    }
+    public abstract bool IsReadOnly
+    {
+        get;
+    }
+    public abstract void Add(T item);
+    public abstract void Clear();
+    public abstract bool Contains(T item);
+    public abstract void CopyTo(T[] array, int arrayIndex);
+    public abstract IEnumerator<T> GetEnumerator();
+    public abstract bool Remove(T item);
+    IEnumerator IEnumerable.GetEnumerator() => throw new NotImplementedException();
+    public new string ToString() => $"AbstractBrowserItemCollection<T {typeof(T)}>({this})";
 }
 
-[DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-public abstract class Shell32BrowserItem : AbstractBrowserItem<ShellItem>
-{
-    protected Shell32BrowserItem(ShellItem shItem) { }
-    //internal static Shell32BrowserItem CreateInstance(ShellItem shItem)
-    //{
-    //    return new Shell32BrowserItem(shItem);
-    //}
 
-    public new string ToString() => $"Shell32BrowserItem>({AbstractItem})";
+
+public class ExplorerBrowserItem : AbstractBrowserItem<ShellItem, Shell32.PIDL>
+{
+    public ExplorerBrowserItem(ShellItem shItem,
+        ExplorerBrowserItemCollection children) : base(shItem,
+        shItem.PIDL,
+        shItem.IsFolder,
+        children)
+    {
+    }
+    public ExplorerBrowserItem(ShellItem shItem) : base(shItem,
+        shItem.PIDL,
+        shItem.IsFolder,
+        new ExplorerBrowserItemCollection())
+    {
+    }
+
+    public static ExplorerBrowserItem Create(ShellItem shItem) => new ExplorerBrowserItem(shItem);
+}
+public partial class ExplorerBrowserItemCollection : AbstractBrowserItemCollection<ShellItem, Shell32.PIDL>
+{
+    public ExplorerBrowserItemCollection()
+    {
+    }
+
+    public override bool Remove(ShellItem item) => throw new NotImplementedException();
+
+    public override int Count
+    {
+        get;
+    }
+
+    public override bool IsReadOnly
+    {
+        get;
+    }
+
+    public override void Add(ShellItem item) => throw new NotImplementedException();
+
+    public override void Clear() => throw new NotImplementedException();
+
+    public override bool Contains(ShellItem item) => throw new NotImplementedException();
+
+    public override void CopyTo(ShellItem[] array, int arrayIndex) => throw new NotImplementedException();
+
+    public override IEnumerator<ShellItem> GetEnumerator() => throw new NotImplementedException();
 }
 
-public class FolderItem(ShellFolder shellFolder) : Shell32BrowserItem(shellFolder);
 
 
 
 
-//public class FolderBrowserItem<T>() : AbstractBrowserItem<T>(folderItem)
-//{
-//    //public FolderBrowserItem<T>(T folderItem)
-//    //{
-//    //}
-//}
+
 
 //public class KnownFolderBrowserItem<T>(T folderItem) : AbstractBrowserItem<T>(folderItem)
 //{
@@ -56,3 +122,10 @@ public class FolderItem(ShellFolder shellFolder) : Shell32BrowserItem(shellFolde
 //    : AbstractBrowserItem<ShellItem>(new ShellFolder(knownFolder))
 //public class FolderBrowserItem(Shell32.Folder folder)
 //    : AbstractBrowserItem<ShellItem>(new ShellItem(folder)), Shell32.Folder { }
+public class Spielplatz
+{
+    public Spielplatz()
+    {
+        //var desktop = new Abtract
+    }
+}
