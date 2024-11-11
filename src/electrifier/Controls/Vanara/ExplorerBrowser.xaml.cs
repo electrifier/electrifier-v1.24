@@ -328,19 +328,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 CurrentFolderItems.Clear();
                 IsLoading = true;
 
-                shDataTableTask = ShellNamespaceService.RequestChildItemsAsync(shFolder,
-                    FolderItemFilter.NonFolders | FolderItemFilter.Folders | FolderItemFilter.IncludeHidden,
-                    AllFastRowsAddedHandler, TableLoadedHandler);
-
-                //Task.WaitAll(tasks: /*task*/, cancellationToken: /*ct*/);
-                void AllFastRowsAddedHandler(object? sender, EventArgs e)
-                {
-                    Debug.Print($"ExplorerBrowser.Navigate.AllFastRowsAddedHandler({sender?.ToString()} {e.ToString()});");
-                }
-                void TableLoadedHandler(object? sender, EventArgs e)
-                {
-                    Debug.Print($"ExplorerBrowser.Navigate.TableLoadedHandler({sender?.ToString()} {e.ToString()});");
-                }
             }
         }
         catch (COMException comEx)
