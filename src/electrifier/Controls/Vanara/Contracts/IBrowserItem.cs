@@ -8,12 +8,8 @@ using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 
 namespace electrifier.Controls.Vanara.Contracts;
-public class AbstractBrowserItem
+public interface IBrowserItem
 {
-    internal Shell32.IShellItemArray? GetChildArray(Shell32.SVGIO opt) => null;
+    public virtual Shell32.IShellItemArray? GetChildArray(Shell32.SVGIO opt) => null;
 
-    public abstract class ABrowserItem(ShellItem shellItem) : ObservableObject
-    {
-        private readonly ShellItem _shellItem = shellItem;
-    }
 }
