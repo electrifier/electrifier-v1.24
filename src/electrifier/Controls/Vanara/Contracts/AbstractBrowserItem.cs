@@ -76,11 +76,9 @@ public class ExplorerBrowserItem : AbstractBrowserItem<ShellItem, Shell32.PIDL>
 
     public static ExplorerBrowserItem Create(ShellItem shItem) => new ExplorerBrowserItem(shItem);
 }
-public partial class ExplorerBrowserItemCollection : AbstractBrowserItemCollection<ShellItem, Shell32.PIDL>
+public partial class ExplorerBrowserItemCollection : AbstractBrowserItemCollection<ShellItem, Shell32.PIDL>, IList<ShellItem>, IList
 {
-    public ExplorerBrowserItemCollection()
-    {
-    }
+    private IList<ShellItem> _listImplementation;
 
     public override bool Remove(ShellItem item) => throw new NotImplementedException();
 
@@ -89,12 +87,17 @@ public partial class ExplorerBrowserItemCollection : AbstractBrowserItemCollecti
         get;
     }
 
-    public override bool IsReadOnly
-    {
-        get;
-    }
+    public override bool IsReadOnly { get; }
 
-    public override void Add(ShellItem item) => throw new NotImplementedException();
+    public bool IsFixedSize => throw new NotImplementedException();
+
+    public bool IsSynchronized => throw new NotImplementedException();
+
+    public object SyncRoot => throw new NotImplementedException();
+
+    object? IList.this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
+    public override void Add(ShellItem item) => _listImplementation.Add(item);
 
     public override void Clear() => throw new NotImplementedException();
 
@@ -103,6 +106,24 @@ public partial class ExplorerBrowserItemCollection : AbstractBrowserItemCollecti
     public override void CopyTo(ShellItem[] array, int arrayIndex) => throw new NotImplementedException();
 
     public override IEnumerator<ShellItem> GetEnumerator() => throw new NotImplementedException();
+    public int IndexOf(ShellItem item) => _listImplementation.IndexOf(item);
+
+    public void Insert(int index, ShellItem item) => _listImplementation.Insert(index, item);
+
+    public void RemoveAt(int index) => _listImplementation.RemoveAt(index);
+    public int Add(object? value) => throw new NotImplementedException();
+//    public override void Add(ShellItem item) => throw new NotImplementedException();
+    public bool Contains(object? value) => throw new NotImplementedException();
+    public int IndexOf(object? value) => throw new NotImplementedException();
+    public void Insert(int index, object? value) => throw new NotImplementedException();
+    public void Remove(object? value) => throw new NotImplementedException();
+    public void CopyTo(Array array, int index) => throw new NotImplementedException();
+
+    public ShellItem this[int index]
+    {
+        get => _listImplementation[index];
+        set => _listImplementation[index] = value;
+    }
 }
 
 

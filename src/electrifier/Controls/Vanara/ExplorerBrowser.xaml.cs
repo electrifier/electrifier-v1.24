@@ -14,6 +14,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
+using electrifier.Controls.Vanara.Contracts;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 namespace electrifier.Controls.Vanara;
@@ -53,12 +54,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
 
-    public Shell32ItemArray CurrentItems = [];
-
     /// <summary>Current Folder content Items, as used by <see cref="Shell32GridView"/>.</summary>
-    public ObservableCollection<ExplorerBrowserItem> CurrentFolderItems
+    public ExplorerBrowserItemCollection CurrentFolderItems
     {
-        get => (ObservableCollection<ExplorerBrowserItem>)GetValue(CurrentFolderItemsProperty);
+        get => (ExplorerBrowserItemCollection)GetValue(CurrentFolderItemsProperty);
         set => SetValue(CurrentFolderItemsProperty, value);
     }
     public static readonly DependencyProperty CurrentFolderItemsProperty = DependencyProperty.Register(
@@ -206,6 +205,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
         ShellGridView.NativeGridView.SelectionChanged += NativeGridView_SelectionChanged;
 
+
+        //CurrentFolderItems 
         // todo: ask for rootItems in callback event handler
         var rootItems = new List<ExplorerBrowserItem>
         {
