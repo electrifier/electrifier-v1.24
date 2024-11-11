@@ -1,4 +1,6 @@
 /* todo: Use Visual States for Errors, Empty folders, Empty Drives */
+
+using System.Collections;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.WinUI.Collections;
 using electrifier.Controls.Vanara.Services;
@@ -29,50 +31,28 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     private bool _isLoading;
     private readonly ShellNamespaceService _namespaceService = new();
     private Visibility _topCommandBarVisibility;
-    public ExplorerBrowserItem? CurrentFolderBrowserItem
-    {
-        get => GetValue(CurrentFolderBrowserItemProperty) as ExplorerBrowserItem;
-        set => SetValue(CurrentFolderBrowserItemProperty, value);
-    }
-    public static readonly DependencyProperty CurrentFolderBrowserItemProperty = DependencyProperty.Register(
-        nameof(CurrentFolderBrowserItem),
-        typeof(ObservableCollection<ExplorerBrowserItem>),
-        typeof(ExplorerBrowser),
-        new PropertyMetadata(null, new PropertyChangedCallback(OnCurrentFolderBrowserItemChanged))
-    );
-    private static void OnCurrentFolderBrowserItemChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        //ImageWithLabelControl iwlc = d as ImageWithLabelControl; //null checks omitted
-        var s = e.NewValue; //null checks omitted
-        if (s is ExplorerBrowserItem ebItem)
-        {
-            Debug.WriteLine($".OnCurrentFolderBrowserItemChanged(<'{ebItem.DisplayName}'>) DependencyObject <'{d}'>");
-        }
-        else
-        {
-            Debug.WriteLine($"[E].OnCurrentFolderBrowserItemChanged(): `{s}` -> ERROR:UNKNOWN TYPE! Should be <ExplorerBrowserItem>");
-        }
-    }
 
-    /// <summary>Current Folder content Items, as used by <see cref="Shell32GridView"/>.</summary>
-    public ExplorerBrowserItemCollection CurrentFolderItems
-    {
-        get => (ExplorerBrowserItemCollection)GetValue(CurrentFolderItemsProperty);
-        set => SetValue(CurrentFolderItemsProperty, value);
-    }
-    public static readonly DependencyProperty CurrentFolderItemsProperty = DependencyProperty.Register(
-        nameof(CurrentFolderItems),
-        typeof(ObservableCollection<ExplorerBrowserItem>),
-        typeof(ExplorerBrowser),
-        new PropertyMetadata(null,
-            new PropertyChangedCallback(OnCurrentFolderItemsChanged)));
-    private static void OnCurrentFolderItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        //ImageWithLabelControl iwlc = d as ImageWithLabelControl; //null checks omitted
-        var s = e.NewValue; //null checks omitted
-        Debug.Print($".OnCurrentFolderItemsChanged(): {s}");
-    }
-    private AdvancedCollectionView _advancedCollectionView;
+    
+    public AbstractBrowserItemCollection<ShellItem> CurrentItems = new();
+    private AdvancedCollectionView _shell32AdvancedCollectionView;
+    ///// <summary>Current Folder content Items, as used by <see cref="Shell32GridView"/>.</summary>
+    //public ExplorerBrowserItemCollection CurrentFolderItems
+    //{
+    //    get => (ExplorerBrowserItemCollection)GetValue(CurrentFolderItemsProperty);
+    //    set => SetValue(CurrentFolderItemsProperty, value);
+    //}
+    //public static readonly DependencyProperty CurrentFolderItemsProperty = DependencyProperty.Register(
+    //    nameof(CurrentFolderItems),
+    //    typeof(ObservableCollection<ExplorerBrowserItem>),
+    //    typeof(ExplorerBrowser),
+    //    new PropertyMetadata(null,
+    //        new PropertyChangedCallback(OnCurrentFolderItemsChanged)));
+    //private static void OnCurrentFolderItemsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    //{
+    //    //ImageWithLabelControl iwlc = d as ImageWithLabelControl; //null checks omitted
+    //    var s = e.NewValue; //null checks omitted
+    //    Debug.Print($".OnCurrentFolderItemsChanged(): {s}");
+    //}
     public int ItemCount
     {
         get => (int)GetValue(ItemCountProperty);
@@ -200,7 +180,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         InitializeComponent();
         DataContext = this;
-        _advancedCollectionView = new(CurrentFolderItems, true);
+
+        _shell32AdvancedCollectionView = new AdvancedCollectionView();
+        //_shell32AdvancedCollectionView 
+        //_advancedCollectionView = new(CurrentFolderItems, true);
         NavigationFailed += ExplorerBrowser_NavigationFailed;
         ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
         ShellGridView.NativeGridView.SelectionChanged += NativeGridView_SelectionChanged;
@@ -232,7 +215,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 is { } ebItem)
             {
                 //                Navigate(ebItem); // todo: recover initial navigation
-                CurrentFolderBrowserItem = ebItem;  // TODO; Put to OnNavigated() event-handler
+                //CurrentFolderBrowserItem = ebItem;  // TODO; Put to OnNavigated() event-handler
             }
         };
     }
@@ -325,7 +308,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 using var shFolder = new ShellFolder(targetBrowserItem.ShellItem);
 
                 // todo: warn: put to finally block
-                CurrentFolderBrowserItem = targetBrowserItem;
+                //CurrentFolderBrowserItem = targetBrowserItem;
                 //CurrentFolderItems.Clear(); // TODO: enumerate
                 IsLoading = true;
 

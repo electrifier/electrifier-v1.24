@@ -29,7 +29,7 @@
                 <StackPanel Orientation="Vertical">
                     <local:Shell32GridView x:Name="ShellGridView"
                                            BorderThickness="3"
-                                           ItemsSource="{x:Bind _advancedCollectionView}"
+                                           ItemsSource="{x:Bind CurrentItems}"
                                            Visibility="{x:Bind GridViewVisibility}" />
                 </StackPanel>
             </Border>
