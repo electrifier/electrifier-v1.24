@@ -52,6 +52,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             Debug.WriteLine($"[E].OnCurrentFolderBrowserItemChanged(): `{s}` -> ERROR:UNKNOWN TYPE! Should be <ExplorerBrowserItem>");
         }
     }
+
+    public Shell32ItemArray CurrentItems = [];
+
     /// <summary>Current Folder content Items, as used by <see cref="Shell32GridView"/>.</summary>
     public ObservableCollection<ExplorerBrowserItem> CurrentFolderItems
     {
@@ -198,7 +201,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         InitializeComponent();
         DataContext = this;
-        CurrentFolderItems = [];
         _advancedCollectionView = new(CurrentFolderItems, true);
         NavigationFailed += ExplorerBrowser_NavigationFailed;
         ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
@@ -294,23 +296,21 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         Debug.Print($".NativeGridView_SelectionChanged({newTarget})");
     }
 
-    private Task<ShellDataTable>? shDataTableTask;
-    /* todo: see DataRow.Version */
+    ///* todo: see DataRow.Version */
+    //public async Task UpdateGridView()
+    //{
+    //    //if (shDataTableTask is not null)
+    //    //{
+    //    //    await shDataTableTask;
+    //    //    var rows = shDataTableTask.Result.Rows;
+    //    //    foreach (DataRow row in rows)
+    //    //    {
+    //    //        var pidl = ShellDataTable.GetPIDL(row);
 
-    public async Task UpdateGridView()
-    {
-        if (shDataTableTask is not null)
-        {
-            await shDataTableTask;
-            var rows = shDataTableTask.Result.Rows;
-            foreach (DataRow row in rows)
-            {
-                var pidl = ShellDataTable.GetPIDL(row);
-
-                CurrentFolderItems.Add(new ExplorerBrowserItem(pidl));
-            }
-        }
-    }
+    //    //        CurrentFolderItems.Add(new ExplorerBrowserItem(pidl));
+    //    //    }
+    //    //}
+    //}
 
     /* FolderItemFilter.FlatList => für Home-Folder */
     public async void Navigate(ExplorerBrowserItem targetBrowserItem)
@@ -325,7 +325,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
                 // todo: warn: put to finally block
                 CurrentFolderBrowserItem = targetBrowserItem;
-                CurrentFolderItems.Clear();
+                //CurrentFolderItems.Clear(); // TODO: enumerate
                 IsLoading = true;
 
             }
@@ -364,7 +364,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         finally
         {
             IsLoading = false;
-            _ = UpdateGridView();
+            //_ = UpdateGridView();
         }
     }
     /// <summary>Raises the <see cref="NavigationFailed"/> event.</summary>
