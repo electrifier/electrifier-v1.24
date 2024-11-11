@@ -391,3 +391,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     #endregion Property stuff
 }
+
+
+public class BrowserItem(bool isFolder, AbstractBrowserItemCollection<ShellItem> childItems)
+    : AbstractBrowserItem<ShellItem>(isFolder, childItems)
+{
+    
+}
