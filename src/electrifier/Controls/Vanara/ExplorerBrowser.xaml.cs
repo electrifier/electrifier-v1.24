@@ -393,8 +393,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 }
 
 
-public class BrowserItem(bool isFolder, AbstractBrowserItemCollection<ShellItem> childItems)
-    : AbstractBrowserItem<ShellItem>(isFolder, childItems)
+public class BrowserItem(bool isFolder)
+    : AbstractBrowserItem<ShellItem>(isFolder, childItems: new AbstractBrowserItemCollection<ShellItem>())
 {
-    
+}
+public class BrowserItemCollection : AbstractBrowserItemCollection<BrowserItem>
+{
 }

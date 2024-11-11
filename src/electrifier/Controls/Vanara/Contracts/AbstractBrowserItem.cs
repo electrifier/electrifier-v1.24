@@ -22,7 +22,7 @@ public class AbstractBrowserItem<T>(bool isFolder, AbstractBrowserItemCollection
 }
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-public class AbstractBrowserItemCollection<T> : IEnumerable<AbstractBrowserItem<T>>, IList<AbstractBrowserItem<T>>
+public partial class AbstractBrowserItemCollection<T> : IEnumerable<AbstractBrowserItem<T>>, IList<AbstractBrowserItem<T>>
 {
     private readonly IList<AbstractBrowserItem<T>> _collection = [];
 
@@ -40,12 +40,3 @@ public class AbstractBrowserItemCollection<T> : IEnumerable<AbstractBrowserItem<
     bool ICollection<AbstractBrowserItem<T>>.Remove(AbstractBrowserItem<T> item) => _collection.Remove(item);
     void IList<AbstractBrowserItem<T>>.RemoveAt(int index) => _collection.RemoveAt(index);
 }
-
-
-/*
-public class BrowserItem : AbstractBrowserItem<ShellItem>(false, new AbstractBrowserItemCollection<ShellItem>())
-   {
-   
-   }
- */
-
