@@ -10,14 +10,13 @@ using Vanara.Windows.Shell;
 // todo: See ShellItemCollection, perhaps use this instead of ObservableCollection
 // https://github.com/dahall/Vanara/blob/master/Windows.Shell.Common/ShellObjects/ShellItemArray.cs
 
-
 namespace electrifier.Controls.Vanara;
 
-public partial class Shell32ListView : UserControl
+public sealed partial class ShellNamespaceTreeControl : UserControl
 {
-    public ListView NativeListView => ListView;
+    public TreeView NativeTreeView => TreeView;
 
-    public Shell32ListView()
+    public ShellNamespaceTreeControl()
     {
         InitializeComponent();
         DataContext = this;
@@ -27,9 +26,9 @@ public partial class Shell32ListView : UserControl
             BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
             new(ShellFolder.Desktop.PIDL, true)
         };
-        NativeListView.ItemsSource = itms;
+        TreeView.ItemsSource = itms;
 
-        //NativeGridView.ShowsScrollingPlaceholders = true;
-        //NativeGridView.ScrollBarVisibility = ScrollBarVisibility.Auto;
     }
+
+    // TODO: public object ItemFromContainer => NativeTreeView.ItemFromContainer()
 }

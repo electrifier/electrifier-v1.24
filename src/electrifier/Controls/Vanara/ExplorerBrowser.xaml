@@ -22,12 +22,12 @@
             <Border Grid.Column="0"
                     Visibility="{x:Bind TreeViewVisibility}"
                     VerticalAlignment="Top">
-                <local:Shell32TreeView x:Name="ShellTreeView"
+                <local:ShellNamespaceTreeControl x:Name="ShellTreeView"
                                        HorizontalAlignment="Stretch" />
             </Border>
             <Border Grid.Column="1">
                 <StackPanel Orientation="Vertical">
-                    <local:Shell32ListView x:Name="ShellGridView"
+                    <local:ShellListView x:Name="ShellGridView"
                                            BorderThickness="3" />
                     <!-- ItemsSource="{x:Bind CurrentItems}" -->
                 </StackPanel>
