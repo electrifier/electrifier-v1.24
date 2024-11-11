@@ -15,12 +15,19 @@ namespace electrifier.Controls.Vanara;
 
 public partial class Shell32ListView : UserControl
 {
-    //public ListView NativeListView => ListView;
+    public ListView NativeListView => ListView;
 
     public Shell32ListView()
     {
         InitializeComponent();
         DataContext = this;
+
+        var itms = new List<BrowserItem>
+        {
+            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
+            new(ShellFolder.Desktop.PIDL, true)
+        };
+        NativeListView.ItemsSource = itms;
 
         //NativeGridView.ShowsScrollingPlaceholders = true;
         //NativeGridView.ScrollBarVisibility = ScrollBarVisibility.Auto;
