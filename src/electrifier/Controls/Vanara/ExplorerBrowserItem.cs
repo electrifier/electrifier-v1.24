@@ -13,7 +13,7 @@ namespace electrifier.Controls.Vanara;
 // TODO: TreeViewNode - Property, events
 // TODO: GridViewItem - Property, events
 
-/// <summary>ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32TreeView"/> Items.</summary>
+/// <summary>ViewModel for both <see cref="Shell32ListView"/> and <see cref="Shell32TreeView"/> Items.</summary>
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
 public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
 {
@@ -39,7 +39,7 @@ public class ExplorerBrowserItem : IDisposable, INotifyPropertyChanged
     public ShellItem ShellItem { get; }
     private bool _disposedValue;
 
-    /// <summary>ViewModel for both <see cref="Shell32GridView"/> and <see cref="Shell32TreeView"/> Items.</summary>
+    /// <summary>ViewModel for both <see cref="Shell32ListView"/> and <see cref="Shell32TreeView"/> Items.</summary>
     public ExplorerBrowserItem(Shell32.PIDL shItemId, SoftwareBitmapSource? bitmapSource = null)
     {
         BitmapSource = bitmapSource;

@@ -41,7 +41,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         get; private set;
     }
-    ///// <summary>Current Folder content ListViewItems, as used by <see cref="Shell32GridView"/>.</summary>
+    ///// <summary>Current Folder content ListViewItems, as used by <see cref="Shell32ListView"/>.</summary>
     //public ExplorerBrowserItemCollection CurrentFolderItems
     //{
     //    get => (ExplorerBrowserItemCollection)GetValue(CurrentFolderItemsProperty);

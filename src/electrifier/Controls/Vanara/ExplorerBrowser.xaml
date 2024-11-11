@@ -27,7 +27,7 @@
             </Border>
             <Border Grid.Column="1">
                 <StackPanel Orientation="Vertical">
-                    <local:Shell32GridView x:Name="ShellGridView"
+                    <local:Shell32ListView x:Name="ShellGridView"
                                            BorderThickness="3" />
                     <!-- ItemsSource="{x:Bind CurrentItems}" -->
                 </StackPanel>
