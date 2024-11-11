@@ -10,7 +10,7 @@
     mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
-            <DataTemplate x:Name="ExplorerBrowserItemTemplate" x:DataType="local:ExplorerBrowserItem">
+            <DataTemplate x:Key="BrowserItemTemplate" x:DataType="local:BrowserItem">
                 <Grid>
                     <StackPanel
                         Width="72"
@@ -31,25 +31,19 @@
                     </StackPanel>
                 </Grid>
             </DataTemplate>
-            <Style x:Key="NativeGridViewItemContainerStyle" TargetType="GridViewItem">
-                <Setter Property="Background" Value="Transparent" />
-                <Setter Property="Margin" Value="8" />
-                <Setter Property="BorderThickness" Value="3" />
-            </Style>
         </Grid.Resources>
         <GridView
             x:Name="GridView"
             IsItemClickEnabled="True"
-            ItemContainerStyle="{StaticResource NativeGridViewItemContainerStyle}"
-            ItemTemplate="{StaticResource ExplorerBrowserItemTemplate}"
+            ItemTemplate="{StaticResource BrowserItemTemplate}"
             SelectionMode="Extended">
-            <GridView.ItemContainerStyleSelector>
-                <!--<ListView.ItemContainerStyle>
+            <!--<GridView.ItemContainerStyleSelector>
+                --><!--<ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                     </Style>
-                </ListView.ItemContainerStyle>-->
-            </GridView.ItemContainerStyleSelector>
+                </ListView.ItemContainerStyle>--><!--
+            </GridView.ItemContainerStyleSelector>-->
         </GridView>
     </Grid>
 </UserControl>

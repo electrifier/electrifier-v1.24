@@ -23,14 +23,12 @@
                     Visibility="{x:Bind TreeViewVisibility}"
                     VerticalAlignment="Top">
                 <local:Shell32TreeView x:Name="ShellTreeView"
-                                       HorizontalAlignment="Stretch"
-                                       ItemsSource="{x:Bind TreeViewItems}" />
+                                       HorizontalAlignment="Stretch" />
             </Border>
             <Border Grid.Column="1">
                 <StackPanel Orientation="Vertical">
                     <local:Shell32GridView x:Name="ShellGridView"
-                                           BorderThickness="3"
-                                           Visibility="{x:Bind GridViewVisibility}" />
+                                           BorderThickness="3" />
                     <!-- ItemsSource="{x:Bind CurrentItems}" -->
                 </StackPanel>
             </Border>

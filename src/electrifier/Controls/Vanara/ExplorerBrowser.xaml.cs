@@ -7,6 +7,7 @@ using electrifier.Controls.Vanara.Services;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
@@ -32,10 +33,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     private readonly ShellNamespaceService _namespaceService = new();
     private Visibility _topCommandBarVisibility;
 
-    public BrowserItemCollection ListViewItems { get; private set; }
-    public BrowserItemCollection TreeViewItems { get; private set; }
-    //public AbstractBrowserItemCollection<AbstractBrowserItem> CurrentItems = new();
-    private AdvancedCollectionView _shell32AdvancedCollectionView;
+    public ObservableCollection<BrowserItem> ListViewItems
+    {
+        get; private set;
+    }
+    public ObservableCollection<BrowserItem> TreeViewItems
+    {
+        get; private set;
+    }
     ///// <summary>Current Folder content ListViewItems, as used by <see cref="Shell32GridView"/>.</summary>
     //public ExplorerBrowserItemCollection CurrentFolderItems
     //{
@@ -182,111 +187,29 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         InitializeComponent();
         DataContext = this;
 
-        //ListViewItems = new();
-        _shell32AdvancedCollectionView = new AdvancedCollectionView(ListViewItems, true);
-        TreeViewItems = new BrowserItemCollection();
-        
+        TreeViewItems = new ObservableCollection<BrowserItem>();
+        ListViewItems = new ObservableCollection<BrowserItem>();
+
+        //TreeViewItems.Add(new BrowserItem(ShellFolder.Desktop.PIDL, true));
+        //ListViewItems.Add(new BrowserItem(ShellFolder.Desktop.PIDL, true));
+
+
+        //TreeViewItems = new BrowserItemCollection();
+
+        //_shell32AdvancedCollectionView = new AdvancedCollectionView(ListViewItems, true);
+
+
+        //TreeViewItems.Add(new BrowserItem(ShellFolder.Desktop.PIDL, true));
+        //
+
         //_shell32AdvancedCollectionView.Source = ListViewItems;
         //_shell32AdvancedCollectionView 
         //_advancedCollectionView = new(CurrentFolderItems, true);
-        NavigationFailed += ExplorerBrowser_NavigationFailed;
-        ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
-        ShellGridView.NativeGridView.SelectionChanged += NativeGridView_SelectionChanged;
+        //NavigationFailed += ExplorerBrowser_NavigationFailed;
+        //ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
+        //ShellGridView.NativeGridView.SelectionChanged += NativeGridView_SelectionChanged;
 
 
-        //CurrentFolderItems 
-        // todo: ask for rootItems in callback event handler
-        var rootItems = new List<ExplorerBrowserItem>
-        {
-            new (ShellNamespaceService.HomeShellFolder),
-            // todo: add separators
-            new(Shell32.KNOWNFOLDERID.FOLDERID_OneDrive),
-            new(Shell32.KNOWNFOLDERID.FOLDERID_Downloads),
-            new(Shell32.KNOWNFOLDERID.FOLDERID_Documents),
-            new(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
-            new(Shell32.KNOWNFOLDERID.FOLDERID_Pictures),
-            new(Shell32.KNOWNFOLDERID.FOLDERID_Music),
-            new(Shell32.KNOWNFOLDERID.FOLDERID_Videos),
-            new(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder),
-            new(Shell32.KNOWNFOLDERID.FOLDERID_NetworkFolder),
-            // todo: WARN: Check why this leads to `SyncCenter`?
-            new(Shell32.KNOWNFOLDERID.FOLDERID_ThisPCDesktop),
-            // todo: WARN: add Gallery? is this Item caused by Adobe?
-        };
-        Loading += async (sender, args) =>
-        {
-            TreeViewItems.Add(ShellFolder.Desktop);
-            ShellTreeView.ItemsSource = TreeViewItems;
-
-
-            //ShellTreeView.ItemsSource = rootItems;
-            //if (rootItems.FirstOrDefault(new ExplorerBrowserItem(Shell32.KNOWNFOLDERID.FOLDERID_Desktop))
-            //    is { } ebItem)
-            //{
-            //    //                Navigate(ebItem); // todo: recover initial navigation
-            //    //CurrentFolderBrowserItem = ebItem;  // TODO; Put to OnNavigated() event-handler
-            //}
-        };
-    }
-    private void ShellTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
-    {
-        try
-        {
-            var ebItem = (ExplorerBrowserItem?)args.AddedItems.FirstOrDefault()!;
-
-            if (ebItem is null)
-            {
-                Debug.Print($".ShellTreeView_SelectionChanged({args})");
-                return;
-            }
-
-            Debug.Print($".ShellTreeView_SelectionChanged({ebItem.DisplayName});");
-
-            // todo: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh();
-            // todo: Use CONSTANTS from ExplorerBrowser if possible
-            Navigate(ebItem);
-            // todo: add extension methods:
-            // Navigate().ThrowIfFailed;
-            // Navigate().InitialFolder();
-        }
-        catch (Exception e)
-        {
-            // todo: fire navigation failed event. Handle `IsHandled` before throwing
-            throw new ArgumentOutOfRangeException($"AddedItem is not type {nameof(ExplorerBrowserItem)}")
-            {
-                HelpLink = null,    // todo: link to github bug report
-                HResult = 0,    // todo: hresult treeview seelection failed
-                Source = $"{typeof(ExplorerBrowser)}",
-            };
-        }
-    }
-    private void NativeGridView_SelectionChanged(object sender, SelectionChangedEventArgs e)
-    {
-        var addedItems = e.AddedItems;
-        var newTarget = addedItems?.FirstOrDefault();
-        if (newTarget == null)
-        {
-            Debug.Print($".NativeGridView_SelectionChanged(`<newTarget==null>`");
-            return;
-        }
-
-        if (newTarget is ExplorerBrowserItem ebItem)
-        {
-            Debug.Print($".NativeGridView_SelectionChanged(`{ebItem.DisplayName}`)");
-
-            Navigate(ebItem); //, selectTreeViewNode: true);
-
-            // TODO: If ebItem.PIDL.Compare(CurrentFolderBrowserItem.ShellItem.PIDL) => Just Refresh()
-        }
-        // TODO: else 
-        //{
-        //    Debug.Fail(
-        //        $"ERROR: NativeGridView_SelectionChanged() addedItem {newTarget.ToString()} is NOT of type <ExplorerBrowserItem>!");
-        //    throw new ArgumentOutOfRangeException(
-        //        "$ERROR: NativeGridView_SelectionChanged() addedItem {selectedItem.ToString()} is NOT of type <ExplorerBrowserItem>!");
-        //}
-
-        Debug.Print($".NativeGridView_SelectionChanged({newTarget})");
     }
 
     ///* todo: see DataRow.Version */
@@ -306,21 +229,20 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     //}
 
     /* FolderItemFilter.FlatList => für Home-Folder */
-    public async void Navigate(ExplorerBrowserItem targetBrowserItem)
+    public async void Navigate(BrowserItem target)
     {
         try
         {
-            Debug.Print($".Navigate(`{targetBrowserItem.DisplayName}`)");
+            Debug.Print($".Navigate(`{target.DisplayName}`)");
 
-            if (targetBrowserItem.IsFolder)
+            if (target.IsFolder)
             {
-                using var shFolder = new ShellFolder(targetBrowserItem.ShellItem);
+                using var shFolder = new ShellFolder(target.ShellItem);
 
                 // todo: warn: put to finally block
                 //CurrentFolderBrowserItem = targetBrowserItem;
                 //CurrentFolderItems.Clear(); // TODO: enumerate
                 IsLoading = true;
-
             }
         }
         catch (COMException comEx)
@@ -328,7 +250,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             var navFailedEventArgs = new NavigationFailedEventArgs
             {
                 //                Hresult = comEx.HResult, // todo: put to lasterror, so com hresult handling
-                FailedLocation = targetBrowserItem.ShellItem
+                //FailedLocation = target.DisplayName;
             };
 
             if (comEx.HResult == ShellNamespaceService.HResultElementNotFound)
@@ -338,7 +260,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 //HasNavigationFailure = true;
                 //navFailedEventArgs.IsHandled = false;
 
-                OnNavigationFailed(navFailedEventArgs);
 
                 //if (navFailedEventArgs.IsHandled)
                 //{
@@ -346,12 +267,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 //}
             }
 
-            Debug.Fail($"[Error] Navigate(<{targetBrowserItem}>) failed. COMException: <Result: {comEx.HResult}>: `{comEx.Message}`");
+            Debug.Fail($"[Error] Navigate(<{target}>) failed. COMException: <Result: {comEx.HResult}>: `{comEx.Message}`");
             throw;
         }
         catch (Exception ex)
         {
-            Debug.Fail($"[Error] Navigate(<{targetBrowserItem}>) failed, reason unknown: {ex.Message}");
+            Debug.Fail($"[Error] Navigate(<{target}>) failed, reason unknown: {ex.Message}");
             throw;
         }
         finally
@@ -360,22 +281,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             //_ = UpdateGridView();
         }
     }
-    /// <summary>Raises the <see cref="NavigationFailed"/> event.</summary>
-    internal void OnNavigationFailed(NavigationFailedEventArgs? nfevent)
-    {
-        if (nfevent?.FailedLocation is null)
-        {
-            return;
-        }
 
-        NavigationFailed?.Invoke(this, nfevent);
-    }
-    private void ExplorerBrowser_NavigationFailed(object? sender, NavigationFailedEventArgs e)
-    {
-        NavigationFailure = $"Navigation failed: '{e.FailedLocation}' cannot be navigated to. <Show More Info> <Report a Bug>";
-        IsLoading = false;
-        throw new ArgumentOutOfRangeException(NavigationFailure);
-    }
 
     #region Property stuff
 
@@ -402,18 +308,21 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 }
 
 
-public class BrowserItem(Shell32.PIDL PIDL, bool isFolder)
+public class BrowserItem(Shell32.PIDL pidl, bool isFolder)
     : AbstractBrowserItem<ShellItem>(isFolder, childItems: new BrowserItemCollection())
 {
-    public readonly Shell32.PIDL PIDL;
+    public readonly Shell32.PIDL PIDL = pidl;
+    public string DisplayName => ShellItem.GetDisplayName(ShellItemDisplayString.NormalDisplay) ?? ShellItem.ToString();
+    public ShellItem ShellItem = new ShellItem(pidl);
+    public BitmapSource BitmapSource;
 
     public static BrowserItem FromPIDL(Shell32.PIDL pidl) => new(pidl, false);
     public static BrowserItem FromShellFolder(ShellFolder shellFolder) => new(shellFolder.PIDL, true);
-    public static BrowserItem FromKnownItemId(Shell32.KNOWNFOLDERID knownItemId) => new (new ShellFolder(knownItemId).PIDL, true);
+    public static BrowserItem FromKnownItemId(Shell32.KNOWNFOLDERID knownItemId) => new(new ShellFolder(knownItemId).PIDL, true);
 }
 public partial class BrowserItemCollection : AbstractBrowserItemCollection<ShellItem>, IList
 {
-    protected IList ListImplementation => new List<ShellItem>();
+    protected IList ListImplementation => new List<BrowserItem>();
     public void CopyTo(Array array, int index) => ListImplementation.CopyTo(array, index);
 
     public int Count => ListImplementation.Count;
@@ -422,7 +331,11 @@ public partial class BrowserItemCollection : AbstractBrowserItemCollection<Shell
 
     public object SyncRoot => ListImplementation.SyncRoot;
 
-    public int Add(object? value) => ListImplementation.Add(value);
+    public int Add(object? value)
+    {
+
+        return ListImplementation.Add(value);
+    }
 
     public void Clear() => ListImplementation.Clear();
 
