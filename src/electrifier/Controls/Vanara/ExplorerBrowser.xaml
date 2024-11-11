@@ -29,8 +29,8 @@
                 <StackPanel Orientation="Vertical">
                     <local:Shell32GridView x:Name="ShellGridView"
                                            BorderThickness="3"
-                                           ItemsSource="{x:Bind CurrentItems}"
                                            Visibility="{x:Bind GridViewVisibility}" />
+                    <!-- ItemsSource="{x:Bind CurrentItems}" -->
                 </StackPanel>
             </Border>
         </Grid>

@@ -14,7 +14,7 @@ using static Vanara.PInvoke.ComCtl32;
 namespace electrifier.Controls.Vanara.Contracts;
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-public class AbstractBrowserItem<T>(bool isFolder, AbstractBrowserItemCollection<T> childItems)
+public abstract class AbstractBrowserItem<T>(bool isFolder, AbstractBrowserItemCollection<T> childItems)
 {
     public readonly bool IsFolder = isFolder;
     public readonly AbstractBrowserItemCollection<T> ChildItems = childItems;
@@ -22,7 +22,7 @@ public class AbstractBrowserItem<T>(bool isFolder, AbstractBrowserItemCollection
 }
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-public partial class AbstractBrowserItemCollection<T> : IEnumerable<AbstractBrowserItem<T>>, IList<AbstractBrowserItem<T>>
+public abstract class AbstractBrowserItemCollection<T> : IEnumerable<AbstractBrowserItem<T>>, IList<AbstractBrowserItem<T>>
 {
     private readonly IList<AbstractBrowserItem<T>> _collection = [];
 

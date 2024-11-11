@@ -32,8 +32,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     private readonly ShellNamespaceService _namespaceService = new();
     private Visibility _topCommandBarVisibility;
 
-    
-    public AbstractBrowserItemCollection<ShellItem> CurrentItems = new();
+    public BrowserItemCollection Items { get; private set; }
+    //public AbstractBrowserItemCollection<AbstractBrowserItem> CurrentItems = new();
     private AdvancedCollectionView _shell32AdvancedCollectionView;
     ///// <summary>Current Folder content Items, as used by <see cref="Shell32GridView"/>.</summary>
     //public ExplorerBrowserItemCollection CurrentFolderItems
@@ -181,7 +181,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         InitializeComponent();
         DataContext = this;
 
+        Items = new();
         _shell32AdvancedCollectionView = new AdvancedCollectionView();
+        //_shell32AdvancedCollectionView.Source = Items;
         //_shell32AdvancedCollectionView 
         //_advancedCollectionView = new(CurrentFolderItems, true);
         NavigationFailed += ExplorerBrowser_NavigationFailed;
@@ -393,10 +395,16 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 }
 
 
-public class BrowserItem(bool isFolder)
-    : AbstractBrowserItem<ShellItem>(isFolder, childItems: new AbstractBrowserItemCollection<ShellItem>())
+public class BrowserItem(Shell32.PIDL PIDL, bool isFolder)
+    : AbstractBrowserItem<ShellItem>(isFolder, childItems: new BrowserItemCollection())
 {
+    public readonly Shell32.PIDL PIDL;
+
+    public static BrowserItem FromPIDL(Shell32.PIDL pidl) => new(pidl, false);
+    public static BrowserItem FromShellFolder(ShellFolder shellFolder) => new(shellFolder.PIDL, true);
+    public static BrowserItem FromKnownItemId(Shell32.KNOWNFOLDERID knownItemId) => new (new ShellFolder(knownItemId).PIDL, true);
 }
-public class BrowserItemCollection : AbstractBrowserItemCollection<BrowserItem>
+public partial class BrowserItemCollection : AbstractBrowserItemCollection<ShellItem>
 {
+
 }
