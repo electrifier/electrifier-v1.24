@@ -20,15 +20,14 @@
                                   MinWidth="76" />
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0"
-                    Visibility="{x:Bind TreeViewVisibility}"
                     VerticalAlignment="Top">
                 <local:ShellNamespaceTreeControl x:Name="ShellTreeView"
-                                       HorizontalAlignment="Stretch" />
+                                                 HorizontalAlignment="Stretch" />
             </Border>
             <Border Grid.Column="1">
                 <StackPanel Orientation="Vertical">
                     <local:ShellListView x:Name="ShellGridView"
-                                           BorderThickness="3" />
+                                         BorderThickness="3" />
                     <!-- ItemsSource="{x:Bind CurrentItems}" -->
                 </StackPanel>
             </Border>

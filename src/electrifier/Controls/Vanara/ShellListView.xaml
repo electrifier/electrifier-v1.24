@@ -19,7 +19,6 @@
                                Height="48"
                                Source="{x:Bind BitmapSource}" />
                         <!--  ImageExOpened="ImageEx_ImageExOpened"  -->
-                        <!--  CornerRadius="8"  -->
                         <TextBlock VerticalAlignment="Center"
                                    FontSize="12"
                                    HorizontalTextAlignment="Center"
@@ -32,13 +31,6 @@
         <ListView x:Name="ListView"
                   IsItemClickEnabled="True"
                   ItemTemplate="{StaticResource BrowserItemTemplate}">
-            <!--<GridView.ItemContainerStyleSelector> -->
-            <!--<ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </GridView.ItemContainerStyleSelector>-->
         </ListView>
     </Grid>
 </UserControl>

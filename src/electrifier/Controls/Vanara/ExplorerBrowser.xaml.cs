@@ -28,26 +28,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
     private bool _isLoading;
     private readonly ShellNamespaceService _namespaceService = new();
-    private Visibility _topCommandBarVisibility;
-
-    public ObservableCollection<BrowserItem> ListViewItems
-    {
-        get; private set;
-    }
-    public ObservableCollection<BrowserItem> TreeViewItems
-    {
-        get; private set;
-    }
-    public string NavigationFailure
-    {
-        get => (string)GetValue(NavigationFailureProperty);
-        set => SetValue(NavigationFailureProperty, value);
-    }
-    public static readonly DependencyProperty NavigationFailureProperty = DependencyProperty.Register(
-        nameof(NavigationFailure),
-        typeof(string),
-        typeof(ExplorerBrowser),
-        new PropertyMetadata(string.Empty));
+    public ObservableCollection<BrowserItem> ListViewItems = new();
+    public ObservableCollection<BrowserItem> TreeViewItems = new();
     public bool IsLoading
     {
         get => _isLoading;
@@ -62,8 +44,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    /// <summary>Fires when either a Navigating listener cancels the navigation, or if the operating system determines that navigation is not possible.</summary>
-    public event EventHandler<NavigationFailedEventArgs>? NavigationFailed;
+
     /// <summary>ExplorerBrowser Implementation for WinUI3.</summary>
     public ExplorerBrowser()
     {
@@ -73,43 +54,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         TreeViewItems = new ObservableCollection<BrowserItem>();
         ListViewItems = new ObservableCollection<BrowserItem>();
 
-        //TreeViewItems.Add(new BrowserItem(ShellFolder.Desktop.PIDL, true));
-        //ListViewItems.Add(new BrowserItem(ShellFolder.Desktop.PIDL, true));
-
-
-        //TreeViewItems = new BrowserItemCollection();
-
-        //_shell32AdvancedCollectionView = new AdvancedCollectionView(ListViewItems, true);
-
-
-        //TreeViewItems.Add(new BrowserItem(ShellFolder.Desktop.PIDL, true));
-        //
-
-        //_shell32AdvancedCollectionView.Source = ListViewItems;
-        //_shell32AdvancedCollectionView 
-        //_advancedCollectionView = new(CurrentFolderItems, true);
-        //NavigationFailed += ExplorerBrowser_NavigationFailed;
-        //ShellTreeView.NativeTreeView.SelectionChanged += ShellTreeView_SelectionChanged;
-        //ShellGridView.NativeGridView.SelectionChanged += NativeGridView_SelectionChanged;
-
-
     }
 
     ///* todo: see DataRow.Version */
-    //public async Task UpdateGridView()
-    //{
-    //    //if (shDataTableTask is not null)
-    //    //{
-    //    //    await shDataTableTask;
-    //    //    var rows = shDataTableTask.Result.Rows;
-    //    //    foreach (DataRow row in rows)
-    //    //    {
-    //    //        var pidl = ShellDataTable.GetPIDL(row);
-
-    //    //        CurrentFolderItems.Add(new ExplorerBrowserItem(pidl));
-    //    //    }
-    //    //}
-    //}
 
     /* FolderItemFilter.FlatList => für Home-Folder */
     public async void Navigate(BrowserItem target)

@@ -209,11 +209,7 @@
         <Grid x:Name="SplitViewGrid"
               Grid.Row="1">
             <Border x:Name="PrimaryExplorerBrowserBorder">
-                <vanara:ExplorerBrowser x:Name="PrimaryExplorerBrowserControl"
-                                        BottomAppBarVisibility="Collapsed"
-                                        BottomCommandBarVisibility="Visible"
-                                        GridViewVisibility="Visible"
-                                        TopCommandBarVisibility="Collapsed" />
+                <vanara:ExplorerBrowser x:Name="PrimaryExplorerBrowserControl" />
             </Border>
         </Grid>
         <CommandBar Grid.Row="2"
