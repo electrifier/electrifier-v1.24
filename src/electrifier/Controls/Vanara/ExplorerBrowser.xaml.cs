@@ -27,7 +27,6 @@ using Visibility = Microsoft.UI.Xaml.Visibility;
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
     private bool _isLoading;
-    private readonly ShellNamespaceService _namespaceService = new();
     public List<BrowserItem> ListViewItems = [];
     public List<BrowserItem> TreeViewItems = [];
     public bool IsLoading
@@ -56,7 +55,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         TreeViewItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
         TreeViewItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
         AdvancedCollectionView acv = new(TreeViewItems, true);
-        this.ShellTreeView.NativeTreeView.ItemsSource = acv;
+        ShellTreeView.NativeTreeView.ItemsSource = acv;
 
         Navigate(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
     }
@@ -81,7 +80,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 target.ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
 
                 AdvancedCollectionView acvTree = new(target.ChildItems, true);
-                this.ShellTreeView.NativeTreeView.ItemsSource = acvTree;
+                ShellTreeView.NativeTreeView.ItemsSource = acvTree;
 
                 AdvancedCollectionView acvList = new(target.ChildItems, true);
                 //this.ShellListView.NativeListView.ItemsSource = acvList;
@@ -133,9 +132,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 public class BrowserItem(Shell32.PIDL pidl, bool isFolder)
     : AbstractBrowserItem<ShellItem>(isFolder, childItems: new BrowserItemCollection())
 {
-    public readonly Shell32.PIDL PIDL = new Shell32.PIDL(pidl);
+    public readonly Shell32.PIDL PIDL = new(pidl);
     public string DisplayName => ShellItem.GetDisplayName(ShellItemDisplayString.NormalDisplay) ?? ShellItem.ToString();
-    public ShellItem ShellItem = new ShellItem(pidl);
+    public ShellItem ShellItem = new (pidl);
     public SoftwareBitmapSource SoftwareBitmapSource = ShellNamespaceService.DefaultDocumentAssocImageBitmapSource;
     public new List<BrowserItem> ChildItems = [];
     public static BrowserItem FromPIDL(Shell32.PIDL pidl) => new(pidl, false);
@@ -162,7 +161,7 @@ public partial class BrowserItemCollection : List<ShellItem>, IList
     protected IList ListImplementation => new List<BrowserItem>();
     public void CopyTo(Array array, int index) => ListImplementation.CopyTo(array, index);
 
-    public int Count => ListImplementation.Count;
+    public new int Count => ListImplementation.Count;
 
     public bool IsSynchronized => ListImplementation.IsSynchronized;
 
@@ -174,7 +173,7 @@ public partial class BrowserItemCollection : List<ShellItem>, IList
         return ListImplementation.Add(value);
     }
 
-    public void Clear() => ListImplementation.Clear();
+    public new void Clear() => ListImplementation.Clear();
 
     public bool Contains(object? value) => ListImplementation.Contains(value);
 
@@ -184,13 +183,13 @@ public partial class BrowserItemCollection : List<ShellItem>, IList
 
     public void Remove(object? value) => ListImplementation.Remove(value);
 
-    public void RemoveAt(int index) => ListImplementation.RemoveAt(index);
+    public new void RemoveAt(int index) => ListImplementation.RemoveAt(index);
 
     public bool IsFixedSize => ListImplementation.IsFixedSize;
 
     public bool IsReadOnly => ListImplementation.IsReadOnly;
 
-    public object? this[int index]
+    public new object? this[int index]
     {
         get => ListImplementation[index];
         set => ListImplementation[index] = value;

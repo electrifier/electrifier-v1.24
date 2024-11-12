@@ -21,12 +21,16 @@ public partial class ShellNamespaceTreeControl : UserControl
         InitializeComponent();
         DataContext = this;
 
+        var desk = BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop);
+        desk.ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder) );
+
         var itms = new List<BrowserItem>
         {
+            desk,
             BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
             BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder),
-            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
             BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AccountPictures),
+            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos),
         };
         TreeView.ItemsSource = itms;
     }
