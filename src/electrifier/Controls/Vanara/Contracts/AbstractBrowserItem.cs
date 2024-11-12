@@ -14,10 +14,10 @@ using static Vanara.PInvoke.ComCtl32;
 namespace electrifier.Controls.Vanara.Contracts;
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-public abstract class AbstractBrowserItem<T>(bool isFolder, AbstractBrowserItemCollection<T> childItems)
+public abstract class AbstractBrowserItem<T>(bool isFolder, List<T> childItems)
 {
     public readonly bool IsFolder = isFolder;
-    protected AbstractBrowserItemCollection<T> ChildItems = childItems;
+    protected List<T> ChildItems = childItems;
     public new string ToString() => $"AbstractBrowserItem<{typeof(T)}>('no_folder')";
 }
 

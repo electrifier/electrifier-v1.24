@@ -28,8 +28,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
     private bool _isLoading;
     private readonly ShellNamespaceService _namespaceService = new();
-    public ObservableCollection<BrowserItem> ListViewItems = new();
-    public ObservableCollection<BrowserItem> TreeViewItems = new();
+    public List<BrowserItem> ListViewItems = [];
+    public List<BrowserItem> TreeViewItems = [];
     public bool IsLoading
     {
         get => _isLoading;
@@ -51,19 +51,16 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         InitializeComponent();
         DataContext = this;
 
-        var newItm = BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop);
+        TreeViewItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
+        TreeViewItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
+        TreeViewItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
+        TreeViewItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
+        AdvancedCollectionView acv = new(TreeViewItems, true);
+        this.ShellTreeView.NativeTreeView.ItemsSource = acv;
 
-        //newItm.ChildItems = new ObservableCollection<BrowserItem>
-        //{
-
-        //};
-        //newItm.ChildItems.
-
+        Navigate(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
     }
 
-    ///* todo: see DataRow.Version */
-
-    /* FolderItemFilter.FlatList => für Home-Folder */
     public async void Navigate(BrowserItem target)
     {
         Debug.Print($".Navigate(`{target.DisplayName}`)");
@@ -78,30 +75,20 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 //CurrentFolderBrowserItem = targetBrowserItem;
                 //CurrentFolderItems.Clear(); // TODO: enumerate
                 IsLoading = true;
+                target.ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
+                target.ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
+                target.ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
+                target.ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
+
+                AdvancedCollectionView acvTree = new(target.ChildItems, true);
+                this.ShellTreeView.NativeTreeView.ItemsSource = acvTree;
+
+                AdvancedCollectionView acvList = new(target.ChildItems, true);
+                //this.ShellListView.NativeListView.ItemsSource = acvList;
             }
         }
         catch (COMException comEx)
         {
-            var navFailedEventArgs = new NavigationFailedEventArgs
-            {
-                //                Hresult = comEx.HResult, // todo: put to lasterror, so com hresult handling
-                //FailedLocation = target.DisplayName;
-            };
-
-            if (comEx.HResult == ShellNamespaceService.HResultElementNotFound)
-            {
-                Debug.WriteLine($"[Error] {comEx.HResult}: {navFailedEventArgs}");
-                //NavigationFailure = msg;
-                //HasNavigationFailure = true;
-                //navFailedEventArgs.IsHandled = false;
-
-
-                //if (navFailedEventArgs.IsHandled)
-                //{
-                //    return;
-                //}
-            }
-
             Debug.Fail($"[Error] Navigate(<{target}>) failed. COMException: <Result: {comEx.HResult}>: `{comEx.Message}`");
             throw;
         }
@@ -150,20 +137,27 @@ public class BrowserItem(Shell32.PIDL pidl, bool isFolder)
     public string DisplayName => ShellItem.GetDisplayName(ShellItemDisplayString.NormalDisplay) ?? ShellItem.ToString();
     public ShellItem ShellItem = new ShellItem(pidl);
     public SoftwareBitmapSource SoftwareBitmapSource = ShellNamespaceService.DefaultDocumentAssocImageBitmapSource;
-    public new List<BrowserItem> ChildItems;
-    /*
-     *    internal static SoftwareBitmapSource DefaultFolderImageBitmapSource;
-       internal static SoftwareBitmapSource DefaultDocumentAssocImageBitmapSource;
-
-     *
-     */
+    public new List<BrowserItem> ChildItems = [];
     public static BrowserItem FromPIDL(Shell32.PIDL pidl) => new(pidl, false);
     public static BrowserItem FromShellFolder(ShellFolder shellFolder) => new(shellFolder.PIDL, true);
     public static BrowserItem FromKnownItemId(Shell32.KNOWNFOLDERID knownItemId) => new(new ShellFolder(knownItemId).PIDL, true);
+
+    public Task<int> Enumerate()
+    {
+        ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
+        ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
+        ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
+        ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
+        ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
+        ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
+        ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
+        ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
+        return Task.CompletedTask as Task<int>;
+    }
 }
 
 
-public partial class BrowserItemCollection : AbstractBrowserItemCollection<ShellItem>, IList
+public partial class BrowserItemCollection : List<ShellItem>, IList
 {
     protected IList ListImplementation => new List<BrowserItem>();
     public void CopyTo(Array array, int index) => ListImplementation.CopyTo(array, index);

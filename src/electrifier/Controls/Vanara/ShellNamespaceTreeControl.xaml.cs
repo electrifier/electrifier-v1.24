@@ -12,7 +12,7 @@ using Vanara.Windows.Shell;
 
 namespace electrifier.Controls.Vanara;
 
-public sealed partial class ShellNamespaceTreeControl : UserControl
+public partial class ShellNamespaceTreeControl : UserControl
 {
     public TreeView NativeTreeView => TreeView;
 
