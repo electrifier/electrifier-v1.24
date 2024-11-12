@@ -22,6 +22,10 @@
                 </Grid>
             </DataTemplate>
         </Grid.Resources>
-        <ItemsView x:Name="ItemsView"/>
+        <!--<ItemsView x:Name="ItemsView"/>-->
+        <ListView x:Name="ListView"
+                  IsItemClickEnabled="True"
+                  ItemTemplate="{StaticResource BrowserItemTemplate}">
+        </ListView>
     </Grid>
 </UserControl>
