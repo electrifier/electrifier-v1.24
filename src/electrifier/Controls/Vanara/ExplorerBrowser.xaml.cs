@@ -42,6 +42,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
 
+    public ShellNamespaceService NamespaceService => new ShellNamespaceService();
+
     /// <summary>ExplorerBrowser Implementation for WinUI3.</summary>
     public ExplorerBrowser()
     {
@@ -50,8 +52,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeView_SelectionChanged;
         //Navigate(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
-
-        var _service = new ShellNamespaceService();
     }
 
     public async void Navigate(BrowserItem target)
@@ -73,7 +73,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             {
                 if(child.IsFolder)
                     target.ChildItems.Add(new BrowserItem(child.PIDL, true));
-                ShellListView.Items.Add(new BrowserItem(child.PIDL, true));
+                ShellListView.Items.Add(new BrowserItem(child.PIDL, child.IsFolder));
             }
 
         }

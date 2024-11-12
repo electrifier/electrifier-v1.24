@@ -101,6 +101,6 @@ public sealed partial class ShellPage
     }
     private void NavigationView_SelectionChanged(NavigationView sender, NavigationViewSelectionChangedEventArgs args)
     {
-        Debug.Print("NavigationView_SelectionChanged todo:");
+        Debug.Print(".ShellPage().NavigationView_SelectionChanged()");
     }
 }

@@ -36,12 +36,12 @@ public partial class ShellNamespaceService
     internal StockIcon SiFolderOpen = new(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);  // overlay: SIID_FOLDERFRONT, SIID_FOLDERBACK
     internal StockIcon SiDocumentWithAssociation = new(SHSTOCKICONID.SIID_DOCASSOC);
     internal StockIcon SiLinkOverlay = new(SHSTOCKICONID.SIID_LINK);
-    private Task? _stockIconTask;
+    public Task? StockIconTask;
     public ShellNamespaceService()
     {
         IconExtractor = new(ShellFolder.Desktop);
         IconExtractorBitmaps = IconExtractor.ImageList;
-        _stockIconTask = InitializeStockIcons();
+        StockIconTask = InitializeStockIcons();
     }
 
     // TODO: Add await event handler to every ebItem, so Icon Extractor can call back the item
@@ -66,65 +66,6 @@ public partial class ShellNamespaceService
 
         return shDataTable;
     }
-
-
-    //var ct = new CancellationToken();
-
-    //if (parentItem is null)
-    //{
-    //    yield break;
-    //}
-
-    ///*  public bool Wait(TimeSpan timeout) {
-    //        long totalMilliseconds = (long)timeout.TotalMilliseconds;
-    //        if (totalMilliseconds < -1 || totalMilliseconds > int.MaxValue)
-    //            { throw new ArgumentOutOfRangeException(nameof(timeout)); }
-
-    //        return Wait((int)totalMilliseconds, new CancellationToken());
-    //    } */
-
-    //try
-    //{
-    //    /* var ext = new ShellIconExtractor(new ShellFolder(parentItem.ShellItem));
-    //       ext.Complete += ShellIconExtractorComplete;
-    //       ext.IconExtracted += ShellIconExtractorIconExtracted;
-    //       ext.Start(); */
-    //    Debug.Assert(parentItem.ShellItem.PIDL != Shell32.PIDL.Null);
-    //    var shItemId = parentItem.ShellItem.PIDL;
-    //    using var shFolder = new ShellFolder(shItemId);
-
-    //    if ((shFolder.Attributes & ShellItemAttribute.Removable) != 0)
-    //    {
-    //        // TODO: Check for Disc in Drive, fail only if device not present
-    //        // TODO: Add `Eject-Buttons` to TreeView (right side, instead of TODO: Pin header) and GridView
-    //        Debug.WriteLine($"GetChildItems: IsRemovable = true");
-    //        var eventArgs = new NavigationFailedEventArgs();
-    //        yield break;
-    //    }
-
-    //    var ext = new TempShellIconExtractor(new ShellFolder(parentItem.ShellItem));
-
-    //    ext.Complete += new((sender, args) =>
-    //    {
-    //        Debug.Assert(sender.Equals(ext));
-    //        Debug.WriteLine($".IAsyncEnumerable<ExplorerBrowserItem> RequestChildItemsAsync(ExplorerBrowserItem? parentItem) completed.");
-    //    });
-    //    ext.IconExtracted += new((sender, args) =>
-    //    {
-    //        var shItem = args.ItemID;
-    //        var idx = args.ImageListIndex;
-    //        Debug.Assert(sender.Equals(ext));
-    //        //Yield Awaitable return new ExplorerBrowserItem(args.ItemID, args.ImageListIndex);
-    //    });
-    //    ext.Start();
-
-    //    // DispatcherTimer
-    //}
-    //catch (Exception e)
-    //{
-    //    Console.WriteLine(e);
-    //    throw;
-    //}
 
     /// <summary>
     /// <see href="https://github.com/dahall/Vanara/blob/Windows.Shell.Common/StockIcon.cs"/>
@@ -163,7 +104,6 @@ public partial class ShellNamespaceService
 
         return await GetWinUi3BitmapSourceFromGdiBitmap(bitmapIcon.ToBitmap());
     }
-
     public static async Task<SoftwareBitmapSource?> GetWinUi3BitmapSourceFromGdiBitmap(Bitmap gdiBitmap)
     {
         ArgumentNullException.ThrowIfNull(gdiBitmap);
