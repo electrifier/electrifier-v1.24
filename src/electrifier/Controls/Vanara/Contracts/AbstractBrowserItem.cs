@@ -18,7 +18,7 @@ public abstract class AbstractBrowserItem<T>(bool isFolder, List<T> childItems)
 {
     public readonly bool IsFolder = isFolder;
     protected List<T> ChildItems = childItems;
-    public new string ToString() => $"AbstractBrowserItem<{typeof(T)}>('no_folder')";
+    public new string ToString() => $"AbstractBrowserItem<{typeof(T)}>(isFolder {isFolder}, childItems {childItems})";
 }
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]

@@ -25,29 +25,33 @@ public partial class ShellNamespaceTreeControl : UserControl
     {
         InitializeComponent();
         DataContext = this;
-
         Items = new ObservableCollection<BrowserItem>();
         _advancedCollectionView = new AdvancedCollectionView(Items, true);
+
+        Loading += ShellNamespaceTreeControl_Loading;
         NativeTreeView.ItemsSource = _advancedCollectionView;
-
-        var desk = BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop);
-        desk.ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder) );
-        Items.Add(desk);
-
         NativeTreeView.SelectionChanged += NativeTreeView_SelectionChanged;
+    }
 
+    private void ShellNamespaceTreeControl_Loading(FrameworkElement sender, object args)
+    {
+        var desk = BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop);
+        desk.ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder));
+        Items.Add(desk);
+        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AccountPictures));
+        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Music));
+        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Documents));
     }
 
     private void NativeTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
-        Debug.Print($"NativeTreeView_SelectionChanged()");
-        var snd = sender;
-        var argsitem = args;
-
-        if (snd != null)
+        if (sender == null)
         {
-            var additm = args.AddedItems;
-            var remitm = args.RemovedItems;
+            Debug.Print($"WARN NativeTreeView_SelectionChanged({sender: null})");
+        }
+        if (args.AddedItems.FirstOrDefault() is BrowserItem addedItem)
+        {
+            Debug.Print($".NativeTreeView_SelectionChanged({addedItem})");
         }
     }
 

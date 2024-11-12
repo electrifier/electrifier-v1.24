@@ -49,7 +49,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         DataContext = this;
 
         ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeView_SelectionChanged;
-        Navigate(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
+        //Navigate(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
     }
 
     public async void Navigate(BrowserItem target)
@@ -106,6 +106,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             {
                 ShellListView.Items.Add(BrowserItem.FromPIDL(childItem.PIDL));
             }
+
+            Navigate(folder);
         }
     }
 
@@ -148,12 +150,12 @@ public class BrowserItem(Shell32.PIDL pidl, bool isFolder)
     public static BrowserItem FromShellFolder(ShellFolder shellFolder) => new(shellFolder.PIDL, true);
     public static BrowserItem FromKnownItemId(Shell32.KNOWNFOLDERID knownItemId) => new(new ShellFolder(knownItemId).PIDL, true);
 
-    public Task<int> Enumerate()
-    {
-        ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
-        ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
-        return Task.CompletedTask as Task<int>;
-    }
+    //public Task<int> Enumerate()
+    //{
+    //    ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
+    //    ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
+    //    return Task.CompletedTask as Task<int>;
+    //}
 }
 
 
