@@ -25,7 +25,9 @@ public partial class ShellListView : UserControl
         var itms = new List<BrowserItem>
         {
             BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
-            new(ShellFolder.Desktop.PIDL, true)
+            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder),
+            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
+            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AccountPictures),
         };
         NativeListView.ItemsSource = itms;
 

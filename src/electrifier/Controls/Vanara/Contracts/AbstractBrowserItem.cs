@@ -17,7 +17,7 @@ namespace electrifier.Controls.Vanara.Contracts;
 public abstract class AbstractBrowserItem<T>(bool isFolder, AbstractBrowserItemCollection<T> childItems)
 {
     public readonly bool IsFolder = isFolder;
-    public readonly AbstractBrowserItemCollection<T> ChildItems = childItems;
+    protected AbstractBrowserItemCollection<T> ChildItems = childItems;
     public new string ToString() => $"AbstractBrowserItem<{typeof(T)}>('no_folder')";
 }
 

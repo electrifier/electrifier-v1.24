@@ -51,8 +51,13 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         InitializeComponent();
         DataContext = this;
 
-        TreeViewItems = new ObservableCollection<BrowserItem>();
-        ListViewItems = new ObservableCollection<BrowserItem>();
+        var newItm = BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop);
+
+        //newItm.ChildItems = new ObservableCollection<BrowserItem>
+        //{
+
+        //};
+        //newItm.ChildItems.
 
     }
 
@@ -61,10 +66,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     /* FolderItemFilter.FlatList => für Home-Folder */
     public async void Navigate(BrowserItem target)
     {
+        Debug.Print($".Navigate(`{target.DisplayName}`)");
+
         try
         {
-            Debug.Print($".Navigate(`{target.DisplayName}`)");
-
             if (target.IsFolder)
             {
                 using var shFolder = new ShellFolder(target.ShellItem);
@@ -141,15 +146,23 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 public class BrowserItem(Shell32.PIDL pidl, bool isFolder)
     : AbstractBrowserItem<ShellItem>(isFolder, childItems: new BrowserItemCollection())
 {
-    public readonly Shell32.PIDL PIDL = pidl;
+    public readonly Shell32.PIDL PIDL = new Shell32.PIDL(pidl);
     public string DisplayName => ShellItem.GetDisplayName(ShellItemDisplayString.NormalDisplay) ?? ShellItem.ToString();
     public ShellItem ShellItem = new ShellItem(pidl);
-    public BitmapSource BitmapSource;
+    public SoftwareBitmapSource SoftwareBitmapSource = ShellNamespaceService.DefaultDocumentAssocImageBitmapSource;
+    public new List<BrowserItem> ChildItems;
+    /*
+     *    internal static SoftwareBitmapSource DefaultFolderImageBitmapSource;
+       internal static SoftwareBitmapSource DefaultDocumentAssocImageBitmapSource;
 
+     *
+     */
     public static BrowserItem FromPIDL(Shell32.PIDL pidl) => new(pidl, false);
     public static BrowserItem FromShellFolder(ShellFolder shellFolder) => new(shellFolder.PIDL, true);
     public static BrowserItem FromKnownItemId(Shell32.KNOWNFOLDERID knownItemId) => new(new ShellFolder(knownItemId).PIDL, true);
 }
+
+
 public partial class BrowserItemCollection : AbstractBrowserItemCollection<ShellItem>, IList
 {
     protected IList ListImplementation => new List<BrowserItem>();

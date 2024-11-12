@@ -11,14 +11,14 @@
         <Grid.Resources>
             <DataTemplate x:Name="BrowserItemTemplate"
                           x:DataType="local:BrowserItem">
-                <TreeViewItem>
+                <TreeViewItem ItemsSource="{x:Bind ChildItems}">
                     <Grid>
                         <StackPanel HorizontalAlignment="Stretch"
                                     MaxHeight="23"
                                     Orientation="Horizontal">
                             <!-- todo: add overlay for shared, links etc. -->
                             <Image Name="Image"
-                                   Source="{x:Bind BitmapSource}"
+                                   Source="{x:Bind SoftwareBitmapSource}"
                                    Visibility="Visible" />
                             <TextBlock x:Name="TextBlock"
                                        Margin="5,0,5,0"

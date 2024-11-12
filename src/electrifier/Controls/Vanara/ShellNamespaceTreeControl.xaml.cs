@@ -24,10 +24,11 @@ public sealed partial class ShellNamespaceTreeControl : UserControl
         var itms = new List<BrowserItem>
         {
             BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
-            new(ShellFolder.Desktop.PIDL, true)
+            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder),
+            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
+            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AccountPictures),
         };
         TreeView.ItemsSource = itms;
-
     }
 
     // TODO: public object ItemFromContainer => NativeTreeView.ItemFromContainer()

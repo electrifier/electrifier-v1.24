@@ -17,7 +17,7 @@
                                 Orientation="Vertical">
                         <Image Name="Image"
                                Height="48"
-                               Source="{x:Bind BitmapSource}" />
+                               Source="{x:Bind SoftwareBitmapSource}" />
                         <!--  ImageExOpened="ImageEx_ImageExOpened"  -->
                         <TextBlock VerticalAlignment="Center"
                                    FontSize="12"
