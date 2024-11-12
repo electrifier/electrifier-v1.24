@@ -12,16 +12,14 @@
             <DataTemplate x:Key="BrowserItemTemplate"
                           x:DataType="local:BrowserItem">
                 <Grid>
-                    <StackPanel Width="72"
-                                Height="112"
-                                Orientation="Vertical">
+                    <StackPanel>
                         <Image Name="Image"
-                               Height="48"
+                               Height="23"
                                Source="{x:Bind SoftwareBitmapSource}" />
                         <!--  ImageExOpened="ImageEx_ImageExOpened"  -->
                         <TextBlock VerticalAlignment="Center"
                                    FontSize="12"
-                                   HorizontalTextAlignment="Center"
+                                   HorizontalTextAlignment="Left"
                                    Text="{x:Bind DisplayName}"
                                    TextWrapping="Wrap" />
                     </StackPanel>

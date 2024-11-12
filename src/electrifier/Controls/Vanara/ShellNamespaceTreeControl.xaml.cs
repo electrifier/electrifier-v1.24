@@ -5,6 +5,9 @@ using System.ComponentModel;
 using System.Diagnostics;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
+using Windows.Foundation;
+using CommunityToolkit.WinUI.Collections;
+using System.Collections.ObjectModel;
 
 // todo: For EnumerateChildren-Calls, add HWND handle
 // todo: See ShellItemCollection, perhaps use this instead of ObservableCollection
@@ -15,24 +18,37 @@ namespace electrifier.Controls.Vanara;
 public partial class ShellNamespaceTreeControl : UserControl
 {
     public TreeView NativeTreeView => TreeView;
+    public ObservableCollection<BrowserItem> Items;
+    private AdvancedCollectionView _advancedCollectionView;
 
     public ShellNamespaceTreeControl()
     {
         InitializeComponent();
         DataContext = this;
 
+        Items = new ObservableCollection<BrowserItem>();
+        _advancedCollectionView = new AdvancedCollectionView(Items, true);
+        NativeTreeView.ItemsSource = _advancedCollectionView;
+
         var desk = BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop);
         desk.ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder) );
+        Items.Add(desk);
 
-        var itms = new List<BrowserItem>
+        NativeTreeView.SelectionChanged += NativeTreeView_SelectionChanged;
+
+    }
+
+    private void NativeTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
+    {
+        Debug.Print($"NativeTreeView_SelectionChanged()");
+        var snd = sender;
+        var argsitem = args;
+
+        if (snd != null)
         {
-            desk,
-            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
-            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder),
-            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AccountPictures),
-            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos),
-        };
-        NativeTreeView.ItemsSource = itms;
+            var additm = args.AddedItems;
+            var remitm = args.RemovedItems;
+        }
     }
 
     // TODO: public object ItemFromContainer => NativeTreeView.ItemFromContainer()

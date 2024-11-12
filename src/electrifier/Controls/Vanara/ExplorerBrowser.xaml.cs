@@ -27,7 +27,7 @@ using Visibility = Microsoft.UI.Xaml.Visibility;
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
     private bool _isLoading;
-    public List<BrowserItem> ListViewItems = [];
+    //public List<BrowserItem> ListViewItems = [];
     public List<BrowserItem> TreeViewItems = [];
     public bool IsLoading
     {
@@ -64,21 +64,16 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         try
         {
+            IsLoading = true;
             using var shFolder = new ShellFolder(target.ShellItem);
 
-            // todo: warn: put to finally block
-            //CurrentFolderBrowserItem = targetBrowserItem;
-            //CurrentFolderItems.Clear(); // TODO: enumerate
-            IsLoading = true;
-
-            var items = target.ChildItems;
-            foreach (var item in items)
+            ShellListView.Items.Clear();
+            foreach (var child in shFolder)
             {
-                target.ChildItems.Add(item);
-
-                TreeViewItems.Add(item);
-                ListViewItems.Add(item);
+                target.ChildItems.Add(new BrowserItem(child.PIDL, true));
+                ShellListView.Items.Add(new BrowserItem(child.PIDL, true));
             }
+
         }
         catch (COMException comEx)
         {

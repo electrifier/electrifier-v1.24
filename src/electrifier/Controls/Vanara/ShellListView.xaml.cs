@@ -18,22 +18,22 @@ namespace electrifier.Controls.Vanara;
 public partial class ShellListView : UserControl
 {
     public ListView NativeListView => ListView;
-    private ObservableCollection<BrowserItem> _ListObservableCollection;
+    public ObservableCollection<BrowserItem> Items;
     private AdvancedCollectionView _advancedCollectionView;
 
     public ShellListView()
     {
         InitializeComponent();
         DataContext = this;
-        _ListObservableCollection = new ObservableCollection<BrowserItem>();
-        _advancedCollectionView = new AdvancedCollectionView(_ListObservableCollection, true);
+        Items = new ObservableCollection<BrowserItem>();
+        _advancedCollectionView = new AdvancedCollectionView(Items, true);
         NativeListView.ItemsSource = _advancedCollectionView;
 
 
-        _ListObservableCollection.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder));
-        _ListObservableCollection.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder));
-        _ListObservableCollection.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder));
-        _ListObservableCollection.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder));
+        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder));
+        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder));
+        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder));
+        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder));
 
         //NativeGridView.ShowsScrollingPlaceholders = true;
         //NativeGridView.ScrollBarVisibility = ScrollBarVisibility.Auto;
