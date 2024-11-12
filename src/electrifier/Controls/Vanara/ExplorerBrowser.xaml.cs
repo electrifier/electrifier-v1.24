@@ -50,13 +50,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         InitializeComponent();
         DataContext = this;
 
-        TreeViewItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
-        TreeViewItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
-        TreeViewItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
-        TreeViewItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
-        AdvancedCollectionView acv = new(TreeViewItems, true);
-        ShellTreeView.NativeTreeView.ItemsSource = acv;
-
         Navigate(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
     }
 
@@ -64,26 +57,27 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         Debug.Print($".Navigate(`{target.DisplayName}`)");
 
+        if (!target.IsFolder)
+        {
+            Debug.Print("WARN: Navigate() is no folder");
+        }
+
         try
         {
-            if (target.IsFolder)
+            using var shFolder = new ShellFolder(target.ShellItem);
+
+            // todo: warn: put to finally block
+            //CurrentFolderBrowserItem = targetBrowserItem;
+            //CurrentFolderItems.Clear(); // TODO: enumerate
+            IsLoading = true;
+
+            var items = target.ChildItems;
+            foreach (var item in items)
             {
-                using var shFolder = new ShellFolder(target.ShellItem);
+                target.ChildItems.Add(item);
 
-                // todo: warn: put to finally block
-                //CurrentFolderBrowserItem = targetBrowserItem;
-                //CurrentFolderItems.Clear(); // TODO: enumerate
-                IsLoading = true;
-                target.ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
-                target.ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
-                target.ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
-                target.ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
-
-                AdvancedCollectionView acvTree = new(target.ChildItems, true);
-                ShellTreeView.NativeTreeView.ItemsSource = acvTree;
-
-                AdvancedCollectionView acvList = new(target.ChildItems, true);
-                //this.ShellListView.NativeListView.ItemsSource = acvList;
+                TreeViewItems.Add(item);
+                ListViewItems.Add(item);
             }
         }
         catch (COMException comEx)
@@ -134,7 +128,7 @@ public class BrowserItem(Shell32.PIDL pidl, bool isFolder)
 {
     public readonly Shell32.PIDL PIDL = new(pidl);
     public string DisplayName => ShellItem.GetDisplayName(ShellItemDisplayString.NormalDisplay) ?? ShellItem.ToString();
-    public ShellItem ShellItem = new (pidl);
+    public ShellItem ShellItem = new(pidl);
     public SoftwareBitmapSource SoftwareBitmapSource = ShellNamespaceService.DefaultDocumentAssocImageBitmapSource;
     public new List<BrowserItem> ChildItems = [];
     public static BrowserItem FromPIDL(Shell32.PIDL pidl) => new(pidl, false);
@@ -143,12 +137,6 @@ public class BrowserItem(Shell32.PIDL pidl, bool isFolder)
 
     public Task<int> Enumerate()
     {
-        ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
-        ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
-        ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
-        ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
-        ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
-        ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
         ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
         ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
         return Task.CompletedTask as Task<int>;

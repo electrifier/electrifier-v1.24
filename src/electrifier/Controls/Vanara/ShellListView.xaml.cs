@@ -1,8 +1,10 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
 using System.ComponentModel;
 using System.Diagnostics;
+using CommunityToolkit.WinUI.Collections;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 
@@ -16,25 +18,22 @@ namespace electrifier.Controls.Vanara;
 public partial class ShellListView : UserControl
 {
     public ListView NativeListView => ListView;
+    private ObservableCollection<BrowserItem> _ListObservableCollection;
+    private AdvancedCollectionView _advancedCollectionView;
 
     public ShellListView()
     {
         InitializeComponent();
         DataContext = this;
+        _ListObservableCollection = new ObservableCollection<BrowserItem>();
+        _advancedCollectionView = new AdvancedCollectionView(_ListObservableCollection, true);
+        NativeListView.ItemsSource = _advancedCollectionView;
 
-        var itms = new List<BrowserItem>
-        {
-            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
-            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder),
-            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
-            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AccountPictures),
-            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
-            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder),
-            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AccountPictures),
-            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos),
 
-        };
-        NativeListView.ItemsSource = itms;
+        _ListObservableCollection.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder));
+        _ListObservableCollection.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder));
+        _ListObservableCollection.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder));
+        _ListObservableCollection.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder));
 
         //NativeGridView.ShowsScrollingPlaceholders = true;
         //NativeGridView.ScrollBarVisibility = ScrollBarVisibility.Auto;
