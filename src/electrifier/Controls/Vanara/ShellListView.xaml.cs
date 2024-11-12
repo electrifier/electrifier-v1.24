@@ -17,7 +17,7 @@ namespace electrifier.Controls.Vanara;
 
 public partial class ShellListView : UserControl
 {
-    public ListView NativeListView => ListView;
+    public ItemsView NativeItemsView => ItemsView;
     public ObservableCollection<BrowserItem> Items;
     private readonly AdvancedCollectionView _advancedCollectionView;
 
@@ -27,7 +27,7 @@ public partial class ShellListView : UserControl
         DataContext = this;
         Items = new ObservableCollection<BrowserItem>();
         _advancedCollectionView = new AdvancedCollectionView(Items, true);
-        NativeListView.ItemsSource = _advancedCollectionView;
+        NativeItemsView.ItemsSource = _advancedCollectionView;
 
         //NativeGridView.ShowsScrollingPlaceholders = true;
         //NativeGridView.ScrollBarVisibility = ScrollBarVisibility.Auto;

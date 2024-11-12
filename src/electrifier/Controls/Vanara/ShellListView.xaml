@@ -11,21 +11,25 @@
         <Grid.Resources>
             <DataTemplate x:Key="BrowserItemTemplate"
                           x:DataType="local:BrowserItem">
-                <Grid>
-                    <StackPanel>
-                        <Image Name="Image"
-                               Source="{x:Bind SoftwareBitmapSource}" />
-                        <TextBlock HorizontalTextAlignment="Left"
-                                   Text="{x:Bind DisplayName}"
-                                   TextWrapping="WrapWholeWords" />
-                    </StackPanel>
-                </Grid>
+                <ItemContainer AutomationProperties.Name="{x:Bind DisplayName}">
+                    <Grid>
+                        <Image Source="{x:Bind SoftwareBitmapSource}"
+                               Stretch="UniformToFill"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Vertical"
+                                    VerticalAlignment="Center"
+                                    Padding="5,1,5,1"
+                                    Opacity=".75">
+                            <TextBlock Text="{x:Bind DisplayName}"
+                                       Foreground="{ThemeResource SystemControlForegroundAltHighBrush}" />
+                        </StackPanel>
+                    </Grid>
+                </ItemContainer>
             </DataTemplate>
         </Grid.Resources>
-        <!--<ItemsView x:Name="ItemsView"/>-->
-        <ListView x:Name="ListView"
-                  IsItemClickEnabled="True"
-                  ItemTemplate="{StaticResource BrowserItemTemplate}">
-        </ListView>
+        <ItemsView x:Name="ItemsView"
+                   SelectionMode="Multiple"
+                   ItemTemplate="{StaticResource BrowserItemTemplate}"></ItemsView>
     </Grid>
 </UserControl>
