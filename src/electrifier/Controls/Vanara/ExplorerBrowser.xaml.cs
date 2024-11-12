@@ -27,8 +27,6 @@ using Visibility = Microsoft.UI.Xaml.Visibility;
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
     private bool _isLoading;
-    //public List<BrowserItem> ListViewItems = [];
-    public List<BrowserItem> TreeViewItems = [];
     public bool IsLoading
     {
         get => _isLoading;
@@ -97,10 +95,17 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         Debug.Print($".NativeTreeView_SelectionChanged()");
 
+        ShellListView.Items.Clear();
+
         var addedItems = args.AddedItems;
         if (addedItems.Count > 0)
         {
-            ShellListView.Items.Add(addedItems[0] as BrowserItem);
+            var folder = addedItems[0] as BrowserItem;
+
+            foreach (var childItem in folder.ChildItems)
+            {
+                ShellListView.Items.Add(BrowserItem.FromPIDL(childItem.PIDL));
+            }
         }
     }
 

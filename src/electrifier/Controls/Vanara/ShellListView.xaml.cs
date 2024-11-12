@@ -19,7 +19,7 @@ public partial class ShellListView : UserControl
 {
     public ItemsView NativeListView => ItemsView;
     public ObservableCollection<BrowserItem> Items;
-    private AdvancedCollectionView _advancedCollectionView;
+    private readonly AdvancedCollectionView _advancedCollectionView;
 
     public ShellListView()
     {
@@ -28,12 +28,6 @@ public partial class ShellListView : UserControl
         Items = new ObservableCollection<BrowserItem>();
         _advancedCollectionView = new AdvancedCollectionView(Items, true);
         NativeListView.ItemsSource = _advancedCollectionView;
-
-
-        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder));
-        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder));
-        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder));
-        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder));
 
         //NativeGridView.ShowsScrollingPlaceholders = true;
         //NativeGridView.ScrollBarVisibility = ScrollBarVisibility.Auto;
