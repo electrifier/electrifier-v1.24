@@ -28,6 +28,11 @@ public partial class ShellListView : UserControl
             BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder),
             BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
             BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AccountPictures),
+            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop),
+            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_ComputerFolder),
+            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AccountPictures),
+            BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos),
+
         };
         NativeListView.ItemsSource = itms;
 

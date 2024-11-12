@@ -32,7 +32,7 @@ public partial class ShellNamespaceTreeControl : UserControl
             BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AccountPictures),
             BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos),
         };
-        TreeView.ItemsSource = itms;
+        NativeTreeView.ItemsSource = itms;
     }
 
     // TODO: public object ItemFromContainer => NativeTreeView.ItemFromContainer()
