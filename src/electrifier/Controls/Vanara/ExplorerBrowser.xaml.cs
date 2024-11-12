@@ -50,6 +50,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         InitializeComponent();
         DataContext = this;
 
+        ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeView_SelectionChanged;
         Navigate(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
     }
 
@@ -91,6 +92,18 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             //_ = UpdateGridView();
         }
     }
+
+    private void NativeTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
+    {
+        Debug.Print($".NativeTreeView_SelectionChanged()");
+
+        var addedItems = args.AddedItems;
+        if (addedItems.Count > 0)
+        {
+            ShellListView.Items.Add(addedItems[0] as BrowserItem);
+        }
+    }
+
 
 
     #region Property stuff

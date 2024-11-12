@@ -14,21 +14,14 @@
                 <Grid>
                     <StackPanel>
                         <Image Name="Image"
-                               Height="23"
                                Source="{x:Bind SoftwareBitmapSource}" />
-                        <!--  ImageExOpened="ImageEx_ImageExOpened"  -->
-                        <TextBlock VerticalAlignment="Center"
-                                   FontSize="12"
-                                   HorizontalTextAlignment="Left"
+                        <TextBlock HorizontalTextAlignment="Left"
                                    Text="{x:Bind DisplayName}"
-                                   TextWrapping="Wrap" />
+                                   TextWrapping="WrapWholeWords" />
                     </StackPanel>
                 </Grid>
             </DataTemplate>
         </Grid.Resources>
-        <ListView x:Name="ListView"
-                  IsItemClickEnabled="True"
-                  ItemTemplate="{StaticResource BrowserItemTemplate}">
-        </ListView>
+        <ItemsView x:Name="ItemsView"/>
     </Grid>
 </UserControl>

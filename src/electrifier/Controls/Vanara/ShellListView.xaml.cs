@@ -17,7 +17,7 @@ namespace electrifier.Controls.Vanara;
 
 public partial class ShellListView : UserControl
 {
-    public ListView NativeListView => ListView;
+    public ItemsView NativeListView => ItemsView;
     public ObservableCollection<BrowserItem> Items;
     private AdvancedCollectionView _advancedCollectionView;
 
