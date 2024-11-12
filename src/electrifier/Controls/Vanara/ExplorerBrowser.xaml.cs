@@ -71,7 +71,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             ShellListView.Items.Clear();
             foreach (var child in shFolder)
             {
-                target.ChildItems.Add(new BrowserItem(child.PIDL, true));
+                if(child.IsFolder)
+                    target.ChildItems.Add(new BrowserItem(child.PIDL, true));
                 ShellListView.Items.Add(new BrowserItem(child.PIDL, true));
             }
 
@@ -146,8 +147,8 @@ public class BrowserItem(Shell32.PIDL pidl, bool isFolder)
     public readonly Shell32.PIDL PIDL = new(pidl);
     public string DisplayName => ShellItem.GetDisplayName(ShellItemDisplayString.NormalDisplay) ?? ShellItem.ToString();
     public ShellItem ShellItem = new(pidl);
-    public SoftwareBitmapSource SoftwareBitmapSource = ShellNamespaceService.DefaultDocumentAssocImageBitmapSource;
-    public new List<BrowserItem> ChildItems = [];
+    public SoftwareBitmapSource SoftwareBitmapSource = isFolder ? ShellNamespaceService.DefaultFolderImageBitmapSource : ShellNamespaceService.DefaultDocumentAssocImageBitmapSource;
+    public new ObservableCollection<BrowserItem> ChildItems = [];
     public static BrowserItem FromPIDL(Shell32.PIDL pidl) => new(pidl, false);
     public static BrowserItem FromShellFolder(ShellFolder shellFolder) => new(shellFolder.PIDL, true);
     public static BrowserItem FromKnownItemId(Shell32.KNOWNFOLDERID knownItemId) => new(new ShellFolder(knownItemId).PIDL, true);

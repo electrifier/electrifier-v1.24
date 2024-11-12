@@ -16,16 +16,17 @@
                         <StackPanel Orientation="Horizontal"
                                     VerticalAlignment="Center">
                             <Image Source="{x:Bind SoftwareBitmapSource}"
-                                   Stretch="UniformToFill" MaxHeight="23"
+                                   MaxHeight="23"
+                                   Margin="7,0"
                                    VerticalAlignment="Stretch" />
-                            <TextBlock Text="{x:Bind DisplayName}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{x:Bind DisplayName}"
+                                       VerticalAlignment="Center" />
                         </StackPanel>
                     </Grid>
                 </ItemContainer>
             </DataTemplate>
         </Grid.Resources>
         <ItemsView x:Name="ItemsView"
-                   SelectionMode="Multiple"
                    ItemTemplate="{StaticResource BrowserItemTemplate}"></ItemsView>
     </Grid>
 </UserControl>
