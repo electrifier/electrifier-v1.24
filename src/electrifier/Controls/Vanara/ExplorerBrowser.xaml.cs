@@ -50,6 +50,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeView_SelectionChanged;
         //Navigate(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
+
+        var _service = new ShellNamespaceService();
     }
 
     public async void Navigate(BrowserItem target)

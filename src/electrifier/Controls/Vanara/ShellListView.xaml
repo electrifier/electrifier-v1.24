@@ -13,16 +13,12 @@
                           x:DataType="local:BrowserItem">
                 <ItemContainer AutomationProperties.Name="{x:Bind DisplayName}">
                     <Grid>
-                        <Image Source="{x:Bind SoftwareBitmapSource}"
-                               Stretch="UniformToFill"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"/>
-                        <StackPanel Orientation="Vertical"
-                                    VerticalAlignment="Center"
-                                    Padding="5,1,5,1"
-                                    Opacity=".75">
-                            <TextBlock Text="{x:Bind DisplayName}"
-                                       Foreground="{ThemeResource SystemControlForegroundAltHighBrush}" />
+                        <StackPanel Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <Image Source="{x:Bind SoftwareBitmapSource}"
+                                   Stretch="UniformToFill" MaxHeight="23"
+                                   VerticalAlignment="Stretch" />
+                            <TextBlock Text="{x:Bind DisplayName}" VerticalAlignment="Center"/>
                         </StackPanel>
                     </Grid>
                 </ItemContainer>
