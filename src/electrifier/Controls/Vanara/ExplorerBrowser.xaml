@@ -1,143 +1,58 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <UserControl x:Class="electrifier.Controls.Vanara.ExplorerBrowser"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="using:electrifier.Controls.Vanara"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              d:DataContext="{d:DesignInstance Type=local:ExplorerBrowser}"
              mc:Ignorable="d">
-    <!--  TODO: Fix TeachingTip  -->
-    <Grid>
+    <Grid VerticalAlignment="Top">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <!-- TODO: Move `CommandBar` into single Control, cause `FileManagerPage` will use it, too -->
-        <Border Grid.Row="0">
-            <InfoBar x:Name="NavigationFailedInfoBar"
-                     Title="Navigation failed"
-                     BorderBrush="DarkRed"
-                     BorderThickness="8"
-                     IsClosable="True"
-                     IsOpen="False"
-                     Message="{x:Bind NavigationFailure}"
-                     Severity="Error">
-                <InfoBar.Content>
-                    <ItemsStackPanel Height="Auto"
-                                     HorizontalAlignment="Right"
-                                     Orientation="Horizontal">
-                        <Button>
-                            Reload folder.
-                        </Button>
-                    </ItemsStackPanel>
-                </InfoBar.Content>
-            </InfoBar>
-        </Border>
-        <Grid x:Name="ArenaGrid"
-              Grid.Row="1">
+        <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <!--  controls:DockPanel.Dock="Left"  -->
                 <ColumnDefinition Width="176"
                                   MinWidth="76" />
-                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*"
                                   MinWidth="76" />
             </Grid.ColumnDefinitions>
-            <Border x:Name="TreeViewBorder"
-                    Visibility="{x:Bind TreeViewVisibility}">
-                <local:Shell32TreeView x:Name="ShellTreeView" />
+            <Border Grid.Column="0"
+                    VerticalAlignment="Top">
+                <local:ShellNamespaceTreeControl x:Name="ShellTreeView"
+                                                 HorizontalAlignment="Stretch" />
             </Border>
-            <Border Grid.Column="1"
-                    Width="8"
-                    Background="Transparent" />
-            <Border x:Name="ShellGridViewBorder"
-                    Grid.Column="2">
+            <Border Grid.Column="1">
                 <StackPanel Orientation="Vertical">
-                    <local:Shell32GridView x:Name="ShellGridView"
-                                           BorderThickness="3"
-                                           ItemsSource="{x:Bind _advancedCollectionView}"
-                                           Visibility="{x:Bind GridViewVisibility}" />
-                    <AppBar x:Name="BottomAppBar"
-                            Grid.Row="3"
-                            HorizontalAlignment="Stretch"
-                            Background="Transparent"
-                            Visibility="{x:Bind BottomAppBarVisibility}">
-                        <StackPanel>
-                            <TextBlock Text="no binding :(" />
-                            <AppBarButton Icon="Folder"
-                                          Label="folder"
-                                          ToolTipService.ToolTip="Number of Folders" />
-                            <AppBarSeparator />
-                            <AppBarButton Icon="OpenFile"
-                                          Label="open-file"
-                                          ToolTipService.ToolTip="Number of Files" />
-                            <AppBarSeparator />
-                            <AppBarButton Icon="Setting"
-                                          Label="Settings">
-                                <AppBarButton.KeyboardAccelerators>
-                                    <KeyboardAccelerator Key="I"
-                                                         Modifiers="Control" />
-                                </AppBarButton.KeyboardAccelerators>
-                            </AppBarButton>
-                        </StackPanel>
-                    </AppBar>
+                    <local:ShellListView x:Name="ShellListView"
+                                         BorderThickness="3" />
+                    <!-- ItemsSource="{x:Bind CurrentItems}" -->
                 </StackPanel>
             </Border>
         </Grid>
-        <CommandBar Grid.Row="2"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Center"
-                    HorizontalContentAlignment="Left"
-                    VerticalContentAlignment="Center"
-                    Background="Transparent"
-                    DefaultLabelPosition="Collapsed">
-            <AppBarButton IsCompact="True"
-                          IsEnabled="False">
-                <TextBlock>
-                    <Run FontWeight="SemiBold"
-                         Text="Items: " />
-                    <Run Text="{x:Bind ItemCount}" />
-                </TextBlock>
-            </AppBarButton>
-            <AppBarSeparator />
-            <AppBarButton IsCompact="True"
-                          IsEnabled="False">
-                <TextBlock>
-                    <Run FontWeight="SemiBold"
-                         Text="Folders: " />
-                    <Run Text="{x:Bind ItemCount}" />
-                </TextBlock>
-            </AppBarButton>
-            <AppBarSeparator />
-            <AppBarButton IsCompact="True"
-                          IsEnabled="False">
-                <TextBlock>
-                    <Run FontWeight="SemiBold"
-                         Text="Files: " />
-                    <Run Text="{x:Bind ItemCount}" />
-                </TextBlock>
-            </AppBarButton>
-            <AppBarSeparator />
-            <AppBarButton IsCompact="True"
-                          IsEnabled="False">
-                <TextBlock>
-                    <Run FontWeight="SemiBold"
-                         Text="Size: " />
-                    <Run Text="{x:Bind ItemCount}" />
-                    <Run Text="bytes" />
-                </TextBlock>
-            </AppBarButton>
-            <AppBarSeparator />
-            <AppBarButton IsCompact="True"
-                          IsEnabled="False">
-                <TextBlock>
-                    <Run FontWeight="SemiBold"
-                         Text="Hidden: " />
-                    <Run Text="{x:Bind ItemCount}" />
-                </TextBlock>
-            </AppBarButton>
-        </CommandBar>
+        <AppBar Grid.Row="1"
+                HorizontalAlignment="Stretch"
+                Background="Transparent">
+            <StackPanel>
+                <TextBlock Text="no binding :(" />
+                <AppBarButton Icon="Folder"
+                              Label="folder"
+                              ToolTipService.ToolTip="Number of Folders" />
+                <AppBarSeparator />
+                <AppBarButton Icon="OpenFile"
+                              Label="open-file"
+                              ToolTipService.ToolTip="Number of Files" />
+                <AppBarSeparator />
+                <AppBarButton Icon="Setting"
+                              Label="Settings">
+                    <AppBarButton.KeyboardAccelerators>
+                        <KeyboardAccelerator Key="I"
+                                             Modifiers="Control" />
+                    </AppBarButton.KeyboardAccelerators>
+                </AppBarButton>
+            </StackPanel>
+        </AppBar>
     </Grid>
 </UserControl>

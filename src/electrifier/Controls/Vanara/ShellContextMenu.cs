@@ -1,6 +1,6 @@
 ﻿namespace electrifier.Controls.Vanara;
 
-public class GuruMeditation
+public class ShellContextMenu
 {
     
 }

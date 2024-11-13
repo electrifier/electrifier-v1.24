@@ -1,70 +1,49 @@
 ﻿<Page x:Class="electrifier.Views.WorkbenchPage"
-      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:behaviors="using:electrifier.Behaviors"
+      xmlns:controls="using:CommunityToolkit.WinUI.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:viewmodels="using:electrifier.ViewModels"
-      behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      behaviors:NavigationViewHeaderBehavior.HeaderMode="Minimal"
       d:DataContext="{d:DesignInstance Type=viewmodels:WorkbenchViewModel}"
       mc:Ignorable="d">
     <!--  TODO: ui:UIElementExtensions.ClipToBounds="{x:Bind IsClipped, Mode=OneWay}"  -->
     <!--  TODO: removed Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"  -->
-    <Grid x:Name="WorkbenchGrid">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5*" />
-            <ColumnDefinition MaxWidth="23" />
-            <ColumnDefinition Width="2*" />
-        </Grid.ColumnDefinitions>
-        <Border x:Name="MainContentBorder"
-                AllowDrop="True">
-            <Grid>
-                <StackPanel x:Name="StackPanel" Visibility="Collapsed">
-                    <TextBlock Style="{StaticResource TitleTextBlockStyle}"
-                               Text="Workbench" />
-                    <InfoBar Title="Your Workbench"
-                             BorderThickness="8"
-                             IsClosable="True"
-                             IsOpen="True"
-                             Message="Your Workbench is your personal workspace. You can customize it [here]." />
-                    <InfoBar x:Name="SettingsBackupWorkbenchInfoBar"
-                             Title="Backup your Personal User Settings"
-                             BorderThickness="8"
-                             IsClosable="True"
-                             IsOpen="True"
-                             Message="Do you want to allow electrifier to make backups of your Workbench settings?">
-                        <InfoBar.Content>
-                            <ItemsStackPanel Height="Auto"
-                                             HorizontalAlignment="Right"
-                                             Orientation="Horizontal">
-                                <CheckBox x:Name="SettingsBackupWorkbenchAllowed">
-                                    Enable automatic backups and don't show again
-                                </CheckBox>
-                            </ItemsStackPanel>
-                        </InfoBar.Content>
-                    </InfoBar>
-                    <InfoBar x:Name="SettingsRestoreLastUsedPages"
-                             Title="Quick launch to your last used Pages"
-                             BorderThickness="8"
-                             IsClosable="True"
-                             IsOpen="True"
-                             Message="Quick launch last used Pages">
-                        <InfoBar.Content>
-                            <ItemsStackPanel Height="Auto"
-                                             HorizontalAlignment="Right"
-                                             Orientation="Horizontal">
-                                <CheckBox x:Name="SettingsRestoreLastUsedPagesCheckBox">
-                                    On Launch, restore last used Pages
-                                </CheckBox>
-                            </ItemsStackPanel>
-                        </InfoBar.Content>
-                    </InfoBar>
-                </StackPanel>
-                <ItemsStackPanel />
-            </Grid>
+    <Grid AllowDrop="True"
+          DropCompleted="ArenaGrid_OnDropCompleted">
+        <Border AllowDrop="True"
+                VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical">
+                <!-- HeaderIcon mdl2-RememberedDevice -->
+                <controls:SettingsCard x:Name="WorkbenchTipODaySettingsCard"
+                                       x:Uid="WorkbenchTipODaySettingsCard"
+                                       Description="Your new Workbench is your personal workspace and data warehouse. You can have as many workbenches as you wish and can customize them here. It is your choice, what Page gets navigated to when electrifier starts the next time. Let This be my preferred choice for the future [x], as I know I can change this always in its ''Settings Page::startup behaviour''."
+                                       Header="Tip of the day">
+                </controls:SettingsCard>
+                <Border BorderBrush="GhostWhite"
+                        BorderThickness="3">
+                    <StackPanel Orientation="Vertical">
+                        <SelectorBar x:Name="QuickLaunchSelectorBar">
+                            <SelectorBarItem Text="History"
+                                             Icon="Clock" /> <!-- todo: add timeline here -->
+                            <SelectorBarItem Text="Favorites"
+                                             Icon="Favorite" />
+                            <SelectorBarItem Text="Tagged"
+                                             Icon="Favorite" />
+                            <SelectorBarItem Text="Desktop">
+                                <SelectorBarItem.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                              Glyph="&#xec50;" />
+                                </SelectorBarItem.Icon>
+                            </SelectorBarItem> <!-- add miniature desktop here -->
+                        </SelectorBar>
+                        <ListView MinHeight="176"></ListView>
+                        <CheckBox>Always launch selection when I start this Workbench.</CheckBox>
+                    </StackPanel>
+                </Border>
+            </StackPanel>
         </Border>
-        <Border x:Name="Splitter"
-                Grid.Column="1" />
-        <Border Grid.Column="2" />
     </Grid>
 </Page>

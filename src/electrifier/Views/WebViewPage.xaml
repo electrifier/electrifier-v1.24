@@ -12,68 +12,18 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <StackPanel x:Name="NavigationBar"
-                    Grid.Row="0"
-                    Orientation="Horizontal">
-            <ProgressRing x:Name="NavigationBarProgressRing"
-                          BorderThickness="1"
-                          IsActive="False" />
-            <Button x:Uid="ReloadButton"
-                    Command="{x:Bind ViewModel.ReloadCommand}">
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                          Glyph="&#xE72C;" />
-            </Button>
-            <Button x:Uid="OpenInBrowserButton"
-                    Command="{x:Bind ViewModel.OpenInBrowserCommand}">
-                <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                          Glyph="&#xe8a7;" />
-            </Button>
-            <!-- <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />-->
-        </StackPanel>
-        <Grid x:Name="ContentAreaWebView"
-              Grid.Row="1">
-            <WebView2 x:Name="WebView"
-                      Source="{x:Bind ViewModel.Source, Mode=OneWay}" />
-        </Grid>
-        <StackPanel x:Name="StatusCommandBarWebViewLoading"
-                    Grid.Row="2"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Orientation="Horizontal"
-                    Visibility="{x:Bind ViewModel.IsLoading, Mode=OneWay}">
-            <ProgressRing IsActive="{x:Bind ViewModel.IsLoading, Mode=OneWay}" />
-            <TextBlock x:Uid="WebView_Loading"
-                       Text="Loading..." />
-        </StackPanel>
-        <StackPanel x:Name="StatusCommandBarWebViewFailed"
-                    Grid.Row="3"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Visibility="{x:Bind ViewModel.HasFailures, Mode=OneWay}">
-            <TextBlock x:Uid="WebView_FailedMessage"
-                       HorizontalAlignment="Center"
-                       TextWrapping="WrapWholeWords" />
-            <HyperlinkButton x:Uid="WebView_Reload"
-                             HorizontalAlignment="Center"
-                             Command="{x:Bind ViewModel.ReloadCommand}" />
-        </StackPanel>
-        <CommandBar x:Name="StatusCommandBar"
-                    Grid.Row="4"
-                    HorizontalAlignment="Left"
-                    DefaultLabelPosition="Right">
-            <AppBarElementContainer HorizontalAlignment="Left"
-                                    VerticalAlignment="Stretch"
-                                    HorizontalContentAlignment="Stretch"
-                                    VerticalContentAlignment="Center">
-                <AppBarElementContainer>
-                    <TextBlock Text="{x:Bind ViewModel.Source}" />
-                </AppBarElementContainer>
-            </AppBarElementContainer>
+        <CommandBar Grid.Row="0"
+                    HorizontalAlignment="Left">
+            <AppBarButton IsEnabled="False">New Tab</AppBarButton>
+            <AppBarButton IsEnabled="False">Home</AppBarButton>
             <AppBarSeparator />
+            <AppBarButton IsEnabled="False">Back</AppBarButton>
+            <AppBarButton IsEnabled="False">Forward</AppBarButton>
+            <AppBarButton IsEnabled="False">History</AppBarButton>
+            <AppBarSeparator />
+            <AppBarButton IsEnabled="False">Show Cookies....</AppBarButton>
+            <AppBarButton IsEnabled="False">Advanced Options...</AppBarButton>
             <CommandBar.SecondaryCommands>
                 <AppBarButton Icon="Setting"
                               Label="Settings">
@@ -84,5 +34,9 @@
                 </AppBarButton>
             </CommandBar.SecondaryCommands>
         </CommandBar>
+        <Grid Grid.Row="1">
+            <WebView2 x:Name="WebView"
+                      Source="{x:Bind ViewModel.Source, Mode=OneWay}" />
+        </Grid>
     </Grid>
 </Page>

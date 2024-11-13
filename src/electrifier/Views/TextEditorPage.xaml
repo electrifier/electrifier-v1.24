@@ -1,16 +1,15 @@
-﻿<Page
-    x:Class="electrifier.Views.TextEditorPage"
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:behaviors="using:electrifier.Behaviors"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:editor="using:WinUIEditor"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:vanara="using:electrifier.Controls.Vanara"
-    xmlns:viewmodels="using:electrifier.ViewModels"
-    behaviors:NavigationViewHeaderBehavior.HeaderMode="Never"
-    d:DataContext="{d:DesignInstance Type=viewmodels:TextEditorViewModel}"
-    mc:Ignorable="d">
+﻿<Page x:Class="electrifier.Views.TextEditorPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:behaviors="using:electrifier.Behaviors"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:editor="using:WinUIEditor"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:vanara="using:electrifier.Controls.Vanara"
+      xmlns:viewmodels="using:electrifier.ViewModels"
+      behaviors:NavigationViewHeaderBehavior.HeaderMode="Minimal"
+      d:DataContext="{d:DesignInstance Type=viewmodels:TextEditorViewModel}"
+      mc:Ignorable="d">
     <Grid x:Name="ContentArea">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -19,79 +18,50 @@
         </Grid.RowDefinitions>
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal">
-                <AppBarButton
-                    x:Uid="LoadButton"
-                    Icon="OpenFile"
-                    IsEnabled="False"
-                    Label="Open..." />
-                <AppBarButton
-                    x:Uid="SaveButton"
-                    Icon="Save"
-                    IsEnabled="False"
-                    Label="Save" />
-                <AppBarButton
-                    x:Uid="SaveAsButton"
-                    Icon="SaveLocal"
-                    IsEnabled="False"
-                    Label="Save as..." />
+                <AppBarButton x:Uid="LoadButton"
+                              Icon="OpenFile"
+                              IsEnabled="False"
+                              Label="Open..." />
+                <AppBarButton x:Uid="SaveButton"
+                              Icon="Save"
+                              IsEnabled="False"
+                              Label="Save" />
+                <AppBarButton x:Uid="SaveAsButton"
+                              Icon="SaveLocal"
+                              IsEnabled="False"
+                              Label="Save as..." />
             </StackPanel>
-            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
-                <AppBarButton
-                    x:Uid="RunButton"
-                    Icon="Play"
-                    IsEnabled="False"
-                    Label="Run" />
-                <Button x:Uid="OpenInExternalBrowserButton" IsEnabled="False">
-                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}" Glyph="&#xe8a7;" />
+            <StackPanel HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                <AppBarButton x:Uid="RunButton"
+                              Icon="Play"
+                              IsEnabled="False"
+                              Label="Run" />
+                <Button x:Uid="OpenInExternalBrowserButton"
+                        IsEnabled="False">
+                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                              Glyph="&#xe8a7;" />
                 </Button>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200" MinWidth="76" />
+                <ColumnDefinition Width="200"
+                                  MinWidth="76" />
                 <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" MinWidth="76" />
+                <ColumnDefinition Width="*"
+                                  MinWidth="76" />
             </Grid.ColumnDefinitions>
             <!--  TODO: ExplorerBrowser isn't stretching horizontally  -->
             <Border x:Name="ExplorerBrowserBorder">
-                <vanara:ExplorerBrowser
-                    x:Name="ExplorerBrowserControl"
-                    BottomAppBarVisibility="Collapsed"
-                    BottomCommandBarVisibility="Collapsed"
-                    GridViewVisibility="Collapsed"
-                    TopCommandBarVisibility="Collapsed" />
+                <vanara:ExplorerBrowser x:Name="ExplorerBrowserControl" />
             </Border>
-            <Border Grid.Column="1"/><!-- controls:GridSplitter -->
-            <Border x:Name="CodeEditorBorder" Grid.Column="2">
+            <Border Grid.Column="1" />
+            <!-- controls:GridSplitter -->
+            <Border x:Name="CodeEditorBorder"
+                    Grid.Column="2">
                 <editor:CodeEditorControl x:Name="CodeEditorControl" />
             </Border>
         </Grid>
-        <CommandBar
-            x:Name="StatusCommandBar"
-            Grid.Row="2"
-            HorizontalAlignment="Left"
-            Background="Transparent"
-            DefaultLabelPosition="Right">
-            <AppBarElementContainer
-                HorizontalAlignment="Left"
-                VerticalAlignment="Stretch"
-                HorizontalContentAlignment="Stretch"
-                VerticalContentAlignment="Center">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock x:Name="StatusTextBlockLine" Text="{x:Bind StatusCursorPosition}" />
-                </StackPanel>
-            </AppBarElementContainer>
-            <AppBarSeparator />
-            <CommandBar.SecondaryCommands>
-                <AppBarButton
-                    Icon="Setting"
-                    Label="Settings"
-                    ToolTipService.ToolTip="Setting Ctrl + I">
-                    <AppBarButton.KeyboardAccelerators>
-                        <KeyboardAccelerator Key="I" Modifiers="Control" />
-                    </AppBarButton.KeyboardAccelerators>
-                </AppBarButton>
-            </CommandBar.SecondaryCommands>
-        </CommandBar>
     </Grid>
 </Page>

@@ -8,7 +8,6 @@ using WinUIEx;
 
 namespace electrifier;
 
-// More information how to customize the https://learn.microsoft.com/en-us/windows/apps/develop/title-bar
 
 public sealed partial class MainWindow : WindowEx
 {
@@ -20,12 +19,7 @@ public sealed partial class MainWindow : WindowEx
     private readonly UISettings _mSettings;
 
     /// <summary>
-    /// doc: https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.windowing.appwindow
-    /// doc: https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.windowing.appwindow.titlebar
-    /// doc: https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.windowing.appwindow.titlebar.buttonbackgroundcolor
-    /// doc: https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.windowing.appwindow.titlebar.buttoninactivebackgroundcolor
-    /// doc: https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.windowing.appwindow.titlebar.buttonhoverbackgroundcolor
-    /// doc: https://docs.microsoft.com/en-us/uwp/api/microsoft.ui.windowing.appwindow.titlebar.buttonpressedbackgroundcolor
+    /// More information how to customize the https://learn.microsoft.com/en-us/windows/apps/develop/title-bar
     /// </summary>
     public MainWindow()
     {

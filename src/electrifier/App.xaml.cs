@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 using System.Diagnostics;
+using electrifier.Controls.Vanara.Services;
 using WinUIEx;
 using static Microsoft.Extensions.Hosting.Host;
 using UnhandledExceptionEventArgs = Microsoft.UI.Xaml.UnhandledExceptionEventArgs;
@@ -37,6 +38,11 @@ public partial class App : Application
         get;
     }
     public static WindowEx MainWindow { get; } = new MainWindow();
+
+    public static ShellNamespaceService NamespaceService
+    {
+        get;
+    } = new() { };
 
     public App()
     {
