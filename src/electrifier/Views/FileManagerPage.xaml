@@ -6,20 +6,26 @@
       xmlns:viewmodels="using:electrifier.ViewModels"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:services="using:electrifier.Controls.Vanara.Services"
       behaviors:NavigationViewHeaderBehavior.HeaderMode="Minimal"
       d:DataContext="{d:DesignInstance Type=viewmodels:FileManagerViewModel}"
       mc:Ignorable="d">
     <Grid x:Name="ArenaGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition>*</ColumnDefinition>
+            <ColumnDefinition>*</ColumnDefinition>
+        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition>Auto</RowDefinition>
             <RowDefinition>*</RowDefinition>
             <RowDefinition>Auto</RowDefinition>
         </Grid.RowDefinitions>
         <CommandBar x:Name="CommandBar"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
                     Grid.Row="0"
-                    HorizontalAlignment="Left"
-                    Background="Transparent"
                     DefaultLabelPosition="Right"
+                    HorizontalAlignment="Left"
                     IsOpen="False">
             <!-- CommandBar.Visibility="{x:Bind TopCommandBarVisibility}" -->
             <AppBarElementContainer>
@@ -136,19 +142,31 @@
                 </SplitButton>
             </AppBarElementContainer>
             <AppBarElementContainer>
+                <AppBarButton Icon="Filter"
+                              Label="Filter" />
+            </AppBarElementContainer>
+            <AppBarElementContainer>
                 <SplitButton x:Name="FilterSplitButton"
                              Content="Filter">
                     <SplitButton.Flyout>
                         <Flyout>
                             <StackPanel>
-                                <Button Content="All File Types"
-                                        IsEnabled="False" />
-                                <Button Content="~"
-                                        IsEnabled="False" />
-                                <Button Content="Files"
-                                        IsEnabled="False" />
-                                <Button Content="Folders"
-                                        IsEnabled="False" />
+                                <RadioButtons>
+                                    <RadioButton Content="Show all Folders"></RadioButton>
+                                    <RadioButton Content="Hide all Folders"></RadioButton>
+                                    <RadioButton Content="Hide hidden Folders"></RadioButton>
+                                </RadioButtons>
+                                <AppBarSeparator />
+                                <RadioButtons>
+                                    <RadioButton Content="All Files"></RadioButton>
+                                    <RadioButton Content="No Hidden Folders"></RadioButton>
+                                    <RadioButton Content="Hide Folders"></RadioButton>
+                                </RadioButtons>
+                                <AppBarSeparator />
+                                <RadioButtons>
+                                    <RadioButton Content="Always show Thumbnails"></RadioButton>
+                                    <RadioButton Content="Fast mode (Use Stock Icons only)"></RadioButton>
+                                </RadioButtons>
                             </StackPanel>
                         </Flyout>
                     </SplitButton.Flyout>
@@ -206,18 +224,25 @@
                               IsEnabled="False" />
             </CommandBar.SecondaryCommands>
         </CommandBar>
-        <Grid x:Name="SplitViewGrid"
-              Grid.Row="1">
-            <Border x:Name="PrimaryExplorerBrowserBorder">
-                <vanara:ExplorerBrowser x:Name="PrimaryExplorerBrowserControl" />
-            </Border>
-        </Grid>
-        <CommandBar Grid.Row="2"
+        <Border x:Name="PrimaryExplorerBrowserBorder"
+                Grid.Column="0"
+                Grid.Row="1">
+            <vanara:ExplorerBrowser x:Name="PrimaryExplorerBrowserControl" />
+        </Border>
+        <Border x:Name="SecondaryExplorerBrowserBorder"
+                Grid.Column="1"
+                Grid.Row="1">
+            <vanara:ExplorerBrowser x:Name="SecondaryExplorerBrowserControl" />
+        </Border>
+        <CommandBar x:Name="StatusCommandBar"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Grid.Row="2"
+                    DefaultLabelPosition="Collapsed"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Bottom"
                     HorizontalContentAlignment="Left"
-                    VerticalContentAlignment="Center"
-                    DefaultLabelPosition="Collapsed">
+                    VerticalAlignment="Stretch"
+                    VerticalContentAlignment="Center">
             <AppBarButton IsCompact="True"
                           IsEnabled="False">
                 <TextBlock>
