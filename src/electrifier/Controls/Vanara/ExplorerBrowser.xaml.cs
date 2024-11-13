@@ -96,7 +96,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     private void NativeTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
-        Debug.Print($".NativeTreeView_SelectionChanged()");
+        Debug.Print($".NativeTreeView_SelectionChanged(): Updating `ShellListView` items...");
 
         ShellListView.Items.Clear();
 

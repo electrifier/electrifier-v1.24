@@ -10,6 +10,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 using static Vanara.PInvoke.ComCtl32;
+using static Vanara.PInvoke.Shell32;
 
 namespace electrifier.Controls.Vanara.Contracts;
 
@@ -17,14 +18,15 @@ namespace electrifier.Controls.Vanara.Contracts;
 public abstract class AbstractBrowserItem<T>(bool isFolder, List<T> childItems)
 {
     public readonly bool IsFolder = isFolder;
-    protected List<T> ChildItems = childItems;
-    public new string ToString() => $"AbstractBrowserItem<{typeof(T)}>(isFolder {isFolder}, childItems {childItems})";
+    public readonly List<T> ChildItems = childItems;
+    public new string ToString() => $"AbstractBrowserItem(<{typeof(T)}>(isFolder {isFolder}, childItems {childItems})";
 }
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
 public abstract class AbstractBrowserItemCollection<T> : IEnumerable<AbstractBrowserItem<T>>, IList<AbstractBrowserItem<T>>
 {
     protected readonly IList<AbstractBrowserItem<T>> Collection = [];
+    //protected readonly ShellItem? _parentItem;
 
     AbstractBrowserItem<T> IList<AbstractBrowserItem<T>>.this[int index] { get => Collection[index]; set => Collection[index] = value; }
     int ICollection<AbstractBrowserItem<T>>.Count => Collection.Count;
@@ -39,4 +41,6 @@ public abstract class AbstractBrowserItemCollection<T> : IEnumerable<AbstractBro
     void IList<AbstractBrowserItem<T>>.Insert(int index, AbstractBrowserItem<T> item) => Collection.Insert(index, item);
     bool ICollection<AbstractBrowserItem<T>>.Remove(AbstractBrowserItem<T> item) => Collection.Remove(item);
     void IList<AbstractBrowserItem<T>>.RemoveAt(int index) => Collection.RemoveAt(index);
+
+    public new string ToString() => $"AbstractBrowserItemCollection(<{typeof(T)}>(number of child items: {Collection.Count})";
 }

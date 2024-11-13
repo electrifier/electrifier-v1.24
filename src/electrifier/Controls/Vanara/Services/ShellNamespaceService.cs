@@ -31,11 +31,16 @@ public partial class ShellNamespaceService
     /// Indexer ist `Shell32.SHSTOCKICONID`
     /// get-Methode, die erst die Icons holt wenn danach gefragt wird.
     /// </summary>
-    internal StockIcon SiFolder = new(Shell32.SHSTOCKICONID.SIID_FOLDER);
-    internal StockIcon SiDocument = new(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC);
-    internal StockIcon SiFolderOpen = new(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);  // overlay: SIID_FOLDERFRONT, SIID_FOLDERBACK
-    internal StockIcon SiDocumentWithAssociation = new(SHSTOCKICONID.SIID_DOCASSOC);
-    internal StockIcon SiLinkOverlay = new(SHSTOCKICONID.SIID_LINK);
+    internal static StockIcon SiDocument = new(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC);
+    internal static SoftwareBitmapSource DocumentBitmapSource = new();
+    internal static StockIcon SiDocumentWithAssociation = new(SHSTOCKICONID.SIID_DOCASSOC);
+    internal static SoftwareBitmapSource DocumentWithAssociationBitmapSource = new();
+    internal static StockIcon SiFolder = new(Shell32.SHSTOCKICONID.SIID_FOLDER);
+    internal static SoftwareBitmapSource FolderBitmapSource = new();
+    internal static StockIcon SiFolderBack = new(Shell32.SHSTOCKICONID.SIID_FOLDERBACK);
+    internal static StockIcon SiFolderFront = new(Shell32.SHSTOCKICONID.SIID_FOLDERFRONT);
+    internal static StockIcon SiFolderOpen = new(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);
+    internal static StockIcon SiLinkOverlay = new(SHSTOCKICONID.SIID_LINK);
     public Task? StockIconTask;
     public ShellNamespaceService()
     {
@@ -67,12 +72,12 @@ public partial class ShellNamespaceService
         return shDataTable;
     }
 
-    /// <summary>
-    /// <see href="https://github.com/dahall/Vanara/blob/Windows.Shell.Common/StockIcon.cs"/>
-    /// </summary>
+    /// <summary>Initialize default <see cref="StockIcon">Stock Icons</see>.</summary>
+    /// <remarks>TODO: INFO: Investigate <seealso href="https://github.com/dahall/Vanara/blob/Windows.Shell.Common/StockIcon.cs"></seealso></remarks>
     /// <returns></returns>
     public static async Task InitializeStockIcons()
     {
+        /* Todo: inspect `SHGetStockIconInfo()` */
         try
         {
             using var siFolder = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDER);
@@ -98,12 +103,21 @@ public partial class ShellNamespaceService
         }
     }
 
+    /// <summary>Get associated <seealso cref="SoftwareBitmapSource"/> for given <param name="bitmapIcon">Icon</param></summary>
+    /// <remarks>TODO: INFO: Investigate <seealso href="https://learn.microsoft.com/en-us/uwp/api/windows.ui.xaml.media.imaging.writeablebitmap?view=winrt-26100">uwp/api/windows.ui.xaml.media.imaging.WriteableBitmap (WARN: Links to UWP)</seealso></remarks>
+    /// <param name="bitmapIcon">The <seealso cref="Icon">Icon</seealso>.</param>
+    /// <returns>Task&lt;SoftwareBitmapSource?&gt;</returns>
     public static async Task<SoftwareBitmapSource?> GetWinUi3BitmapSourceFromIcon(Icon bitmapIcon)
     {
         ArgumentNullException.ThrowIfNull(bitmapIcon);
 
         return await GetWinUi3BitmapSourceFromGdiBitmap(bitmapIcon.ToBitmap());
     }
+
+    /// <summary>Get associated <seealso cref="SoftwareBitmapSource"/> for given <param name="gdiBitmap">gdiBitmap</param></summary>
+    /// <remarks>TODO: INFO: Investigate <seealso href="https://learn.microsoft.com/en-us/uwp/api/windows.ui.xaml.media.imaging.writeablebitmap?view=winrt-26100">uwp/api/windows.ui.xaml.media.imaging.WriteableBitmap (WARN: Links to UWP)</seealso></remarks>
+    /// <param name="gdiBitmap">The <seealso cref="Bitmap">GDI+ bitmap</seealso>.</param>
+    /// <returns>Task&lt;SoftwareBitmapSource?&gt;</returns>
     public static async Task<SoftwareBitmapSource?> GetWinUi3BitmapSourceFromGdiBitmap(Bitmap gdiBitmap)
     {
         ArgumentNullException.ThrowIfNull(gdiBitmap);

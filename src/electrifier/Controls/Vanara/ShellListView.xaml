@@ -12,7 +12,7 @@
             <DataTemplate x:Key="BrowserItemTemplate"
                           x:DataType="local:BrowserItem">
                 <ItemContainer AutomationProperties.Name="{x:Bind DisplayName}">
-                    <Grid>
+                    <Grid Margin="3">
                         <StackPanel Orientation="Horizontal"
                                     VerticalAlignment="Center">
                             <Image Source="{x:Bind SoftwareBitmapSource}"
