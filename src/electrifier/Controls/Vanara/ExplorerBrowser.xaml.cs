@@ -51,17 +51,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         DataContext = this;
 
         ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeView_SelectionChanged;
-        //Navigate(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
+
+        using var shHome = ShellNamespaceService.HomeShellFolder;
+        Navigate(new BrowserItem(shHome.PIDL, true));
     }
 
     public async void Navigate(BrowserItem target)
     {
-        Debug.Print($".Navigate(`{target.DisplayName}`)");
-
-        if (!target.IsFolder)
-        {
-            Debug.Print("WARN: Navigate() is no folder");
-        }
+        Debug.WriteLineIf(!target.IsFolder, $"Navigate({target.DisplayName}) => `{{target.DisplayName}}` is not a folder!");
 
         try
         {
@@ -113,18 +110,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             Navigate(folder);
         }
     }
-
-
-
     #region Property stuff
-
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
     public event PropertyChangedEventHandler? PropertyChanged;
-
     private bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value))
@@ -136,7 +127,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         OnPropertyChanged(propertyName);
         return true;
     }
-
     #endregion Property stuff
 }
 
@@ -165,36 +155,20 @@ public class BrowserItem(Shell32.PIDL pidl, bool isFolder)
 public partial class BrowserItemCollection : List<ShellItem>, IList
 {
     protected IList ListImplementation => new List<BrowserItem>();
+
     public void CopyTo(Array array, int index) => ListImplementation.CopyTo(array, index);
-
     public new int Count => ListImplementation.Count;
-
     public bool IsSynchronized => ListImplementation.IsSynchronized;
-
     public object SyncRoot => ListImplementation.SyncRoot;
-
-    public int Add(object? value)
-    {
-
-        return ListImplementation.Add(value);
-    }
-
+    public int Add(object? value) => ListImplementation.Add(value);
     public new void Clear() => ListImplementation.Clear();
-
     public bool Contains(object? value) => ListImplementation.Contains(value);
-
     public int IndexOf(object? value) => ListImplementation.IndexOf(value);
-
     public void Insert(int index, object? value) => ListImplementation.Insert(index, value);
-
     public void Remove(object? value) => ListImplementation.Remove(value);
-
     public new void RemoveAt(int index) => ListImplementation.RemoveAt(index);
-
     public bool IsFixedSize => ListImplementation.IsFixedSize;
-
     public bool IsReadOnly => ListImplementation.IsReadOnly;
-
     public new object? this[int index]
     {
         get => ListImplementation[index];

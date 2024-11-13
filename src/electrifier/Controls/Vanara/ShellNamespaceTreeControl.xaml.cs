@@ -8,6 +8,7 @@ using Vanara.Windows.Shell;
 using Windows.Foundation;
 using CommunityToolkit.WinUI.Collections;
 using System.Collections.ObjectModel;
+using electrifier.Controls.Vanara.Services;
 
 // todo: For EnumerateChildren-Calls, add HWND handle
 // todo: See ShellItemCollection, perhaps use this instead of ObservableCollection
@@ -35,6 +36,10 @@ public partial class ShellNamespaceTreeControl : UserControl
 
     private void ShellNamespaceTreeControl_Loading(FrameworkElement sender, object args)
     {
+        var shHome = ShellNamespaceService.HomeShellFolder;
+        if (shHome != null)
+            Items.Add(BrowserItem.FromShellFolder(shHome));
+        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
         Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
         Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Downloads));
         Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Documents));

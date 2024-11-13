@@ -15,11 +15,15 @@ namespace electrifier.Controls.Vanara.Services;
 
 public partial class ShellNamespaceService
 {
-    /// <summary>HResult code of <code><see cref="COMException"/>('0x80070490')</code>
-    /// <remarks>Fired when `Element not found`.</remarks></summary>
+    /// <summary>
+    /// <see cref="HResult">HResult</see> code of <code><see cref="COMException"/>('0x80070490');</code>
+    /// <remarks>Fired when <b>`Element not found`</b> while enumerating the Shell32 Namespace.</remarks>
+    /// </summary>
     public static readonly HRESULT HResultElementNotFound = new(0x80070490);
-    /// <summary><see cref="ShellFolder"/> of virtual `Home` directory.
-    /// <remarks>This equals Shell 32 URI: <code>shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}</code></remarks></summary>
+    /// <summary>
+    /// <see cref="ShellFolder"/> of virtual `<b>Home</b>` directory.
+    /// <remarks>This equals Shell 32 URI: <code>shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}</code></remarks>
+    /// </summary>
     public static readonly ShellFolder HomeShellFolder = new("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
     internal readonly TempShellIconExtractor IconExtractor;
     public IReadOnlyList<Bitmap> IconExtractorBitmaps;
@@ -41,12 +45,14 @@ public partial class ShellNamespaceService
     internal static StockIcon SiFolderFront = new(Shell32.SHSTOCKICONID.SIID_FOLDERFRONT);
     internal static StockIcon SiFolderOpen = new(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);
     internal static StockIcon SiLinkOverlay = new(SHSTOCKICONID.SIID_LINK);
-    public Task? StockIconTask;
+    protected Task? StockIconTask;
+
+    /// <summary>ShellNamespaceService() Warn: Does not really conform Service Models actually.</summary>
     public ShellNamespaceService()
     {
+        StockIconTask = InitializeStockIcons();
         IconExtractor = new(ShellFolder.Desktop);
         IconExtractorBitmaps = IconExtractor.ImageList;
-        StockIconTask = InitializeStockIcons();
     }
 
     // TODO: Add await event handler to every ebItem, so Icon Extractor can call back the item
