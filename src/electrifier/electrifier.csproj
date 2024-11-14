@@ -12,6 +12,7 @@
 	<ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>enable</Nullable>
 	<UseWinUI>true</UseWinUI>
+    <Version>1.24.1113</Version>
     <EnableMsixTooling>true</EnableMsixTooling>
     <AssemblyVersion>1.24.1113</AssemblyVersion>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
