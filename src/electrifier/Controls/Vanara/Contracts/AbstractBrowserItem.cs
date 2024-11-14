@@ -15,10 +15,10 @@ using static Vanara.PInvoke.Shell32;
 namespace electrifier.Controls.Vanara.Contracts;
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-public abstract class AbstractBrowserItem<T>(bool isFolder, List<T> childItems)
+public abstract class AbstractBrowserItem<T>(bool isFolder, List<AbstractBrowserItem<T>>? childItems)
 {
-    public readonly bool IsFolder = isFolder;
-    public readonly List<T> ChildItems = childItems;
+    public readonly bool IsFolder = isFolder;       // WARN: TODO: Check this. If unknown, then find it out!  ... edit: or use virtual function for this!
+    public readonly List<AbstractBrowserItem<T>> ChildItems = childItems ?? [];
     public new string ToString() => $"AbstractBrowserItem(<{typeof(T)}>(isFolder {isFolder}, childItems {childItems})";
 }
 

@@ -70,7 +70,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             ShellListView.Items.Clear();
             foreach (var child in shFolder)
             {
-                if(child.IsFolder)
+                if (child.IsFolder)
                     target.ChildItems.Add(new BrowserItem(child.PIDL, true));
                 ShellListView.Items.Add(new BrowserItem(child.PIDL, child.IsFolder));
             }
@@ -138,8 +138,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 }
 
 
-public class BrowserItem(Shell32.PIDL pidl, bool isFolder)
-    : AbstractBrowserItem<ShellItem>(isFolder, childItems: new BrowserItemCollection())
+public class BrowserItem(Shell32.PIDL pidl, bool isFolder, List<AbstractBrowserItem<ShellItem>>? childItems = default)
+    : AbstractBrowserItem<ShellItem>(isFolder, childItems)
 {
     public readonly Shell32.PIDL PIDL = new(pidl);
     public string DisplayName => ShellItem.GetDisplayName(ShellItemDisplayString.NormalDisplay) ?? ShellItem.ToString();
@@ -148,7 +148,8 @@ public class BrowserItem(Shell32.PIDL pidl, bool isFolder)
     public new ObservableCollection<BrowserItem> ChildItems = [];
     public static BrowserItem FromPIDL(Shell32.PIDL pidl) => new(pidl, false);
     public static BrowserItem FromShellFolder(ShellFolder shellFolder) => new(shellFolder.PIDL, true);
-    public static BrowserItem FromKnownItemId(Shell32.KNOWNFOLDERID knownItemId) => new(new ShellFolder(knownItemId).PIDL, true);
+    public static BrowserItem FromKnownFolderId(Shell32.KNOWNFOLDERID knownItemId) => new(new ShellFolder(knownItemId).PIDL, true);
+
 
     //public Task<int> Enumerate()
     //{

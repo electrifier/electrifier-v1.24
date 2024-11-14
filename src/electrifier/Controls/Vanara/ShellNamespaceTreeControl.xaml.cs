@@ -20,7 +20,7 @@ public partial class ShellNamespaceTreeControl : UserControl
 {
     public TreeView NativeTreeView => TreeView;
     public ObservableCollection<BrowserItem> Items;
-    private AdvancedCollectionView _advancedCollectionView;
+    private readonly AdvancedCollectionView _advancedCollectionView;
     public static ShellNamespaceService NamespaceService => App.GetService<ShellNamespaceService>();
 
     public ShellNamespaceTreeControl()
@@ -38,13 +38,13 @@ public partial class ShellNamespaceTreeControl : UserControl
     private void ShellNamespaceTreeControl_Loading(FrameworkElement sender, object args)
     {
         Items.Add(BrowserItem.FromShellFolder(ShellNamespaceService.HomeShellFolder));
-        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
-        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
-        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Downloads));
-        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Documents));
-        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Pictures));
-        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Music));
-        Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
+        Items.Add(BrowserItem.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
+        Items.Add(BrowserItem.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
+        Items.Add(BrowserItem.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Downloads));
+        Items.Add(BrowserItem.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Documents));
+        Items.Add(BrowserItem.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Pictures));
+        Items.Add(BrowserItem.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Music));
+        Items.Add(BrowserItem.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
     }
 
     private void NativeTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
