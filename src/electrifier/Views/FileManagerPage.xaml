@@ -11,18 +11,12 @@
       d:DataContext="{d:DesignInstance Type=viewmodels:FileManagerViewModel}"
       mc:Ignorable="d">
     <Grid x:Name="ArenaGrid">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition>*</ColumnDefinition>
-            <ColumnDefinition>*</ColumnDefinition>
-        </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition>Auto</RowDefinition>
             <RowDefinition>*</RowDefinition>
             <RowDefinition>Auto</RowDefinition>
         </Grid.RowDefinitions>
         <CommandBar x:Name="CommandBar"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
                     Grid.Row="0"
                     DefaultLabelPosition="Right"
                     HorizontalAlignment="Left"
@@ -225,18 +219,10 @@
             </CommandBar.SecondaryCommands>
         </CommandBar>
         <Border x:Name="PrimaryExplorerBrowserBorder"
-                Grid.Column="0"
                 Grid.Row="1">
             <vanara:ExplorerBrowser x:Name="PrimaryExplorerBrowserControl" />
         </Border>
-        <Border x:Name="SecondaryExplorerBrowserBorder"
-                Grid.Column="1"
-                Grid.Row="1">
-            <vanara:ExplorerBrowser x:Name="SecondaryExplorerBrowserControl" />
-        </Border>
         <CommandBar x:Name="StatusCommandBar"
-                    Grid.Column="0"
-                    Grid.ColumnSpan="2"
                     Grid.Row="2"
                     DefaultLabelPosition="Collapsed"
                     HorizontalAlignment="Left"

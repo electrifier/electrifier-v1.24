@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <UserControl x:Class="electrifier.Controls.Vanara.ExplorerBrowser"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="using:electrifier.Controls.Vanara"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:services="using:electrifier.Controls.Vanara.Services"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="using:electrifier.Controls.Vanara"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:controls="using:CommunityToolkit.WinUI.Controls"
              d:DataContext="{d:DesignInstance Type=local:ExplorerBrowser}"
              mc:Ignorable="d">
     <Grid VerticalAlignment="Top">
@@ -18,6 +19,8 @@
                 <ColumnDefinition Width="176"
                                   MinWidth="76" />
                 <ColumnDefinition Width="*"
+                                  MinWidth="76" />
+                <ColumnDefinition Width="176"
                                   MinWidth="76" />
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0"
@@ -32,8 +35,20 @@
                     <!-- ItemsSource="{x:Bind CurrentItems}" -->
                 </StackPanel>
             </Border>
+            <Border Grid.Column="2"
+                    BorderBrush="Beige"
+                    BorderThickness="3">
+                <controls:HeaderedContentControl Header="Sidebar">
+                    <TextBlock FontSize="12"
+                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                               Text="Hier könnte ihre Werbung stehen..."
+                               TextWrapping="Wrap" />
+
+                </controls:HeaderedContentControl>
+            </Border>
         </Grid>
         <AppBar Grid.Row="1"
+                Grid.ColumnSpan="3"
                 HorizontalAlignment="Stretch"
                 Background="Transparent">
             <StackPanel>
