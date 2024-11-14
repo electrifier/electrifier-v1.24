@@ -1,6 +1,5 @@
-using Vanara.Windows.Shell;
-using Microsoft.UI.Xaml.Media.Imaging;
-using System.Runtime.InteropServices.WindowsRuntime;
+﻿using Vanara.Windows.Shell;
+using Vanara.PInvoke;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Drawing;
@@ -13,17 +12,19 @@ namespace electrifier.Controls.Vanara.Services;
 
 public partial class ShellNamespaceService : IShellNamespaceService
 {
-    /// <summary>
-    /// <see cref="HResult">HResult</see> code of <code><see cref="COMException"/>('0x80070490');</code>
+    /// <summary><see cref="HRESULT"/> code of <see cref="COMException"/><i>('0x80070490');</i>
     /// <remarks>Fired when <b>`Element not found`</b> while enumerating the Shell32 Namespace.</remarks>
-    /// </summary>
+    /// <remarks>As far as I know, this also gets fired when <b>No Disk in Drive</b> error occurs.</remarks></summary>
     public static readonly HRESULT HResultElementNotFound = new(0x80070490);
-    /// <summary>
-    /// <see cref="ShellFolder"/> of virtual `<b>Home</b>` directory.
-    /// <remarks>This equals Shell 32 URI: <code>shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}</code></remarks>
-    /// </summary>
+    /// <summary><see cref="ShellFolder"/> of virtual `<b>Home</b>` directory.
+    /// <remarks>This equals Shell 32 URI: <code>shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}</code></remarks></summary>
     public static ShellFolder HomeShellFolder => new("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
-    internal static readonly TempShellIconExtractor IconExtractor = new(ShellFolder.Desktop);
+
+    internal static TempShellIconExtractor IconExtractor
+    {
+        get;
+    }
+
     public static IReadOnlyList<Bitmap> IconExtractorBitmaps => IconExtractor.ImageList;
     public int IconSize => IconExtractor.ImageSize;
     /// <summary>
@@ -41,54 +42,46 @@ public partial class ShellNamespaceService : IShellNamespaceService
     internal static StockIcon SiFolderFront = new(Shell32.SHSTOCKICONID.SIID_FOLDERFRONT);
     internal static StockIcon SiFolderOpen = new(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);
     internal static StockIcon SiLinkOverlay = new(SHSTOCKICONID.SIID_LINK);
-    protected Task? StockIconTask;
+    private Task _stockIconsTask = InitializeStockIconsAsync();
 
-    /// <summary>
-    /// <remarks>When used as service, this static might be unnecessary.
-    /// However, this makes sure the Stock Icon cache gets initialized as soon as possible.</remarks>
+    /// <summary>A static reference of our own.
+    /// <remarks>When used as service, this static might be unnecessary. However, this
+    /// makes sure the Stock Icon cache gets initialized as soon as possible.</remarks>
+    /// TODO: This is a currently unresolved race condition
     /// </summary>
-    [UsedImplicitly]
-    public static readonly ShellNamespaceService Instance = new();
+    [UsedImplicitly] public static ShellNamespaceService Instance = new();
 
     /// <summary>ShellNamespaceService() Warn: Actually does not really conform Service Models.</summary>
     public ShellNamespaceService()
     {
-        StockIconTask = InitializeStockIconsAsync();
-        return;
+        _stockIconsTask = InitializeStockIconsAsync();
     }
 
     /// <summary>Initialize default <see cref="StockIcon">Stock Icons</see>.</summary>
     /// <remarks>TODO: INFO: Investigate <seealso href="https://github.com/dahall/Vanara/blob/Windows.Shell.Common/StockIcon.cs"></seealso></remarks>
     /// <returns></returns>
-    private static async Task InitializeStockIconsAsync()
+    public static async Task InitializeStockIconsAsync()
     {
         /* Todo: inspect `SHGetStockIconInfo()` */
         //var siFlags = SHGSI.SHGSI_LARGEICON | SHGSI.SHGSI_ICON;
         //var siStockIconInfo = new SHSTOCKICONINFO();
         //SHGetStockIconInfo(Shell32.SHSTOCKICONID.SIID_APPLICATION, siFlags, ref siStockIconInfo).ThrowIfFailed();
 
-        try
+        // TODO: Use embedded resource, red cross to signal something failed.
+        using var siFolder = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDER);
         {
-            using var siFolder = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDER);
-            {
-                var idx = siFolder.SystemImageIndex;
-                var icnHandle = siFolder.IconHandle.ToIcon();
-                var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
-                ShellNamespaceService.FolderBitmapSource = await bmpSource;
-            }
-
-            using var siDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCASSOC);
-            {
-                var idx = siDocument.SystemImageIndex;
-                var icnHandle = siDocument.IconHandle.ToIcon();
-                var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
-                ShellNamespaceService.DocumentBitmapSource = await bmpSource;
-            }
+            var idx = siFolder.SystemImageIndex;
+            var icnHandle = siFolder.IconHandle.ToIcon();
+            var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
+            ShellNamespaceService.FolderBitmapSource = await bmpSource;
         }
-        catch (Exception e)
+
+        using var siDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCASSOC);
         {
-            Console.WriteLine(e);
-            throw;
+            var idx = siDocument.SystemImageIndex;
+            var icnHandle = siDocument.IconHandle.ToIcon();
+            var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
+            ShellNamespaceService.DocumentBitmapSource = await bmpSource;   // TODO: Use embedded resource, red cross to signal something failed.
         }
     }
 

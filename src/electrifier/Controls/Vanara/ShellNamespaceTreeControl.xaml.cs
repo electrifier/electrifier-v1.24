@@ -21,6 +21,7 @@ public partial class ShellNamespaceTreeControl : UserControl
     public TreeView NativeTreeView => TreeView;
     public ObservableCollection<BrowserItem> Items;
     private AdvancedCollectionView _advancedCollectionView;
+    public static ShellNamespaceService NamespaceService => App.GetService<ShellNamespaceService>();
 
     public ShellNamespaceTreeControl()
     {
@@ -36,9 +37,7 @@ public partial class ShellNamespaceTreeControl : UserControl
 
     private void ShellNamespaceTreeControl_Loading(FrameworkElement sender, object args)
     {
-        var shHome = ShellNamespaceService.HomeShellFolder;
-        if (shHome != null)
-            Items.Add(BrowserItem.FromShellFolder(shHome));
+        Items.Add(BrowserItem.FromShellFolder(ShellNamespaceService.HomeShellFolder));
         Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
         Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
         Items.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_Downloads));

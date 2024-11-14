@@ -41,8 +41,10 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+    public event EventHandler<NavigatedEventArgs> Navigated;
+    public event EventHandler<NavigationFailedEventArgs> NavigationFailed;
 
-    public ShellNamespaceService NamespaceService => new ShellNamespaceService();
+    public static ShellNamespaceService ShellNamespaceService => App.GetService<ShellNamespaceService>();
 
     /// <summary>ExplorerBrowser Implementation for WinUI3.</summary>
     public ExplorerBrowser()
@@ -89,6 +91,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             IsLoading = false;
             //_ = UpdateGridView();
         }
+    }
+
+    public async void Navigate(ShellItem target, TreeViewNode? treeViewNode = null)
+    {
+        // TODO: Search for best matching RootItem in the tree hierarchy
     }
 
     private void NativeTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
