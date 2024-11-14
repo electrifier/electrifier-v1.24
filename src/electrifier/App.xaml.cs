@@ -1,5 +1,6 @@
 ﻿using electrifier.Activation;
 using electrifier.Contracts.Services;
+using electrifier.Controls.Vanara.Contracts;
 using electrifier.Controls.Vanara.Services;
 using electrifier.Helpers;
 using electrifier.Models;
