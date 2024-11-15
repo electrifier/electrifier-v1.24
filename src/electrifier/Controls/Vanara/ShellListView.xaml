@@ -6,7 +6,7 @@
              xmlns:local="using:electrifier.Controls.Vanara"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:services="using:electrifier.Controls.Vanara.Services"
-             d:DataContext="{d:DesignInstance Type=services:ExplorerBrowser}"
+             d:DataContext="{d:DesignInstance Type=local:ExplorerBrowser}"
              mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
