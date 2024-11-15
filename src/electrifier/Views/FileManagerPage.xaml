@@ -22,41 +22,33 @@
                     HorizontalAlignment="Left"
                     IsOpen="False">
             <!-- CommandBar.Visibility="{x:Bind TopCommandBarVisibility}" -->
-            <AppBarElementContainer>
-                <SplitButton x:Name="NewItemSplitButton"
-                             Content="New">
-                    <SplitButton.Flyout>
-                        <Flyout>
-                            <StackPanel>
-                                <AppBarButton Icon="Folder"
-                                              Label="Folder"
-                                              IsEnabled="False" />
-                                <AppBarButton Icon="Link"
-                                              Label="Shortcut"
-                                              IsEnabled="False" />
-                            </StackPanel>
-                        </Flyout>
-                    </SplitButton.Flyout>
-                </SplitButton>
-            </AppBarElementContainer>
+            <AppBarButton Icon="OpenFile"
+                          Label="New">
+                <AppBarButton.Flyout>
+                    <Flyout>
+                        <StackPanel>
+                            <AppBarButton Icon="Folder"
+                                          Label="Folder"
+                                          IsEnabled="False" />
+                            <AppBarButton Icon="Link"
+                                          Label="Shortcut"
+                                          IsEnabled="False" />
+                        </StackPanel>
+                    </Flyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
             <AppBarSeparator />
             <AppBarButton Icon="Cut"
-                          IsEnabled="False"
                           Label="Cut" />
             <AppBarButton Icon="Copy"
-                          IsEnabled="False"
                           Label="Copy" />
             <AppBarButton Icon="Paste"
-                          IsEnabled="False"
                           Label="Paste" />
             <AppBarButton Icon="Rename"
-                          IsEnabled="False"
                           Label="Rename" />
             <AppBarButton Icon="Share"
-                          IsEnabled="False"
                           Label="Share" />
             <AppBarButton Icon="Delete"
-                          IsEnabled="False"
                           Label="Delete" />
             <AppBarSeparator />
             <AppBarElementContainer>
@@ -135,10 +127,23 @@
                     </SplitButton.Flyout>
                 </SplitButton>
             </AppBarElementContainer>
-            <AppBarElementContainer>
                 <AppBarButton Icon="Filter"
-                              Label="Filter" />
-            </AppBarElementContainer>
+                              Label="Filter">
+                    <AppBarButton.Flyout>
+                        <Flyout>
+                            <StackPanel>
+                                <AppBarButton Icon="Home"
+                                              Label="Home" />
+                                <AppBarButton Icon="Edit"
+                                              Label="Work" />
+                                <AppBarButton Icon="Pictures"
+                                              Label="Photos" />
+                                <AppBarButton Icon="Important"
+                                              Label="Important" />
+                            </StackPanel>
+                        </Flyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
             <AppBarElementContainer>
                 <SplitButton x:Name="FilterSplitButton"
                              Content="Filter">
@@ -179,12 +184,14 @@
                     <SplitButton.Flyout>
                         <Flyout>
                             <StackPanel>
-                                <Button Content="Low Priority"
-                                        IsEnabled="False" />
-                                <Button Content="Medium Priority"
-                                        IsEnabled="False" />
-                                <Button Content="High Priority"
-                                        IsEnabled="False" />
+                                <AppBarButton Icon="Home"
+                                              Label="Home" />
+                                <AppBarButton Icon="Edit"
+                                              Label="Work"/>
+                                <AppBarButton Icon="Pictures"
+                                              Label="Photos" />
+                                <AppBarButton Icon="Important"
+                                              Label="Important"/>
                             </StackPanel>
                         </Flyout>
                     </SplitButton.Flyout>
