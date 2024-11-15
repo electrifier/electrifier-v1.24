@@ -13,27 +13,15 @@ namespace electrifier.Controls.Vanara.Services;
 
 public partial class ShellNamespaceService : IShellNamespaceService
 {
+    #region static constants
     public static readonly HRESULT HResultElementNotFound = IShellNamespaceService.HResultElementNotFound;
     public static ShellFolder HomeShellFolder => new(IShellNamespaceService.HomeShellFolder);
+    #endregion
 
+    // INFO: 15-11-24: I'll use a single Icon Size for testing purposes
     internal static TempShellIconExtractor IconExtractor { get; } = new(ShellFolder.Desktop);
     public static IReadOnlyList<Bitmap> IconExtractorBitmaps => IconExtractor.ImageList;
     public int IconSize => IconExtractor.ImageSize;
-    /// <summary>
-    /// todo: die ganzen StockIcons in ein struct packen.
-    /// Indexer ist `Shell32.SHSTOCKICONID`
-    /// get-Methode, die erst die Icons holt wenn danach gefragt wird.
-    /// </summary>
-    internal static StockIcon SiDocument = new(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC);
-    internal static SoftwareBitmapSource DocumentBitmapSource = new();
-    internal static StockIcon SiDocumentWithAssociation = new(SHSTOCKICONID.SIID_DOCASSOC);
-    internal static SoftwareBitmapSource DocumentWithAssociationBitmapSource = new();
-    internal static StockIcon SiFolder = new(Shell32.SHSTOCKICONID.SIID_FOLDER);
-    internal static SoftwareBitmapSource FolderBitmapSource = new();
-    internal static StockIcon SiFolderBack = new(Shell32.SHSTOCKICONID.SIID_FOLDERBACK);
-    internal static StockIcon SiFolderFront = new(Shell32.SHSTOCKICONID.SIID_FOLDERFRONT);
-    internal static StockIcon SiFolderOpen = new(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);
-    internal static StockIcon SiLinkOverlay = new(SHSTOCKICONID.SIID_LINK);
     private Task _stockIconsTask = InitializeStockIconsAsync();
 
     /// <summary>A static reference of our own.
@@ -65,7 +53,7 @@ public partial class ShellNamespaceService : IShellNamespaceService
             var idx = siFolder.SystemImageIndex;
             var icnHandle = siFolder.IconHandle.ToIcon();
             var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
-            ShellNamespaceService.FolderBitmapSource = await bmpSource;
+            IShellNamespaceService.FolderBitmapSource = await bmpSource;
         }
 
         using var siDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCASSOC);
@@ -73,7 +61,7 @@ public partial class ShellNamespaceService : IShellNamespaceService
             var idx = siDocument.SystemImageIndex;
             var icnHandle = siDocument.IconHandle.ToIcon();
             var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
-            ShellNamespaceService.DocumentBitmapSource = await bmpSource;   // TODO: Use embedded resource, red cross to signal something failed.
+            IShellNamespaceService.DocumentBitmapSource = await bmpSource;   // TODO: Use embedded resource, red cross to signal something failed.
         }
     }
 
@@ -99,6 +87,11 @@ public partial class ShellNamespaceService : IShellNamespaceService
         Debug.Print($".RequestChildItemsAsync(<{shFolder}>): {shDataTable.Rows.Count}");
 
         return shDataTable;
+    }
+
+    public async Task<SoftwareBitmapSource> ExtractShellIcon()
+    {
+        return null;
     }
 
     /// <summary>Get associated <seealso cref="SoftwareBitmapSource"/> for given <param name="bitmapIcon">Icon</param></summary>

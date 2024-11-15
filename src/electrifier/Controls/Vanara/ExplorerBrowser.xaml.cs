@@ -139,12 +139,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
 
 public class BrowserItem(Shell32.PIDL pidl, bool isFolder, List<AbstractBrowserItem<ShellItem>>? childItems = default)
-    : AbstractBrowserItem<ShellItem>(isFolder, childItems)
+    : AbstractBrowserItem<ShellItem>(isFolder, childItems), INotifyPropertyChanged
 {
     public readonly Shell32.PIDL PIDL = new(pidl);
     public string DisplayName => ShellItem.GetDisplayName(ShellItemDisplayString.NormalDisplay) ?? ShellItem.ToString();
     public ShellItem ShellItem = new(pidl);
-    public SoftwareBitmapSource SoftwareBitmapSource = isFolder ? ShellNamespaceService.FolderBitmapSource : ShellNamespaceService.DocumentBitmapSource;
     public new ObservableCollection<BrowserItem> ChildItems = [];
     public static BrowserItem FromPIDL(Shell32.PIDL pidl) => new(pidl, false);
     public static BrowserItem FromShellFolder(ShellFolder shellFolder) => new(shellFolder.PIDL, true);
@@ -157,6 +156,20 @@ public class BrowserItem(Shell32.PIDL pidl, bool isFolder, List<AbstractBrowserI
     //    ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
     //    return Task.CompletedTask as Task<int>;
     //}
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
 }
 
 

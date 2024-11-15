@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using electrifier.Controls.Vanara.Services;
+using Microsoft.UI.Xaml.Media.Imaging;
 using System.Collections.Generic;
+using System.Collections;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 using static Vanara.PInvoke.ComCtl32;
@@ -19,14 +21,17 @@ public abstract class AbstractBrowserItem<T>(bool isFolder, List<AbstractBrowser
 {
     public readonly bool IsFolder = isFolder;       // WARN: TODO: Check this. If unknown, then find it out!  ... edit: or use virtual function for this!
     public readonly List<AbstractBrowserItem<T>> ChildItems = childItems ?? [];
+    public SoftwareBitmapSource SoftwareBitmapSource = isFolder
+        ? IShellNamespaceService.FolderBitmapSource
+        : IShellNamespaceService.DocumentBitmapSource;
     public new string ToString() => $"AbstractBrowserItem(<{typeof(T)}>(isFolder {isFolder}, childItems {childItems})";
 }
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
 public abstract class AbstractBrowserItemCollection<T> : IEnumerable<AbstractBrowserItem<T>>, IList<AbstractBrowserItem<T>>
 {
+    //protected readonly ShellItem? _parentOwnerItem;
     protected readonly IList<AbstractBrowserItem<T>> Collection = [];
-    //protected readonly ShellItem? _parentItem;
 
     AbstractBrowserItem<T> IList<AbstractBrowserItem<T>>.this[int index] { get => Collection[index]; set => Collection[index] = value; }
     int ICollection<AbstractBrowserItem<T>>.Count => Collection.Count;
