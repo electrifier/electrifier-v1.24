@@ -37,12 +37,11 @@
 
 ---
 
-_Eine Scheunenproduktion_
-No animals were 🐯 harmed.
+_Eine Scheunenproduktion_. No animals 🐯 were harmed.
 
 ----
 ©️ Copyright (c) 2023, 2024: Thorsten Jung, tajbender
 
-🔓 electrifier is Open Source: [See Apach License 2.0 for Disclaimer](https://opensource.org/license/apache-2-0)
+🔓 electrifier is Open Source: [See Apache License 2.0 Disclaimer](https://opensource.org/license/apache-2-0)
 
 📆 1-11-24 - _May the 4th be & you_
