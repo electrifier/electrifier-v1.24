@@ -8,6 +8,9 @@ using static Vanara.PInvoke.Shell32;
 using Microsoft.UI.Xaml.Media.Imaging;
 using JetBrains.Annotations;
 using electrifier.Controls.Vanara.Contracts;
+using System.Collections;
+using CommunityToolkit.Mvvm.ComponentModel.__Internals;
+using Microsoft.UI.Xaml.Controls;
 
 namespace electrifier.Controls.Vanara.Services;
 
@@ -22,7 +25,13 @@ public partial class ShellNamespaceService : IShellNamespaceService
     internal static TempShellIconExtractor IconExtractor { get; } = new(ShellFolder.Desktop);
     public static IReadOnlyList<Bitmap> IconExtractorBitmaps => IconExtractor.ImageList;
     public int IconSize => IconExtractor.ImageSize;
-    private Task _stockIconsTask = InitializeStockIconsAsync();
+
+    public List<BrowserStockIcon> StockIcons
+    {
+        get => [];
+        init => new List<BrowserStockIcon>();
+    }
+
 
     /// <summary>A static reference of our own.
     /// <remarks>When used as service, this static might be unnecessary. However, this
@@ -34,37 +43,41 @@ public partial class ShellNamespaceService : IShellNamespaceService
     /// <summary>ShellNamespaceService() Warn: Actually does not really conform Service Models.</summary>
     public ShellNamespaceService()
     {
-        _stockIconsTask = InitializeStockIconsAsync();
+        StockIcons =
+        [
+            new(SHSTOCKICONID.SIID_DOCASSOC),
+            new(SHSTOCKICONID.SIID_DOCNOASSOC),
+            new(SHSTOCKICONID.SIID_FOLDER),
+            new(SHSTOCKICONID.SIID_FOLDERBACK),
+            new(SHSTOCKICONID.SIID_FOLDERFRONT)
+        ];
     }
 
-    /// <summary>Initialize default <see cref="StockIcon">Stock Icons</see>.</summary>
-    /// <remarks>TODO: INFO: Investigate <seealso href="https://github.com/dahall/Vanara/blob/Windows.Shell.Common/StockIcon.cs"></seealso></remarks>
-    /// <returns></returns>
-    public static async Task InitializeStockIconsAsync()
-    {
-        /* Todo: inspect `SHGetStockIconInfo()` */
-        //var siFlags = SHGSI.SHGSI_LARGEICON | SHGSI.SHGSI_ICON;
-        //var siStockIconInfo = new SHSTOCKICONINFO();
-        //SHGetStockIconInfo(Shell32.SHSTOCKICONID.SIID_APPLICATION, siFlags, ref siStockIconInfo).ThrowIfFailed();
+    ///// <summary>Initialize default <see cref="StockIcon">Stock Icons</see>.</summary>
+    ///// <remarks>TODO: INFO: Investigate <seealso href="https://github.com/dahall/Vanara/blob/Windows.Shell.Common/StockIcon.cs"></seealso></remarks>
+    ///// <returns></returns>
+    //public static async Task InitializeStockIconsAsync()
+    //{
+    //    /* Todo: inspect `SHGetStockIconInfo()` */
+    //    //var siFlags = SHGSI.SHGSI_LARGEICON | SHGSI.SHGSI_ICON;
+    //    //var siStockIconInfo = new SHSTOCKICONINFO();
+    //    //SHGetStockIconInfo(Shell32.SHSTOCKICONID.SIID_APPLICATION, siFlags, ref siStockIconInfo).ThrowIfFailed();
 
-        // TODO: Use embedded resource, red cross to signal something failed.
-        using var siFolder = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDER);
-        {
-            var idx = siFolder.SystemImageIndex;
-            var icnHandle = siFolder.IconHandle.ToIcon();
-            var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
-            IShellNamespaceService.FolderBitmapSource = await bmpSource;
-        }
+    //    // TODO: Use embedded resource, red cross to signal something failed.
+    //    using var siFolder = new StockIcon(SHSTOCKICONID.SIID_FOLDER);
+    //    {
+    //        var idx = siFolder.SystemImageIndex;
+    //        var icnHandle = siFolder.IconHandle.ToIcon();
+    //        var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
+    //    }
 
-        using var siDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCASSOC);
-        {
-            var idx = siDocument.SystemImageIndex;
-            var icnHandle = siDocument.IconHandle.ToIcon();
-            var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
-            IShellNamespaceService.DocumentBitmapSource = await bmpSource;   // TODO: Use embedded resource, red cross to signal something failed.
-        }
-    }
-
+    //    using var siDocument = new StockIcon(SHSTOCKICONID.SIID_DOCASSOC);
+    //    {
+    //        var idx = siDocument.SystemImageIndex;
+    //        var icnHandle = siDocument.IconHandle.ToIcon();
+    //        var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
+    //    }
+    //}
 
     // TODO: Add await event handler to every ebItem, so Icon Extractor can call back the item
     public static async Task<ShellDataTable> RequestChildItemsAsync(ShellFolder shFolder,
@@ -74,10 +87,10 @@ public partial class ShellNamespaceService : IShellNamespaceService
         Debug.Print($".RequestChildItemsAsync(<{shFolder}>) extracting...");
         var ct = new CancellationToken();
 
-        var propKeys = new List<Ole32.PROPERTYKEY>()
-        {
-            Ole32.PROPERTYKEY.System.FileFRN, /* This is the unique file ID, also known as the File Reference Number. */
-        };
+        List<Ole32.PROPERTYKEY> propKeys =
+        [
+            Ole32.PROPERTYKEY.System.FileFRN /* This is the unique file ID, also known as the File Reference Number. */
+        ];
 
         var shDataTable = new ShellDataTable(shFolder, itemFilter);
         shDataTable.AllFastRowsAdded += allFastRowsAddedHandler;
@@ -93,6 +106,69 @@ public partial class ShellNamespaceService : IShellNamespaceService
     {
         return null;
     }
+
+    public struct BrowserStockIcon(
+        Shell32.SHSTOCKICONID shStockIconId,
+        ShellIconType shellIconType = ShellIconType.Large,
+        bool isLinkOverlay = false,
+        bool isSelected = false)
+    {
+        public readonly bool IsLinkOverlay = isLinkOverlay;
+        public readonly bool IsSelected = isSelected;
+        public readonly ShellIconType ShellIconType = shellIconType;
+        public readonly StockIcon StockIcon = new(shStockIconId, size: shellIconType, isLinkOverlay, isSelected);
+        public readonly SHSTOCKICONID StockIconId = shStockIconId;
+        //public readonly SHSTOCKICONINFO StockIconInfo = new(SHGetStockIconInfo(shStockIconId, ).ThrowIfFailed("Creating"));
+
+        //public readonly Task<SoftwareBitmapSource?> GetSoftwareBitmapSource() => _softwareBitmapTask;
+        private SoftwareBitmapSource _softwareBitmap;
+
+        //public event HasValidationErrorsChangedEventArgs();
+
+        //public Task<SoftwareBitmapSource> Prefetch(ref ShellIconExtractor iconExtractor)
+        //{
+        //    return new(_softwareBitmap);
+        //    //return Task.
+        //}
+    }
+
+    //IconExtractor.
+            //if (GetSoftwareBitmapSource() is null) // lock SoftwareBitmapSource
+            //{
+            //    //lock (GetSoftwareBitmapSource())
+            //    //{
+            //    //    //this._softwareBitmapTask = GetWinUi3BitmapSourceFromIcon(new());
+            //    //}
+
+            //    //var tsk = this.ExtractShellIcon();
+            //    //await tsk;
+            //}
+
+/*          using var siDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCASSOC);
+           {
+               var idx = siDocument.SystemImageIndex;
+               var icnHandle = siDocument.IconHandle.ToIcon();
+               var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
+               IShellNamespaceService.DocumentBitmapSource = await bmpSource;   // TODO: Use embedded resource, red cross to signal something failed.
+           } */
+
+
+            //private Task<SoftwareBitmapSource> BitmapSource =>
+            //ShellNamespaceService.GetWinUi3BitmapSourceFromIcon(); //new SoftwareBitmapSource();
+            /// Task<SoftwareBitmapSource>
+            //public static BrowserStockIcon Prefetch(ref BrowserStockIcon thisStockIcon)
+            //{
+            //    Debug.Print($"BrowserStockIcon.Prefetch({thisStockIcon}))");
+            //    return thisStockIcon;
+            //}
+
+            //public readonly SHSTOCKICONINFO StockIconInfo = new(SHGetStockIconInfo(shStockIconId, ).ThrowIfFailed("Creating"));
+
+            //public static async Task<BrowserStockIcon> Prefetch(SHSTOCKICONID stockIcon)
+            //{
+            //    var bmpSrc = new SoftwareBitmapSource();
+            //    return bmpSrc;
+            //}
 
     /// <summary>Get associated <seealso cref="SoftwareBitmapSource"/> for given <param name="bitmapIcon">Icon</param></summary>
     /// <remarks>TODO: INFO: Investigate <seealso href="https://learn.microsoft.com/en-us/uwp/api/windows.ui.xaml.media.imaging.writeablebitmap?view=winrt-26100">uwp/api/windows.ui.xaml.media.imaging.WriteableBitmap (WARN: Links to UWP)</seealso></remarks>

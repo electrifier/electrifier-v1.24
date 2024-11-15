@@ -31,4 +31,5 @@ public interface IShellNamespaceService
     internal static StockIcon SiFolderOpen = new(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);
     internal static StockIcon SiLinkOverlay = new(Shell32.SHSTOCKICONID.SIID_LINK);
 
+//    public List<ShellNamespaceService.BrowserStockIcon> StockIcons { get; init; }
 }
