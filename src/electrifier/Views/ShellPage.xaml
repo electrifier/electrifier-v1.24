@@ -3,9 +3,9 @@
      todo: See WinUI3 gallery://item/AnimatedIcon -->
 <Page x:Class="electrifier.Views.ShellPage"
       xmlns:behaviors="using:electrifier.Behaviors"
+      xmlns:data="using:Microsoft.UI.Xaml.Data"
       xmlns:helpers="using:electrifier.Helpers"
       xmlns:i="using:Microsoft.Xaml.Interactivity"
-      xmlns:data="using:Microsoft.UI.Xaml.Data"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       Loaded="OnLoaded">
@@ -39,20 +39,23 @@
                     <Image Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png"
                            MaxHeight="32" />
                 </Button>
-                <Button>
-                    <Image Source="/Assets/Themes/Aero Blackcomb\Tree Up 32px.png"
-                           MaxHeight="32" />
-                </Button>
-                <Button>
-                    <Image Source="/Assets/Themes/Aero Blackcomb/Wisp Refresh Button 48px.png"
-                           MaxHeight="32" />
-                </Button>
             </StackPanel>
             <StackPanel Grid.Column="1"
                         HorizontalAlignment="Stretch"
-                        Orientation="Horizontal">
+                        Orientation="Horizontal"
+                        BorderBrush="DarkGray"
+                        BorderThickness="3">
+                <Button Margin="7">
+                    <Image Source="/Assets/Themes/Aero Blackcomb\Tree Up 32px.png"
+                           MaxHeight="23" />
+                </Button>
                 <BreadcrumbBar x:Name="NavigationBreadcrumbBar"
-                               VerticalAlignment="Center" />
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch" />
+                <Button HorizontalAlignment="Right">
+                    <Image Source="/Assets/Themes/Aero Blackcomb/Wisp Refresh Button 48px.png"
+                           MaxHeight="23" />
+                </Button>
             </StackPanel>
             <Grid Grid.Column="2"
                   HorizontalAlignment="Right">

@@ -24,6 +24,8 @@ public abstract class AbstractBrowserItem<T>(bool isFolder, List<AbstractBrowser
     public SoftwareBitmapSource SoftwareBitmapSource = isFolder
         ? IShellNamespaceService.FolderBitmapSource
         : IShellNamespaceService.DocumentBitmapSource;
+    //internal void async IconUpdate(int Index, SoftwareBitmapSource bmpSrc);
+    //internal void async ChildItemsIconUpdate();
     public new string ToString() => $"AbstractBrowserItem(<{typeof(T)}>(isFolder {isFolder}, childItems {childItems})";
 }
 
