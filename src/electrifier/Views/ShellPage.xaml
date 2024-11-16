@@ -39,6 +39,14 @@
                     <Image Source="ms-appx:///Assets/Themes/Aero Blackcomb/Forward Button 48px.png"
                            MaxHeight="32" />
                 </Button>
+                <Button>
+                    <Image Source="/Assets/Themes/Aero Blackcomb\Tree Up 32px.png"
+                           MaxHeight="32" />
+                </Button>
+                <Button>
+                    <Image Source="/Assets/Themes/Aero Blackcomb/Wisp Refresh Button 48px.png"
+                           MaxHeight="32" />
+                </Button>
             </StackPanel>
             <StackPanel Grid.Column="1"
                         HorizontalAlignment="Stretch"
