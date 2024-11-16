@@ -32,6 +32,7 @@ public partial class ShellNamespaceService : IShellNamespaceService
         init => new List<BrowserStockIcon>();
     }
 
+    protected ArrayWithOffset newStockIcons=new ArrayWithOffset();
 
     /// <summary>A static reference of our own.
     /// <remarks>When used as service, this static might be unnecessary. However, this
@@ -49,8 +50,13 @@ public partial class ShellNamespaceService : IShellNamespaceService
             new(SHSTOCKICONID.SIID_DOCNOASSOC),
             new(SHSTOCKICONID.SIID_FOLDER),
             new(SHSTOCKICONID.SIID_FOLDERBACK),
-            new(SHSTOCKICONID.SIID_FOLDERFRONT)
+            new(SHSTOCKICONID.SIID_FOLDERFRONT),
+            new(SHSTOCKICONID.SIID_APPLICATION),
+            new(SHSTOCKICONID.SIID_AUDIOFILES),
+            new(SHSTOCKICONID.SIID_LINK),
         ];
+
+        newStockIcons = new(StockIcons, 1);
     }
 
     ///// <summary>Initialize default <see cref="StockIcon">Stock Icons</see>.</summary>
