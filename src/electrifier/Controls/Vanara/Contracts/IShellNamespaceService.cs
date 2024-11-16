@@ -1,4 +1,5 @@
 ﻿using System.Runtime.InteropServices;
+using electrifier.Controls.Vanara.Services;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
@@ -26,10 +27,18 @@ public interface IShellNamespaceService
     internal static SoftwareBitmapSource DocumentWithAssociationBitmapSource = new();
     internal static StockIcon SiFolder = new(Shell32.SHSTOCKICONID.SIID_FOLDER);
     internal static SoftwareBitmapSource FolderBitmapSource = new();
+    //internal static StockIcon SiLibrary = new(Shell32.SHSTOCKICONID.SIID_LINK);
+    internal static SoftwareBitmapSource LibraryFrontBitmapSource = new();
     internal static StockIcon SiFolderBack = new(Shell32.SHSTOCKICONID.SIID_FOLDERBACK);
+    internal static SoftwareBitmapSource FolderBackBitmapSource = new();
     internal static StockIcon SiFolderFront = new(Shell32.SHSTOCKICONID.SIID_FOLDERFRONT);
+    internal static SoftwareBitmapSource FolderFrontBitmapSource = new();
     internal static StockIcon SiFolderOpen = new(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);
+    internal static SoftwareBitmapSource FolderOpenBitmapSource = new();
     internal static StockIcon SiLinkOverlay = new(Shell32.SHSTOCKICONID.SIID_LINK);
+    internal static SoftwareBitmapSource LinkBitmapSource = new();
+    internal static StockIcon SiError = new(Shell32.SHSTOCKICONID.SIID_ERROR);
+    internal static SoftwareBitmapSource ErrorBitmapSource = new();
 
-//    public List<ShellNamespaceService.BrowserStockIcon> StockIcons { get; init; }
+    public List<ShellNamespaceService.BrowserStockIcon> StockIcons { get; init; }
 }
