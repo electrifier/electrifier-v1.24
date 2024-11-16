@@ -22,30 +22,33 @@
                                        Description="Your new Workbench is your personal workspace and data warehouse. You can have as many workbenches as you wish and can customize them here. It is your choice, what Page gets navigated to when electrifier starts the next time. Let This be my preferred choice for the future [x], as I know I can change this always in its ''Settings Page::startup behaviour''."
                                        Header="Tip of the day">
                 </controls:SettingsCard>
-                <controls:SettingsExpander Header="Drives">
-                    <!--<ListBox ItemsSource="{x:Bind DriveItems}"/>-->
-                </controls:SettingsExpander>
+                <!--<controls:SettingsExpander Header="Drives">
+                    --><!--<ListBox ItemsSource="{x:Bind DriveItems}"/>--><!--
+                </controls:SettingsExpander>-->
                 <Border BorderBrush="GhostWhite"
                         BorderThickness="3">
                     <StackPanel Orientation="Vertical">
                         <SelectorBar x:Name="QuickLaunchSelectorBar">
-                            <SelectorBarItem Text="History"
-                                             Icon="Clock" />
                             <!-- todo: add timeline here -->
-                            <SelectorBarItem Text="Favorites"
-                                             Icon="Favorite" />
-                            <SelectorBarItem Text="Tagged"
-                                             Icon="Favorite" />
                             <SelectorBarItem Text="Desktop">
+                                <!-- add miniature desktop here -->
                                 <SelectorBarItem.Icon>
                                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                               Glyph="&#xec50;" />
                                 </SelectorBarItem.Icon>
                             </SelectorBarItem>
-                            <!-- add miniature desktop here -->
+                            <SelectorBarItem Text="History"
+                                             Icon="Clock" />
+                            <SelectorBarItem Text="Favorites"
+                                             Icon="Favorite" />
+                            <SelectorBarItem Text="Tagged"
+                                             Icon="Favorite" />
+                            <SelectorBarItem Text="Drives"/>
+                            <SelectorBarItem Text="Network"/>
                         </SelectorBar>
                         <ListView MinHeight="176"></ListView>
                         <CheckBox>Always launch selection when I start this Workbench.</CheckBox>
+                        <Button>FileManager</Button>
                     </StackPanel>
                 </Border>
             </StackPanel>
