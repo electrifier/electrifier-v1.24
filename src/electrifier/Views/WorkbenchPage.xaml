@@ -23,14 +23,17 @@
                                        Header="Tip of the day">
                 </controls:SettingsCard>
                 <!--<controls:SettingsExpander Header="Drives">
-                    --><!--<ListBox ItemsSource="{x:Bind DriveItems}"/>--><!--
+                    -->
+                <!--<ListBox ItemsSource="{x:Bind DriveItems}"/>-->
+                <!--
                 </controls:SettingsExpander>-->
                 <Border BorderBrush="GhostWhite"
                         BorderThickness="3">
                     <StackPanel Orientation="Vertical">
                         <SelectorBar x:Name="QuickLaunchSelectorBar">
                             <!-- todo: add timeline here -->
-                            <SelectorBarItem Text="Desktop">
+                            <SelectorBarItem Text="Desktop"
+                                             IsSelected="True">
                                 <!-- add miniature desktop here -->
                                 <SelectorBarItem.Icon>
                                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
@@ -43,12 +46,22 @@
                                              Icon="Favorite" />
                             <SelectorBarItem Text="Tagged"
                                              Icon="Favorite" />
-                            <SelectorBarItem Text="Drives"/>
-                            <SelectorBarItem Text="Network"/>
+                            <SelectorBarItem Text="Drives"
+                                             Icon="Favorite" />
+                            <SelectorBarItem Text="Network">
+                            </SelectorBarItem>
                         </SelectorBar>
                         <ListView MinHeight="176"></ListView>
-                        <CheckBox>Always launch selection when I start this Workbench.</CheckBox>
-                        <Button>FileManager</Button>
+                        <!--<ItemsStackPanel></ItemsStackPanel>-->
+                        <StackPanel Orientation="Horizontal"
+                                    MinHeight="128">
+                            <Button MinHeight="100">Shell</Button>
+                            <Button MinHeight="100">Browser</Button>
+                            <Button MinHeight="100">Editor</Button>
+                            <Button MinHeight="100">Microsoft 365</Button>
+                            <Button MinHeight="100">Settings</Button>
+                        </StackPanel>
+                        <CheckBox HorizontalAlignment="Right">Always launch last used Pages when I start this Workbench.</CheckBox>
                     </StackPanel>
                 </Border>
             </StackPanel>
