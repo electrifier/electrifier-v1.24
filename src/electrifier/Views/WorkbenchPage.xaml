@@ -31,25 +31,23 @@
                         BorderThickness="3">
                     <StackPanel Orientation="Vertical">
                         <SelectorBar x:Name="QuickLaunchSelectorBar">
-                            <!-- todo: add timeline here -->
-                            <SelectorBarItem Text="Desktop"
-                                             IsSelected="True">
-                                <!-- add miniature desktop here -->
-                                <SelectorBarItem.Icon>
-                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
-                                              Glyph="&#xec50;" />
-                                </SelectorBarItem.Icon>
-                            </SelectorBarItem>
+                            <SelectorBarItem Text="Home"
+                                             Icon="Home" />
                             <SelectorBarItem Text="History"
                                              Icon="Clock" />
                             <SelectorBarItem Text="Favorites"
                                              Icon="Favorite" />
                             <SelectorBarItem Text="Tagged"
-                                             Icon="Favorite" />
+                                             Icon="Tag" />
+                            <!-- todo: add timeline here -->
+                            <SelectorBarItem Text="Desktop"
+                                             Icon="GoToStart" />
                             <SelectorBarItem Text="Drives"
-                                             Icon="Favorite" />
-                            <SelectorBarItem Text="Network">
-                            </SelectorBarItem>
+                                             Icon="XboxOneConsole" />
+                            <SelectorBarItem Text="Network"
+                                             Icon="MapDrive" />
+                            <SelectorBarItem Text="Cloud"
+                                             Icon="World" />
                         </SelectorBar>
                         <ListView MinHeight="176"></ListView>
                         <!--<ItemsStackPanel></ItemsStackPanel>-->
