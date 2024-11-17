@@ -31,17 +31,18 @@
                         BorderThickness="3">
                     <StackPanel Orientation="Vertical">
                         <SelectorBar x:Name="QuickLaunchSelectorBar">
-                            <SelectorBarItem Text="Home"
-                                             Icon="Home" />
                             <SelectorBarItem Text="History"
                                              Icon="Clock" />
                             <SelectorBarItem Text="Favorites"
                                              Icon="Favorite" />
                             <SelectorBarItem Text="Tagged"
                                              Icon="Tag" />
-                            <!-- todo: add timeline here -->
+                            <SelectorBarItem Text="Home"
+                                             Icon="Home" />
                             <SelectorBarItem Text="Desktop"
-                                             Icon="GoToStart" />
+                                             Icon="GoToStart">
+                                <!-- todo: add timeline here -->
+                            </SelectorBarItem>
                             <SelectorBarItem Text="Drives"
                                              Icon="XboxOneConsole" />
                             <SelectorBarItem Text="Network"
@@ -49,17 +50,39 @@
                             <SelectorBarItem Text="Cloud"
                                              Icon="World" />
                         </SelectorBar>
-                        <ListView MinHeight="176"></ListView>
-                        <!--<ItemsStackPanel></ItemsStackPanel>-->
+                        <Border MinHeight="176"></Border>
                         <StackPanel Orientation="Horizontal"
-                                    MinHeight="128">
-                            <Button MinHeight="100">Shell</Button>
-                            <Button MinHeight="100">Browser</Button>
-                            <Button MinHeight="100">Editor</Button>
-                            <Button MinHeight="100">Microsoft 365</Button>
-                            <Button MinHeight="100">Settings</Button>
+                                    HorizontalAlignment="Stretch">
+                            <AppBarButton>
+                                <AppBarButton.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                              Glyph="&#xec50;" />
+                                </AppBarButton.Icon>
+                                Shell
+                            </AppBarButton>
+                            <AppBarButton>
+                                <AppBarButton.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                              Glyph="&#xeb41;" />
+                                </AppBarButton.Icon>
+                                Browser
+                            </AppBarButton>
+                            <AppBarButton>
+                                <AppBarButton.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                              Glyph="&#xe70f;" />
+                                </AppBarButton.Icon>
+                                Editor
+                            </AppBarButton>
+                            <AppBarButton>
+                                <AppBarButton.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                              Glyph="&#xeb3c;" />
+                                </AppBarButton.Icon>
+                                Shell
+                            </AppBarButton>
+                            <CheckBox HorizontalAlignment="Right">Always restore my Pages.</CheckBox>
                         </StackPanel>
-                        <CheckBox HorizontalAlignment="Right">Always launch last used Pages when I start this Workbench.</CheckBox>
                     </StackPanel>
                 </Border>
             </StackPanel>
