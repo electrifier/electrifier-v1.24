@@ -56,6 +56,7 @@ public partial class ShellNamespaceService : IShellNamespaceService
             new(SHSTOCKICONID.SIID_LINK),
         ];
 
+//        var dict = new Dictionary<SHSTOCKICONID, int>.KeyCollection
         //newStockIcons = new(StockIcons, 1);
         //StockIcons.Add(new(SHSTOCKICONID.SIID_LINK));
     }

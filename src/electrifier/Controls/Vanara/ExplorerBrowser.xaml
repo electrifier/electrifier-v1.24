@@ -34,36 +34,6 @@
                     <!-- ItemsSource="{x:Bind CurrentItems}" -->
                 </StackPanel>
             </Border>
-            <Border Grid.Column="2"
-                    BorderThickness="3">
-                <StackPanel Orientation="Vertical">
-                    <Expander HorizontalAlignment="Stretch"
-                              IsExpanded="True">
-                        <Expander.Header>
-                            <controls:HeaderedContentControl Header="This PC"
-                                                             HorizontalContentAlignment="Left" />
-                        </Expander.Header>
-                        <Expander.Content>
-                            <local:ShellNamespaceTreeControl />
-                        </Expander.Content>
-                    </Expander>
-                    <Expander HorizontalAlignment="Stretch"
-                              IsExpanded="True">
-                        <Expander.Header>
-                            <controls:HeaderedContentControl Header="History"
-                                                             HorizontalContentAlignment="Left" />
-                        </Expander.Header>
-                        <Expander.Content>
-                            <StackPanel>
-                                <TextBlock FontSize="12"
-                                           Foreground="{ThemeResource TextFillColorSecondaryBrush}"
-                                           Text="Hier könnte ihre Werbung stehen..."
-                                           TextWrapping="Wrap" />
-                            </StackPanel>
-                        </Expander.Content>
-                    </Expander>
-                </StackPanel>
-            </Border>
         </Grid>
         <AppBar Grid.Row="1"
                 Grid.ColumnSpan="3"
