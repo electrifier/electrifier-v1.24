@@ -21,9 +21,6 @@ public abstract class AbstractBrowserItem<T>(bool isFolder, List<AbstractBrowser
 {
     public readonly bool IsFolder = isFolder;       // WARN: TODO: Check this. If unknown, then find it out!  ... edit: or use virtual function for this!
     public readonly List<AbstractBrowserItem<T>> ChildItems = childItems ?? [];
-    public SoftwareBitmapSource SoftwareBitmapSource = isFolder
-        ? IShellNamespaceService.FolderBitmapSource
-        : IShellNamespaceService.DocumentBitmapSource;
     // ShellNamespace.RequestStockIcon()
     // StockIcon = new(int ArrayIndex, BitmapSource)
     //internal void async IconUpdate(int Index, SoftwareBitmapSource bmpSrc);
