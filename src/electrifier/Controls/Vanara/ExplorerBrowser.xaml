@@ -17,9 +17,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition MaxWidth="256"
                                   MinWidth="76" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition MaxWidth="256"
-                                  MinWidth="76" />
+                <ColumnDefinition MinWidth="76" />
             </Grid.ColumnDefinitions>
             <Border Grid.Column="0"
                     VerticalAlignment="Stretch">

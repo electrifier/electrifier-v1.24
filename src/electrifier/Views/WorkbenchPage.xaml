@@ -22,11 +22,6 @@
                                        Description="Your new Workbench is your personal workspace and data warehouse. You can have as many workbenches as you wish and can customize them here. It is your choice, what Page gets navigated to when electrifier starts the next time. Let This be my preferred choice for the future [x], as I know I can change this always in its ''Settings Page::startup behaviour''."
                                        Header="Tip of the day">
                 </controls:SettingsCard>
-                <!--<controls:SettingsExpander Header="Drives">
-                    -->
-                <!--<ListBox ItemsSource="{x:Bind DriveItems}"/>-->
-                <!--
-                </controls:SettingsExpander>-->
                 <Border BorderBrush="GhostWhite"
                         BorderThickness="3">
                     <StackPanel Orientation="Vertical">
