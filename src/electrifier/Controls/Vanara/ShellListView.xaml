@@ -16,9 +16,9 @@
                     <Grid Margin="3">
                         <StackPanel Orientation="Horizontal"
                                     VerticalAlignment="Center">
-                            <Image 
-                                   MaxHeight="23"
+                            <Image MaxHeight="23"
                                    Margin="7,0"
+                                   Source="{x:Bind SoftwareBitmap}"
                                    VerticalAlignment="Stretch" />
                             <TextBlock Text="{x:Bind DisplayName}"
                                        VerticalAlignment="Center" />

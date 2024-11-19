@@ -9,7 +9,6 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using JetBrains.Annotations;
 using electrifier.Controls.Vanara.Contracts;
 using System.Collections;
-using CommunityToolkit.Mvvm.ComponentModel.__Internals;
 using Microsoft.UI.Xaml.Controls;
 
 namespace electrifier.Controls.Vanara.Services;
@@ -26,39 +25,12 @@ public partial class ShellNamespaceService : IShellNamespaceService
     public static IReadOnlyList<Bitmap> IconExtractorBitmaps => IconExtractor.ImageList;
     public int IconSize => IconExtractor.ImageSize;
 
-    public List<BrowserStockIcon> StockIcons
-    {
-        get => [];
-        init => new List<BrowserStockIcon>();
-    }
 
-    protected ArrayWithOffset newStockIcons=new ArrayWithOffset();
-
-    /// <summary>A static reference of our own.
-    /// <remarks>When used as service, this static might be unnecessary. However, this
-    /// makes sure the Stock Icon cache gets initialized as soon as possible.</remarks>
-    /// TODO: This is a currently unresolved race condition
-    /// </summary>
-    [UsedImplicitly] public static ShellNamespaceService Instance = new();
 
     /// <summary>ShellNamespaceService() Warn: Actually does not really conform Service Models.</summary>
     public ShellNamespaceService()
     {
-        StockIcons =
-        [
-            new(SHSTOCKICONID.SIID_DOCASSOC),
-            new(SHSTOCKICONID.SIID_DOCNOASSOC),
-            new(SHSTOCKICONID.SIID_FOLDER),
-            new(SHSTOCKICONID.SIID_FOLDERBACK),
-            new(SHSTOCKICONID.SIID_FOLDERFRONT),
-            new(SHSTOCKICONID.SIID_APPLICATION),
-            new(SHSTOCKICONID.SIID_AUDIOFILES),
-            new(SHSTOCKICONID.SIID_LINK),
-        ];
 
-//        var dict = new Dictionary<SHSTOCKICONID, int>.KeyCollection
-        //newStockIcons = new(StockIcons, 1);
-        //StockIcons.Add(new(SHSTOCKICONID.SIID_LINK));
     }
 
     ///// <summary>Initialize default <see cref="StockIcon">Stock Icons</see>.</summary>

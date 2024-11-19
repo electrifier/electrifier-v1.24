@@ -20,6 +20,9 @@ using System.Windows.Input;
 using electrifier.Controls.Vanara.Contracts;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
+
+using static Vanara.PInvoke.Shell32;
+
 namespace electrifier.Controls.Vanara;
 using Visibility = Microsoft.UI.Xaml.Visibility;
 // https://github.com/dahall/Vanara/blob/master/Windows.Forms/Controls/ExplorerBrowser.cs
@@ -46,12 +49,15 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     public static ShellNamespaceService ShellNamespaceService => App.GetService<ShellNamespaceService>();
 
+    protected static Dictionary<Shell32.SHSTOCKICONID, SoftwareBitmapSource> StockIconDictionary;
+
     /// <summary>ExplorerBrowser Implementation for WinUI3.</summary>
     public ExplorerBrowser()
     {
         InitializeComponent();
         DataContext = this;
 
+        StockIconDictionary = new();
         ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeView_SelectionChanged;
 
         using var shHome = ShellNamespaceService.HomeShellFolder;
@@ -70,11 +76,19 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             ShellListView.Items.Clear();
             foreach (var child in shFolder)
             {
-                if (child.IsFolder)
-                    target.ChildItems.Add(new BrowserItem(child.PIDL, true));
-                ShellListView.Items.Add(new BrowserItem(child.PIDL, child.IsFolder));
-            }
+                var ebItem = new BrowserItem(child.PIDL, child.IsFolder);
 
+                if (child.IsFolder)
+                {
+                    ebItem.SoftwareBitmap = await GetStockIconBitmapSource(Shell32.SHSTOCKICONID.SIID_FOLDER);
+                }
+                else
+                {
+                    ebItem.SoftwareBitmap = await GetStockIconBitmapSource(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC);
+                }
+
+                ShellListView.Items.Add(ebItem);
+            }
         }
         catch (COMException comEx)
         {
@@ -92,6 +106,40 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             //_ = UpdateGridView();
         }
     }
+
+    public async Task<SoftwareBitmapSource> GetStockIconBitmapSource(Shell32.SHSTOCKICONID shStockIconId)
+    {
+        try
+        {
+            if (StockIconDictionary.TryGetValue(shStockIconId, out var source))
+            {
+                return source;
+            }
+
+            var siFlags = Shell32.SHGSI.SHGSI_LARGEICON | Shell32.SHGSI.SHGSI_ICON;
+            var icninfo = Shell32.SHSTOCKICONINFO.Default;
+            SHGetStockIconInfo(shStockIconId, siFlags, ref icninfo).ThrowIfFailed($"SHGetStockIconInfo({shStockIconId})");
+
+            var hIcon = icninfo.hIcon;
+            var icnHandle = hIcon.ToIcon();
+            var bmpSource = ShellNamespaceService.GetWinUi3BitmapSourceFromIcon(icnHandle);
+            await bmpSource;
+            var softBitmap = bmpSource.Result;
+
+            if (softBitmap != null)
+            {
+                _ = StockIconDictionary.TryAdd(shStockIconId, softBitmap);
+                return softBitmap;
+            }
+
+            throw new ArgumentOutOfRangeException($"Can't get StockIcon for SHSTOCKICONID: {shStockIconId.ToString()}");
+        }
+        catch (Exception e)
+        {
+            throw; // TODO handle exception
+        }
+    }
+
 
     public async void Navigate(ShellItem target, TreeViewNode? treeViewNode = null)
     {
@@ -149,20 +197,13 @@ public class BrowserItem(Shell32.PIDL pidl, bool isFolder, List<AbstractBrowserI
     public static BrowserItem FromShellFolder(ShellFolder shellFolder) => new(shellFolder.PIDL, true);
     public static BrowserItem FromKnownFolderId(Shell32.KNOWNFOLDERID knownItemId) => new(new ShellFolder(knownItemId).PIDL, true);
 
+    public SoftwareBitmapSource? SoftwareBitmap ;
 
-    //public Task<int> Enumerate()
-    //{
-    //    ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
-    //    ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
-    //    return Task.CompletedTask as Task<int>;
-    //}
     public event PropertyChangedEventHandler? PropertyChanged;
-
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
     protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value)) return false;
