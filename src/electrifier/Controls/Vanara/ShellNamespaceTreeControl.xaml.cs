@@ -29,9 +29,9 @@ public partial class ShellNamespaceTreeControl : UserControl
         DataContext = this;
         TreeItems = new ObservableCollection<BrowserItem>();
         AdvancedCollectionView = new AdvancedCollectionView(TreeItems, true);
+        NativeTreeView.ItemsSource = AdvancedCollectionView;
 
         Loading += ShellNamespaceTreeControl_Loading;
-        NativeTreeView.ItemsSource = AdvancedCollectionView;
     }
 
     private void ShellNamespaceTreeControl_Loading(FrameworkElement sender, object args)
