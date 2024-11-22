@@ -131,7 +131,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
             throw new ArgumentOutOfRangeException($"Can't get StockIcon for SHSTOCKICONID: {shStockIconId.ToString()}");
         }
-        catch (Exception e)
+        catch (Exception)
         {
             throw; // TODO handle exception
         }
@@ -145,25 +145,31 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     private void NativeTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
-        Debug.Print($".NativeTreeView_SelectionChanged(): Updating `ShellListView` items...");
-
         var addedItems = args.AddedItems;
         if (addedItems.Count > 0)
         {
             Debug.Assert(addedItems.Count == 1);
-
-            var folder = addedItems[0] as BrowserItem;
+            var selectedFolder = addedItems[0] as BrowserItem;
             var currentTreeNode = ShellTreeView.NativeTreeView.SelectedItem;
+            Debug.Print($".NativeTreeView_SelectionChanged(`{selectedFolder?.DisplayName}`, treeNode: {currentTreeNode?.ToString()}");
 
-            if (currentTreeNode is BrowserItem browserItem)
+            if (currentTreeNode is BrowserItem browserItem && browserItem.PIDL.Equals(selectedFolder?.PIDL))
             {
-                Debug.Print("Ätsch! TreeItem already selected");
+                Debug.Print(".NativeTreeView_SelectionChanged(): CurrentTreeNode already equals selected /added Item.");
             }
-
-            Debug.Print($".NativeTreeView_SelectionChanged(): {folder?.ToString()} - {currentTreeNode?.ToString()}");
-            if (folder != null)
+            else
             {
-                Navigate(folder);
+                // TODO: ShellTreeView.NativeTreeView.SelectedItem = newTreeNode(find TreeNode
+
+                if (selectedFolder?.PIDL is null)
+                {
+                    Debug.Print(".NativeTreeView_SelectionChanged(): selectedFolder is null!");
+
+                    return;
+                }
+
+                Navigate(selectedFolder);
+                //Navigate(selectedFolder.ShellItem, currentTreeNode as TreeViewNode);
             }
         }
     }
@@ -187,7 +193,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     #endregion Property stuff
 }
 
-
+[DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
 public class BrowserItem(Shell32.PIDL pidl, bool isFolder, List<AbstractBrowserItem<ShellItem>>? childItems = default)
     : AbstractBrowserItem<ShellItem>(isFolder, childItems), INotifyPropertyChanged
 {
@@ -214,8 +220,7 @@ public class BrowserItem(Shell32.PIDL pidl, bool isFolder, List<AbstractBrowserI
         return true;
     }
 }
-
-
+[DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
 public partial class BrowserItemCollection : List<ShellItem>, IList
 {
     protected IList ListImplementation => new List<BrowserItem>();

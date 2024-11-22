@@ -29,5 +29,12 @@
         </Grid.Resources>
         <ItemsView x:Name="ItemsView"
                    ItemTemplate="{StaticResource BrowserItemTemplate}"></ItemsView>
+        <Border HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Visibility="Collapsed">
+            <TextBlock>
+                This is bender in da house
+            </TextBlock>
+        </Border>
     </Grid>
 </UserControl>
