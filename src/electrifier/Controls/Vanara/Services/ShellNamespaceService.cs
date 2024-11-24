@@ -1,59 +1,63 @@
-﻿using static Vanara.PInvoke.Shell32.ShellUtil;
-using static Vanara.PInvoke.Shell32;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
+﻿using Vanara.Windows.Shell;
 using Vanara.PInvoke;
-using Vanara.Windows.Shell;
-using Microsoft.UI.Xaml.Media.Imaging;
-using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Drawing;
 using System.Diagnostics;
-using static Vanara.PInvoke.Ole32;
+using static Vanara.PInvoke.Shell32;
+using Microsoft.UI.Xaml.Media.Imaging;
+using JetBrains.Annotations;
+using electrifier.Controls.Vanara.Contracts;
+using System.Collections;
+using Microsoft.UI.Xaml.Controls;
 
 namespace electrifier.Controls.Vanara.Services;
 
-public partial class ShellNamespaceService
+public partial class ShellNamespaceService : IShellNamespaceService
 {
-    /// <summary>
-    /// <see cref="HResult">HResult</see> code of <code><see cref="COMException"/>('0x80070490');</code>
-    /// <remarks>Fired when <b>`Element not found`</b> while enumerating the Shell32 Namespace.</remarks>
-    /// </summary>
-    public static readonly HRESULT HResultElementNotFound = new(0x80070490);
-    /// <summary>
-    /// <see cref="ShellFolder"/> of virtual `<b>Home</b>` directory.
-    /// <remarks>This equals Shell 32 URI: <code>shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}</code></remarks>
-    /// </summary>
-    public static readonly ShellFolder HomeShellFolder = new("shell:::{679f85cb-0220-4080-b29b-5540cc05aab6}");
-    internal readonly TempShellIconExtractor IconExtractor;
-    public IReadOnlyList<Bitmap> IconExtractorBitmaps;
-    public int IconSize => IconExtractor.ImageSize;
-    internal static SoftwareBitmapSource DefaultFolderImageBitmapSource;
-    internal static SoftwareBitmapSource DefaultDocumentAssocImageBitmapSource;
-    /// <summary>
-    /// todo: die ganzen StockIcons in ein struct packen.
-    /// Indexer ist `Shell32.SHSTOCKICONID`
-    /// get-Methode, die erst die Icons holt wenn danach gefragt wird.
-    /// </summary>
-    internal static StockIcon SiDocument = new(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC);
-    internal static SoftwareBitmapSource DocumentBitmapSource = new();
-    internal static StockIcon SiDocumentWithAssociation = new(SHSTOCKICONID.SIID_DOCASSOC);
-    internal static SoftwareBitmapSource DocumentWithAssociationBitmapSource = new();
-    internal static StockIcon SiFolder = new(Shell32.SHSTOCKICONID.SIID_FOLDER);
-    internal static SoftwareBitmapSource FolderBitmapSource = new();
-    internal static StockIcon SiFolderBack = new(Shell32.SHSTOCKICONID.SIID_FOLDERBACK);
-    internal static StockIcon SiFolderFront = new(Shell32.SHSTOCKICONID.SIID_FOLDERFRONT);
-    internal static StockIcon SiFolderOpen = new(Shell32.SHSTOCKICONID.SIID_FOLDEROPEN);
-    internal static StockIcon SiLinkOverlay = new(SHSTOCKICONID.SIID_LINK);
-    protected Task? StockIconTask;
+    #region static constants
+    public static readonly HRESULT HResultElementNotFound = IShellNamespaceService.HResultElementNotFound;
+    public static ShellFolder HomeShellFolder => new(IShellNamespaceService.HomeShellFolder);
+    #endregion
 
-    /// <summary>ShellNamespaceService() Warn: Does not really conform Service Models actually.</summary>
+    // INFO: 15-11-24: I'll use a single Icon Size for testing purposes
+    internal static TempShellIconExtractor IconExtractor { get; } = new(ShellFolder.Desktop);
+    public static IReadOnlyList<Bitmap> IconExtractorBitmaps => IconExtractor.ImageList;
+    public int IconSize => IconExtractor.ImageSize;
+
+
+
+    /// <summary>ShellNamespaceService() Warn: Actually does not really conform Service Models.</summary>
     public ShellNamespaceService()
     {
-        StockIconTask = InitializeStockIcons();
-        IconExtractor = new(ShellFolder.Desktop);
-        IconExtractorBitmaps = IconExtractor.ImageList;
+
     }
+
+    ///// <summary>Initialize default <see cref="StockIcon">Stock Icons</see>.</summary>
+    ///// <remarks>TODO: INFO: Investigate <seealso href="https://github.com/dahall/Vanara/blob/Windows.Shell.Common/StockIcon.cs"></seealso></remarks>
+    ///// <returns></returns>
+    //public static async Task InitializeStockIconsAsync()
+    //{
+    //    /* Todo: inspect `SHGetStockIconInfo()` */
+    //    //var siFlags = SHGSI.SHGSI_LARGEICON | SHGSI.SHGSI_ICON;
+    //    //var siStockIconInfo = new SHSTOCKICONINFO();
+    //    //SHGetStockIconInfo(Shell32.SHSTOCKICONID.SIID_APPLICATION, siFlags, ref siStockIconInfo).ThrowIfFailed();
+
+    //    // TODO: Use embedded resource, red cross to signal something failed.
+    //    using var siFolder = new StockIcon(SHSTOCKICONID.SIID_FOLDER);
+    //    {
+    //        var idx = siFolder.SystemImageIndex;
+    //        var icnHandle = siFolder.IconHandle.ToIcon();
+    //        var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
+    //    }
+
+    //    using var siDocument = new StockIcon(SHSTOCKICONID.SIID_DOCASSOC);
+    //    {
+    //        var idx = siDocument.SystemImageIndex;
+    //        var icnHandle = siDocument.IconHandle.ToIcon();
+    //        var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
+    //    }
+    //}
 
     // TODO: Add await event handler to every ebItem, so Icon Extractor can call back the item
     public static async Task<ShellDataTable> RequestChildItemsAsync(ShellFolder shFolder,
@@ -63,10 +67,10 @@ public partial class ShellNamespaceService
         Debug.Print($".RequestChildItemsAsync(<{shFolder}>) extracting...");
         var ct = new CancellationToken();
 
-        var propKeys = new List<Ole32.PROPERTYKEY>()
-        {
-            Ole32.PROPERTYKEY.System.FileFRN, /* This is the unique file ID, also known as the File Reference Number. */
-        };
+        List<Ole32.PROPERTYKEY> propKeys =
+        [
+            Ole32.PROPERTYKEY.System.FileFRN /* This is the unique file ID, also known as the File Reference Number. */
+        ];
 
         var shDataTable = new ShellDataTable(shFolder, itemFilter);
         shDataTable.AllFastRowsAdded += allFastRowsAddedHandler;
@@ -78,36 +82,73 @@ public partial class ShellNamespaceService
         return shDataTable;
     }
 
-    /// <summary>Initialize default <see cref="StockIcon">Stock Icons</see>.</summary>
-    /// <remarks>TODO: INFO: Investigate <seealso href="https://github.com/dahall/Vanara/blob/Windows.Shell.Common/StockIcon.cs"></seealso></remarks>
-    /// <returns></returns>
-    public static async Task InitializeStockIcons()
+    public async Task<SoftwareBitmapSource> ExtractShellIcon()
     {
-        /* Todo: inspect `SHGetStockIconInfo()` */
-        try
-        {
-            using var siFolder = new StockIcon(Shell32.SHSTOCKICONID.SIID_FOLDER);
-            {
-                var idx = siFolder.SystemImageIndex;
-                var icnHandle = siFolder.IconHandle.ToIcon();
-                var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
-                DefaultFolderImageBitmapSource = await bmpSource;
-            }
-
-            using var siDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC);
-            {
-                var idx = siDocument.SystemImageIndex;
-                var icnHandle = siDocument.IconHandle.ToIcon();
-                var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
-                DefaultDocumentAssocImageBitmapSource = await bmpSource;
-            }
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            throw;
-        }
+        return null;
     }
+
+    public struct BrowserStockIcon(
+        Shell32.SHSTOCKICONID shStockIconId,
+        ShellIconType shellIconType = ShellIconType.Large,
+        bool isLinkOverlay = false,
+        bool isSelected = false)
+    {
+        public readonly bool IsLinkOverlay = isLinkOverlay;
+        public readonly bool IsSelected = isSelected;
+        public readonly ShellIconType ShellIconType = shellIconType;
+        public readonly StockIcon StockIcon = new(shStockIconId, size: shellIconType, isLinkOverlay, isSelected);
+        public readonly SHSTOCKICONID StockIconId = shStockIconId;
+        //public readonly SHSTOCKICONINFO StockIconInfo = new(SHGetStockIconInfo(shStockIconId, ).ThrowIfFailed("Creating"));
+
+        //public readonly Task<SoftwareBitmapSource?> GetSoftwareBitmapSource() => _softwareBitmapTask;
+        private SoftwareBitmapSource _softwareBitmap;
+
+        //public event HasValidationErrorsChangedEventArgs();
+
+        //public Task<SoftwareBitmapSource> Prefetch(ref ShellIconExtractor iconExtractor)
+        //{
+        //    return new(_softwareBitmap);
+        //    //return Task.
+        //}
+    }
+
+    //IconExtractor.
+            //if (GetSoftwareBitmapSource() is null) // lock SoftwareBitmapSource
+            //{
+            //    //lock (GetSoftwareBitmapSource())
+            //    //{
+            //    //    //this._softwareBitmapTask = GetWinUi3BitmapSourceFromIcon(new());
+            //    //}
+
+            //    //var tsk = this.ExtractShellIcon();
+            //    //await tsk;
+            //}
+
+/*          using var siDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCASSOC);
+           {
+               var idx = siDocument.SystemImageIndex;
+               var icnHandle = siDocument.IconHandle.ToIcon();
+               var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
+               IShellNamespaceService.DocumentBitmapSource = await bmpSource;   // TODO: Use embedded resource, red cross to signal something failed.
+           } */
+
+
+            //private Task<SoftwareBitmapSource> BitmapSource =>
+            //ShellNamespaceService.GetWinUi3BitmapSourceFromIcon(); //new SoftwareBitmapSource();
+            /// Task<SoftwareBitmapSource>
+            //public static BrowserStockIcon Prefetch(ref BrowserStockIcon thisStockIcon)
+            //{
+            //    Debug.Print($"BrowserStockIcon.Prefetch({thisStockIcon}))");
+            //    return thisStockIcon;
+            //}
+
+            //public readonly SHSTOCKICONINFO StockIconInfo = new(SHGetStockIconInfo(shStockIconId, ).ThrowIfFailed("Creating"));
+
+            //public static async Task<BrowserStockIcon> Prefetch(SHSTOCKICONID stockIcon)
+            //{
+            //    var bmpSrc = new SoftwareBitmapSource();
+            //    return bmpSrc;
+            //}
 
     /// <summary>Get associated <seealso cref="SoftwareBitmapSource"/> for given <param name="bitmapIcon">Icon</param></summary>
     /// <remarks>TODO: INFO: Investigate <seealso href="https://learn.microsoft.com/en-us/uwp/api/windows.ui.xaml.media.imaging.writeablebitmap?view=winrt-26100">uwp/api/windows.ui.xaml.media.imaging.WriteableBitmap (WARN: Links to UWP)</seealso></remarks>

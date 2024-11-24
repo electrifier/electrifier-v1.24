@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="using:electrifier.Controls.Vanara"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:services="using:electrifier.Controls.Vanara.Services"
              d:DataContext="{d:DesignInstance Type=local:ExplorerBrowser}"
              mc:Ignorable="d">
     <Grid>
@@ -15,9 +16,9 @@
                     <Grid Margin="3">
                         <StackPanel Orientation="Horizontal"
                                     VerticalAlignment="Center">
-                            <Image Source="{x:Bind SoftwareBitmapSource}"
-                                   MaxHeight="23"
+                            <Image MaxHeight="23"
                                    Margin="7,0"
+                                   Source="{x:Bind SoftwareBitmap}"
                                    VerticalAlignment="Stretch" />
                             <TextBlock Text="{x:Bind DisplayName}"
                                        VerticalAlignment="Center" />
@@ -28,5 +29,12 @@
         </Grid.Resources>
         <ItemsView x:Name="ItemsView"
                    ItemTemplate="{StaticResource BrowserItemTemplate}"></ItemsView>
+        <Border HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Visibility="Collapsed">
+            <TextBlock>
+                This is bender in da house
+            </TextBlock>
+        </Border>
     </Grid>
 </UserControl>

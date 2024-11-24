@@ -1,5 +1,7 @@
 ﻿using electrifier.Activation;
 using electrifier.Contracts.Services;
+using electrifier.Controls.Vanara.Contracts;
+using electrifier.Controls.Vanara.Services;
 using electrifier.Helpers;
 using electrifier.Models;
 using electrifier.Notifications;
@@ -10,7 +12,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 using System.Diagnostics;
-using electrifier.Controls.Vanara.Services;
 using WinUIEx;
 using static Microsoft.Extensions.Hosting.Host;
 using UnhandledExceptionEventArgs = Microsoft.UI.Xaml.UnhandledExceptionEventArgs;
@@ -18,9 +19,7 @@ using UnhandledExceptionEventArgs = Microsoft.UI.Xaml.UnhandledExceptionEventArg
 namespace electrifier;
 
 /// <summary>
-/// App
-/// 
-/// The .NET Generic Host provides dependency injection, configuration, logging, and other services:
+/// The .NET <seealso cref="IHost">Generic Host</seealso> provides dependency injection, configuration, logging, and other services:
 /// <a href="https://docs.microsoft.com/dotnet/core/extensions/generic-host"/>,
 /// <a href="https://docs.microsoft.com/dotnet/core/extensions/dependency-injection"/>,
 /// <a href="https://docs.microsoft.com/dotnet/core/extensions/configuration"/>,
@@ -38,12 +37,7 @@ public partial class App : Application
         get;
     }
     public static WindowEx MainWindow { get; } = new MainWindow();
-
-    public static ShellNamespaceService NamespaceService
-    {
-        get;
-    } = new() { };
-
+    
     public App()
     {
         InitializeComponent();
@@ -70,6 +64,7 @@ public partial class App : Application
                 services.AddSingleton<INavigationService, NavigationService>();
 
                 // Core Services
+                services.AddSingleton<IShellNamespaceService, ShellNamespaceService>();
                 services.AddSingleton<IFileService, FileService>();
 
                 // Views and ViewModels

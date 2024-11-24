@@ -1,12 +1,13 @@
 ﻿<Page x:Class="electrifier.Views.TextEditorPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:behaviors="using:electrifier.Behaviors"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:editor="using:WinUIEditor"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-      xmlns:vanara="using:electrifier.Controls.Vanara"
       xmlns:viewmodels="using:electrifier.ViewModels"
+      xmlns:vanara="using:electrifier.Controls.Vanara"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:editor="using:WinUIEditor"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:controls="using:CommunityToolkit.WinUI.Controls"
+      xmlns:behaviors="using:electrifier.Behaviors"
       behaviors:NavigationViewHeaderBehavior.HeaderMode="Minimal"
       d:DataContext="{d:DesignInstance Type=viewmodels:TextEditorViewModel}"
       mc:Ignorable="d">
@@ -16,7 +17,13 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="0"
+              Grid.ColumnSpan="3">
             <StackPanel Orientation="Horizontal">
                 <AppBarButton x:Uid="LoadButton"
                               Icon="OpenFile"
@@ -44,24 +51,19 @@
                 </Button>
             </StackPanel>
         </Grid>
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"
-                                  MinWidth="76" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*"
-                                  MinWidth="76" />
-            </Grid.ColumnDefinitions>
-            <!--  TODO: ExplorerBrowser isn't stretching horizontally  -->
-            <Border x:Name="ExplorerBrowserBorder">
-                <vanara:ExplorerBrowser x:Name="ExplorerBrowserControl" />
-            </Border>
-            <Border Grid.Column="1" />
-            <!-- controls:GridSplitter -->
-            <Border x:Name="CodeEditorBorder"
-                    Grid.Column="2">
-                <editor:CodeEditorControl x:Name="CodeEditorControl" />
-            </Border>
-        </Grid>
+        <Border x:Name="ShellNamespaceTreeBorder"
+                Grid.Column="0"
+                Grid.Row="1">
+            <vanara:ShellNamespaceTreeControl x:Name="ShellNamespaceTree"
+                                              HorizontalAlignment="Stretch" />
+        </Border>
+        <controls:ContentSizer Grid.Column="1"
+                               Grid.Row="1"
+                               TargetControl="{x:Bind ShellNamespaceTreeBorder}" />
+        <Border x:Name="CodeEditorBorder"
+                Grid.Column="2"
+                Grid.Row="1">
+            <editor:CodeEditorControl x:Name="CodeEditorControl" />
+        </Border>
     </Grid>
 </Page>

@@ -30,7 +30,7 @@ public sealed partial class MainWindow : WindowEx
         // Hide system title bar.
         _mAppTitleBar.ExtendsContentIntoTitleBar = true;
 
-        AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/WindowIcon.ico"));
+        AppWindow.SetIcon(Path.Combine(AppContext.BaseDirectory, "Assets/app.ico"));
         Content = null;
         Title = "electrifier";
 

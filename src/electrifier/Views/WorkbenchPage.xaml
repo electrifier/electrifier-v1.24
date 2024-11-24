@@ -27,20 +27,57 @@
                     <StackPanel Orientation="Vertical">
                         <SelectorBar x:Name="QuickLaunchSelectorBar">
                             <SelectorBarItem Text="History"
-                                             Icon="Clock" /> <!-- todo: add timeline here -->
+                                             Icon="Clock" />
                             <SelectorBarItem Text="Favorites"
                                              Icon="Favorite" />
                             <SelectorBarItem Text="Tagged"
-                                             Icon="Favorite" />
-                            <SelectorBarItem Text="Desktop">
-                                <SelectorBarItem.Icon>
+                                             Icon="Tag" />
+                            <SelectorBarItem Text="Home"
+                                             Icon="Home" />
+                            <SelectorBarItem Text="Desktop"
+                                             Icon="GoToStart">
+                                <!-- todo: add timeline here -->
+                            </SelectorBarItem>
+                            <SelectorBarItem Text="Drives"
+                                             Icon="XboxOneConsole" />
+                            <SelectorBarItem Text="Network"
+                                             Icon="MapDrive" />
+                            <SelectorBarItem Text="Cloud"
+                                             Icon="World" />
+                        </SelectorBar>
+                        <Border MinHeight="176"></Border>
+                        <StackPanel Orientation="Horizontal"
+                                    HorizontalAlignment="Stretch">
+                            <AppBarButton>
+                                <AppBarButton.Icon>
                                     <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
                                               Glyph="&#xec50;" />
-                                </SelectorBarItem.Icon>
-                            </SelectorBarItem> <!-- add miniature desktop here -->
-                        </SelectorBar>
-                        <ListView MinHeight="176"></ListView>
-                        <CheckBox>Always launch selection when I start this Workbench.</CheckBox>
+                                </AppBarButton.Icon>
+                                Shell
+                            </AppBarButton>
+                            <AppBarButton>
+                                <AppBarButton.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                              Glyph="&#xeb41;" />
+                                </AppBarButton.Icon>
+                                Browser
+                            </AppBarButton>
+                            <AppBarButton>
+                                <AppBarButton.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                              Glyph="&#xe70f;" />
+                                </AppBarButton.Icon>
+                                Editor
+                            </AppBarButton>
+                            <AppBarButton>
+                                <AppBarButton.Icon>
+                                    <FontIcon FontFamily="{StaticResource SymbolThemeFontFamily}"
+                                              Glyph="&#xeb3c;" />
+                                </AppBarButton.Icon>
+                                Shell
+                            </AppBarButton>
+                            <CheckBox HorizontalAlignment="Right">Always restore my Pages.</CheckBox>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
             </StackPanel>

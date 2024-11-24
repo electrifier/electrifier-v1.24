@@ -10,6 +10,5 @@ public partial class FileManagerViewModel : ObservableRecipient
     /// <summary>FileManagerViewModel</summary>
     public FileManagerViewModel()
     {
-        var tsk = ShellNamespaceService.InitializeStockIcons();
     }
 }
