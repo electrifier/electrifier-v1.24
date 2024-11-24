@@ -2,11 +2,11 @@
      todo: IsPaneToggleButtonVisible = True -> PaneToggle-Style and overlap
      todo: See WinUI3 gallery://item/AnimatedIcon -->
 <Page x:Class="electrifier.Views.ShellPage"
-      xmlns:behaviors="using:electrifier.Behaviors"
-      xmlns:helpers="using:electrifier.Helpers"
-      xmlns:i="using:Microsoft.Xaml.Interactivity"
-      xmlns:data="using:Microsoft.UI.Xaml.Data"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:i="using:Microsoft.Xaml.Interactivity"
+      xmlns:helpers="using:electrifier.Helpers"
+      xmlns:data="using:Microsoft.UI.Xaml.Data"
+      xmlns:behaviors="using:electrifier.Behaviors"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       Loaded="OnLoaded">
     <Grid VerticalAlignment="Stretch">
@@ -41,20 +41,29 @@
                 </Button>
             </StackPanel>
             <StackPanel Grid.Column="1"
-                        HorizontalAlignment="Stretch"
-                        Orientation="Horizontal">
+                        Orientation="Horizontal"
+                        BorderBrush="DarkGray"
+                        BorderThickness="7"
+                        Opacity="0.25">
                 <BreadcrumbBar x:Name="NavigationBreadcrumbBar"
-                               VerticalAlignment="Center" />
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Stretch" />
             </StackPanel>
             <Grid Grid.Column="2"
                   HorizontalAlignment="Right">
                 <StackPanel Orientation="Horizontal">
-                    <HyperlinkButton FontSize="13"
-                                     NavigateUri="https://github.com/electrifier/docs"
-                                     VerticalAlignment="Top">
-                        d'Oh!
-                    </HyperlinkButton>
-                    <Border Width="150" />
+                    <Button Margin="7,0"
+                            MaxHeight="42">
+                        <Image Source="/Assets/Themes/Aero Blackcomb/Tree Up 32px.png" />
+                    </Button>
+                    <Button MaxHeight="42"
+                            Margin="7,0">
+                        <Image Source="/Assets/Themes/Aero Blackcomb/Wisp Refresh Button 48px.png" />
+                    </Button>
+                    <TextBlock FontSize="13"
+                               Width="142"
+                               VerticalAlignment="Bottom"
+                               HorizontalTextAlignment="Center">d'oh</TextBlock>
                 </StackPanel>
             </Grid>
         </Grid>
@@ -75,6 +84,7 @@
             <!--  INFO: MultitaskExpanded  -->
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Uid="Shell_Workbench"
+                                    SelectsOnInvoked="True"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel"
                                     IsSelected="True">
                     <NavigationViewItem.Icon>

@@ -18,8 +18,12 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 using electrifier.Controls.Vanara.Contracts;
+using electrifier.Controls.Vanara.Helpers;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
+
+using static Vanara.PInvoke.Shell32;
+
 namespace electrifier.Controls.Vanara;
 using Visibility = Microsoft.UI.Xaml.Visibility;
 // https://github.com/dahall/Vanara/blob/master/Windows.Forms/Controls/ExplorerBrowser.cs
@@ -41,8 +45,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
+    public event EventHandler<NavigatedEventArgs> Navigated;
+    public event EventHandler<NavigationFailedEventArgs> NavigationFailed;
 
-    public ShellNamespaceService NamespaceService => new ShellNamespaceService();
+    public static ShellNamespaceService ShellNamespaceService => App.GetService<ShellNamespaceService>();
+
+    private readonly Dictionary<Shell32.SHSTOCKICONID, SoftwareBitmapSource> _stockIconDictionary = [];
 
     /// <summary>ExplorerBrowser Implementation for WinUI3.</summary>
     public ExplorerBrowser()
@@ -53,30 +61,37 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeView_SelectionChanged;
 
         using var shHome = ShellNamespaceService.HomeShellFolder;
-        Navigate(new BrowserItem(shHome.PIDL, true));
+        //Navigate(new BrowserItem(shHome.PIDL, true)); // TODO: Navigate to TreeViewItem!
     }
 
+    // TODO: @dahall: Maybe we should throw HRESULT-COM-Errors at least here? Your HRESULT.ThrowIfFailed() - Pattern?
     public async void Navigate(BrowserItem target)
     {
-        Debug.WriteLineIf(!target.IsFolder, $"Navigate({target.DisplayName}) => `{{target.DisplayName}}` is not a folder!");
+        Debug.WriteLineIf(!target.IsFolder, $"Navigate({target.DisplayName}) => is not a folder!");
 
         try
         {
             IsLoading = true;
             using var shFolder = new ShellFolder(target.ShellItem);
 
+            target.ChildItems.Clear();
             ShellListView.Items.Clear();
             foreach (var child in shFolder)
             {
-                if(child.IsFolder)
-                    target.ChildItems.Add(new BrowserItem(child.PIDL, true));
-                ShellListView.Items.Add(new BrowserItem(child.PIDL, child.IsFolder));
-            }
+                var ebItem = new BrowserItem(child.PIDL, child.IsFolder)
+                {
+                    SoftwareBitmap = child.IsFolder
+                    ? await BrowserItemFactory.GetStockIconBitmapSource(Shell32.SHSTOCKICONID.SIID_FOLDER)
+                    : await BrowserItemFactory.GetStockIconBitmapSource(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC)
+                };
 
+                target.ChildItems.Add(ebItem);
+                ShellListView.Items.Add(ebItem);
+            }
         }
         catch (COMException comEx)
         {
-            Debug.Fail($"[Error] Navigate(<{target}>) failed. COMException: <Result: {comEx.HResult}>: `{comEx.Message}`");
+            Debug.Fail($"[Error] Navigate(<{target}>) failed. COMException: <HResult: {comEx.HResult}>: `{comEx.Message}`");
             throw;
         }
         catch (Exception ex)
@@ -87,27 +102,43 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         finally
         {
             IsLoading = false;
-            //_ = UpdateGridView();
         }
+    }
+
+    public async void Navigate(ShellItem target, TreeViewNode? treeViewNode = null)
+    {
+        // TODO: Search for best matching RootItem in the tree hierarchy
     }
 
     private void NativeTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
-        Debug.Print($".NativeTreeView_SelectionChanged(): Updating `ShellListView` items...");
-
-        ShellListView.Items.Clear();
-
         var addedItems = args.AddedItems;
         if (addedItems.Count > 0)
         {
-            var folder = addedItems[0] as BrowserItem;
+            Debug.Assert(addedItems.Count == 1);
+            var selectedFolder = addedItems[0] as BrowserItem;
+            var currentTreeNode = ShellTreeView.NativeTreeView.SelectedItem;
+            Debug.Print($".NativeTreeView_SelectionChanged(`{selectedFolder?.DisplayName}`, treeNode: {currentTreeNode?.ToString()}");
 
-            foreach (var childItem in folder.ChildItems)
+            if (currentTreeNode is BrowserItem browserItem && browserItem.PIDL.Equals(selectedFolder?.PIDL))
             {
-                ShellListView.Items.Add(BrowserItem.FromPIDL(childItem.PIDL));
+                Debug.Print(".NativeTreeView_SelectionChanged(): CurrentTreeNode already equals selected /added Item.");
             }
+            else
+            {
+                // TODO: ShellTreeView.NativeTreeView.SelectedItem = newTreeNode(find TreeNode
 
-            Navigate(folder);
+                if (selectedFolder?.PIDL is null)
+                {
+                    Debug.Print(".NativeTreeView_SelectionChanged(): selectedFolder is null!");
+
+                    return;
+                }
+
+                Navigate(selectedFolder);
+                //Navigate(selectedFolder.ShellItem, currentTreeNode as TreeViewNode);
+                // TODO: Raise NavigationFailed()
+            }
         }
     }
     #region Property stuff
@@ -130,28 +161,34 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     #endregion Property stuff
 }
 
-
-public class BrowserItem(Shell32.PIDL pidl, bool isFolder)
-    : AbstractBrowserItem<ShellItem>(isFolder, childItems: new BrowserItemCollection())
+[DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
+public class BrowserItem(Shell32.PIDL pidl, bool isFolder, List<AbstractBrowserItem<ShellItem>>? childItems = default)
+    : AbstractBrowserItem<ShellItem>(isFolder, childItems), INotifyPropertyChanged
 {
     public readonly Shell32.PIDL PIDL = new(pidl);
     public string DisplayName => ShellItem.GetDisplayName(ShellItemDisplayString.NormalDisplay) ?? ShellItem.ToString();
     public ShellItem ShellItem = new(pidl);
-    public SoftwareBitmapSource SoftwareBitmapSource = isFolder ? ShellNamespaceService.DefaultFolderImageBitmapSource : ShellNamespaceService.DefaultDocumentAssocImageBitmapSource;
     public new ObservableCollection<BrowserItem> ChildItems = [];
     public static BrowserItem FromPIDL(Shell32.PIDL pidl) => new(pidl, false);
     public static BrowserItem FromShellFolder(ShellFolder shellFolder) => new(shellFolder.PIDL, true);
-    public static BrowserItem FromKnownItemId(Shell32.KNOWNFOLDERID knownItemId) => new(new ShellFolder(knownItemId).PIDL, true);
+    public static BrowserItem FromKnownFolderId(Shell32.KNOWNFOLDERID knownItemId) => new(new ShellFolder(knownItemId).PIDL, true);
 
-    //public Task<int> Enumerate()
-    //{
-    //    ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
-    //    ChildItems.Add(BrowserItem.FromKnownItemId(Shell32.KNOWNFOLDERID.FOLDERID_AddNewPrograms));
-    //    return Task.CompletedTask as Task<int>;
-    //}
+    public SoftwareBitmapSource? SoftwareBitmap;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
+    }
 }
-
-
+[DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
 public partial class BrowserItemCollection : List<ShellItem>, IList
 {
     protected IList ListImplementation => new List<BrowserItem>();
