@@ -6,12 +6,13 @@
              xmlns:local="using:electrifier.Controls.Vanara"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:services="using:electrifier.Controls.Vanara.Services"
+             xmlns:helpers="using:electrifier.Controls.Vanara.Helpers"
              d:DataContext="{d:DesignInstance Type=local:ExplorerBrowser}"
              mc:Ignorable="d">
     <Grid>
         <Grid.Resources>
             <DataTemplate x:Key="BrowserItemTemplate"
-                          x:DataType="local:BrowserItem">
+                          x:DataType="helpers:BrowserItem">
                 <ItemContainer AutomationProperties.Name="{x:Bind DisplayName}">
                     <Grid Margin="3">
                         <StackPanel Orientation="Horizontal"

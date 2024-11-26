@@ -6,10 +6,7 @@ using System.Drawing;
 using System.Diagnostics;
 using static Vanara.PInvoke.Shell32;
 using Microsoft.UI.Xaml.Media.Imaging;
-using JetBrains.Annotations;
 using electrifier.Controls.Vanara.Contracts;
-using System.Collections;
-using Microsoft.UI.Xaml.Controls;
 
 namespace electrifier.Controls.Vanara.Services;
 

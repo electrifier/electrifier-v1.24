@@ -1,4 +1,5 @@
 using System.Collections.ObjectModel;
+using electrifier.Controls.Vanara.Helpers;
 using Microsoft.UI.Xaml.Controls;
 namespace electrifier.Controls.Vanara;
 public sealed partial class ShellBreadcrumbBar : UserControl

@@ -1,6 +1,4 @@
 ﻿using System.Runtime.InteropServices;
-using electrifier.Controls.Vanara.Services;
-using Microsoft.UI.Xaml.Media.Imaging;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 

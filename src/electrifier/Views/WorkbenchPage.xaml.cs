@@ -1,5 +1,4 @@
-﻿using electrifier.Controls.Vanara.Services;
-using electrifier.Controls.Vanara;
+﻿using electrifier.Controls.Vanara.Helpers;
 using electrifier.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;

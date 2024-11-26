@@ -1,14 +1,10 @@
-using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.WinUI.Collections;
 using electrifier.Controls.Vanara.Services;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
+using electrifier.Controls.Vanara.Helpers;
 using Vanara.PInvoke;
-using Vanara.Windows.Shell;
-using Windows.Foundation;
 
 // todo: For EnumerateChildren-Calls, add HWND handle
 // todo: See ShellItemCollection, perhaps use this instead of ObservableCollection

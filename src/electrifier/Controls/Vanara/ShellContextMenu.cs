@@ -1,6 +1,3 @@
 ﻿namespace electrifier.Controls.Vanara;
 
-public class ShellContextMenu
-{
-    
-}
+public class ShellContextMenu;
