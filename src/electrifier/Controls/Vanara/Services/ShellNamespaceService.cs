@@ -84,6 +84,12 @@ public partial class ShellNamespaceService : IShellNamespaceService
         return null;
     }
 
+    /*
+                        ? await GetStockIconBitmapSource(Shell32.SHSTOCKICONID.SIID_FOLDER)
+       : await GetStockIconBitmapSource(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC)
+
+     */
+
     public struct BrowserStockIcon(
         Shell32.SHSTOCKICONID shStockIconId,
         ShellIconType shellIconType = ShellIconType.Large,

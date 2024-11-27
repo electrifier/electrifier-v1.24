@@ -33,14 +33,14 @@ public partial class ShellNamespaceTreeControl : UserControl
     private void ShellNamespaceTreeControl_Loading(FrameworkElement sender, object args)
     {
         // TODO: Raise event, and let the parent decide which folders to use as root
-        TreeItems.Add(BrowserItem.FromShellFolder(ShellNamespaceService.HomeShellFolder));
-        TreeItems.Add(BrowserItem.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_SkyDrive));
-        TreeItems.Add(BrowserItem.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
-        TreeItems.Add(BrowserItem.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Downloads));
-        TreeItems.Add(BrowserItem.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Documents));
-        TreeItems.Add(BrowserItem.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Pictures));
-        TreeItems.Add(BrowserItem.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Music));
-        TreeItems.Add(BrowserItem.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
+        TreeItems.Add(BrowserItemFactory.FromShellFolder(ShellNamespaceService.HomeShellFolder));
+        TreeItems.Add(BrowserItemFactory.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_SkyDrive));
+        TreeItems.Add(BrowserItemFactory.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
+        TreeItems.Add(BrowserItemFactory.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Downloads));
+        TreeItems.Add(BrowserItemFactory.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Documents));
+        TreeItems.Add(BrowserItemFactory.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Pictures));
+        TreeItems.Add(BrowserItemFactory.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Music));
+        TreeItems.Add(BrowserItemFactory.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Videos));
     }
 
     // TODO: public object ItemFromContainer => NativeTreeView.ItemFromContainer()

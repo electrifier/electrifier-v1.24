@@ -21,7 +21,7 @@ public sealed partial class WorkbenchPage : Page
 
     public static async IAsyncEnumerable<BrowserItem> RequestDriveItemsAsync()
     {
-        yield return (BrowserItem.FromShellFolder(new(@"c:\")));
+        yield return (BrowserItemFactory.FromShellFolder(new(@"c:\")));
         //yield return (BrowserItem.FromShellFolder(new(@"d:\")));
         //yield return (BrowserItem.FromShellFolder(new(@"f:\")));
     }
