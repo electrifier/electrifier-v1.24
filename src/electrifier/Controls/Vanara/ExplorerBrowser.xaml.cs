@@ -51,13 +51,14 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeView_SelectionChanged;
 
         using var shHome = ShellNamespaceService.HomeShellFolder;
-        //Navigate(new BrowserItem(shHome.PIDL, true)); // TODO: Navigate to TreeViewItem!
+            //Navigate(new BrowserItem(shHome.PIDL, true)); // TODO: Navigate to TreeViewItem!
     }
 
     // TODO: @dahall: Maybe we should throw HRESULT-COM-Errors at least here? Your HRESULT.ThrowIfFailed() - Pattern?
     public async void Navigate(BrowserItem target)
     {
-        Debug.WriteLineIf(!target.IsFolder, $"Navigate({target.DisplayName}) => is not a folder!");
+        //Debug.WriteLineIf(!target.IsFolder, $"Navigate({target.DisplayName}) => is not a folder!");
+        // TODO: If no folder, or drive empty, etc... show empty listview with error message
 
         try
         {
@@ -130,7 +131,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         }
     }
 
-
+    // INFO: Is called from History...
     public async void Navigate(ShellItem target, TreeViewNode? treeViewNode = null)
     {
         // TODO: Search for best matching RootItem in the tree hierarchy
@@ -150,6 +151,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             if (currentTreeNode is BrowserItem browserItem && browserItem.PIDL.Equals(selectedFolder?.PIDL))
             {
                 Debug.Print(".NativeTreeView_SelectionChanged(): CurrentTreeNode already equals selected /added Item.");
+
+                // TODO: Refresh
             }
             else
             {

@@ -1,30 +1,25 @@
-using System.Collections.ObjectModel;
-using Microsoft.UI.Xaml.Controls;
 using CommunityToolkit.WinUI.Collections;
 using electrifier.Controls.Vanara.Helpers;
+using Microsoft.UI.Xaml.Controls;
+using System.Collections.ObjectModel;
 
 // todo: For EnumerateChildren-Calls, add HWND handle
 // todo: See ShellItemCollection, perhaps use this instead of ObservableCollection
 // https://github.com/dahall/Vanara/blob/master/Windows.Shell.Common/ShellObjects/ShellItemArray.cs
-
 
 namespace electrifier.Controls.Vanara;
 
 public partial class ShellListView : UserControl
 {
     public ItemsView NativeItemsView => ItemsView;
-    public ObservableCollection<BrowserItem> Items;
-    private readonly AdvancedCollectionView _advancedCollectionView;
+    public ObservableCollection<BrowserItem> Items = new();
+    public readonly AdvancedCollectionView AdvancedCollectionView;
 
     public ShellListView()
     {
         InitializeComponent();
         DataContext = this;
-        Items = new ObservableCollection<BrowserItem>();
-        _advancedCollectionView = new AdvancedCollectionView(Items, true);
-        NativeItemsView.ItemsSource = _advancedCollectionView;
-
-        //NativeGridView.ShowsScrollingPlaceholders = true;
-        //NativeGridView.ScrollBarVisibility = ScrollBarVisibility.Auto;
+        AdvancedCollectionView = new AdvancedCollectionView(Items, true);
+        NativeItemsView.ItemsSource = AdvancedCollectionView;
     }
 }

@@ -31,12 +31,12 @@ public abstract class
     AbstractBrowserItem<T>(bool? isFolder, List<AbstractBrowserItem<T>>? childItems) // TODO: IDisposable
 {
     public readonly List<AbstractBrowserItem<T>> ChildItems = childItems ?? [];
-    public readonly bool IsFolder = isFolder ?? false;
+    public readonly bool? IsFolder = isFolder;
 
     //internal void async IconUpdate(int Index, SoftwareBitmapSource bmpSrc);
     //internal void async StockIconUpdate(STOCKICONID id, SoftwareBitmapSource bmpSrc);
     //internal void async ChildItemsIconUpdate();
-    public new string ToString() => $"AbstractBrowserItem(<{typeof(T)}>(isFolder {isFolder}, childItems {childItems})";
+    public new string ToString() => $"AbstractBrowserItem(<{typeof(T)}>(isFolder {IsFolder}, childItems {childItems})";
 }
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
@@ -44,7 +44,7 @@ public partial class BrowserItem(
     Shell32.PIDL pidl,
     bool? isFolder,
     List<AbstractBrowserItem<ShellItem>>? childItems = default)
-    : AbstractBrowserItem<ShellItem>(isFolder, childItems ?? []), INotifyPropertyChanged // TODO: IDisposable
+    : AbstractBrowserItem<ShellItem>(isFolder, childItems ?? []), INotifyPropertyChanged // TODO: IDisposable // TODO: IComparable
 {
     //public new ObservableCollection<BrowserItem> ChildItems; // TODO: base.ChildItems;
     public string DisplayName => ShellItem.GetDisplayName(ShellItemDisplayString.NormalDisplay) ?? ShellItem.ToString();
@@ -71,7 +71,7 @@ public partial class BrowserItem(
 }
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-public partial class BrowserItemCollection : List<ShellItem>, IList // TODO: IDisposable
+public partial class BrowserItemCollection : List<BrowserItem>, IList // TODO: IDisposable
 {
     private protected IList ListImplementation => new List<BrowserItem>();
 
