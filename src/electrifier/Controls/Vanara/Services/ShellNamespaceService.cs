@@ -30,32 +30,6 @@ public partial class ShellNamespaceService : IShellNamespaceService
 
     }
 
-    ///// <summary>Initialize default <see cref="StockIcon">Stock Icons</see>.</summary>
-    ///// <remarks>TODO: INFO: Investigate <seealso href="https://github.com/dahall/Vanara/blob/Windows.Shell.Common/StockIcon.cs"></seealso></remarks>
-    ///// <returns></returns>
-    //public static async Task InitializeStockIconsAsync()
-    //{
-    //    /* Todo: inspect `SHGetStockIconInfo()` */
-    //    //var siFlags = SHGSI.SHGSI_LARGEICON | SHGSI.SHGSI_ICON;
-    //    //var siStockIconInfo = new SHSTOCKICONINFO();
-    //    //SHGetStockIconInfo(Shell32.SHSTOCKICONID.SIID_APPLICATION, siFlags, ref siStockIconInfo).ThrowIfFailed();
-
-    //    // TODO: Use embedded resource, red cross to signal something failed.
-    //    using var siFolder = new StockIcon(SHSTOCKICONID.SIID_FOLDER);
-    //    {
-    //        var idx = siFolder.SystemImageIndex;
-    //        var icnHandle = siFolder.IconHandle.ToIcon();
-    //        var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
-    //    }
-
-    //    using var siDocument = new StockIcon(SHSTOCKICONID.SIID_DOCASSOC);
-    //    {
-    //        var idx = siDocument.SystemImageIndex;
-    //        var icnHandle = siDocument.IconHandle.ToIcon();
-    //        var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
-    //    }
-    //}
-
     // TODO: Add await event handler to every ebItem, so Icon Extractor can call back the item
     public static async Task<ShellDataTable> RequestChildItemsAsync(ShellFolder shFolder,
         FolderItemFilter itemFilter = (FolderItemFilter.Folders | FolderItemFilter.NonFolders),
@@ -84,13 +58,10 @@ public partial class ShellNamespaceService : IShellNamespaceService
         return null;
     }
 
-    /*
-                        ? await GetStockIconBitmapSource(Shell32.SHSTOCKICONID.SIID_FOLDER)
-       : await GetStockIconBitmapSource(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC)
+    /* ? await GetStockIconBitmapSource(Shell32.SHSTOCKICONID.SIID_FOLDER)
+       : await GetStockIconBitmapSource(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC) */
 
-     */
-
-    public struct BrowserStockIcon(
+    public struct BrowserStockIcon(     // TODO: => Implement SoftwareBitmapSource
         Shell32.SHSTOCKICONID shStockIconId,
         ShellIconType shellIconType = ShellIconType.Large,
         bool isLinkOverlay = false,

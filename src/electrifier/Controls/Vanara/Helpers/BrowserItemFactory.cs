@@ -15,7 +15,6 @@ public class BrowserItemFactory
 {
     public static BrowserItem FromPIDL(Shell32.PIDL pidl) => new(pidl, isFolder: null);
     public static BrowserItem FromShellFolder(ShellFolder shellFolder) => new(shellFolder.PIDL, true);
-
     public static BrowserItem FromKnownFolderId(Shell32.KNOWNFOLDERID knownItemId) =>
         new(new ShellFolder(knownItemId).PIDL, true);
 }
@@ -67,6 +66,11 @@ public partial class BrowserItem(
         field = value;
         OnPropertyChanged(propertyName);
         return true;
+    }
+
+    public void PreEnumerate()
+    {
+
     }
 }
 
