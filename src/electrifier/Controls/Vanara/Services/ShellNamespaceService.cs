@@ -22,7 +22,9 @@ public partial class ShellNamespaceService : IShellNamespaceService
     public static IReadOnlyList<Bitmap> IconExtractorBitmaps => IconExtractor.ImageList;
     public int IconSize => IconExtractor.ImageSize;
 
+    //public static ShellNamespaceService ShellNamespaceService => App.GetService<ShellNamespaceService>();
 
+    private readonly Dictionary<Shell32.SHSTOCKICONID, SoftwareBitmapSource> _stockIconDictionary = [];
 
     /// <summary>ShellNamespaceService() Warn: Actually does not really conform Service Models.</summary>
     public ShellNamespaceService()
@@ -31,11 +33,11 @@ public partial class ShellNamespaceService : IShellNamespaceService
     }
 
     // TODO: Add await event handler to every ebItem, so Icon Extractor can call back the item
-    public static async Task<ShellDataTable> RequestChildItemsAsync(ShellFolder shFolder,
+    public static async Task<ShellDataTable> GetShellDataTable(ShellFolder shFolder,
         FolderItemFilter itemFilter = (FolderItemFilter.Folders | FolderItemFilter.NonFolders),
         EventHandler? allFastRowsAddedHandler = null, EventHandler? tableLoadedHandler = null)
     {
-        Debug.Print($".RequestChildItemsAsync(<{shFolder}>) extracting...");
+        Debug.Print($".GetShellDataTable(<{shFolder}>) extracting...");
         var ct = new CancellationToken();
 
         List<Ole32.PROPERTYKEY> propKeys =
@@ -48,7 +50,7 @@ public partial class ShellNamespaceService : IShellNamespaceService
         shDataTable.TableLoaded += tableLoadedHandler;
         await shDataTable.PopulateTableAsync(propKeys, ct);
 
-        Debug.Print($".RequestChildItemsAsync(<{shFolder}>): {shDataTable.Rows.Count}");
+        Debug.Print($".GetShellDataTable(<{shFolder}>): {shDataTable.Rows.Count}");
 
         return shDataTable;
     }
@@ -58,8 +60,44 @@ public partial class ShellNamespaceService : IShellNamespaceService
         return null;
     }
 
-    /* ? await GetStockIconBitmapSource(Shell32.SHSTOCKICONID.SIID_FOLDER)
-       : await GetStockIconBitmapSource(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC) */
+    public async Task<SoftwareBitmapSource> GetStockIconBitmapSource(string fileExtension)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<SoftwareBitmapSource> GetStockIconBitmapSource(Shell32.SHSTOCKICONID shStockIconId)
+    {
+        try
+        {
+            if (_stockIconDictionary.TryGetValue(shStockIconId, out var source))
+            {
+                return source;
+            }
+
+            var siFlags = Shell32.SHGSI.SHGSI_LARGEICON | Shell32.SHGSI.SHGSI_ICON;
+            var icninfo = Shell32.SHSTOCKICONINFO.Default;
+            SHGetStockIconInfo(shStockIconId, siFlags, ref icninfo)
+                .ThrowIfFailed($"SHGetStockIconInfo({shStockIconId})");
+
+            var hIcon = icninfo.hIcon;
+            var icnHandle = hIcon.ToIcon();
+            var bmpSource = ShellNamespaceService.GetWinUi3BitmapSourceFromIcon(icnHandle);
+            await bmpSource;
+            var softBitmap = bmpSource.Result;
+
+            if (softBitmap != null)
+            {
+                _ = _stockIconDictionary.TryAdd(shStockIconId, softBitmap);
+                return softBitmap;
+            }
+
+            throw new ArgumentOutOfRangeException($"Can't get StockIcon for SHSTOCKICONID: {shStockIconId.ToString()}");
+        }
+        catch (Exception)
+        {
+            throw; // TODO handle exception
+        }
+    }
 
     public struct BrowserStockIcon(     // TODO: => Implement SoftwareBitmapSource
         Shell32.SHSTOCKICONID shStockIconId,

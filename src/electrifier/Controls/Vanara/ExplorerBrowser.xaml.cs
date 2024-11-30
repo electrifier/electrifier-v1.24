@@ -12,6 +12,7 @@ using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 using static Vanara.PInvoke.Shell32;
 using Vanara.Collections;
+using static CommunityToolkit.WinUI.Animations.Expressions.ExpressionValues;
 
 namespace electrifier.Controls.Vanara;
 
@@ -19,6 +20,8 @@ namespace electrifier.Controls.Vanara;
 /// <summary>Replacement for <see cref="Vanara.Windows.Forms.Controls.Explorer.cs">Windows.Forms/Controls/ExplorerBrowser.cs</see></summary>
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
+    public int ItemCount;
+
     private bool _isLoading;
 
     public bool IsLoading
@@ -52,40 +55,79 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeView_SelectionChanged;
 
         using var shHome = ShellNamespaceService.HomeShellFolder;
-            //Navigate(new BrowserItem(shHome.PIDL, true)); // TODO: Navigate to TreeViewItem!
+        Navigate(new BrowserItem(shHome.PIDL, true)); // TODO: Navigate to TreeViewItem!
     }
 
-    // TODO: @dahall: Maybe we should throw HRESULT-COM-Errors at least here? Your HRESULT.ThrowIfFailed() - Pattern?
-    public async void Navigate(BrowserItem target)
+    public void Navigate(ShellItem? shellItem,
+        ExplorerBrowserNavigationItemCategory category = ExplorerBrowserNavigationItemCategory.Default)
     {
+        Debug.Assert(shellItem != null);
+
+        Debug.WriteLineIf(!shellItem.IsFolder, $"Navigate({shellItem.ToString()}) => is not a folder!");
+        // TODO: If no folder, or drive empty, etc... show empty listview with error message
+
+        BrowserItem targetItem = new(shellItem.PIDL, null, null);
+        _currentNavigationTask = Navigate(targetItem);
+    }
+
+    private Task<HRESULT>? _currentNavigationTask;
+
+    public async Task<HRESULT> Navigate(BrowserItem target)
+    {
+        var shTargetItem = target.ShellItem;
+
         //Debug.WriteLineIf(!target.IsFolder, $"Navigate({target.DisplayName}) => is not a folder!");
         // TODO: If no folder, or drive empty, etc... show empty listview with error message
 
         try
         {
+            if (_currentNavigationTask is { IsCompleted: false })
+            {
+                // cancel current task
+                //CurrentNavigationTask
+            }
+
             IsLoading = true;
-            using var shFolder = new ShellFolder(target.ShellItem);
+
+            if (target.ChildItems.Count <= 0)
+            {
+                using var shFolder = new ShellFolder(target.ShellItem);
 
             target.ChildItems.Clear();
             ShellListView.Items.Clear();
-            foreach (var child in shFolder)
-            {
-                var ebItem = new BrowserItem(child.PIDL, child.IsFolder)
+                foreach (var child in shFolder)
                 {
-                    SoftwareBitmap = child.IsFolder
-                        ? await GetStockIconBitmapSource(Shell32.SHSTOCKICONID.SIID_FOLDER)
-                        : await GetStockIconBitmapSource(Shell32.SHSTOCKICONID.SIID_DOCNOASSOC)
-                };
+                    var shStockIconId = child.IsFolder
+                        ? Shell32.SHSTOCKICONID.SIID_FOLDER
+                        : Shell32.SHSTOCKICONID.SIID_DOCASSOC;
 
-                target.ChildItems.Add(ebItem);
-                ShellListView.Items.Add(ebItem);
+                    var ebItem = new BrowserItem(child.PIDL, child.IsFolder)
+                    {
+                        // TODO: init ShellNamespaceService
+                        //SoftwareBitmap = await ShellNamespaceService.GetStockIconBitmapSource(shStockIconId)
+                    };
+
+                    target.ChildItems.Add(ebItem);
+                    ShellListView.Items.Add(ebItem);
+                }
             }
+
+            // TODO: Load folder-open icon and overlays
+
+
+
+//            foreach (var child in shFolder)
+//            {
+//                target.ChildItems.Add(ebItem);
+//                ShellListView.Items.Add(ebItem);
+//            }
         }
         catch (COMException comEx)
         {
             Debug.Fail(
                 $"[Error] Navigate(<{target}>) failed. COMException: <HResult: {comEx.HResult}>: `{comEx.Message}`");
-            throw;
+
+            return new HRESULT(comEx.HResult);
         }
         catch (Exception ex)
         {
@@ -96,55 +138,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         {
             IsLoading = false;
         }
+
+        return HRESULT.S_OK;
     }
-
-    public async Task<SoftwareBitmapSource> GetStockIconBitmapSource(Shell32.SHSTOCKICONID shStockIconId)
-    {
-        try
-        {
-            if (_stockIconDictionary.TryGetValue(shStockIconId, out var source))
-            {
-                return source;
-            }
-
-            var siFlags = Shell32.SHGSI.SHGSI_LARGEICON | Shell32.SHGSI.SHGSI_ICON;
-            var icninfo = Shell32.SHSTOCKICONINFO.Default;
-            SHGetStockIconInfo(shStockIconId, siFlags, ref icninfo)
-                .ThrowIfFailed($"SHGetStockIconInfo({shStockIconId})");
-
-            var hIcon = icninfo.hIcon;
-            var icnHandle = hIcon.ToIcon();
-            var bmpSource = ShellNamespaceService.GetWinUi3BitmapSourceFromIcon(icnHandle);
-            await bmpSource;
-            var softBitmap = bmpSource.Result;
-
-            if (softBitmap != null)
-            {
-                _ = _stockIconDictionary.TryAdd(shStockIconId, softBitmap);
-                return softBitmap;
-            }
-
-            throw new ArgumentOutOfRangeException($"Can't get StockIcon for SHSTOCKICONID: {shStockIconId.ToString()}");
-        }
-        catch (Exception)
-        {
-            throw; // TODO handle exception
-        }
-    }
-
-    // INFO: Is called from <see href="NavigationLog">
-    public void Navigate(ShellItem? shellItem,
-        ExplorerBrowserNavigationItemCategory category = ExplorerBrowserNavigationItemCategory.Default)
-    {
-        //Debug.WriteLineIf(!target.IsFolder, $"Navigate({target.DisplayName}) => is not a folder!");
-        // TODO: If no folder, or drive empty, etc... show empty listview with error message
-
-
-
-    }
-
-
-
 
     //    /// <summary>
     //    /// Clears the Explorer Browser of existing content, fills it with content from the specified container, and adds a new point to the
@@ -240,12 +236,11 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                 if (selectedFolder?.PIDL is null)
                 {
                     Debug.Print(".NativeTreeView_SelectionChanged(): selectedFolder is null!");
-
                     return;
                 }
 
-                Navigate(selectedFolder);
-                //Navigate(selectedFolder.ShellItem, currentTreeNode as TreeViewNode);
+                // => TODO: currentTreeNode as TreeViewNode ;
+                Navigate(selectedFolder.ShellItem, ExplorerBrowserNavigationItemCategory.Absolute);
             }
         }
     }
@@ -577,4 +572,5 @@ public partial class ExplorerBrowser
         Show = EXPLORERPANESTATE.EPS_DEFAULT_ON | EXPLORERPANESTATE.EPS_FORCE
     }
 }
+
 #endregion DON'T TOUCH Imports from Vanara.Windows.Forms.ExplorerBrowser
