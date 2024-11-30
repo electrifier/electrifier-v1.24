@@ -3,6 +3,7 @@ using electrifier.Controls.Vanara.Services;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
 using System.Collections.ObjectModel;
+using electrifier.Controls.Vanara.Contracts;
 using electrifier.Controls.Vanara.Helpers;
 using Vanara.PInvoke;
 
@@ -33,7 +34,7 @@ public partial class ShellNamespaceTreeControl : UserControl
     private void ShellNamespaceTreeControl_Loading(FrameworkElement sender, object args)
     {
         // TODO: Raise event, and let the parent decide which folders to use as root
-        TreeItems.Add(BrowserItemFactory.FromShellFolder(ShellNamespaceService.HomeShellFolder));
+        TreeItems.Add(BrowserItemFactory.FromShellFolder(IExplorerBrowser.HomeShellFolder));
         TreeItems.Add(BrowserItemFactory.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_SkyDrive));
         TreeItems.Add(BrowserItemFactory.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
         TreeItems.Add(BrowserItemFactory.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Downloads));

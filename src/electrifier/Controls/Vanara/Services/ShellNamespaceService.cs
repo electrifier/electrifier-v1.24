@@ -10,13 +10,8 @@ using electrifier.Controls.Vanara.Contracts;
 
 namespace electrifier.Controls.Vanara.Services;
 
-public partial class ShellNamespaceService : IShellNamespaceService
+public partial class ShellNamespaceService
 {
-    #region static constants
-    public static readonly HRESULT HResultElementNotFound = IShellNamespaceService.HResultElementNotFound;
-    public static ShellFolder HomeShellFolder => new(IShellNamespaceService.HomeShellFolder);
-    #endregion
-
     // INFO: 15-11-24: I'll use a single Icon Size for testing purposes
     internal static TempShellIconExtractor IconExtractor { get; } = new(ShellFolder.Desktop);
     public static IReadOnlyList<Bitmap> IconExtractorBitmaps => IconExtractor.ImageList;

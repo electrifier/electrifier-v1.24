@@ -56,7 +56,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
         ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeView_SelectionChanged;
 
-        using var shHome = ShellNamespaceService.HomeShellFolder;
+        using var shHome = IExplorerBrowser.HomeShellFolder;
         Navigate(new BrowserItem(shHome.PIDL, true)); // TODO: Navigate to TreeViewItem!
     }
 
@@ -116,14 +116,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             }
 
             // TODO: Load folder-open icon and overlays
-
-
-
-//            foreach (var child in shFolder)
-//            {
-//                target.ChildItems.Add(ebItem);
-//                ShellListView.Items.Add(ebItem);
-//            }
         }
         catch (COMException comEx)
         {
