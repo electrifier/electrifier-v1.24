@@ -1,6 +1,5 @@
 ﻿using electrifier.Controls.Vanara.Contracts;
 using Microsoft.UI.Xaml.Media.Imaging;
-using static Vanara.PInvoke.Shell32;
 using System.Collections.ObjectModel;
 using System.Collections;
 using System.ComponentModel;
@@ -15,6 +14,7 @@ public class BrowserItemFactory
 {
     public static BrowserItem FromPIDL(Shell32.PIDL pidl) => new(pidl, isFolder: null);
     public static BrowserItem FromShellFolder(ShellFolder shellFolder) => new(shellFolder.PIDL, true);
+
     public static BrowserItem FromKnownFolderId(Shell32.KNOWNFOLDERID knownItemId) =>
         new(new ShellFolder(knownItemId).PIDL, true);
 }
@@ -22,12 +22,11 @@ public class BrowserItemFactory
 /// <summary>Abstract base class BrowserItem of Type <typeparam name="T"/>.</summary>
 /// <typeparam name="T">The derived Type of this abstract class.</typeparam>
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-public abstract class
-    AbstractBrowserItem<T> // TODO: IDisposable
+public abstract class AbstractBrowserItem<T> // TODO: IDisposable
 {
     public readonly List<AbstractBrowserItem<T>> ChildItems;
     public readonly bool? IsFolder;
-    private readonly List<AbstractBrowserItem<T>>? _childItems;
+    public readonly bool IsRootItem;
 
     /// <summary>Abstract base class BrowserItem of Type <typeparam name="T"/>.</summary>
     /// <typeparam name="T">The derived Type of this abstract class.</typeparam>
@@ -37,39 +36,42 @@ public abstract class
     /// <param name="childItems">Default: Create new empty List of child items <typeparam name="T">childItems</typeparam>.</param>
     protected AbstractBrowserItem(bool? isFolder, List<AbstractBrowserItem<T>>? childItems)
     {
-        _childItems = childItems;
         ChildItems = childItems ?? [];
         IsFolder = isFolder;
     }
 
+    public virtual Task EnumChildItems() => Task.CompletedTask;
+
     //internal void async IconUpdate(int Index, SoftwareBitmapSource bmpSrc);
     //internal void async StockIconUpdate(STOCKICONID id, SoftwareBitmapSource bmpSrc);
     //internal void async ChildItemsIconUpdate();
-    public new string ToString() => $"AbstractBrowserItem(<{typeof(T)}>(isFolder {IsFolder}, childItems {_childItems})";
+    public new string ToString() => $"AbstractBrowserItem(<{typeof(T)}>(isFolder {IsFolder}, childItems {ChildItems})";
 }
 
+// TODO: IDisposable
+// TODO: IComparable
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-public partial class BrowserItem : AbstractBrowserItem<ShellItem>, INotifyPropertyChanged // TODO: IDisposable // TODO: IComparable
+public partial class BrowserItem : AbstractBrowserItem<ShellItem>, INotifyPropertyChanged
 {
-    //public new ObservableCollection<BrowserItem> ChildItems; // TODO: base.ChildItems;
     public string DisplayName => ShellItem.GetDisplayName(ShellItemDisplayString.NormalDisplay) ?? ShellItem.ToString();
     public readonly Shell32.PIDL PIDL;
     public ShellItem ShellItem;
     public SoftwareBitmapSource? SoftwareBitmap;
 
-    public BrowserItem(Shell32.PIDL pidl,
-        bool? isFolder,
+    public BrowserItem(Shell32.PIDL pidl, bool? isFolder,
         List<AbstractBrowserItem<ShellItem>>? childItems = default) : base(isFolder, childItems ?? [])
     {
-        PIDL = new PIDL(pidl);
+        PIDL = new Shell32.PIDL(pidl);
         ShellItem = new ShellItem(pidl);
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
+
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+
     protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
     {
         if (EqualityComparer<T>.Default.Equals(field, value))
@@ -81,10 +83,37 @@ public partial class BrowserItem : AbstractBrowserItem<ShellItem>, INotifyProper
         OnPropertyChanged(propertyName);
         return true;
     }
+}
 
-    public void PreEnumerate()
+public partial class ShellNamespaceTreeRoot : AbstractBrowserItem<ShellItem>, INotifyPropertyChanged
+{
+    public string DisplayName => ShellItem.GetDisplayName(ShellItemDisplayString.NormalDisplay) ?? ShellItem.ToString();
+    public readonly Shell32.PIDL PIDL;
+    public ShellItem ShellItem;
+    public SoftwareBitmapSource? SoftwareBitmap;
+
+    public ShellNamespaceTreeRoot(ShellItem rootShellItem) : base(isFolder: true,
+        childItems: new List<AbstractBrowserItem<ShellItem>>())
     {
+    }
 
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+    }
+
+    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
+    {
+        if (EqualityComparer<T>.Default.Equals(field, value))
+        {
+            return false;
+        }
+
+        field = value;
+        OnPropertyChanged(propertyName);
+        return true;
     }
 }
 
