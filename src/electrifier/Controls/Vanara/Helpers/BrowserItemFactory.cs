@@ -21,35 +21,49 @@ public class BrowserItemFactory
 
 /// <summary>Abstract base class BrowserItem of Type <typeparam name="T"/>.</summary>
 /// <typeparam name="T">The derived Type of this abstract class.</typeparam>
-/// <param name="isFolder" >
-/// <value>true</value>
-/// Default: False.</param>
-/// <param name="childItems">Default: Create new empty List of child items <typeparam name="T">childItems</typeparam>.</param>
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
 public abstract class
-    AbstractBrowserItem<T>(bool? isFolder, List<AbstractBrowserItem<T>>? childItems) // TODO: IDisposable
+    AbstractBrowserItem<T> // TODO: IDisposable
 {
-    public readonly List<AbstractBrowserItem<T>> ChildItems = childItems ?? [];
-    public readonly bool? IsFolder = isFolder;
+    public readonly List<AbstractBrowserItem<T>> ChildItems;
+    public readonly bool? IsFolder;
+    private readonly List<AbstractBrowserItem<T>>? _childItems;
+
+    /// <summary>Abstract base class BrowserItem of Type <typeparam name="T"/>.</summary>
+    /// <typeparam name="T">The derived Type of this abstract class.</typeparam>
+    /// <param name="isFolder" >
+    /// <value>true</value>
+    /// Default: False.</param>
+    /// <param name="childItems">Default: Create new empty List of child items <typeparam name="T">childItems</typeparam>.</param>
+    protected AbstractBrowserItem(bool? isFolder, List<AbstractBrowserItem<T>>? childItems)
+    {
+        _childItems = childItems;
+        ChildItems = childItems ?? [];
+        IsFolder = isFolder;
+    }
 
     //internal void async IconUpdate(int Index, SoftwareBitmapSource bmpSrc);
     //internal void async StockIconUpdate(STOCKICONID id, SoftwareBitmapSource bmpSrc);
     //internal void async ChildItemsIconUpdate();
-    public new string ToString() => $"AbstractBrowserItem(<{typeof(T)}>(isFolder {IsFolder}, childItems {childItems})";
+    public new string ToString() => $"AbstractBrowserItem(<{typeof(T)}>(isFolder {IsFolder}, childItems {_childItems})";
 }
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
-public partial class BrowserItem(
-    Shell32.PIDL pidl,
-    bool? isFolder,
-    List<AbstractBrowserItem<ShellItem>>? childItems = default)
-    : AbstractBrowserItem<ShellItem>(isFolder, childItems ?? []), INotifyPropertyChanged // TODO: IDisposable // TODO: IComparable
+public partial class BrowserItem : AbstractBrowserItem<ShellItem>, INotifyPropertyChanged // TODO: IDisposable // TODO: IComparable
 {
     //public new ObservableCollection<BrowserItem> ChildItems; // TODO: base.ChildItems;
     public string DisplayName => ShellItem.GetDisplayName(ShellItemDisplayString.NormalDisplay) ?? ShellItem.ToString();
-    public readonly Shell32.PIDL PIDL = new(pidl);
-    public ShellItem ShellItem = new(pidl);
+    public readonly Shell32.PIDL PIDL;
+    public ShellItem ShellItem;
     public SoftwareBitmapSource? SoftwareBitmap;
+
+    public BrowserItem(Shell32.PIDL pidl,
+        bool? isFolder,
+        List<AbstractBrowserItem<ShellItem>>? childItems = default) : base(isFolder, childItems ?? [])
+    {
+        PIDL = new PIDL(pidl);
+        ShellItem = new ShellItem(pidl);
+    }
 
     public event PropertyChangedEventHandler? PropertyChanged;
     protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
