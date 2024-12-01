@@ -24,7 +24,7 @@ public partial class ShellNamespaceTreeControl : UserControl
     {
         InitializeComponent();
         DataContext = this;
-        TreeItems = new ObservableCollection<BrowserItem>();
+        TreeItems = [];
         AdvancedCollectionView = new AdvancedCollectionView(TreeItems, true);
         NativeTreeView.ItemsSource = AdvancedCollectionView;
 

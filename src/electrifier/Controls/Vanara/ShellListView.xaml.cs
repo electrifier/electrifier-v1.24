@@ -12,7 +12,7 @@ namespace electrifier.Controls.Vanara;
 public partial class ShellListView : UserControl
 {
     public ItemsView NativeItemsView => ItemsView;
-    public ObservableCollection<BrowserItem> Items = new();
+    public ObservableCollection<BrowserItem> Items = [];
     public readonly AdvancedCollectionView AdvancedCollectionView;
 
     public ShellListView()
@@ -20,6 +20,8 @@ public partial class ShellListView : UserControl
         InitializeComponent();
         DataContext = this;
         AdvancedCollectionView = new AdvancedCollectionView(Items, true);
+        //  TODO: Add custom ItemComparer, which uses Shell32 Comparison
+        AdvancedCollectionView.SortDescriptions.Add(new SortDescription("DisplayName", SortDirection.Ascending));
         NativeItemsView.ItemsSource = AdvancedCollectionView;
     }
 }
