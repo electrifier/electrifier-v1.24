@@ -46,8 +46,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     public static ShellNamespaceService ShellNamespaceService => App.GetService<ShellNamespaceService>();
 
-    private readonly Dictionary<Shell32.SHSTOCKICONID, SoftwareBitmapSource> _stockIconDictionary = [];
-
     /// <summary>ExplorerBrowser Implementation for WinUI3.</summary>
     public ExplorerBrowser()
     {

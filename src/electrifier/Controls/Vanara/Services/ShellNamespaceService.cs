@@ -6,7 +6,6 @@ using System.Drawing;
 using System.Diagnostics;
 using static Vanara.PInvoke.Shell32;
 using Microsoft.UI.Xaml.Media.Imaging;
-using electrifier.Controls.Vanara.Contracts;
 
 namespace electrifier.Controls.Vanara.Services;
 
@@ -15,16 +14,13 @@ public partial class ShellNamespaceService
     // INFO: 15-11-24: I'll use a single Icon Size for testing purposes
     internal static TempShellIconExtractor IconExtractor { get; } = new(ShellFolder.Desktop);
     public static IReadOnlyList<Bitmap> IconExtractorBitmaps => IconExtractor.ImageList;
-    public int IconSize => IconExtractor.ImageSize;
-
-    //public static ShellNamespaceService ShellNamespaceService => App.GetService<ShellNamespaceService>();
-
+    public int DefaultIconSize => IconExtractor.ImageSize;
     private readonly Dictionary<Shell32.SHSTOCKICONID, SoftwareBitmapSource> _stockIconDictionary = [];
 
     /// <summary>ShellNamespaceService() Warn: Actually does not really conform Service Models.</summary>
     public ShellNamespaceService()
     {
-
+        Debug.Print($"{this.ToString()}");
     }
 
     // TODO: Add await event handler to every ebItem, so Icon Extractor can call back the item
@@ -50,48 +46,14 @@ public partial class ShellNamespaceService
         return shDataTable;
     }
 
-    public async Task<SoftwareBitmapSource> ExtractShellIcon()
-    {
-        return null;
-    }
+    //public async Task<SoftwareBitmapSource> ExtractShellIcon()
+    //{
+    //    return null;
+    //}
 
     public async Task<SoftwareBitmapSource> GetStockIconBitmapSource(string fileExtension)
     {
         throw new NotImplementedException();
-    }
-
-    public async Task<SoftwareBitmapSource> GetStockIconBitmapSource(Shell32.SHSTOCKICONID shStockIconId)
-    {
-        try
-        {
-            if (_stockIconDictionary.TryGetValue(shStockIconId, out var source))
-            {
-                return source;
-            }
-
-            var siFlags = Shell32.SHGSI.SHGSI_LARGEICON | Shell32.SHGSI.SHGSI_ICON;
-            var icninfo = Shell32.SHSTOCKICONINFO.Default;
-            SHGetStockIconInfo(shStockIconId, siFlags, ref icninfo)
-                .ThrowIfFailed($"SHGetStockIconInfo({shStockIconId})");
-
-            var hIcon = icninfo.hIcon;
-            var icnHandle = hIcon.ToIcon();
-            var bmpSource = ShellNamespaceService.GetWinUi3BitmapSourceFromIcon(icnHandle);
-            await bmpSource;
-            var softBitmap = bmpSource.Result;
-
-            if (softBitmap != null)
-            {
-                _ = _stockIconDictionary.TryAdd(shStockIconId, softBitmap);
-                return softBitmap;
-            }
-
-            throw new ArgumentOutOfRangeException($"Can't get StockIcon for SHSTOCKICONID: {shStockIconId.ToString()}");
-        }
-        catch (Exception)
-        {
-            throw; // TODO handle exception
-        }
     }
 
     public struct BrowserStockIcon(     // TODO: => Implement SoftwareBitmapSource

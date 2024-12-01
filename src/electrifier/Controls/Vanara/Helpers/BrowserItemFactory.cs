@@ -4,9 +4,11 @@ using System.Collections.ObjectModel;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Runtime.CompilerServices;
 using Vanara.PInvoke;
+using System.Runtime.CompilerServices;
 using Vanara.Windows.Shell;
+using electrifier.Controls.Vanara.Services;
+using static Vanara.PInvoke.Shell32;
 
 namespace electrifier.Controls.Vanara.Helpers;
 
@@ -17,6 +19,57 @@ public class BrowserItemFactory
 
     public static BrowserItem FromKnownFolderId(Shell32.KNOWNFOLDERID knownItemId) =>
         new(new ShellFolder(knownItemId).PIDL, true);
+
+    public static SoftwareBitmapSource GetStockIconBitmapSource(Shell32.SHSTOCKICONID shStockIconId)
+    {
+        var siFlags = Shell32.SHGSI.SHGSI_LARGEICON | Shell32.SHGSI.SHGSI_ICON;
+        var icninfo = Shell32.SHSTOCKICONINFO.Default;
+        Shell32.SHGetStockIconInfo(shStockIconId, siFlags, ref icninfo)
+            .ThrowIfFailed($"SHGetStockIconInfo({shStockIconId})");
+
+        var hIcon = icninfo.hIcon;
+        var icnHandle = hIcon.ToIcon();
+        var bmpSource = ShellNamespaceService.GetWinUi3BitmapSourceFromIcon(icnHandle);
+        //await bmpSource;
+        var softBitmap = bmpSource.Result;
+
+        return softBitmap;
+    }
+
+    public static async Task<SoftwareBitmapSource> GetStockIconBitmapSource(Shell32.SHSTOCKICONID shStockIconId,
+        Dictionary<Shell32.SHSTOCKICONID, SoftwareBitmapSource> _stockIconDictionary)
+    {
+        try
+        {
+            if (_stockIconDictionary.TryGetValue(shStockIconId, out var source))
+            {
+                return source;
+            }
+
+            var siFlags = Shell32.SHGSI.SHGSI_LARGEICON | Shell32.SHGSI.SHGSI_ICON;
+            var icninfo = Shell32.SHSTOCKICONINFO.Default;
+            Shell32.SHGetStockIconInfo(shStockIconId, siFlags, ref icninfo)
+                .ThrowIfFailed($"SHGetStockIconInfo({shStockIconId})");
+
+            var hIcon = icninfo.hIcon;
+            var icnHandle = hIcon.ToIcon();
+            var bmpSource = ShellNamespaceService.GetWinUi3BitmapSourceFromIcon(icnHandle);
+            await bmpSource;
+            var softBitmap = bmpSource.Result;
+
+            if (softBitmap != null)
+            {
+                _ = _stockIconDictionary.TryAdd(shStockIconId, softBitmap);
+                return softBitmap;
+            }
+
+            throw new ArgumentOutOfRangeException($"Can't get StockIcon for SHSTOCKICONID: {shStockIconId.ToString()}");
+        }
+        catch (Exception)
+        {
+            throw; // TODO handle exception
+        }
+    }
 }
 
 /// <summary>Abstract base class BrowserItem of Type <typeparam name="T"/>.</summary>
@@ -63,6 +116,7 @@ public partial class BrowserItem : AbstractBrowserItem<ShellItem>, INotifyProper
     {
         PIDL = new Shell32.PIDL(pidl);
         ShellItem = new ShellItem(pidl);
+        //SoftwareBitmap = ConfiguredTaskAwaitable GetStockIconBitmapSource()
     }
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -85,37 +139,6 @@ public partial class BrowserItem : AbstractBrowserItem<ShellItem>, INotifyProper
     }
 }
 
-public partial class ShellNamespaceTreeRoot : AbstractBrowserItem<ShellItem>, INotifyPropertyChanged
-{
-    public string DisplayName => ShellItem.GetDisplayName(ShellItemDisplayString.NormalDisplay) ?? ShellItem.ToString();
-    public readonly Shell32.PIDL PIDL;
-    public ShellItem ShellItem;
-    public SoftwareBitmapSource? SoftwareBitmap;
-
-    public ShellNamespaceTreeRoot(ShellItem rootShellItem) : base(isFolder: true,
-        childItems: new List<AbstractBrowserItem<ShellItem>>())
-    {
-    }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-    {
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
-
-    protected bool SetField<T>(ref T field, T value, [CallerMemberName] string? propertyName = null)
-    {
-        if (EqualityComparer<T>.Default.Equals(field, value))
-        {
-            return false;
-        }
-
-        field = value;
-        OnPropertyChanged(propertyName);
-        return true;
-    }
-}
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
 public partial class BrowserItemCollection : List<BrowserItem>, IList // TODO: IDisposable
