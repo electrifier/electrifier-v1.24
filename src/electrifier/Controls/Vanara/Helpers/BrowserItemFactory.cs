@@ -1,14 +1,12 @@
-﻿using electrifier.Controls.Vanara.Contracts;
+﻿using electrifier.Controls.Vanara.Services;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System.Collections.ObjectModel;
 using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
-using Vanara.PInvoke;
 using System.Runtime.CompilerServices;
+using Vanara.PInvoke;
 using Vanara.Windows.Shell;
-using electrifier.Controls.Vanara.Services;
-using static Vanara.PInvoke.Shell32;
 
 namespace electrifier.Controls.Vanara.Helpers;
 
@@ -20,8 +18,14 @@ public class BrowserItemFactory
     public static BrowserItem FromKnownFolderId(Shell32.KNOWNFOLDERID knownItemId) =>
         new(new ShellFolder(knownItemId).PIDL, true);
 
-    public static SoftwareBitmapSource GetStockIconBitmapSource(Shell32.SHSTOCKICONID shStockIconId)
+    public static async Task<SoftwareBitmapSource> GetStockIconBitmapSource(Shell32.SHSTOCKICONID shStockIconId,
+        Dictionary<Shell32.SHSTOCKICONID, SoftwareBitmapSource> stockIconDictionary)
     {
+        if (stockIconDictionary.TryGetValue(shStockIconId, out var source))
+        {
+            return source;
+        }
+
         var siFlags = Shell32.SHGSI.SHGSI_LARGEICON | Shell32.SHGSI.SHGSI_ICON;
         var icninfo = Shell32.SHSTOCKICONINFO.Default;
         Shell32.SHGetStockIconInfo(shStockIconId, siFlags, ref icninfo)
@@ -30,45 +34,16 @@ public class BrowserItemFactory
         var hIcon = icninfo.hIcon;
         var icnHandle = hIcon.ToIcon();
         var bmpSource = ShellNamespaceService.GetWinUi3BitmapSourceFromIcon(icnHandle);
-        //await bmpSource;
+        await bmpSource;
         var softBitmap = bmpSource.Result;
 
-        return softBitmap;
-    }
-
-    public static async Task<SoftwareBitmapSource> GetStockIconBitmapSource(Shell32.SHSTOCKICONID shStockIconId,
-        Dictionary<Shell32.SHSTOCKICONID, SoftwareBitmapSource> _stockIconDictionary)
-    {
-        try
+        if (softBitmap != null)
         {
-            if (_stockIconDictionary.TryGetValue(shStockIconId, out var source))
-            {
-                return source;
-            }
-
-            var siFlags = Shell32.SHGSI.SHGSI_LARGEICON | Shell32.SHGSI.SHGSI_ICON;
-            var icninfo = Shell32.SHSTOCKICONINFO.Default;
-            Shell32.SHGetStockIconInfo(shStockIconId, siFlags, ref icninfo)
-                .ThrowIfFailed($"SHGetStockIconInfo({shStockIconId})");
-
-            var hIcon = icninfo.hIcon;
-            var icnHandle = hIcon.ToIcon();
-            var bmpSource = ShellNamespaceService.GetWinUi3BitmapSourceFromIcon(icnHandle);
-            await bmpSource;
-            var softBitmap = bmpSource.Result;
-
-            if (softBitmap != null)
-            {
-                _ = _stockIconDictionary.TryAdd(shStockIconId, softBitmap);
-                return softBitmap;
-            }
-
-            throw new ArgumentOutOfRangeException($"Can't get StockIcon for SHSTOCKICONID: {shStockIconId.ToString()}");
+            _ = stockIconDictionary.TryAdd(shStockIconId, softBitmap);
+            return softBitmap;
         }
-        catch (Exception)
-        {
-            throw; // TODO handle exception
-        }
+
+        throw new ArgumentOutOfRangeException($"Can't get StockIcon for SHSTOCKICONID: {shStockIconId.ToString()}");
     }
 }
 
@@ -142,7 +117,7 @@ public partial class BrowserItem : AbstractBrowserItem<ShellItem>, INotifyProper
 
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
 public partial class BrowserItemCollection : List<BrowserItem>, IList // TODO: IDisposable
-{
+    {
     private protected IList ListImplementation => new List<BrowserItem>();
 
     public void CopyTo(Array array, int index) => ListImplementation.CopyTo(array, index);

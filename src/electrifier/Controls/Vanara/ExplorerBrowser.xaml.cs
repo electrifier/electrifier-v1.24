@@ -67,11 +67,13 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         Debug.WriteLineIf(!shellItem.IsFolder, $"Navigate({shellItem.ToString()}) => is not a folder!");
         // TODO: If no folder, or drive empty, etc... show empty listview with error message
 
+        // TODO: Find TreeItem here!
         BrowserItem targetItem = new(shellItem.PIDL, null, null);
         _currentNavigationTask = Navigate(targetItem);
     }
 
     private Task<HRESULT>? _currentNavigationTask;
+    private readonly Dictionary<Shell32.SHSTOCKICONID, SoftwareBitmapSource> _stockIconDictionary = [];
 
     public async Task<HRESULT> Navigate(BrowserItem target)
     {
@@ -80,6 +82,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         //Debug.WriteLineIf(!target.IsFolder, $"Navigate({target.DisplayName}) => is not a folder!");
         // TODO: If no folder, or drive empty, etc... show empty listview with error message
 
+
+        // TODO: init ShellNamespaceService
         try
         {
             if (_currentNavigationTask is { IsCompleted: false })
@@ -94,19 +98,22 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             {
                 using var shFolder = new ShellFolder(target.ShellItem);
 
-            target.ChildItems.Clear();
-            ShellListView.Items.Clear();
+                target.ChildItems.Clear();
+                ShellListView.Items.Clear();
                 foreach (var child in shFolder)
                 {
                     var shStockIconId = child.IsFolder
                         ? Shell32.SHSTOCKICONID.SIID_FOLDER
                         : Shell32.SHSTOCKICONID.SIID_DOCASSOC;
 
+                    var softBitmap = await BrowserItemFactory.GetStockIconBitmapSource(shStockIconId, _stockIconDictionary);
+
                     var ebItem = new BrowserItem(child.PIDL, child.IsFolder)
                     {
-                        // TODO: init ShellNamespaceService
-                        //SoftwareBitmap = await ShellNamespaceService.GetStockIconBitmapSource(shStockIconId)
+                        SoftwareBitmap = softBitmap
                     };
+
+                    // TODO: if(child.IsLink) => Add Link-Overlay
 
                     target.ChildItems.Add(ebItem);
                     ShellListView.Items.Add(ebItem);
