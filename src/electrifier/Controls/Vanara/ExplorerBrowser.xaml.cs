@@ -107,6 +107,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                     var shStockIconId = child.IsFolder
                         ? Shell32.SHSTOCKICONID.SIID_FOLDER
                         : Shell32.SHSTOCKICONID.SIID_DOCASSOC;
+                    // SHSTOCKICONID.Link and SHSTOCKICONID.SlowFile have to be used as overlay
 
                     var softBitmap = await StockIconFactory.GetStockIconBitmapSource(shStockIconId);
 
