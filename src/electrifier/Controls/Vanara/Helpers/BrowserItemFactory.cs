@@ -17,34 +17,6 @@ public class BrowserItemFactory
 
     public static BrowserItem FromKnownFolderId(Shell32.KNOWNFOLDERID knownItemId) =>
         new(new ShellFolder(knownItemId).PIDL, true);
-
-    public static async Task<SoftwareBitmapSource> GetStockIconBitmapSource(Shell32.SHSTOCKICONID shStockIconId,
-        Dictionary<Shell32.SHSTOCKICONID, SoftwareBitmapSource> stockIconDictionary)
-    {
-        if (stockIconDictionary.TryGetValue(shStockIconId, out var source))
-        {
-            return source;
-        }
-
-        var siFlags = Shell32.SHGSI.SHGSI_LARGEICON | Shell32.SHGSI.SHGSI_ICON;
-        var icninfo = Shell32.SHSTOCKICONINFO.Default;
-        Shell32.SHGetStockIconInfo(shStockIconId, siFlags, ref icninfo)
-            .ThrowIfFailed($"SHGetStockIconInfo({shStockIconId})");
-
-        var hIcon = icninfo.hIcon;
-        var icnHandle = hIcon.ToIcon();
-        var bmpSource = ShellNamespaceService.GetWinUi3BitmapSourceFromIcon(icnHandle);
-        await bmpSource;
-        var softBitmap = bmpSource.Result;
-
-        if (softBitmap != null)
-        {
-            _ = stockIconDictionary.TryAdd(shStockIconId, softBitmap);
-            return softBitmap;
-        }
-
-        throw new ArgumentOutOfRangeException($"Can't get StockIcon for SHSTOCKICONID: {shStockIconId.ToString()}");
-    }
 }
 
 /// <summary>Abstract base class BrowserItem of Type <typeparam name="T"/>.</summary>
@@ -114,10 +86,9 @@ public partial class BrowserItem : AbstractBrowserItem<ShellItem>, INotifyProper
     }
 }
 
-
 [DebuggerDisplay($"{{{nameof(ToString)}(),nq}}")]
 public partial class BrowserItemCollection : List<BrowserItem>, IList // TODO: IDisposable
-    {
+{
     private protected IList ListImplementation => new List<BrowserItem>();
 
     public void CopyTo(Array array, int index) => ListImplementation.CopyTo(array, index);
@@ -135,4 +106,36 @@ public partial class BrowserItemCollection : List<BrowserItem>, IList // TODO: I
     public bool IsReadOnly => ListImplementation.IsReadOnly;
 
     public new object? this[int index] => ListImplementation[index];
+}
+
+public static class StockIconFactory
+{
+    internal static Dictionary<Shell32.SHSTOCKICONID, SoftwareBitmapSource> Dictionary = new();
+
+    public static async Task<SoftwareBitmapSource> GetStockIconBitmapSource(Shell32.SHSTOCKICONID shStockIconId)
+    {
+        if (Dictionary.TryGetValue(shStockIconId, out var source))
+        {
+            return source;
+        }
+
+        var siFlags = Shell32.SHGSI.SHGSI_LARGEICON | Shell32.SHGSI.SHGSI_ICON;
+        var icninfo = Shell32.SHSTOCKICONINFO.Default;
+        Shell32.SHGetStockIconInfo(shStockIconId, siFlags, ref icninfo)
+            .ThrowIfFailed($"SHGetStockIconInfo({shStockIconId})");
+
+        var hIcon = icninfo.hIcon;
+        var icnHandle = hIcon.ToIcon();
+        var bmpSource = ShellNamespaceService.GetWinUi3BitmapSourceFromIcon(icnHandle);
+        await bmpSource;
+        var softBitmap = bmpSource.Result;
+
+        if (softBitmap != null)
+        {
+            _ = Dictionary.TryAdd(shStockIconId, softBitmap); // WARN: Is this thread safe?
+            return softBitmap;
+        }
+
+        throw new ArgumentOutOfRangeException($"Can't get StockIcon for SHSTOCKICONID: {shStockIconId.ToString()}");
+    }
 }

@@ -70,11 +70,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     }
 
     private Task<HRESULT>? _currentNavigationTask;
-    private readonly Dictionary<Shell32.SHSTOCKICONID, SoftwareBitmapSource> _stockIconDictionary = [];
 
     public async Task<HRESULT> NavigateToTreeItem(TreeViewItem tvItem)
     {
-
         return HRESULT.S_OK;
     }
 
@@ -91,6 +89,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         {
             if (_currentNavigationTask is { IsCompleted: false })
             {
+                Debug.Print("ERROR! <_currentNavigationTask> already running");
                 // cancel current task
                 //CurrentNavigationTask
             }
@@ -109,7 +108,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
                         ? Shell32.SHSTOCKICONID.SIID_FOLDER
                         : Shell32.SHSTOCKICONID.SIID_DOCASSOC;
 
-                    var softBitmap = await BrowserItemFactory.GetStockIconBitmapSource(shStockIconId, _stockIconDictionary);
+                    var softBitmap = await StockIconFactory.GetStockIconBitmapSource(shStockIconId);
 
                     var ebItem = new BrowserItem(child.PIDL, child.IsFolder)
                     {
@@ -217,37 +216,42 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     private void NativeTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
+        var RemovedItems = args.RemovedItems;
         var addedItems = args.AddedItems;
-        if (addedItems.Count > 0)
+
+        if (addedItems.Count < 1)
         {
-            Debug.Assert(addedItems.Count == 1);
-            var selectedFolder = addedItems[0] as BrowserItem;
-            var currentTreeNode = ShellTreeView.NativeTreeView.SelectedItem;
-            Debug.Print(
-                $".NativeTreeView_SelectionChanged(`{selectedFolder?.DisplayName}`, treeNode: {currentTreeNode?.ToString()}");
+            Debug.Fail(".NativeTreeView_SelectionChanged() failed.", "No Items added!");
+        }
 
-            // check sender!
+        Debug.Assert(addedItems.Count == 1);
+        var selectedFolder = addedItems[0] as BrowserItem;
+        var currentTreeNode = ShellTreeView.NativeTreeView.SelectedItem;
+        Debug.Print(
+            $".NativeTreeView_SelectionChanged(`{selectedFolder?.DisplayName}`, treeNode: {currentTreeNode?.ToString()}).");
+
+        // check sender!
 
 
-            if (currentTreeNode is BrowserItem browserItem && browserItem.PIDL.Equals(selectedFolder?.PIDL))
+        if (currentTreeNode is BrowserItem browserItem && browserItem.PIDL.Equals(selectedFolder?.PIDL))
+        {
+            Debug.Print(".NativeTreeView_SelectionChanged(): CurrentTreeNode already equals selected /added Item.");
+
+            // TODO: Refresh
+        }
+        else
+        {
+            // TODO: ShellTreeView.NativeTreeView.SelectedItem = newTreeNode(find TreeNode
+
+            if (selectedFolder?.PIDL is null)
             {
-                Debug.Print(".NativeTreeView_SelectionChanged(): CurrentTreeNode already equals selected /added Item.");
-
-                // TODO: Refresh
+                Debug.Print(".NativeTreeView_SelectionChanged(): selectedFolder is null!");
+                return;
             }
-            else
-            {
-                // TODO: ShellTreeView.NativeTreeView.SelectedItem = newTreeNode(find TreeNode
 
-                if (selectedFolder?.PIDL is null)
-                {
-                    Debug.Print(".NativeTreeView_SelectionChanged(): selectedFolder is null!");
-                    return;
-                }
-
-                // => TODO: currentTreeNode as TreeViewNode ;
-                Navigate(selectedFolder.ShellItem, IExplorerBrowser.ExplorerBrowser.ExplorerBrowserNavigationItemCategory.Absolute);
-            }
+            // => TODO: currentTreeNode as TreeViewNode ;
+            Navigate(selectedFolder.ShellItem,
+                IExplorerBrowser.ExplorerBrowser.ExplorerBrowserNavigationItemCategory.Absolute);
         }
     }
 
