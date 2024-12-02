@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <UserControl x:Class="electrifier.Controls.Vanara.ExplorerBrowser"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -232,19 +233,12 @@
                                   MinWidth="76" />
                 <ColumnDefinition MinWidth="76" />
             </Grid.ColumnDefinitions>
-            <Border Grid.Column="0"
-                    VerticalAlignment="Stretch">
-                <local:ShellNamespaceTreeControl x:Name="ShellTreeView"
-                                                 HorizontalAlignment="Stretch" />
-            </Border>
-            <Border Grid.Column="1">
-                <!-- VerticalAlignment="Stretch" -->
-                <StackPanel Orientation="Vertical">
-                    <local:ShellListView x:Name="ShellListView"
-                                         BorderThickness="3" />
-                    <!-- ItemsSource="{x:Bind CurrentItems}" -->
-                </StackPanel>
-            </Border>
+            <local:ShellNamespaceTreeControl x:Name="ShellTreeView"
+                                             Grid.Column="0"
+                                             HorizontalAlignment="Stretch" />
+            <local:ShellListView x:Name="ShellListView"
+                                 Grid.Column="1"
+                                 BorderThickness="3" />
         </Grid>
         <AppBar Grid.Row="2"
                 Grid.ColumnSpan="3"
