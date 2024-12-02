@@ -3,6 +3,7 @@ using CommunityToolkit.WinUI.Collections;
 using electrifier.Controls.Vanara.Helpers;
 using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
 
 // todo: For EnumerateChildren-Calls, add HWND handle
@@ -25,6 +26,7 @@ public partial class ShellListView : UserControl
         //  TODO: Add custom ItemComparer, which uses Shell32 Comparison
         AdvancedCollectionView.SortDescriptions.Add(new SortDescription(SortDirection.Ascending,
             new DefaultBrowserItemComparer()));
+        Debug.Assert(NativeItemsView != null, nameof(NativeItemsView) + " != null");
         NativeItemsView.ItemsSource = AdvancedCollectionView;
     }
 
