@@ -53,9 +53,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         DataContext = this;
 
         ShellTreeView.NativeTreeView.SelectionChanged += NativeTreeView_SelectionChanged;
-
-        using var shHome = IExplorerBrowser.HomeShellFolder;
-        Navigate(new BrowserItem(shHome.PIDL, true)); // TODO: Navigate to TreeViewItem!
     }
 
     public void Navigate(ShellItem? shellItem,
@@ -75,7 +72,13 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     private Task<HRESULT>? _currentNavigationTask;
     private readonly Dictionary<Shell32.SHSTOCKICONID, SoftwareBitmapSource> _stockIconDictionary = [];
 
-    public async Task<HRESULT> Navigate(BrowserItem target)
+    public async Task<HRESULT> NavigateToTreeItem(TreeViewItem tvItem)
+    {
+
+        return HRESULT.S_OK;
+    }
+
+    private async Task<HRESULT> Navigate(BrowserItem target)
     {
         var shTargetItem = target.ShellItem;
 
@@ -222,6 +225,9 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             var currentTreeNode = ShellTreeView.NativeTreeView.SelectedItem;
             Debug.Print(
                 $".NativeTreeView_SelectionChanged(`{selectedFolder?.DisplayName}`, treeNode: {currentTreeNode?.ToString()}");
+
+            // check sender!
+
 
             if (currentTreeNode is BrowserItem browserItem && browserItem.PIDL.Equals(selectedFolder?.PIDL))
             {
