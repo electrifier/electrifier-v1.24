@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
+
 <UserControl x:Class="electrifier.Controls.Vanara.ShellNamespaceTreeControl"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="using:electrifier.Controls.Vanara"
@@ -12,7 +13,9 @@
         <Grid.Resources>
             <DataTemplate x:Name="BrowserItemTemplate"
                           x:DataType="helpers:BrowserItem">
-                <TreeViewItem ItemsSource="{x:Bind ChildItems}">
+                <TreeViewItem HasUnrealizedChildren="{x:Bind HasUnrealizedChildren}"
+                              IsSelected="{x:Bind TreeViewItemIsSelected}"
+                              ItemsSource="{x:Bind ChildItems}">
                     <Grid>
                         <StackPanel HorizontalAlignment="Stretch"
                                     MaxHeight="23"
@@ -30,7 +33,6 @@
             </DataTemplate>
         </Grid.Resources>
         <TreeView x:Name="TreeView"
-                  ItemTemplate="{StaticResource BrowserItemTemplate}">
-        </TreeView>
+                  ItemTemplate="{StaticResource BrowserItemTemplate}" />
     </Grid>
 </UserControl>

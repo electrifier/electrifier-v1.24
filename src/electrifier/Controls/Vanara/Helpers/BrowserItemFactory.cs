@@ -57,7 +57,33 @@ public partial class BrowserItem : AbstractBrowserItem<ShellItem>, INotifyProper
     public readonly Shell32.PIDL PIDL;
     public ShellItem ShellItem;
     public SoftwareBitmapSource? SoftwareBitmap;
+    private bool _treeViewItemIsSelected;
 
+    public bool TreeViewItemIsSelected
+    {
+        get => _treeViewItemIsSelected;
+        set
+        {
+            if (value == _treeViewItemIsSelected)
+            {
+                return;
+            }
+
+            _treeViewItemIsSelected = value;
+            OnPropertyChanged();
+        }
+    }
+
+    /// <summary>
+    /// HasUnrealizedChildren checks for flag ´SFGAO_HASSUBFOLDER´.
+    ///
+    /// <seealso href="https://learn.microsoft.com/en-us/windows/win32/shell/sfgao"/>
+    /// The specified folders have subfolders. The SFGAO_HASSUBFOLDER attribute is only advisory and might be returned by Shell folder implementations even if they do not contain subfolders. Note, however, that the converse—failing to return SFGAO_HASSUBFOLDER—definitively states that the folder objects do not have subfolders.
+    /// Returning SFGAO_HASSUBFOLDER is recommended whenever a significant amount of time is required to determine whether any subfolders exist. For example, the Shell always returns SFGAO_HASSUBFOLDER when a folder is located on a network drive.
+    /// </summary>
+    public bool HasUnrealizedChildren => ShellItem.Attributes.HasFlag(ShellItemAttribute.HasSubfolder);
+
+    // TODO: Listen for ShellItem Property changes
     public BrowserItem(Shell32.PIDL pidl, bool? isFolder,
         List<AbstractBrowserItem<ShellItem>>? childItems = default) : base(isFolder, childItems ?? [])
     {

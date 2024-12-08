@@ -34,7 +34,9 @@ public partial class ShellNamespaceTreeControl : UserControl
     private void ShellNamespaceTreeControl_Loading(FrameworkElement sender, object args)
     {
         // TODO: Raise event, and let the parent decide which folders to use as root
-        TreeItems.Add(BrowserItemFactory.FromShellFolder(IExplorerBrowser.HomeShellFolder));
+        var homeItem = BrowserItemFactory.FromShellFolder(IExplorerBrowser.HomeShellFolder);
+        homeItem.TreeViewItemIsSelected = true;
+        TreeItems.Add(homeItem);
         TreeItems.Add(BrowserItemFactory.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_SkyDrive));
         TreeItems.Add(BrowserItemFactory.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Desktop));
         TreeItems.Add(BrowserItemFactory.FromKnownFolderId(Shell32.KNOWNFOLDERID.FOLDERID_Downloads));
