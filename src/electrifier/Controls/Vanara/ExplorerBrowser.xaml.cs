@@ -71,12 +71,12 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     private Task<HRESULT>? _currentNavigationTask;
 
-    public async Task<HRESULT> NavigateToTreeItem(TreeViewItem tvItem)
+    public async Task<HRESULT> Navigate(ShellItem shItem)
     {
-        return HRESULT.S_OK;
+        throw new NotImplementedException();
     }
 
-    private async Task<HRESULT> Navigate(BrowserItem target)
+    internal async Task<HRESULT> Navigate(BrowserItem target)
     {
         var shTargetItem = target.ShellItem;
 
@@ -120,6 +120,19 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
                     target.ChildItems.Add(ebItem);
                     ShellListView.Items.Add(ebItem);
+                }
+            }
+            else
+            {
+                Debug.WriteLine(".Navigate() => Cache hit!");
+                ShellListView.Items.Clear();
+                foreach (var child in target.ChildItems)
+                {
+                    var ebItem = child as BrowserItem;
+                    if (ebItem is not null)
+                    {
+                        ShellListView.Items.Add(ebItem);
+                    }
                 }
             }
 
@@ -217,9 +230,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 
     private void NativeTreeView_SelectionChanged(TreeView sender, TreeViewSelectionChangedEventArgs args)
     {
-        var RemovedItems = args.RemovedItems;
         var addedItems = args.AddedItems;
-
         if (addedItems.Count < 1)
         {
             Debug.Fail(".NativeTreeView_SelectionChanged() failed.", "No Items added!");
@@ -228,32 +239,19 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         Debug.Assert(addedItems.Count == 1);
         var selectedFolder = addedItems[0] as BrowserItem;
         var currentTreeNode = ShellTreeView.NativeTreeView.SelectedItem;
-        Debug.Print(
-            $".NativeTreeView_SelectionChanged(`{selectedFolder?.DisplayName}`, treeNode: {currentTreeNode?.ToString()}).");
+        Debug.Print($".NativeTreeView_SelectionChanged(`{selectedFolder?.DisplayName}`, treeNode: {currentTreeNode?.ToString()}).");
 
         // check sender!
+        // TODO: ShellTreeView.NativeTreeView.SelectedItem = newTreeNode(find TreeNode
 
-
-        if (currentTreeNode is BrowserItem browserItem && browserItem.PIDL.Equals(selectedFolder?.PIDL))
+        if (selectedFolder?.PIDL is null)
         {
-            Debug.Print(".NativeTreeView_SelectionChanged(): CurrentTreeNode already equals selected /added Item.");
-
-            // TODO: Refresh
+            Debug.Print(".NativeTreeView_SelectionChanged(): selectedFolder.PIDL is null!");
+            return;
         }
-        else
-        {
-            // TODO: ShellTreeView.NativeTreeView.SelectedItem = newTreeNode(find TreeNode
 
-            if (selectedFolder?.PIDL is null)
-            {
-                Debug.Print(".NativeTreeView_SelectionChanged(): selectedFolder is null!");
-                return;
-            }
-
-            // => TODO: currentTreeNode as TreeViewNode ;
-            Navigate(selectedFolder.ShellItem,
-                IExplorerBrowser.ExplorerBrowser.ExplorerBrowserNavigationItemCategory.Absolute);
-        }
+        // => TODO: currentTreeNode as TreeViewNode ;
+        _ = Navigate(selectedFolder);
     }
 
     #region Property stuff
