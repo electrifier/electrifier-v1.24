@@ -1,11 +1,11 @@
-﻿using Vanara.Windows.Shell;
-using Vanara.PInvoke;
+﻿using System.Diagnostics;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
-using System.Drawing;
-using System.Diagnostics;
-using static Vanara.PInvoke.Shell32;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Vanara.PInvoke;
+using Vanara.Windows.Shell;
+using static Vanara.PInvoke.Shell32;
 
 namespace electrifier.Controls.Vanara.Services;
 

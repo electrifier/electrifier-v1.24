@@ -1,10 +1,10 @@
 using System.Collections;
-using CommunityToolkit.WinUI.Collections;
-using electrifier.Controls.Vanara.Helpers;
-using Microsoft.UI.Xaml.Controls;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Globalization;
+using CommunityToolkit.WinUI.Collections;
+using electrifier.Controls.Vanara.Helpers;
+using Microsoft.UI.Xaml.Controls;
 
 // todo: For EnumerateChildren-Calls, add HWND handle
 // todo: See ShellItemCollection, perhaps use this instead of ObservableCollection

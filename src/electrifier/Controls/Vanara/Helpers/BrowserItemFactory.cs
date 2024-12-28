@@ -1,10 +1,9 @@
-﻿using electrifier.Controls.Vanara.Services;
-using Microsoft.UI.Xaml.Media.Imaging;
-using System.Collections.ObjectModel;
-using System.Collections;
+﻿using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
+using electrifier.Controls.Vanara.Services;
+using Microsoft.UI.Xaml.Media.Imaging;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
 

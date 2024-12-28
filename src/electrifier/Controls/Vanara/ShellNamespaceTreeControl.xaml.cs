@@ -1,10 +1,10 @@
-using CommunityToolkit.WinUI.Collections;
-using electrifier.Controls.Vanara.Services;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml;
 using System.Collections.ObjectModel;
+using CommunityToolkit.WinUI.Collections;
 using electrifier.Controls.Vanara.Contracts;
 using electrifier.Controls.Vanara.Helpers;
+using electrifier.Controls.Vanara.Services;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Vanara.PInvoke;
 
 // todo: For EnumerateChildren-Calls, add HWND handle

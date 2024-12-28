@@ -1,8 +1,8 @@
-﻿using electrifier.Contracts.Services;
+﻿using Windows.Storage;
+using electrifier.Contracts.Services;
 using electrifier.Helpers;
 using electrifier.Models;
 using Microsoft.Extensions.Options;
-using Windows.Storage;
 
 namespace electrifier.Services;
 

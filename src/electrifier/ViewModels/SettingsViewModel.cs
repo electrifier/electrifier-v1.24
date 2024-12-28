@@ -1,14 +1,14 @@
 ﻿namespace electrifier.ViewModels;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
-using electrifier.Contracts.Services;
-using Helpers;
-using Microsoft.UI.Xaml;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using System.Windows.Input;
 using Windows.ApplicationModel;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using electrifier.Contracts.Services;
+using Helpers;
+using Microsoft.UI.Xaml;
 /// <summary><a href="https://docs.microsoft.com/en-us/dotnet/api/system.diagnostics.debuggerdisplayattribute?view=net-6.0">Docs for DebuggerDisplay</a></summary>
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(),nq}}")]
 public partial class SettingsViewModel : ObservableRecipient

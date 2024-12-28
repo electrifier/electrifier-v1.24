@@ -1,19 +1,14 @@
 /* todo: Use Visual States for Errors, Empty folders, Empty Drives */
 
-using electrifier.Controls.Vanara.Services;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Imaging;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using electrifier.Controls.Vanara.Contracts;
 using electrifier.Controls.Vanara.Helpers;
+using electrifier.Controls.Vanara.Services;
+using Microsoft.UI.Xaml.Controls;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
-using static Vanara.PInvoke.Shell32;
-using Vanara.Collections;
-using static CommunityToolkit.WinUI.Animations.Expressions.ExpressionValues;
 using IExplorerBrowser = electrifier.Controls.Vanara.Contracts.IExplorerBrowser;
 
 namespace electrifier.Controls.Vanara;

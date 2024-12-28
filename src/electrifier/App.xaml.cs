@@ -1,7 +1,6 @@
-﻿using electrifier.Activation;
+﻿using System.Diagnostics;
+using electrifier.Activation;
 using electrifier.Contracts.Services;
-using electrifier.Controls.Vanara.Contracts;
-using electrifier.Controls.Vanara.Services;
 using electrifier.Helpers;
 using electrifier.Models;
 using electrifier.Notifications;
@@ -11,7 +10,6 @@ using electrifier.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
-using System.Diagnostics;
 using WinUIEx;
 using static Microsoft.Extensions.Hosting.Host;
 using UnhandledExceptionEventArgs = Microsoft.UI.Xaml.UnhandledExceptionEventArgs;

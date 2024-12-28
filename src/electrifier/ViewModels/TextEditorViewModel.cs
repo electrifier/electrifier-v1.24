@@ -1,7 +1,7 @@
 ﻿namespace electrifier.ViewModels;
-using CommunityToolkit.Mvvm.ComponentModel;
 using System.Diagnostics;
 using System.Text;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Vanara.Windows.Shell;
 [DebuggerDisplay($"{{{nameof(GetDebuggerDisplay)}(), nq}}")]
 public partial class TextEditorViewModel : ObservableRecipient
