@@ -125,8 +125,8 @@
     <PackageReference Include="System.Private.Uri" Version="4.3.2" />
     <PackageReference Include="System.Text.Json" Version="9.0.0" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
-    <PackageReference Include="Vanara.Windows.Shell" Version="4.0.4" />
-    <PackageReference Include="Vanara.Windows.Shell.Common" Version="4.0.4" />
+    <PackageReference Include="Vanara.Windows.Shell" Version="4.0.5" />
+    <PackageReference Include="Vanara.Windows.Shell.Common" Version="4.0.5" />
     <PackageReference Include="WinUIEdit" Version="0.0.3-prerelease" />
     <PackageReference Include="WinUIEx" Version="2.5.0" />
   </ItemGroup>
