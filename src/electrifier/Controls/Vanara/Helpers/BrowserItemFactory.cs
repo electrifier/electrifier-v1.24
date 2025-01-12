@@ -9,6 +9,9 @@ using Vanara.Windows.Shell;
 
 namespace electrifier.Controls.Vanara.Helpers;
 
+/// <summary>
+/// Factory class for creating BrowserItems.
+/// </summary>
 public class BrowserItemFactory
 {
     public static BrowserItem FromPIDL(Shell32.PIDL pidl) => new(pidl, isFolder: null);
@@ -133,9 +136,12 @@ public partial class BrowserItemCollection : List<BrowserItem>, IList // TODO: I
     public new object? this[int index] => ListImplementation[index];
 }
 
+/// <summary>
+/// Factory class for creating StockIcons.
+/// </summary>
 public static class StockIconFactory
 {
-    internal static Dictionary<Shell32.SHSTOCKICONID, SoftwareBitmapSource> Dictionary = new();
+    internal static Dictionary<Shell32.SHSTOCKICONID, SoftwareBitmapSource> Dictionary = [];
 
     public static async Task<SoftwareBitmapSource> GetStockIconBitmapSource(Shell32.SHSTOCKICONID shStockIconId)
     {

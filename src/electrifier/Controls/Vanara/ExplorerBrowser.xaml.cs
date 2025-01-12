@@ -13,8 +13,9 @@ using IExplorerBrowser = electrifier.Controls.Vanara.Contracts.IExplorerBrowser;
 
 namespace electrifier.Controls.Vanara;
 
-// https://github.com/dahall/Vanara/blob/master/Windows.Forms/Controls/ExplorerBrowser.cs
-/// <summary>Replacement for <see cref="Vanara.Windows.Forms.Controls.Explorer.cs">Windows.Forms/Controls/ExplorerBrowser.cs</see></summary>
+/// <summary>
+/// Replacement for <see href="https://github.com/dahall/Vanara/blob/master/Windows.Forms/Controls/ExplorerBrowser.cs">Windows.Forms/Controls/ExplorerBrowser.cs</see>
+/// </summary>
 public sealed partial class ExplorerBrowser : INotifyPropertyChanged
 {
     public int ItemCount;
@@ -75,9 +76,8 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
     {
         var shTargetItem = target.ShellItem;
 
-        //Debug.WriteLineIf(!target.IsFolder, $"Navigate({target.DisplayName}) => is not a folder!");
+        Debug.WriteLineIf(!shTargetItem.IsFolder, $".WARN: Navigate({target.DisplayName}) => is not a folder!");
         // TODO: If no folder, or drive empty, etc... show empty listview with error message
-
 
         // TODO: init ShellNamespaceService
         try
