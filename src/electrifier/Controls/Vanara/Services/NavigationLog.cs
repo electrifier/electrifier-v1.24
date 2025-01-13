@@ -37,12 +37,15 @@ public class NavigationLog
     public int CurrentLocationIndex { get; set; } = -1;
 
     /// <summary>The navigation log</summary>
-    public List<ShellItem> Locations { get; } = new List<ShellItem>();
+    public List<ShellItem> Locations { get; } = [];
 
     /// <summary>Clears the contents of the navigation log.</summary>
     public void Clear()
     {
-        if (Locations.Count == 0) return;
+        if (Locations.Count == 0)
+        {
+            return;
+        }
 
         var oldCanNavigateBackward = CanNavigateBackward;
         var oldCanNavigateForward = CanNavigateForward;
@@ -59,38 +62,19 @@ public class NavigationLog
         NavigationLogChanged?.Invoke(this, args);
     }
 
-    internal bool NavigateLog(NavigationLogDirection direction)
-    {
-        // determine proper index to navigate to
-        int locationIndex;
-        switch (direction)
-        {
-            case NavigationLogDirection.Backward when CanNavigateBackward:
-                locationIndex = CurrentLocationIndex - 1;
-                break;
-
-            case NavigationLogDirection.Forward when CanNavigateForward:
-                locationIndex = CurrentLocationIndex + 1;
-                break;
-
-            default:
-                return false;
-        }
-
-        // initiate traversal request
-        var location = Locations[locationIndex];
-        pendingNavigation = new PendingNavigation(location, locationIndex);
-        parent?.Navigate(location);
-        return true;
-    }
-
     internal bool NavigateLog(int index)
     {
         // can't go anywhere
-        if (index >= Locations.Count || index < 0) return false;
+        if (index >= Locations.Count || index < 0)
+        {
+            return false;
+        }
 
         // no need to re navigate to the same location
-        if (index == CurrentLocationIndex) return false;
+        if (index == CurrentLocationIndex)
+        {
+            return false;
+        }
 
         // initiate traversal request
         var location = Locations[index];

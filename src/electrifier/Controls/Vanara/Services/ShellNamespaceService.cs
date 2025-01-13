@@ -70,7 +70,9 @@ public partial class ShellNamespaceService
         //public readonly SHSTOCKICONINFO StockIconInfo = new(SHGetStockIconInfo(shStockIconId, ).ThrowIfFailed("Creating"));
 
         //public readonly Task<SoftwareBitmapSource?> GetSoftwareBitmapSource() => _softwareBitmapTask;
+/*
         private SoftwareBitmapSource _softwareBitmap;
+*/
 
         //public event HasValidationErrorsChangedEventArgs();
 
