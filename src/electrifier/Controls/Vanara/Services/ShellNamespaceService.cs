@@ -20,7 +20,7 @@ public partial class ShellNamespaceService
     /// <summary>ShellNamespaceService() Warn: Actually does not really conform Service Models.</summary>
     public ShellNamespaceService()
     {
-        Debug.Print($"{this.ToString()}");
+        Debug.Print($"..{this}()");
     }
 
     // TODO: Add await event handler to every ebItem, so Icon Extractor can call back the item

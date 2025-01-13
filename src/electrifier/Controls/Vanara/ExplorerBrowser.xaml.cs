@@ -234,7 +234,7 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
         Debug.Assert(addedItems.Count == 1);
         var selectedFolder = addedItems[0] as BrowserItem;
         var currentTreeNode = ShellTreeView.NativeTreeView.SelectedItem;
-        Debug.Print($".NativeTreeView_SelectionChanged(`{selectedFolder?.DisplayName}`, treeNode: {currentTreeNode?.ToString()}).");
+        Debug.Print($".NativeTreeView_SelectionChanged(`{selectedFolder?.DisplayName}`, treeNode: {currentTreeNode}).");
 
         // check sender!
         // TODO: ShellTreeView.NativeTreeView.SelectedItem = newTreeNode(find TreeNode
