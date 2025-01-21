@@ -11,9 +11,9 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 		<UseWinUI>true</UseWinUI>
-		<Version>1.25.115</Version>
+		<Version>1.25.121</Version>
 		<EnableMsixTooling>true</EnableMsixTooling>
-		<AssemblyVersion>1.25.115</AssemblyVersion>
+		<AssemblyVersion>1.25.121</AssemblyVersion>
 		<PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
@@ -25,7 +25,7 @@
 		<RepositoryUrl>https://github.com/electrifier</RepositoryUrl>
 		<UserSecretsId>8a2a75f7-cf60-45ba-b4cc-68e3ff9a8e22</UserSecretsId>
 		<PackageIcon>Assets\Square44x44Logo_unplated.png</PackageIcon>
-		<PackageCertificateThumbprint>412DFB2FB1169368A38C65F3586FFEFECA0AB03B</PackageCertificateThumbprint>
+		<PackageCertificateThumbprint>2990274DEC61C093E897A06920EF8A268F594044</PackageCertificateThumbprint>
 		<AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
 		<ApplicationIcon>Assets\app.ico</ApplicationIcon>
 		<Title>electrifier</Title>
