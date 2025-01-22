@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics;
 using electrifier.Activation;
 using electrifier.Contracts.Services;
+using electrifier.Controls.Vanara.Contracts;
+using electrifier.Controls.Vanara.Services;
 using electrifier.Helpers;
 using electrifier.Models;
 using electrifier.Notifications;
@@ -62,6 +64,7 @@ public partial class App : Application
                 services.AddSingleton<INavigationService, NavigationService>();
 
                 // Core Services
+                services.AddSingleton<IShellNamespaceService, ShellNamespaceService>();
                 services.AddSingleton<IFileService, FileService>();
 
                 // Views and ViewModels

@@ -84,6 +84,7 @@
             <!--  INFO: MultitaskExpanded  -->
             <NavigationView.MenuItems>
                 <NavigationViewItem x:Uid="Shell_Workbench"
+                                    SelectsOnInvoked="True"
                                     helpers:NavigationHelper.NavigateTo="electrifier.ViewModels.WorkbenchViewModel"
                                     IsSelected="True">
                     <NavigationViewItem.Icon>
