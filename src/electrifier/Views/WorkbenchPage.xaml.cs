@@ -1,4 +1,4 @@
-﻿using electrifier.Controls.Vanara.Helpers;
+using electrifier.Controls.Vanara.Helpers;
 using electrifier.ViewModels;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -25,7 +25,6 @@ public sealed partial class WorkbenchPage : Page
         //yield return (BrowserItem.FromShellFolder(new(@"d:\")));
         //yield return (BrowserItem.FromShellFolder(new(@"f:\")));
     }
-
     private void ArenaGrid_OnDropCompleted(UIElement sender, DropCompletedEventArgs args)
     {
         throw new NotImplementedException();

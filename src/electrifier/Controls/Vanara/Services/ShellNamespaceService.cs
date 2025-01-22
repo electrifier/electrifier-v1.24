@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+using System.Diagnostics;
 using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -31,6 +31,10 @@ public partial class ShellNamespaceService
         Debug.Print($".GetShellDataTable(<{shFolder}>) extracting...");
         var ct = new CancellationToken();
 
+        List<Ole32.PROPERTYKEY> propKeys =
+        [
+            Ole32.PROPERTYKEY.System.FileFRN /* This is the unique file ID, also known as the File Reference Number. */
+        ];
         List<Ole32.PROPERTYKEY> propKeys =
         [
             Ole32.PROPERTYKEY.System.FileFRN /* This is the unique file ID, also known as the File Reference Number. */
@@ -95,6 +99,31 @@ public partial class ShellNamespaceService
             //    //await tsk;
             //}
 
+/*          using var siDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCASSOC);
+           {
+               var idx = siDocument.SystemImageIndex;
+               var icnHandle = siDocument.IconHandle.ToIcon();
+               var bmpSource = GetWinUi3BitmapSourceFromIcon(icnHandle);
+               IShellNamespaceService.DocumentBitmapSource = await bmpSource;   // TODO: Use embedded resource, red cross to signal something failed.
+           } */
+
+
+            //private Task<SoftwareBitmapSource> BitmapSource =>
+            //ShellNamespaceService.GetWinUi3BitmapSourceFromIcon(); //new SoftwareBitmapSource();
+            /// Task<SoftwareBitmapSource>
+            //public static BrowserStockIcon Prefetch(ref BrowserStockIcon thisStockIcon)
+            //{
+            //    Debug.Print($"BrowserStockIcon.Prefetch({thisStockIcon}))");
+            //    return thisStockIcon;
+            //}
+
+            //public readonly SHSTOCKICONINFO StockIconInfo = new(SHGetStockIconInfo(shStockIconId, ).ThrowIfFailed("Creating"));
+
+            //public static async Task<BrowserStockIcon> Prefetch(SHSTOCKICONID stockIcon)
+            //{
+            //    var bmpSrc = new SoftwareBitmapSource();
+            //    return bmpSrc;
+            //}
 /*          using var siDocument = new StockIcon(Shell32.SHSTOCKICONID.SIID_DOCASSOC);
            {
                var idx = siDocument.SystemImageIndex;

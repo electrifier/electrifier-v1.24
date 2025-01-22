@@ -36,7 +36,6 @@ public sealed partial class ExplorerBrowser : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-
     public event EventHandler<NavigatedEventArgs> Navigated;
     public event EventHandler<NavigationFailedEventArgs> NavigationFailed;
 

@@ -8,6 +8,10 @@
              xmlns:local="using:electrifier.Controls.Vanara"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:services="using:electrifier.Controls.Vanara.Services"
+             d:DataContext="{d:DesignInstance Type=local:ExplorerBrowser}"
+             mc:Ignorable="d">
+    <Grid>
+             xmlns:services="using:electrifier.Controls.Vanara.Services"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
     <Grid >
@@ -19,7 +23,9 @@
                         <StackPanel Orientation="Horizontal"
                                     VerticalAlignment="Center">
                             <Image MaxHeight="23"
+                            <Image MaxHeight="23"
                                    Margin="7,0"
+                                   Source="{x:Bind SoftwareBitmap}"
                                    Source="{x:Bind SoftwareBitmap}"
                                    VerticalAlignment="Stretch" />
                             <TextBlock Text="{x:Bind DisplayName}"

@@ -19,6 +19,9 @@ public partial class ShellNamespaceTreeControl : UserControl
     public ObservableCollection<BrowserItem> TreeItems;
     internal readonly AdvancedCollectionView AdvancedCollectionView;
     public static ShellNamespaceService NamespaceService => App.GetService<ShellNamespaceService>();
+    public ObservableCollection<BrowserItem> TreeItems;
+    internal readonly AdvancedCollectionView AdvancedCollectionView;
+    public static ShellNamespaceService NamespaceService => App.GetService<ShellNamespaceService>();
 
     public ShellNamespaceTreeControl()
     {
