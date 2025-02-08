@@ -5,17 +5,16 @@
     <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
     <LangVersion>12.0</LangVersion>
     <RootNamespace>electrifier</RootNamespace>
-    <ApplicationIcon>Assets\Legacy Assets from Old-School electrifier\Electrifier Icon.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\Legacy Assets from Old-School electrifier\Electrifier Icon.ico</ApplicationIcon>
     <Platforms>x86;x64;arm64</Platforms>
     <RuntimeIdentifiers>win10-x86;win10-x64;win10-arm64</RuntimeIdentifiers>
     <PublishProfile>Properties\PublishProfiles\win10-$(Platform).pubxml</PublishProfile>
 	<ImplicitUsings>enable</ImplicitUsings>
 	<Nullable>enable</Nullable>
 	<UseWinUI>true</UseWinUI>
-    <Version>1.24.1113</Version>
     <EnableMsixTooling>true</EnableMsixTooling>
-    <AssemblyVersion>1.24.1113</AssemblyVersion>
+    <AssemblyVersion>1.24.1111</AssemblyVersion>
     <PackageRequireLicenseAcceptance>True</PackageRequireLicenseAcceptance>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <RunAnalyzersDuringLiveAnalysis>True</RunAnalyzersDuringLiveAnalysis>
@@ -26,18 +25,10 @@
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <RepositoryUrl>https://github.com/electrifier</RepositoryUrl>
     <UserSecretsId>8a2a75f7-cf60-45ba-b4cc-68e3ff9a8e22</UserSecretsId>
-
-    <PackageIcon>StoreLogo.scale-150.png</PackageIcon>
-    <PackageCertificateThumbprint>412DFB2FB1169368A38C65F3586FFEFECA0AB03B</PackageCertificateThumbprint>
-    <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
-    <PackageTags>manager files directories directory c# .net Vanara Win App SDK</PackageTags>
-    <PackageReleaseNotes>Octavian</PackageReleaseNotes>
-<!-- from Merge, v1.24.1113
     <PackageIcon>Assets\Square44x44Logo_unplated.png</PackageIcon>
     <PackageCertificateThumbprint>412DFB2FB1169368A38C65F3586FFEFECA0AB03B</PackageCertificateThumbprint>
     <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
     <ApplicationIcon>Assets\app.ico</ApplicationIcon>
--->
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="Assets\BadgeLogo.scale-100.png" />
@@ -103,13 +94,6 @@
     <EmbeddedResource Include="Assets\app.ico" />
     <EmbeddedResource Include="Assets\Square150x150Logo.scale-100.png" />
     <EmbeddedResource Include="Assets\Square44x44Logo_unplated.png" />
-    <EmbeddedResource Include="Assets\Themes\Aero Blackcomb\Back Button 48px.png" />
-    <EmbeddedResource Include="Assets\Themes\Aero Blackcomb\Forward Button 48px.png" />
-    <EmbeddedResource Include="Assets\Themes\Aero Blackcomb\Pause Button 48px.png" />
-    <EmbeddedResource Include="Assets\Themes\Aero Blackcomb\Search Button 256px.png" />
-    <EmbeddedResource Include="Assets\Themes\Aero Blackcomb\Tree Up 32px.png" />
-    <EmbeddedResource Include="Assets\Themes\Aero Blackcomb\Windows 7 Window Frame Buttons.png" />
-    <EmbeddedResource Include="Assets\Themes\Aero Blackcomb\Wisp Refresh Button 48px.png" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
@@ -118,7 +102,6 @@
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0-preview1" />
     <PackageReference Include="CommunityToolkit.WinUI.Animations" Version="8.1.240916" />
     <PackageReference Include="CommunityToolkit.WinUI.Collections" Version="8.1.240916" />
-    <PackageReference Include="CommunityToolkit.WinUI.Controls.HeaderedControls" Version="8.1.240916" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Primitives" Version="8.1.240916" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.Segmented" Version="8.1.240916" />
     <PackageReference Include="CommunityToolkit.WinUI.Controls.SettingsControls" Version="8.1.240916" />
@@ -129,9 +112,7 @@
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240923002" />
     <PackageReference Include="Microsoft.Xaml.Behaviors.WinUI.Managed" Version="2.0.9" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.Collections.NonGeneric" Version="4.3.0" />
     <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="System.Private.Uri" Version="4.3.2" />
     <PackageReference Include="System.Text.Json" Version="8.0.5" />
     <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageReference Include="Vanara.Windows.Shell" Version="4.0.4" />
@@ -142,14 +123,6 @@
   <ItemGroup>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Assets\Square44x44Logo_unplated.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-    <None Update="Assets\StoreLogo.scale-150.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
     </None>
     <None Update="README.md">
       <Pack>True</Pack>
@@ -164,6 +137,7 @@
       <Pack>True</Pack>
       <PackagePath>\</PackagePath>
     </None>
+	  <Folder Include="Assets\Themes\Aero Blackcomb\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
@@ -180,32 +154,5 @@
   </ItemGroup>
   <PropertyGroup Condition="'$(DisableHasPackageAndPublishMenuAddedByProject)'!='true' and '$(EnableMsixTooling)'=='true'">
     <HasPackageAndPublishMenu>true</HasPackageAndPublishMenu>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
-    <Optimize>True</Optimize>
-    <DebugType>full</DebugType>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Optimize>True</Optimize>
-    <DebugType>full</DebugType>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|arm64'">
-    <Optimize>True</Optimize>
-    <DebugType>full</DebugType>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
-    <DebugType>full</DebugType>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <DebugType>full</DebugType>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|arm64'">
-    <DebugType>full</DebugType>
-    <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
   </PropertyGroup>
 </Project>

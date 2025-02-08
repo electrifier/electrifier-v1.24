@@ -6,13 +6,14 @@
              xmlns:local="using:electrifier.Controls.Vanara"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:shell="using:Vanara.Windows.Shell"
+             xmlns:helpers="using:electrifier.Controls.Vanara.Helpers"
              mc:Ignorable="d">
 
     <Grid>
         <Border>
             <BreadcrumbBar x:Name="NativeBreadcrumbBar">
                 <BreadcrumbBar.ItemTemplate>
-                    <DataTemplate x:DataType="local:BrowserItem">
+                    <DataTemplate x:DataType="helpers:BrowserItem">
                         <BreadcrumbBarItem AutomationProperties.Name="{Binding Name}"
                                            Content="{Binding}">
                             <BreadcrumbBarItem.ContentTemplate>

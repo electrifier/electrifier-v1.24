@@ -1,8 +1,8 @@
-﻿using electrifier.Helpers;
+﻿using Windows.UI.ViewManagement;
+using electrifier.Helpers;
 using Microsoft.UI;
 using Microsoft.UI.Dispatching;
 using Microsoft.UI.Windowing;
-using Windows.UI.ViewManagement;
 using WinRT.Interop;
 using WinUIEx;
 
