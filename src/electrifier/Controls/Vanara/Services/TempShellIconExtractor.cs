@@ -1,9 +1,9 @@
-﻿using static Vanara.PInvoke.Shell32.ShellUtil;
-using static Vanara.PInvoke.Shell32;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Drawing;
 using Vanara.PInvoke;
 using Vanara.Windows.Shell;
+using static Vanara.PInvoke.Shell32;
+using static Vanara.PInvoke.Shell32.ShellUtil;
 
 namespace electrifier.Controls.Vanara.Services;
 

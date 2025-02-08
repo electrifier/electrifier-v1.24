@@ -5,7 +5,7 @@ namespace electrifier.ViewModels;
 
 public partial class FileManagerViewModel : ObservableRecipient
 {
-    public readonly ShellNamespaceService ShellNamespaceService = new ShellNamespaceService();
+    public readonly ShellNamespaceService ShellNamespaceService = new();
 
     /// <summary>FileManagerViewModel</summary>
     public FileManagerViewModel()
